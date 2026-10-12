@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - منصة أثر</title>
+    <!-- استدعاء خطوط Google Fonts (Cairo + Amiri) وأيقونات FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:ital,wght@1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <!-- القسم الأيمن: بطاقة تسجيل الدخول -->
+        <div class="right-side-card">
+            <div>
+                <div class="card-header">
+                    <h2>مرحباً بك في منصة أثر</h2>
+                    <p>أدخل اسمك للمتابعة إلى المنصة</p>
+                </div>
+
+                <div class="input-group">
+                    <label>الإسم</label>
+                    <div class="input-wrapper">
+                        <i class="fa-regular fa-user input-icon-inside"></i>
+                        <input type="text" id="usernameInput" placeholder="اكتب اسمك هنا">
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button class="login-submit-btn" onclick="handleLogin()">
+                    <span>دخول إلى المنصة</span>
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+
+                <div class="card-footer-note">
+                    <div class="footer-divider"></div>
+                    <div class="footer-leaf-icon"></div>
+                    <span class="footer-text">ابدأ رحلتك نحو مبادرات أكثر أثراً.</span>
+                    <div class="footer-divider"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- القسم الأيسر: الشعار والمميزات المضبوطة بدقة -->
+        <div class="left-side-content">
+            <div class="logo-box">
+                <img src="logo.png" alt="شعار منصة أثر">
+            </div>
+            <div class="main-title">بوابة قياس الأثر المجتمعي واتخاذ القرار</div>
+            <div class="main-slogan">مبادرات تُدار بذكاء.. وأثر يُقاس بوضوح</div>
+            
+            <p class="description-text">
+                منصة رقمية تساعد على تنظيم المبادرات المجتمعية، ومتابعتها وتقييمها، وقیاس نتائجها ومدى تحقيق أهدافها، وتقارير تدعم التطوير واتخاذ القرار.
+            </p>
+
+            <!-- الأيقونات الأربع (مرتبة ومنظمة بشكل صحيح تماماً) -->
+            <div class="features-row-exact">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <span class="feature-title">إدارة المبادرات</span>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-list-check"></i></div>
+                    <span class="feature-title">متابعة التنفيذ</span>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
+                    <span class="feature-title">قياس الأثر</span>
+                </div>
+                <div class="vertical-line"></div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fa-solid fa-chart-column"></i></div>
+                    <span class="feature-title">تحليل النتائج</span>
+                </div>
+            </div>
+
+            <!-- الجملة الأخيرة المزخرفة -->
+            <div class="artistic-quote">
+                <span>معاً .. نصنع أثراً أكبر</span>
+                <div class="quote-underline"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function handleLogin() {
+            const name = document.getElementById('usernameInput').value.trim();
+
+            if (name === "") {
+                alert("الرجاء كتابة الاسم أولاً قبل الدخول.");
+                return;
+            }
+
+            localStorage.setItem('athalUser', name);
+            window.location.href = "dashboard.html";
+        }
+    </script>
+</body>
+</html>
