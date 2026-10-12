@@ -18,7 +18,7 @@
             <div>
                 <div class="card-header">
                     <h2>مرحباً بك في منصة أثر</h2>
-                    <p>أدخل اسمك للمتابعة إلى المنصة</p>
+                    <p>أدخل اسمك وحدد صلاحيتك للمتابعة</p>
                 </div>
 
                 <div class="input-group">
@@ -26,6 +26,19 @@
                     <div class="input-wrapper">
                         <i class="fa-regular fa-user input-icon-inside"></i>
                         <input type="text" id="usernameInput" placeholder="اكتب اسمك هنا">
+                    </div>
+                </div>
+
+                <!-- خانة اختيار نوع المستخدم (مشرف / مستخدم عادي) -->
+                <div class="input-group" style="margin-top: 15px;">
+                    <label>نوع المستخدم</label>
+                    <div class="input-wrapper">
+                        <i class="fa-solid fa-shield-halved input-icon-inside"></i>
+                        <select id="userRoleSelect" style="width: 100%; height: 42px; padding: 0 38px 0 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; background-color: #f8fafc; font-size: 13px; color: #1e293b; outline: none; text-align: right; appearance: none; font-family: 'Cairo', sans-serif;">
+                            <option value="user">مستخدم عادي</option>
+                            <option value="admin">مشرف (Admin)</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #64748b; pointer-events: none;"></i>
                     </div>
                 </div>
             </div>
@@ -45,7 +58,7 @@
             </div>
         </div>
 
-        <!-- القسم الأيسر: الشعار والمميزات المضبوطة بدقة -->
+        <!-- القسم الأيسر: الشعار والمميزات -->
         <div class="left-side-content">
             <div class="logo-box">
                 <img src="logo.png" alt="شعار منصة أثر">
@@ -57,7 +70,7 @@
                 منصة رقمية تساعد على تنظيم المبادرات المجتمعية، ومتابعتها وتقييمها، وقیاس نتائجها ومدى تحقيق أهدافها، وتقارير تدعم التطوير واتخاذ القرار.
             </p>
 
-            <!-- الأيقونات الأربع (مرتبة ومنظمة بشكل صحيح تماماً) -->
+            <!-- الأيقونات الأربع -->
             <div class="features-row-exact">
                 <div class="feature-item">
                     <div class="feature-icon"><i class="fa-solid fa-folder-open"></i></div>
@@ -92,14 +105,23 @@
     <script>
         function handleLogin() {
             const name = document.getElementById('usernameInput').value.trim();
+            const role = document.getElementById('userRoleSelect').value;
 
             if (name === "") {
                 alert("الرجاء كتابة الاسم أولاً قبل الدخول.");
                 return;
             }
 
+            // حفظ بيانات المستخدم والصلاحية
             localStorage.setItem('athalUser', name);
-            window.location.href = "dashboard.html";
+            localStorage.setItem('athalRole', role);
+
+            // التوجيه بناءً على الاختيار
+            if (role === 'admin') {
+                window.location.href = "admin-dashboard.html"; // صفحة المشرف
+            } else {
+                window.location.href = "dashboard.html"; // صفحة المستخدم العادي
+            }
         }
     </script>
 </body>
