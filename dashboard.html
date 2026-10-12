@@ -17,7 +17,8 @@
         }
 
         body {
-            background-image: url('خلفيه موقع اثر.png');
+            /* استبدلي 'bg.png' باسم صورة الخلفية الموجودة لديكِ في المجلد */
+            background-image: url('bg.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -37,10 +38,10 @@
             align-items: center;
             width: 100%;
             max-width: 1250px;
-            gap: 35px;
+            gap: 40px;
         }
 
-        /* مساحة العمل البيضاء الكبيرة في اليسار (مطابقة للصورة تماماً) */
+        /* مساحة العمل البيضاء الكبيرة في اليسار */
         .main-content-card {
             flex: 1;
             height: 570px;
@@ -51,16 +52,17 @@
             padding: 30px;
         }
 
-        /* الشريط الجانبي والقائمة في اليمين (مطابق للصورة) */
+        /* الشريط الجانبي في اليمين (بدون خلفية رمادية) */
         .sidebar-section {
-            width: 270px;
-            padding: 20px 10px;
+            width: 250px;
+            background: transparent;
+            padding: 10px 5px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-end;
         }
 
-        /* الشعار في أعلى اليمين تماماً كما في صورتك */
+        /* الشعار في أعلى اليمين */
         .sidebar-logo {
             width: 100%;
             display: flex;
@@ -83,13 +85,13 @@
             gap: 6px;
         }
 
-        /* تنسيق الروابط بحيث تكون الأيقونة على اليمين والنص بجانبها تماماً مثل صورتك */
+        /* روابط القائمة بدون صناديق خلفية، الأيقونة على اليمين والنص بجانبها تماماً */
         .sidebar-menu li a {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             gap: 15px;
-            padding: 12px 18px;
+            padding: 12px 15px;
             color: #0f3d59;
             text-decoration: none;
             font-size: 15px;
@@ -98,7 +100,7 @@
             transition: all 0.3s ease;
         }
 
-        /* العنصر النشط (الرئيسية) بلون خفيف متناسق مع صورتك */
+        /* العنصر النشط (الرئيسية) بتحديد خلفية خفيفة زرقاء */
         .sidebar-menu li.active a {
             background-color: rgba(15, 61, 89, 0.12);
             color: #0f3d59;
@@ -108,7 +110,7 @@
             background-color: rgba(15, 61, 89, 0.06);
         }
 
-        /* حجم ولون الأيقونات لتطابق صورتك بدقة */
+        /* حجم ولون الأيقونات */
         .sidebar-menu li a i {
             font-size: 18px;
             color: #0f3d59;
@@ -116,7 +118,7 @@
             text-align: center;
         }
 
-        /* زر تسجيل الخروج في الأسفل بنفس اللون الهادئ */
+        /* زر تسجيل الخروج في الأسفل */
         .logout-btn {
             color: #0f3d59 !important;
             margin-top: 15px;
@@ -148,7 +150,7 @@
             <!-- فارغة تماماً بناءً على طلبك -->
         </div>
 
-        <!-- الشريط الجانبي والقائمة في اليمين -->
+        <!-- القائمة الجانبية في اليمين (بدون خلفية رمادية) -->
         <div class="sidebar-section">
             <div class="sidebar-logo">
                 <img src="logo.PNG" alt="شعار منصة أثر">
