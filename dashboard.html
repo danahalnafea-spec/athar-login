@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>منصة أثر - الرئيسية</title>
-    <!-- خط Cairo وأيقونات FontAwesome -->
+    <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- تنسيقات لوحة التحكم مدمجة هنا لضمان عملها فوراً بدون مشاكل -->
     <style>
         * {
             box-sizing: border-box;
@@ -31,52 +30,53 @@
             overflow-x: hidden;
         }
 
-        /* ترحيب باسم المستخدم في الزاوية العلوية اليسرى */
-        .user-profile-corner {
+        /* تصميم ترحيب باسم المستخدم في الزاوية العلوية (بشكل مرتب وأنيق) */
+        .user-welcome-badge {
             position: absolute;
             top: 25px;
             left: 45px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 6px 14px;
-            border-radius: 30px;
-            box-shadow: 0 4px 15px rgba(15, 61, 89, 0.05);
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            padding: 8px 18px;
+            border-radius: 40px;
+            box-shadow: 0 4px 20px rgba(15, 61, 89, 0.08);
+            border: 1px solid rgba(15, 61, 89, 0.1);
         }
 
-        .user-info-text {
-            text-align: right;
+        .user-avatar-circle {
+            width: 36px;
+            height: 36px;
+            background: #0f3d59;
+            color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+        }
+
+        .user-text-info {
             display: flex;
             flex-direction: column;
+            text-align: right;
         }
 
-        .welcome-label {
-            font-size: 11px;
+        .welcome-mini-text {
+            font-size: 10.5px;
             color: #64748b;
             font-weight: 600;
         }
 
-        .user-name-display {
-            font-size: 13.5px;
+        .user-name-text {
+            font-size: 14px;
             color: #0f3d59;
             font-weight: 800;
         }
 
-        .user-avatar-icon {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: #0f3d59;
-            font-size: 22px;
-        }
-
-        .arrow-icon {
-            font-size: 10px;
-            color: #64748b;
-        }
-
-        /* الحاوية الرئيسية */
+        /* الحاوية الرئيسية (القائمة يمين والمربع يسار) */
         .dashboard-container {
             display: flex;
             justify-content: space-between;
@@ -84,21 +84,21 @@
             width: 100%;
             max-width: 1250px;
             gap: 35px;
-            margin-top: 25px;
+            margin-top: 20px;
         }
 
-        /* مساحة العمل البيضاء الكبيرة (فارغة تماماً كما طلبتِ) */
+        /* مساحة العمل البيضاء الكبيرة في اليسار (فارغة تماماً) */
         .main-content-card {
             flex: 1;
             height: 570px;
-            background: rgba(255, 255, 255, 0.92);
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 24px;
             border: 1px solid rgba(255, 255, 255, 0.9);
             box-shadow: 0 15px 35px rgba(15, 61, 89, 0.08);
             padding: 30px;
         }
 
-        /* الشريط الجانبي والقائمة */
+        /* الشريط الجانبي والقائمة في اليمين */
         .sidebar-section {
             width: 250px;
             background: rgba(248, 250, 252, 0.95);
@@ -138,11 +138,16 @@
             transition: all 0.3s ease;
         }
 
-        .sidebar-menu li.active a, 
-        .sidebar-menu li a:hover {
+        /* العنصر النشط (الرئيسية) */
+        .sidebar-menu li.active a {
             background-color: #0f3d59;
             color: #ffffff;
             box-shadow: 0 4px 12px rgba(15, 61, 89, 0.15);
+        }
+
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: #e2e8f0;
+            color: #0f3d59;
         }
 
         .sidebar-menu li a i {
@@ -151,6 +156,7 @@
             text-align: center;
         }
 
+        /* زر تسجيل الخروج بالأحمر في الأسفل */
         .logout-btn {
             color: #dc2626 !important;
             margin-top: 15px;
@@ -166,27 +172,26 @@
 </head>
 <body>
 
-    <!-- ترحيب باسم المستخدم في الزاوية العلوية -->
-    <div class="user-profile-corner">
-        <div class="user-info-text">
-            <span class="welcome-label">مرحباً،</span>
-            <span class="user-name-display" id="displayUserName">اسم المستخدم</span>
-        </div>
-        <div class="user-avatar-icon">
+    <!-- ترحيب باسم المستخدم في الزاوية بطريقة أنيقة ومرتبة -->
+    <div class="user-welcome-badge">
+        <div class="user-avatar-circle">
             <i class="fa-solid fa-user"></i>
-            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+        </div>
+        <div class="user-text-info">
+            <span class="welcome-mini-text">مرحباً بك،</span>
+            <span class="user-name-text" id="displayUserName">اسم المستخدم</span>
         </div>
     </div>
 
     <!-- الحاوية الرئيسية -->
     <div class="dashboard-container">
         
-        <!-- مساحة العمل البيضاء الفارغة -->
+        <!-- مساحة العمل البيضاء الكبيرة في اليسار (فارغة تماماً) -->
         <div class="main-content-card">
-            <!-- مساحة فارغة تماماً بناءً على طلبك -->
+            <!-- فارغة تماماً بناءً على طلبك -->
         </div>
 
-        <!-- الشريط الجانبي (القائمة) -->
+        <!-- الشريط الجانبي والقائمة في اليمين -->
         <div class="sidebar-section">
             <div class="sidebar-logo">
                 <img src="logo.png" alt="شعار منصة أثر">
@@ -240,7 +245,7 @@
 
     </div>
 
-    <!-- جلب اسم المستخدم المخزن تلقائياً من صفحة الدخول -->
+    <!-- جلب اسم المستخدم المخزن تلقائياً -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('athalUser');
