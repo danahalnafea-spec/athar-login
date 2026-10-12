@@ -334,3 +334,140 @@ body {
         font-size: 14px;
     }
 }
+
+/* ==========================================================
+   تنسيقات لوحة التحكم (dashboard.html) - أضيفيها في نهاية style.css
+   ========================================================== */
+
+/* ترحيب باسم المستخدم في الزاوية العلوية اليسرى */
+.user-profile-corner {
+    position: absolute;
+    top: 25px;
+    left: 45px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 6px 14px;
+    border-radius: 30px;
+    box-shadow: 0 4px 15px rgba(15, 61, 89, 0.05);
+}
+
+.user-info-text {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+}
+
+.welcome-label {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.user-name-display {
+    font-size: 13.5px;
+    color: #0f3d59;
+    font-weight: 800;
+}
+
+.user-avatar-icon {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #0f3d59;
+    font-size: 22px;
+}
+
+.arrow-icon {
+    font-size: 10px;
+    color: #64748b;
+}
+
+/* الحاوية الرئيسية للوحة التحكم */
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1250px;
+    gap: 35px;
+    margin-top: 25px;
+}
+
+/* مساحة العمل البيضاء الكبيرة (فارغة تماماً) */
+.main-content-card {
+    flex: 1;
+    height: 570px;
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 15px 35px rgba(15, 61, 89, 0.08);
+    padding: 30px;
+}
+
+/* الشريط الجانبي والقائمة */
+.sidebar-section {
+    width: 250px;
+    background: rgba(248, 250, 252, 0.95);
+    border-radius: 20px;
+    padding: 25px 15px;
+    box-shadow: 0 10px 30px rgba(15, 61, 89, 0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sidebar-logo img {
+    width: 110px;
+    height: auto;
+    margin-bottom: 25px;
+    object-fit: contain;
+}
+
+.sidebar-menu {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 16px;
+    color: #334155;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.sidebar-menu li.active a, 
+.sidebar-menu li a:hover {
+    background-color: #0f3d59;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(15, 61, 89, 0.15);
+}
+
+.sidebar-menu li a i {
+    font-size: 15px;
+    width: 20px;
+    text-align: center;
+}
+
+.logout-btn {
+    color: #dc2626 !important;
+    margin-top: 15px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 15px !important;
+}
+
+.logout-btn:hover {
+    background-color: #ffeeef !important;
+    color: #dc2626 !important;
+}
+
