@@ -40,7 +40,7 @@
             gap: 35px;
         }
 
-        /* مساحة العمل البيضاء الكبيرة في اليسار */
+        /* مساحة العمل البيضاء الكبيرة في اليسار (مطابقة للصورة تماماً) */
         .main-content-card {
             flex: 1;
             height: 570px;
@@ -51,22 +51,27 @@
             padding: 30px;
         }
 
-        /* الشريط الجانبي والقائمة في اليمين والشعار في أعلاه تماماً */
+        /* الشريط الجانبي والقائمة في اليمين (مطابق للصورة) */
         .sidebar-section {
-            width: 250px;
-            background: rgba(248, 250, 252, 0.95);
-            border-radius: 20px;
-            padding: 25px 15px;
-            box-shadow: 0 10px 30px rgba(15, 61, 89, 0.06);
+            width: 270px;
+            padding: 20px 10px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .sidebar-logo img {
-            width: 120px;
-            height: auto;
+        /* الشعار في أعلى اليمين تماماً كما في صورتك */
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
             margin-bottom: 25px;
+            padding-right: 15px;
+        }
+
+        .sidebar-logo img {
+            width: 150px;
+            height: auto;
             object-fit: contain;
         }
 
@@ -75,50 +80,60 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
 
+        /* تنسيق الروابط بحيث تكون الأيقونة على اليمين والنص بجانبها تماماً مثل صورتك */
         .sidebar-menu li a {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            padding: 11px 16px;
-            color: #334155;
+            justify-content: flex-end;
+            gap: 15px;
+            padding: 12px 18px;
+            color: #0f3d59;
             text-decoration: none;
-            font-size: 13.5px;
+            font-size: 15px;
             font-weight: 700;
             border-radius: 12px;
             transition: all 0.3s ease;
         }
 
-        /* العنصر النشط (الرئيسية) بلون كحلي وتصميم مطابق للصورة */
+        /* العنصر النشط (الرئيسية) بلون خفيف متناسق مع صورتك */
         .sidebar-menu li.active a {
-            background-color: #0f3d59;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(15, 61, 89, 0.15);
-        }
-
-        .sidebar-menu li a:hover:not(.active) {
-            background-color: #e2e8f0;
+            background-color: rgba(15, 61, 89, 0.12);
             color: #0f3d59;
         }
 
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: rgba(15, 61, 89, 0.06);
+        }
+
+        /* حجم ولون الأيقونات لتطابق صورتك بدقة */
         .sidebar-menu li a i {
-            font-size: 15px;
-            width: 20px;
+            font-size: 18px;
+            color: #0f3d59;
+            width: 22px;
             text-align: center;
         }
 
-        /* زر تسجيل الخروج بالأحمر في الأسفل */
+        /* زر تسجيل الخروج في الأسفل بنفس اللون الهادئ */
         .logout-btn {
-            color: #dc2626 !important;
+            color: #0f3d59 !important;
             margin-top: 15px;
-            border-top: 1px solid #e2e8f0;
+            border-top: 1px solid rgba(15, 61, 89, 0.1);
             padding-top: 15px !important;
         }
 
+        .logout-btn i {
+            color: #0f3d59 !important;
+        }
+
         .logout-btn:hover {
-            background-color: #ffeeef !important;
+            background-color: rgba(220, 38, 38, 0.08) !important;
+            color: #dc2626 !important;
+        }
+
+        .logout-btn:hover i {
             color: #dc2626 !important;
         }
     </style>
@@ -136,7 +151,7 @@
         <!-- الشريط الجانبي والقائمة في اليمين -->
         <div class="sidebar-section">
             <div class="sidebar-logo">
-                <img src="logo.png" alt="شعار منصة أثر">
+                <img src="logo.PNG" alt="شعار منصة أثر">
             </div>
 
             <ul class="sidebar-menu">
