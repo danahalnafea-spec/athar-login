@@ -339,3 +339,157 @@ body {
         font-size: 14px;
     }
 }
+
+/* ==========================================================
+   تنسيقات لوحة التحكم (Dashboard & Sidebar)
+   ========================================================== */
+
+.dashboard-body {
+    background-image: url('خلفيه موقع اثر.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.dashboard-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1350px;
+    margin: 0 auto;
+    min-height: 90vh;
+    gap: 20px;
+}
+
+/* المحتوى الرئيسي الأيمن */
+.main-content-area {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 10px 30px rgba(15, 61, 89, 0.05);
+}
+
+.welcome-top-bar h1 {
+    font-size: 24px;
+    color: #0f3d59;
+    font-weight: 800;
+}
+
+.welcome-top-bar p {
+    font-size: 13px;
+    color: #64748b;
+    margin-top: 5px;
+}
+
+.content-card-box {
+    margin-top: 30px;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    color: #334155;
+}
+
+/* القائمة الجانبية (Sidebar) على اليسار */
+.sidebar-menu {
+    width: 260px;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 25px 15px;
+    box-shadow: 0 10px 30px rgba(15, 61, 89, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.sidebar-logo {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 20px;
+}
+
+.sidebar-logo img {
+    width: 35px;
+    height: auto;
+}
+
+.sidebar-logo .logo-text {
+    font-size: 20px;
+    font-weight: 900;
+    color: #0f3d59;
+}
+
+.menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.menu-item a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 12px 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.menu-item a i {
+    font-size: 16px;
+    color: #0f3d59;
+    width: 20px;
+    text-align: center;
+}
+
+/* العنصر النشط (الرئيسية) */
+.menu-item.active a {
+    background-color: #dbeafe;
+    color: #0f3d59;
+    font-weight: 700;
+}
+
+.menu-item a:hover {
+    background-color: #f1f5f9;
+}
+
+/* زر تسجيل الخروج */
+.logout-item {
+    margin-top: auto;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 15px;
+}
+
+.logout-item a {
+    color: #ef4444;
+}
+
+.logout-item a i {
+    color: #ef4444;
+}
+
+/* التجاوب مع الجوال */
+@media (max-width: 900px) {
+    .dashboard-container {
+        flex-direction: column-reverse;
+    }
+    .sidebar-menu {
+        width: 100%;
+    }
+}
