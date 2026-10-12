@@ -1,15 +1,100 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/html.html to edit this template
--->
-<html>
-    <head>
-        <title>TODO supply a title</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>TODO write content</div>
-    </body>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أثر - الرئيسية</title>
+    <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- ربط ملف الـ CSS الخارجي -->
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+    <!-- ترحيب باسم المستخدم في الزاوية العلوية -->
+    <div class="user-profile-corner">
+        <div class="user-info-text">
+            <span class="welcome-label">مرحباً،</span>
+            <span class="user-name-display" id="displayUserName">اسم المستخدم</span>
+        </div>
+        <div class="user-avatar-icon">
+            <i class="fa-solid fa-user"></i>
+            <i class="fa-solid fa-chevron-down arrow-icon"></i>
+        </div>
+    </div>
+
+    <!-- الحاوية الرئيسية -->
+    <div class="dashboard-container">
+        
+        <!-- مساحة العمل البيضاء الفارغة -->
+        <div class="main-content-card">
+            <!-- مساحة فارغة تماماً بناءً على طلبك -->
+        </div>
+
+        <!-- الشريط الجانبي (القائمة) -->
+        <div class="sidebar-section">
+            <div class="sidebar-logo">
+                <img src="logo.png" alt="شعار منصة أثر">
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="dashboard.html">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>البيانات</span>
+                        <i class="fa-solid fa-database"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html" class="logout-btn">
+                        <span>تسجيل الخروج</span>
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- جلب اسم المستخدم المخزن تلقائياً من صفحة الدخول -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('athalUser');
+            if (savedName) {
+                document.getElementById('displayUserName').textContent = savedName;
+            }
+        });
+    </script>
+</body>
 </html>
+
