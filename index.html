@@ -4,125 +4,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - منصة أثر</title>
-    <!-- استدعاء خطوط Google Fonts وأيقونات FontAwesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Amiri:ital,wght@1,700&display=swap" rel="stylesheet">
+    <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-image: url('bg.png'); /* تأكدي أن اسم صورة الخلفية مطابق تماماً لديكِ */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* صندوق تسجيل الدخول في المنتصف */
+        .login-card {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 15px 35px rgba(15, 61, 89, 0.08);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .login-logo img {
+            width: 130px;
+            height: auto;
+            margin-bottom: 20px;
+            object-fit: contain;
+        }
+
+        .login-title {
+            font-size: 22px;
+            font-weight: 900;
+            color: #0f3d59;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            width: 100%;
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f3d59;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Cairo', sans-serif;
+            color: #1e293b;
+            background-color: #f8fafc;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #0f3d59;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(15, 61, 89, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 13px;
+            background-color: #0f3d59;
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .login-btn:hover {
+            background-color: #164e70;
+        }
+    </style>
 </head>
 <body>
 
-    <div class="login-container">
-        
-        <!-- القسم الأيمن: بطاقة تسجيل الدخول -->
-        <div class="right-side-card">
-            <div>
-                <div class="card-header">
-                    <h2>مرحباً بك في منصه أثر</h2>
-                    <p>أدخل اسمك وحدد صلاحيتك للمتابعة</p>
-                </div>
-
-                <div class="input-group">
-                    <label>الإسم</label>
-                    <div class="input-wrapper">
-                        <i class="fa-regular fa-user input-icon-inside"></i>
-                        <input type="text" id="usernameInput" placeholder="اكتب اسمك هنا">
-                    </div>
-                </div>
-
-                <!-- خانة اختيار نوع المستخدم (مشرف / مستخدم عادي) -->
-                <div class="input-group" style="margin-top: 15px;">
-                    <label>نوع المستخدم</label>
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-shield-halved input-icon-inside"></i>
-                        <select id="userRoleSelect" style="width: 100%; height: 42px; padding: 0 38px 0 14px; border: 1.5px solid #cbd5e1; border-radius: 10px; background-color: #f8fafc; font-size: 13px; color: #1e293b; outline: none; text-align: right; appearance: none; font-family: 'Cairo', sans-serif;">
-                            <option value="user">مستخدم عادي</option>
-                            <option value="admin">مشرف (Admin)</option>
-                        </select>
-                        <i class="fa-solid fa-chevron-down" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 11px; color: #64748b; pointer-events: none;"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <button class="login-submit-btn" onclick="handleLogin()">
-                    <span>دخول إلى المنصة</span>
-                    <i class="fa-solid fa-arrow-left"></i>
-                </button>
-
-                <div class="card-footer-note">
-                    <div class="footer-divider"></div>
-                    <div class="footer-leaf-icon"></div>
-                    <span class="footer-text">ابدأ رحلتك نحو مبادرات أكثر أثراً.</span>
-                    <div class="footer-divider"></div>
-                </div>
-            </div>
+    <div class="login-card">
+        <div class="login-logo">
+            <img src="logo.PNG" alt="شعار منصة أثر">
         </div>
+        <h1 class="login-title">مرحباً بك في منصة أثر</h1>
+        <p class="login-subtitle">أدخل اسمك وحدد صلاحيتك للمتابعة</p>
 
-        <!-- القسم الأيسر: الشعار والمميزات -->
-        <div class="left-side-content">
-            <div class="logo-box">
-                <img src="logo.png" alt="شعار منصة أثر">
-            </div>
-            <div class="main-title">بوابة قياس الأثر المجتمعي واتخاذ القرار</div>
-            <div class="main-slogan">مبادرات تُدار بذكاء.. وأثر يُقاس بوضوح</div>
-            
-            <p class="description-text">
-                منصة رقمية تساعد على تنظيم المبادرات المجتمعية، ومتابعتها وتقييمها، وقیاس نتائجها ومدى تحقيق أهدافها، وتقارير تدعم التطوير واتخاذ القرار.
-            </p>
-
-            <!-- الأيقونات الأربع -->
-            <div class="features-row-exact">
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fa-solid fa-folder-open"></i></div>
-                    <span class="feature-title">إدارة المبادرات</span>
-                </div>
-                <div class="vertical-line"></div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fa-solid fa-list-check"></i></div>
-                    <span class="feature-title">متابعة التنفيذ</span>
-                </div>
-                <div class="vertical-line"></div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fa-solid fa-bullseye"></i></div>
-                    <span class="feature-title">قياس الأثر</span>
-                </div>
-                <div class="vertical-line"></div>
-                <div class="feature-item">
-                    <div class="feature-icon"><i class="fa-solid fa-chart-column"></i></div>
-                    <span class="feature-title">تحليل النتائج</span>
+        <form action="dashboard.html" method="GET" style="width: 100%;">
+            <div class="form-group">
+                <label class="form-label">الاسم</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-user"></i>
+                    <input type="text" class="form-control" placeholder="اكتب اسمك هنا" required>
                 </div>
             </div>
 
-            <!-- الجملة الأخيرة المزخرفة -->
-            <div class="artistic-quote">
-                <span>معاً .. نصنع أثراً أكبر</span>
-                <div class="quote-underline"></div>
+            <div class="form-group">
+                <label class="form-label">نوع المستخدم</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <input type="text" class="form-control" placeholder="مستخدم عادي" required>
+                </div>
             </div>
-        </div>
 
+            <a href="dashboard.html" class="login-btn">دخول إلى المنصة</a>
+        </form>
     </div>
 
-    <script>
-        function handleLogin() {
-            const name = document.getElementById('usernameInput').value.trim();
-            const role = document.getElementById('userRoleSelect').value;
-
-            if (name === "") {
-                alert("الرجاء كتابة الاسم أولاً قبل الدخول.");
-                return;
-            }
-
-            // حفظ بيانات المستخدم والصلاحية
-            localStorage.setItem('athalUser', name);
-            localStorage.setItem('athalRole', role);
-
-            // التوجيه بناءً على الاختيار
-            if (role === 'admin') {
-                window.location.href = "dashboard.html"; // أو صفحة المشرف
-            } else {
-                window.location.href = "dashboard.html"; 
-            }
-        }
-    </script>
 </body>
 </html>
