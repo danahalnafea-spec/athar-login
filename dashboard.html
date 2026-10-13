@@ -24,7 +24,7 @@
             background-attachment: fixed;
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* منع التمرير الأفقي وثبات تام للشاشة */
+            overflow: hidden; /* منع تام لأي حركة يمين ويسار للصفحة */
             display: flex;
             justify-content: space-between;
             align-items: stretch;
@@ -57,7 +57,7 @@
             gap: 20px;
         }
 
-        /* مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً) */
+        /* مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط مباشرة)[cite: 9] */
         .welcome-group {
             display: flex;
             align-items: center;
@@ -231,7 +231,7 @@
             margin-top: 4px;
         }
 
-        /* الشريط الجانبي في اليمين مع ضمان ظهور زر الخروج دائماً */
+        /* الشريط الجانبي في اليمين */
         .sidebar-right {
             width: 290px; 
             height: 100vh;
@@ -243,14 +243,14 @@
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
             flex-shrink: 0;
             border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow-y: auto; /* السماح بالتمرير الداخلي للشريط لو زادت العناصر لضمان ظهور زر الخروج */
+            overflow-y: auto;
             overflow-x: hidden;
             position: relative;
             transition: all 0.3s ease;
             z-index: 10;
         }
 
-        /* فئة لإخفاء محتويات الشريط تماماً عند الطي */
+        /* فئة لإخفاء محتويات الشريط للآيباد واللابتوب */
         .sidebar-right.hidden-sidebar {
             width: 0 !important;
             min-width: 0 !important;
@@ -369,17 +369,27 @@
             color: #dc2626 !important;
         }
 
-        /* التجاوب الذكي للشاشات الصغيرة */
+        /* تخصيص خاص للشاشات الصغيرة (الجوال): الشريط يغطي كامل الشاشة بشكل كامل عند الفتح */
         @media (max-width: 768px) {
-            .header-top-wrapper {
-                flex-direction: row;
-                justify-content: space-between;
+            .sidebar-right {
+                position: fixed;
+                right: 0;
+                top: 0;
+                width: 80% !important;
+                max-width: 300px;
+                height: 100vh;
+                z-index: 9999;
+                transform: translateX(100%);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.2);
             }
-            .welcome-center-section h1 {
-                font-size: 16px;
+            .sidebar-right.mobile-open {
+                transform: translateX(0);
             }
-            .welcome-center-section p {
-                font-size: 9px;
+            .sidebar-right.hidden-sidebar {
+                width: 80% !important;
+                transform: translateX(100%) !important;
+                border-left: none !important;
+                padding: 15px 15px 20px 15px !important;
             }
         }
     </style>
@@ -454,7 +464,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً) -->
+            <!-- مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً)[cite: 9] -->
             <div class="welcome-group">
                 <div class="welcome-center-section">
                     <div class="welcome-title-wrapper">
@@ -529,24 +539,37 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الفعالة لزر السهم لطي أو إظهار الشريط الجانبي تماماً
+        // البرمجة الذكية لزر السهم (تتكيف تلقائياً بين الجوال والآيباد/اللابتوب)
         const sidebarRight = document.getElementById('sidebarRight');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
 
         sidebarToggleBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            sidebarRight.classList.toggle('hidden-sidebar');
             
-            // عكس اتجاه السهم بذكاء عند الطي أو الإرجاع
-            if (sidebarRight.classList.contains('hidden-sidebar')) {
-                toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
-                sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+            // التحقق مما إذا كان الجهاز جوالاً أو آيباد/لابتوب
+            if (window.innerWidth <= 768) {
+                // للجوال: جعل الشريط يظهر كقائمة منزلقة فوق الصفحة
+                sidebarRight.classList.toggle('mobile-open');
+                if (sidebarRight.classList.contains('mobile-open')) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                }
             } else {
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
-                sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                // للآيباد واللابتوب: طي وإرجاع الشريط بالطريقة العادية الثابتة
+                sidebarRight.classList.toggle('hidden-sidebar');
+                if (sidebarRight.classList.contains('hidden-sidebar')) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                }
             }
         });
     </script>
