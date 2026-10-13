@@ -22,26 +22,26 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            width: 100%;
+            min-height: 100vh;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
+            overflow-x: hidden;
         }
 
-        /* القسم الأيسر: المحتوى */
+        /* القسم الأيسر: المحتوى المرتب */
         .main-content-area {
             flex: 1;
-            height: 100vh;
+            min-height: 100vh;
             padding: 4vh 4vw;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             position: relative;
             min-width: 0;
-            overflow-y: auto;
+            transition: all 0.3s ease;
         }
 
         /* الهيدر العلوي */
@@ -52,6 +52,8 @@
             align-items: flex-start;
             flex-direction: row;
             margin-top: 1vh;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         /* شريط اسم المستخدم وقائمة الصلاحية المنسدلة */
@@ -113,7 +115,7 @@
             transform: rotate(180deg);
         }
 
-        /* القائمة المنسدلة (عرض الصلاحية فقط للقراءة) */
+        /* القائمة المنسدلة (عرض الصلاحية للقراءة فقط) */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -176,17 +178,17 @@
         }
 
         .welcome-center-section h1 {
-            font-size: clamp(20px, 2.2vw, 28px);
+            font-size: clamp(18px, 2.2vw, 28px);
             font-weight: 900;
             color: #0b253a;
-            white-space: nowrap;
+            white-space: normal;
         }
 
         .welcome-center-section p {
-            font-size: clamp(10px, 1vw, 13px);
+            font-size: clamp(10px, 1.2vw, 13px);
             color: #64748b; 
             font-weight: 600;
-            white-space: nowrap;
+            white-space: normal;
         }
 
         .welcome-underline {
@@ -197,10 +199,10 @@
             margin-top: 4px;
         }
 
-        /* الشريط الجانبي ثابت وثابت مكانه في اليمين على كل الأجهزة */
+        /* الشريط الجانبي في اليمين مع خاصية الطي والإرجاع */
         .sidebar-right {
-            width: 290px; 
-            height: 100vh;
+            width: 280px; 
+            min-height: 100vh;
             background-color: #eaf4fc;
             display: flex;
             flex-direction: column;
@@ -209,13 +211,52 @@
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
             flex-shrink: 0;
             border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow-y: auto;
+            position: relative;
+            transition: transform 0.3s ease, width 0.3s ease, padding 0.3s ease;
+            z-index: 10;
+        }
+
+        /* زر السهم لإخفاء الشريط (بارز وواضح على حافة الشريط اليسرى) */
+        .sidebar-toggle-btn {
+            position: absolute;
+            top: 25px;
+            left: -19px;
+            width: 38px;
+            height: 38px;
+            background-color: #0b253a;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
+            font-size: 14px;
+            z-index: 9999;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
+        }
+
+        /* عند إغلاق الشريط الجانبي تماماً */
+        .sidebar-right.collapsed {
+            transform: translateX(100%);
+            width: 0;
+            min-width: 0;
+            padding: 0;
+            overflow: hidden;
+            border: none;
         }
 
         .sidebar-top-content {
             display: flex;
             flex-direction: column;
             align-items: center;
+            width: 100%;
         }
 
         .sidebar-logo {
@@ -226,7 +267,7 @@
         }
 
         .sidebar-logo img {
-            width: 240px; 
+            width: 200px; 
             max-width: 100%;
             height: auto;
             object-fit: contain;
@@ -316,21 +357,70 @@
             color: #dc2626 !important;
         }
 
-        /* تحسينات بسيطة للمقاسات المتوسطة لتتزامن بنعومة */
-        @media (max-width: 1200px) {
+        /* زر عائم لإرجاع الشريط عندما يتم إغلاقه */
+        .floating-open-btn {
+            position: fixed;
+            top: 25px;
+            right: 20px;
+            background-color: #0b253a;
+            color: #ffffff;
+            border: 2px solid #ffffff;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(11, 37, 58, 0.3);
+            font-size: 16px;
+            z-index: 10000;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .floating-open-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
+        }
+
+        .floating-open-btn.show {
+            display: flex;
+        }
+
+        /* التجاوب الذكي والمرن للشاشات الصغيرة والجوال والآيباد */
+        @media (max-width: 768px) {
             .sidebar-right {
-                width: 240px;
+                position: fixed;
+                right: 0;
+                top: 0;
+                height: 100vh;
+                z-index: 9998;
             }
-            .sidebar-logo img {
-                width: 200px;
+            .sidebar-right.collapsed {
+                transform: translateX(100%);
+                width: 0;
+                min-width: 0;
+            }
+            .main-content-area {
+                padding: 20px 15px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- الشريط الجانبي في اليمين (ثابت على جميع الأجهزة) -->
-    <div class="sidebar-right">
+    <!-- زر عائم لإرجاع الشريط إذا تم إغلاقه -->
+    <button class="floating-open-btn" id="floatingOpenBtn" title="إرجاع القائمة">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
+
+    <!-- الشريط الجانبي في اليمين -->
+    <div class="sidebar-right" id="sidebarRight">
+        <!-- زر السهم لإخفاء الشريط -->
+        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء القائمة">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+
         <div class="sidebar-top-content">
             <div class="sidebar-logo">
                 <img src="logo.png" alt="شعار منصة أثر">
@@ -392,7 +482,7 @@
     </div>
 
     <!-- القسم الأيسر: المحتوى -->
-    <div class="main-content-area">
+    <div class="main-content-area" id="mainContentArea">
         
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
@@ -448,7 +538,7 @@
             roleTextElement.textContent = 'مستخدم عادي';
         }
 
-        // تفاعل فتح وإغلاق القائمة المنسدلة عند الضغط على شريط المستخدم
+        // تفاعل فتح وإغلاق القائمة المنسدلة للحساب
         const userBarContainer = document.getElementById('userBarContainer');
         const userBarToggle = document.getElementById('userBarToggle');
         const userDropdownMenu = document.getElementById('userDropdownMenu');
@@ -459,11 +549,13 @@
             userBarToggle.classList.toggle('active');
         });
 
-        // إغلاق القائمة عند النقر في أي مكان خارجها
+        // إغلاق القائمة المنسدلة عند النقر في أي مكان خارجها
         window.addEventListener('click', function () {
             userDropdownMenu.classList.remove('show');
             userBarToggle.classList.remove('active');
         });
-    </script>
-</body>
-</html>
+
+        // وظيفة إخفاء وإرجاع الشريط الجانبي عبر أزرار الأسهم
+        const sidebarRight = document.getElementById('sidebarRight');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const floatingOpenBtn = document.getElementById('floatingOpenBtn');
