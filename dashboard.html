@@ -24,14 +24,14 @@
             background-attachment: fixed;
             width: 100vw;
             height: 100vh;
-            overflow: hidden; /* منع تام لأي حركة أفقية */
+            overflow: hidden;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى الثابت والمرتب */
+        /* القسم الأيسر: المحتوى الثابت */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -57,7 +57,7 @@
             gap: 20px;
         }
 
-        /* عبارة الترحيب في اليمين (بدون زر السهم الذي انتقل للشريط) */
+        /* عبارة الترحيب في اليمين */
         .welcome-center-section {
             text-align: right;
             display: flex;
@@ -94,7 +94,7 @@
             margin-top: 4px;
         }
 
-        /* شريط اسم المستخدم وقائمة الصلاحية (في أقصى اليسار) */
+        /* شريط اسم المستخدم وقائمة الصلاحية في أقصى اليسار */
         .top-user-bar-container {
             position: relative;
         }
@@ -104,7 +104,7 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.9);
             padding: 6px 16px;
             border-radius: 30px;
             box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
@@ -200,7 +200,7 @@
             font-size: 12px;
         }
 
-        /* الشريط الجانبي في اليمين (مع زر السهم المثبت على حافته اليسرى) */
+        /* الشريط الجانبي في اليمين */
         .sidebar-right {
             width: 290px; 
             height: 100vh;
@@ -213,17 +213,17 @@
             flex-shrink: 0;
             border-left: 1px solid rgba(15, 61, 89, 0.08);
             overflow-y: auto;
-            overflow-x: hidden;
+            overflow-x: visible;
             position: relative;
             transition: all 0.3s ease;
             z-index: 10;
         }
 
-        /* زر السهم المثبت على حافة الشريط الجانبي من جهة اليسار بدقة */
+        /* زر السهم تماماً في أعلى زاوية الشريط اليسرى وبارز للخارج مثل الصورة المطلوبة[cite: 11] */
         .sidebar-toggle-btn {
             position: absolute;
-            top: 25px;
-            left: 12px;
+            top: 15px;
+            left: -16px;
             width: 34px;
             height: 34px;
             background-color: #0b253a;
@@ -234,7 +234,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
+            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.3);
             font-size: 13px;
             z-index: 9999;
             transition: background-color 0.3s ease, transform 0.3s ease;
@@ -245,18 +245,17 @@
             transform: scale(1.1);
         }
 
-        /* فئة لإخفاء الشريط للآيباد واللابتوب */
+        /* عند طي الشريط، يختفي الشريط ويظل السهم بارزاً على الحافة لإرجاعه */
         .sidebar-right.hidden-sidebar {
             width: 0 !important;
             min-width: 0 !important;
             padding: 0 !important;
             border: none !important;
-            overflow: hidden !important;
+            overflow: visible !important;
         }
 
-        /* ضمان بقاء زر السهم ظاهراً وبارزاً حتى عند طي الشريط لإرجاعه بسهولة */
         .sidebar-right.hidden-sidebar .sidebar-toggle-btn {
-            left: -45px; /* يخرج للخارج قليلاً ليظل ظاهراً للمستخدم على حافة الشاشة */
+            left: -45px; 
         }
 
         .sidebar-top-content {
@@ -330,13 +329,14 @@
             color: #0b253a;
         }
 
-        /* قسم أسفل الشريط مع ضمان ظهور زر تسجيل الخروج بوضوح وثبات */
+        /* زر تسجيل الخروج مثبت بوضوح تام في أسفل القائمة على جميع الأجهزة */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
             padding-top: 12px;
             min-width: 260px;
-            margin-top: auto; /* يثبت الزر في أسفل القائمة تماماً دون اختفاء */
+            margin-top: auto !important;
+            background-color: #eaf4fc;
         }
 
         .logout-link {
@@ -345,7 +345,7 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 10px 14px;
+            padding: 12px 14px;
             color: #0b253a !important;
             text-decoration: none;
             font-size: 14px;
@@ -371,8 +371,8 @@
             color: #dc2626 !important;
         }
 
-        /* تخصيص خاص للشاشات الصغيرة (الجوال): الشريط يغطي كامل الشاشة بشكل منسق وعرض كامل */
-        @media (max-width: 768px) {
+        /* الجوال والآيباد: القائمة الجانبية متجاوبة بالكامل */
+        @media (max-width: 1024px) {
             .sidebar-right {
                 position: fixed;
                 right: 0;
@@ -391,9 +391,6 @@
                 transform: translateX(100%) !important;
                 border-left: none !important;
             }
-            .sidebar-right.hidden-sidebar .sidebar-toggle-btn {
-                left: 12px; /* إعادة وضع السهم في مكانه الطبيعي داخل الشريط للجوال */
-            }
         }
     </style>
 </head>
@@ -401,7 +398,7 @@
 
     <!-- الشريط الجانبي في اليمين -->
     <div class="sidebar-right" id="sidebarRight">
-        <!-- زر السهم المثبت على حافة الشريط الجانبي من جهة اليسار -->
+        <!-- زر السهم مطابِق تماماً للصورة في أعلى زاوية الشريط اليسرى وبارز للخارج[cite: 11] -->
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
             <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
         </button>
@@ -542,38 +539,4 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لزر السهم المستقر على حافة الشريط الجانبي
-        const sidebarRight = document.getElementById('sidebarRight');
-        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-        const toggleIcon = document.getElementById('toggleIcon');
-
-        sidebarToggleBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            if (window.innerWidth <= 768) {
-                // للجوال: إظهار/إخفاء القائمة كطبقة منسدلة فوق الشاشة
-                sidebarRight.classList.toggle('mobile-open');
-                if (sidebarRight.classList.contains('mobile-open')) {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                } else {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                }
-            } else {
-                // للآيباد واللابتوب: طي وإرجاع الشريط بثبات
-                sidebarRight.classList.toggle('hidden-sidebar');
-                if (sidebarRight.classList.contains('hidden-sidebar')) {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
-                } else {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                }
-            }
-        });
-    </script>
-</body>
-</html>
+        // البرمجة الذكية لزر السهم لفتح
