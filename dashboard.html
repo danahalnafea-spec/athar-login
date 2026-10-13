@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>منصة أثر - لوحة التحكم</title>
     <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
@@ -18,34 +18,35 @@
 
         body {
             background-image: url('bg-dashboard.png');
-            background-size: 100% 100%;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             width: 100vw;
             height: 100vh;
-            overflow: hidden;
+            overflow: hidden; /* منع التمرير الأفقي وثبات تام للشاشة */
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى */
+        /* القسم الأيسر: المحتوى الثابت والمرتب */
         .main-content-area {
             flex: 1;
             height: 100vh;
-            padding: 3vh 3vw;
+            padding: 4vh 4vw;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             position: relative;
             min-width: 0;
             overflow-y: auto;
+            overflow-x: hidden;
             transition: all 0.3s ease;
         }
 
-        /* الهيدر العلوي المتجاوب بمرونة مع الجوال */
+        /* الهيدر العلوي */
         .header-top-wrapper {
             width: 100%;
             display: flex;
@@ -53,11 +54,10 @@
             align-items: center;
             flex-direction: row;
             margin-top: 1vh;
-            gap: 15px;
-            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        /* مجموعة الترحيب وزر السهم */
+        /* مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً) */
         .welcome-group {
             display: flex;
             align-items: center;
@@ -76,7 +76,7 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.2);
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.25);
             font-size: 14px;
             transition: background-color 0.3s ease, transform 0.3s ease;
             flex-shrink: 0;
@@ -85,10 +85,10 @@
 
         .sidebar-toggle-btn:hover {
             background-color: #16344e;
-            transform: scale(1.08);
+            transform: scale(1.1);
         }
 
-        /* شريط اسم المستخدم وقائمة الصلاحية */
+        /* شريط اسم المستخدم وقائمة الصلاحية (في أقصى اليسار) */
         .top-user-bar-container {
             position: relative;
         }
@@ -99,7 +99,7 @@
             gap: 10px;
             cursor: pointer;
             background: rgba(255, 255, 255, 0.85);
-            padding: 6px 14px;
+            padding: 6px 16px;
             border-radius: 30px;
             box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
             backdrop-filter: blur(5px);
@@ -111,8 +111,8 @@
         }
 
         .user-avatar-circle {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             background-color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -124,7 +124,7 @@
         }
 
         .user-avatar-circle i {
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .user-name-dropdown {
@@ -194,13 +194,13 @@
             font-size: 12px;
         }
 
-        /* عبارة الترحيب المتكيفة */
+        /* عبارة الترحيب */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 3px;
+            gap: 4px;
         }
 
         .welcome-title-wrapper {
@@ -210,40 +210,41 @@
         }
 
         .welcome-center-section h1 {
-            font-size: clamp(16px, 2vw, 26px);
+            font-size: clamp(18px, 2.2vw, 28px);
             font-weight: 900;
             color: #0b253a;
-            white-space: normal; /* السماح بالتكيف على الجوال */
+            white-space: nowrap;
         }
 
         .welcome-center-section p {
             font-size: clamp(10px, 1vw, 13px);
             color: #64748b; 
             font-weight: 600;
-            white-space: normal; /* السماح بالتكيف على الجوال */
+            white-space: nowrap;
         }
 
         .welcome-underline {
-            width: 40px;
+            width: 45px;
             height: 3px;
             background-color: #4e9cd8;
             border-radius: 2px;
-            margin-top: 2px;
+            margin-top: 4px;
         }
 
-        /* الشريط الجانبي في اليمين */
+        /* الشريط الجانبي في اليمين مع ضمان ظهور زر الخروج دائماً */
         .sidebar-right {
-            width: 280px; 
+            width: 290px; 
             height: 100vh;
             background-color: #eaf4fc;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 15px 12px 20px 12px;
+            padding: 15px 15px 20px 15px;
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
             flex-shrink: 0;
             border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow: hidden;
+            overflow-y: auto; /* السماح بالتمرير الداخلي للشريط لو زادت العناصر لضمان ظهور زر الخروج */
+            overflow-x: hidden;
             position: relative;
             transition: all 0.3s ease;
             z-index: 10;
@@ -262,18 +263,18 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            min-width: 250px;
+            min-width: 260px;
         }
 
         .sidebar-logo {
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 8px; 
+            margin-bottom: 10px; 
         }
 
         .sidebar-logo img {
-            width: 200px; 
+            width: 210px; 
             max-width: 100%;
             height: auto;
             object-fit: contain;
@@ -284,7 +285,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 6px;
             padding: 0;
             margin: 0;
         }
@@ -300,10 +301,10 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 9px 12px;
+            padding: 10px 14px;
             color: #0b253a;
             text-decoration: none;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 600;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -321,18 +322,19 @@
         }
 
         .sidebar-menu li a i {
-            font-size: 14px;
+            font-size: 15px;
             width: 20px;
             text-align: center;
             color: #0b253a;
         }
 
-        /* قسم أسفل الشريط مع زر تسجيل الخروج */
+        /* قسم أسفل الشريط مع زر تسجيل الخروج الثابت والواضح */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 10px;
-            min-width: 250px;
+            padding-top: 12px;
+            min-width: 260px;
+            margin-top: 10px;
         }
 
         .logout-link {
@@ -341,10 +343,10 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 9px 12px;
+            padding: 10px 14px;
             color: #0b253a !important;
             text-decoration: none;
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 700;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -352,7 +354,7 @@
         }
 
         .logout-link i {
-            font-size: 14px;
+            font-size: 15px;
             color: #0b253a !important;
             width: 20px;
             text-align: center;
@@ -367,15 +369,17 @@
             color: #dc2626 !important;
         }
 
-        /* قواعد خاصة بالشاشات الصغيرة جداً (الجوال) لتجنب أي تداخل */
+        /* التجاوب الذكي للشاشات الصغيرة */
         @media (max-width: 768px) {
             .header-top-wrapper {
-                flex-direction: column-reverse;
-                align-items: flex-start;
-                gap: 12px;
+                flex-direction: row;
+                justify-content: space-between;
             }
-            .top-user-bar-container {
-                align-self: flex-end;
+            .welcome-center-section h1 {
+                font-size: 16px;
+            }
+            .welcome-center-section p {
+                font-size: 9px;
             }
         }
     </style>
@@ -450,7 +454,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- مجموعة الترحيب وزر السهم بجانبها في اليمين -->
+            <!-- مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً) -->
             <div class="welcome-group">
                 <div class="welcome-center-section">
                     <div class="welcome-title-wrapper">
@@ -525,7 +529,7 @@
             userBarToggle.classList.remove('active');
         });
 
-        // تفعيل زر السهم لطي أو إظهار الشريط الجانبي تماماً
+        // البرمجة الفعالة لزر السهم لطي أو إظهار الشريط الجانبي تماماً
         const sidebarRight = document.getElementById('sidebarRight');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
