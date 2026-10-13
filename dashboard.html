@@ -58,16 +58,16 @@
             gap: 20px;
         }
 
-        /* مجموعة الترحيب وزر السهم الثابت تماماً بجانبها */
+        /* مجموعة الترحيب وزر السهم التي تتحرك بسلاسة عند فتح وإغلاق الشريط */
         .welcome-container-group {
             display: flex;
             align-items: center;
             gap: 15px;
             transition: transform 0.3s ease;
-            transform: translateX(0);
+            transform: translateX(0); /* تتحرك بسلاسة تامة مع الشريط */
         }
 
-        /* زر السهم الثابت في مكانه العلوي الأيمن إلى الأبد دون أن يتغير موضعه أبداً */
+        /* زر السهم */
         .header-toggle-btn {
             width: 36px;
             height: 36px;
@@ -465,7 +465,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- مجموعة الترحيب وزر السهم الثابت في مكانه دائمًا -->
+            <!-- مجموعة الترحيب وزر السهم التي تتحرك معاً بانسيابية تامة -->
             <div class="welcome-container-group" id="welcomeContainerGroup">
                 <button class="header-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
                     <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
@@ -540,7 +540,7 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لتبديل شكل اتجاه السهم والتحكم بالشريط دون تغيير مكان الزر نهائياً
+        // البرمجة الذكية لحركة مجموعة الترحيب وزر السهم والشريط معاً
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -563,13 +563,13 @@
             } else {
                 sidebarWrapper.classList.toggle('collapsed');
                 if (sidebarWrapper.classList.contains('collapsed')) {
-                    // الشريط مغلق: يبقى الزر في مكانه، ويتغير السهم لليمين، وتتحرك عبارة الترحيب لليسار لتملأ الفراغ
+                    // الشريط مغلق: يتحرك زر السهم ومجموعة الترحيب بسلاسة لملء المساحة وتغيير اتجاه السهم
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
                     welcomeContainerGroup.style.transform = 'translateX(-280px)';
                 } else {
-                    // الشريط مفتوح: يبقى الزر في مكانه، ويتغير السهم لليسار، وتعود عبارة الترحيب لمكانها الطبيعي
+                    // الشريط مفتوح: تعود مجموعة الترحيب وزر السهم لمكانهما الأصلي مع تغيير اتجاه السهم
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
