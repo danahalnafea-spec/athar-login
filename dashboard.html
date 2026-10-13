@@ -31,11 +31,11 @@
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى */
+        /* القسم الأيسر: المحتوى المتجاوب تلقائياً مع كافة الشاشات */
         .main-content-area {
             flex: 1;
             height: 100vh;
-            padding: 4vh 5vw;
+            padding: 3vh 3vw;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -50,23 +50,24 @@
             width: 100%;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             flex-direction: row;
             margin-top: 1vh;
-            gap: 20px;
+            gap: 15px;
+            flex-wrap: wrap; /* يتكيف تلقائياً لو ضاقت الشاشة */
         }
 
-        /* حاوية تجمع عبارة الترحيب وزر السهم بجانبها من جهة اليسار (بين الترحيب والشريط) */
-        .welcome-with-toggle {
+        /* مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً) */
+        .welcome-group {
             display: flex;
             align-items: center;
-            gap: 15px;
-            flex-direction: row; /* الترتيب الطبيعي: الترحيب يمين والسهم يساره */
+            gap: 12px;
+            flex-direction: row;
         }
 
         .sidebar-toggle-btn {
-            width: 38px;
-            height: 38px;
+            width: 36px;
+            height: 36px;
             background-color: #0b253a;
             color: #ffffff;
             border: none;
@@ -76,7 +77,7 @@
             align-items: center;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(11, 37, 58, 0.25);
-            font-size: 14px;
+            font-size: 13px;
             transition: background-color 0.3s ease, transform 0.3s ease;
             flex-shrink: 0;
             z-index: 999;
@@ -87,10 +88,9 @@
             transform: scale(1.1);
         }
 
-        /* شريط اسم المستخدم وقائمة الصلاحية في أقصى اليسار */
+        /* شريط اسم المستخدم وقائمة الصلاحية (في اليسار) */
         .top-user-bar-container {
             position: relative;
-            margin-left: 10px;
         }
 
         .top-user-bar {
@@ -99,7 +99,7 @@
             gap: 10px;
             cursor: pointer;
             background: rgba(255, 255, 255, 0.85);
-            padding: 6px 16px;
+            padding: 6px 14px;
             border-radius: 30px;
             box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
             backdrop-filter: blur(5px);
@@ -111,8 +111,8 @@
         }
 
         .user-avatar-circle {
-            width: 36px;
-            height: 36px;
+            width: 34px;
+            height: 34px;
             background-color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -124,7 +124,7 @@
         }
 
         .user-avatar-circle i {
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .user-name-dropdown {
@@ -194,13 +194,13 @@
             font-size: 12px;
         }
 
-        /* عبارة الترحيب */
+        /* عبارة الترحيب المتكيفة مع أحجام الشاشات باستخدام clamp */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
-            gap: 4px;
+            gap: 3px;
         }
 
         .welcome-title-wrapper {
@@ -210,36 +210,36 @@
         }
 
         .welcome-center-section h1 {
-            font-size: clamp(20px, 2.2vw, 28px);
+            font-size: clamp(18px, 2vw, 26px);
             font-weight: 900;
             color: #0b253a;
             white-space: nowrap;
         }
 
         .welcome-center-section p {
-            font-size: clamp(10px, 1vw, 13px);
+            font-size: clamp(10px, 0.9vw, 13px);
             color: #64748b; 
             font-weight: 600;
             white-space: nowrap;
         }
 
         .welcome-underline {
-            width: 45px;
+            width: 40px;
             height: 3px;
             background-color: #4e9cd8;
             border-radius: 2px;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        /* الشريط الجانبي في اليمين */
+        /* الشريط الجانبي في اليمين (مرتب وبحجم ديناميكي دقيق) */
         .sidebar-right {
-            width: 290px; 
+            width: 270px; 
             height: 100vh;
             background-color: #eaf4fc;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            padding: 10px 15px 20px 15px;
+            padding: 15px 12px 20px 12px;
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
             flex-shrink: 0;
             border-left: 1px solid rgba(15, 61, 89, 0.08);
@@ -249,7 +249,7 @@
             z-index: 10;
         }
 
-        /* فئة لإخفاء محتويات الشريط تماماً عند الطي */
+        /* فئة إخفاء الشريط تماماً عند الضغط على السهم */
         .sidebar-right.hidden-sidebar {
             width: 0 !important;
             min-width: 0 !important;
@@ -262,18 +262,18 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            min-width: 260px;
+            min-width: 240px;
         }
 
         .sidebar-logo {
             width: 100%;
             display: flex;
             justify-content: center;
-            margin-bottom: 5px; 
+            margin-bottom: 8px; 
         }
 
         .sidebar-logo img {
-            width: 220px; 
+            width: 190px; 
             max-width: 100%;
             height: auto;
             object-fit: contain;
@@ -300,10 +300,10 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 9px 14px;
+            padding: 9px 12px;
             color: #0b253a;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 600;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -321,17 +321,18 @@
         }
 
         .sidebar-menu li a i {
-            font-size: 15px;
+            font-size: 14px;
             width: 20px;
             text-align: center;
             color: #0b253a;
         }
 
+        /* قسم أسفل الشريط مع زر تسجيل الخروج الواضح والمرتب */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 8px;
-            min-width: 260px;
+            padding-top: 10px;
+            min-width: 240px;
         }
 
         .logout-link {
@@ -340,18 +341,18 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 9px 14px;
+            padding: 9px 12px;
             color: #0b253a !important;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 13.5px;
+            font-weight: 700;
             border-radius: 10px;
             transition: all 0.3s ease;
             white-space: nowrap;
         }
 
         .logout-link i {
-            font-size: 15px;
+            font-size: 14px;
             color: #0b253a !important;
             width: 20px;
             text-align: center;
@@ -364,6 +365,21 @@
 
         .logout-link:hover i {
             color: #dc2626 !important;
+        }
+
+        /* تحسينات إضافية للتجاوب الدقيق على شاشات الأجهزة الذكية والأيباد */
+        @media (max-width: 768px) {
+            .main-content-area {
+                padding: 20px 15px;
+            }
+            .header-top-wrapper {
+                flex-direction: column-reverse;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            .top-user-bar-container {
+                align-self: flex-end;
+            }
         }
     </style>
 </head>
@@ -437,8 +453,11 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب في اليمين، وبجانبها زر السهم من جهة اليسار (بين الترحيب والشريط) -->
-            <div class="welcome-with-toggle">
+            <!-- مجموعة الترحيب وزر السهم (في اليمين بجانب الشريط تماماً) -->
+            <div class="welcome-group">
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+                    <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+                </button>
                 <div class="welcome-center-section">
                     <div class="welcome-title-wrapper">
                         <h1>مرحباً بك في أثر</h1>
@@ -446,9 +465,6 @@
                     <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
                     <div class="welcome-underline"></div>
                 </div>
-                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
-                    <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
-                </button>
             </div>
 
             <!-- شريط اسم المستخدم في أقصى اليسار -->
@@ -523,12 +539,12 @@
             
             // عكس اتجاه السهم بذكاء عند الطي أو الإرجاع
             if (sidebarRight.classList.contains('hidden-sidebar')) {
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
-                sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
-            } else {
                 toggleIcon.classList.remove('fa-chevron-right');
                 toggleIcon.classList.add('fa-chevron-left');
+                sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
                 sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
             }
         });
