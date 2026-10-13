@@ -35,7 +35,7 @@
         .main-content-area {
             flex: 1;
             height: 100vh;
-            padding: 4vh 5vw; /* هوامش متناسقة ومرتبة للـصفحة */
+            padding: 4vh 5vw;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -56,12 +56,12 @@
             gap: 20px;
         }
 
-        /* حاوية تجمع عبارة الترحيب وزر السهم بجانبها بمسافة أنيقة */
+        /* حاوية تجمع عبارة الترحيب وزر السهم بجانبها من جهة اليسار (بين الترحيب والشريط) */
         .welcome-with-toggle {
             display: flex;
             align-items: center;
             gap: 15px;
-            flex-direction: row-reverse;
+            flex-direction: row; /* الترتيب الطبيعي: الترحيب يمين والسهم يساره */
         }
 
         .sidebar-toggle-btn {
@@ -87,10 +87,10 @@
             transform: scale(1.1);
         }
 
-        /* شريط اسم المستخدم وقائمة الصلاحية (بمكان مرتب وغير ملتصق تماماً بالحافة) */
+        /* شريط اسم المستخدم وقائمة الصلاحية في أقصى اليسار */
         .top-user-bar-container {
             position: relative;
-            margin-left: 10px; /* مسافة مرتبة من أطرف الشاشة اليسرى */
+            margin-left: 10px;
         }
 
         .top-user-bar {
@@ -437,7 +437,21 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- شريط اسم المستخدم في جهة اليسار بشكل أنيق -->
+            <!-- عبارة الترحيب في اليمين، وبجانبها زر السهم من جهة اليسار (بين الترحيب والشريط) -->
+            <div class="welcome-with-toggle">
+                <div class="welcome-center-section">
+                    <div class="welcome-title-wrapper">
+                        <h1>مرحباً بك في أثر</h1>
+                    </div>
+                    <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
+                    <div class="welcome-underline"></div>
+                </div>
+                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+                    <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
+                </button>
+            </div>
+
+            <!-- شريط اسم المستخدم في أقصى اليسار -->
             <div class="top-user-bar-container" id="userBarContainer">
                 <div class="top-user-bar" id="userBarToggle">
                     <div class="user-avatar-circle">
@@ -456,20 +470,6 @@
                         <span id="displayUserRoleText">مستخدم</span>
                         <i class="fa-solid fa-lock"></i>
                     </div>
-                </div>
-            </div>
-
-            <!-- عبارة الترحيب وزر السهم بجانبها في جهة اليمين وبمكان مرتب -->
-            <div class="welcome-with-toggle">
-                <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
-                    <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
-                </button>
-                <div class="welcome-center-section">
-                    <div class="welcome-title-wrapper">
-                        <h1>مرحباً بك في أثر</h1>
-                    </div>
-                    <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
-                    <div class="welcome-underline"></div>
                 </div>
             </div>
 
