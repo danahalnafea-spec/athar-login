@@ -17,11 +17,11 @@
         }
 
         body {
+            background-color: #f0f7ff;
             background-image: url('bg-dashboard.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
@@ -31,7 +31,7 @@
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى الثابت والمرتب */
+        /* القسم الأيسر: المحتوى الثابت (يتحرك بمرونة عند إغلاق الشريط لتاخذ عبارة الترحيب مساحتها) */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -43,7 +43,7 @@
             min-width: 0;
             overflow-y: auto;
             overflow-x: hidden;
-            transition: all 0.3s ease;
+            transition: padding-right 0.3s ease;
         }
 
         /* الهيدر العلوي */
@@ -54,40 +54,18 @@
             align-items: center;
             flex-direction: row;
             margin-top: 1vh;
-            gap: 15px;
+            gap: 20px;
+            transition: all 0.3s ease;
         }
 
-        /* زر القائمة الخاص بالجوال والآيباد (يظهر فقط على الشاشات الصغيرة ليفتح الشريط) */
-        .mobile-menu-trigger-btn {
-            display: none;
-            width: 40px;
-            height: 40px;
-            background-color: #0b253a;
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            cursor: pointer;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.25);
-            z-index: 999;
-            flex-shrink: 0;
-        }
-
-        /* مجموعة الترحيب */
-        .welcome-group {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
+        /* عبارة الترحيب في اليمين (تتحرك بسلاسة لتأخذ مساحة أوسع عند إغلاق القائمة) */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 4px;
+            transition: all 0.3s ease;
         }
 
         .welcome-title-wrapper {
@@ -97,14 +75,14 @@
         }
 
         .welcome-center-section h1 {
-            font-size: clamp(16px, 2.2vw, 28px);
+            font-size: clamp(18px, 2.2vw, 28px);
             font-weight: 900;
             color: #0b253a;
             white-space: nowrap;
         }
 
         .welcome-center-section p {
-            font-size: clamp(9px, 1vw, 13px);
+            font-size: clamp(10px, 1vw, 13px);
             color: #64748b; 
             font-weight: 600;
             white-space: nowrap;
@@ -224,32 +202,23 @@
             font-size: 12px;
         }
 
-        /* الشريط الجانبي في اليمين (لللابتوب) */
-        .sidebar-right {
-            width: 290px; 
-            height: 100vh;
-            background-color: #eaf4fc;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 15px 15px 20px 15px;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
-            flex-shrink: 0;
-            border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow-y: auto;
-            overflow-x: visible;
+        /* حاوية الشريط وزر السهم (تتحرك ككتلة واحدة يميناً ويساراً) */
+        .sidebar-wrapper {
             position: relative;
-            transition: all 0.3s ease;
-            z-index: 10;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
         }
 
-        /* زر السهم للابتوب في زاوية الشريط اليسرى */
-        .sidebar-toggle-btn {
+        /* زر السهم الخارجي المرتبط بالشريط تماماً */
+        .sidebar-external-toggle-btn {
             position: absolute;
-            top: 15px;
-            left: -16px;
-            width: 34px;
-            height: 34px;
+            top: 25px;
+            right: -18px;
+            width: 36px;
+            height: 36px;
             background-color: #0b253a;
             color: #ffffff;
             border: none;
@@ -258,28 +227,35 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.3);
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
             font-size: 13px;
             z-index: 9999;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
-        .sidebar-toggle-btn:hover {
+        .sidebar-external-toggle-btn:hover {
             background-color: #16344e;
             transform: scale(1.1);
         }
 
-        /* طي الشريط لللابتوب */
-        .sidebar-right.hidden-sidebar {
-            width: 0 !important;
-            min-width: 0 !important;
-            padding: 0 !important;
-            border: none !important;
-            overflow: hidden !important;
+        /* الشريط الجانبي في اليمين */
+        .sidebar-right {
+            width: 280px; 
+            height: 100vh;
+            background-color: #eaf4fc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px 12px 20px 12px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        .sidebar-right.hidden-sidebar .sidebar-toggle-btn {
-            left: -45px; 
+        /* عندما يُطوى الشريط، يذهب للخارج ويترك مساحة الشاشة كاملة لعبارة الترحيب */
+        .sidebar-wrapper.collapsed {
+            transform: translateX(298px);
         }
 
         .sidebar-top-content {
@@ -287,7 +263,7 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            min-width: 260px;
+            min-width: 256px;
         }
 
         .sidebar-logo {
@@ -299,7 +275,7 @@
         }
 
         .sidebar-logo img {
-            width: 210px; 
+            width: 195px; 
             max-width: 100%;
             height: auto;
             object-fit: contain;
@@ -326,10 +302,10 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 10px 14px;
+            padding: 10px 12px;
             color: #0b253a;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 600;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -347,18 +323,18 @@
         }
 
         .sidebar-menu li a i {
-            font-size: 15px;
+            font-size: 14px;
             width: 20px;
             text-align: center;
             color: #0b253a;
         }
 
-        /* زر تسجيل الخروج مثبت في الأسفل تماماً بوضوح تام */
+        /* زر تسجيل الخروج مثبت بوضوح تام وثبات في أسفل القائمة */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
             padding-top: 12px;
-            min-width: 260px;
+            min-width: 256px;
             margin-top: auto !important;
             background-color: #eaf4fc;
         }
@@ -369,10 +345,10 @@
             justify-content: flex-end;
             flex-direction: row-reverse;
             gap: 12px;
-            padding: 12px 14px;
+            padding: 11px 12px;
             color: #0b253a !important;
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 700;
             border-radius: 10px;
             transition: all 0.3s ease;
@@ -380,7 +356,7 @@
         }
 
         .logout-link i {
-            font-size: 15px;
+            font-size: 14px;
             color: #0b253a !important;
             width: 20px;
             text-align: center;
@@ -395,41 +371,17 @@
             color: #dc2626 !important;
         }
 
-        /* خلفية شفافة تحجب الشاشة عند فتح الشريط في الجوال */
-        .sidebar-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.3);
-            z-index: 998;
-        }
-        .sidebar-overlay.active {
-            display: block;
-        }
-
-        /* التجاوب التام والذكي مع الجوال والآيباد */
+        /* التجاوب الذكي للشاشات الصغيرة */
         @media (max-width: 1024px) {
-            .mobile-menu-trigger-btn {
-                display: flex; /* إظهار زر القائمة في الهيدر للجوال والآيباد */
-            }
-            .sidebar-toggle-btn {
-                display: none; /* إخفاء سهم اللابتوب الداخلي واستبداله بزر الهيدر العلوي */
-            }
-            .sidebar-right {
+            .sidebar-wrapper {
                 position: fixed;
                 right: 0;
                 top: 0;
-                width: 280px !important;
-                height: 100vh;
                 z-index: 9999;
-                transform: translateX(100%);
-                box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+                transform: translateX(298px);
                 transition: transform 0.3s ease;
             }
-            .sidebar-right.mobile-open {
+            .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
         }
@@ -437,73 +389,72 @@
 </head>
 <body>
 
-    <!-- طبقة التظليل عند فتح القائمة بالجوال -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- الشريط الجانبي في اليمين -->
-    <div class="sidebar-right" id="sidebarRight">
-        <!-- زر السهم لللابتوب -->
-        <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+    <!-- حاوية الشريط وزر السهم -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <!-- زر السهم الخارجي -->
+        <button class="sidebar-external-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
             <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
         </button>
 
-        <div class="sidebar-top-content">
-            <div class="sidebar-logo">
-                <img src="logo.png" alt="شعار منصة أثر">
+        <div class="sidebar-right" id="sidebarRight">
+            <div class="sidebar-top-content">
+                <div class="sidebar-logo">
+                    <img src="logo.png" alt="شعار منصة أثر">
+                </div>
+
+                <ul class="sidebar-menu">
+                    <li class="active">
+                        <a href="dashboard.html">
+                            <span>الرئيسية</span>
+                            <i class="fa-solid fa-house"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>المبادرات</span>
+                            <i class="fa-solid fa-folder-open"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>المؤشرات</span>
+                            <i class="fa-solid fa-chart-line"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>البيانات</span>
+                            <i class="fa-solid fa-database"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>التقارير</span>
+                            <i class="fa-solid fa-file-lines"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span>المستفيدون</span>
+                            <i class="fa-solid fa-users"></i>
+                        </a>
+                    </li>
+                    <!-- إعدادات النظام للمشرف -->
+                    <li id="adminSettingsMenu" style="display: none;">
+                        <a href="#">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <ul class="sidebar-menu">
-                <li class="active">
-                    <a href="dashboard.html">
-                        <span>الرئيسية</span>
-                        <i class="fa-solid fa-house"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>المبادرات</span>
-                        <i class="fa-solid fa-folder-open"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>المؤشرات</span>
-                        <i class="fa-solid fa-chart-line"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>البيانات</span>
-                        <i class="fa-solid fa-database"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>التقارير</span>
-                        <i class="fa-solid fa-file-lines"></i>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span>المستفيدون</span>
-                        <i class="fa-solid fa-users"></i>
-                    </a>
-                </li>
-                <!-- إعدادات النظام للمشرف -->
-                <li id="adminSettingsMenu" style="display: none;">
-                    <a href="#">
-                        <span>إعدادات النظام</span>
-                        <i class="fa-solid fa-gear"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-        <div class="sidebar-bottom-content">
-            <a href="index.html" class="logout-link">
-                <span>تسجيل الخروج</span>
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </a>
+            <div class="sidebar-bottom-content">
+                <a href="index.html" class="logout-link">
+                    <span>تسجيل الخروج</span>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -513,20 +464,13 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- مجموعة الترحيب وزر القائمة للجوال والآيباد -->
-            <div class="welcome-group">
-                <!-- زر فتح القائمة للجوال والآيباد -->
-                <button class="mobile-menu-trigger-btn" id="mobileMenuTriggerBtn" title="قائمة التنقل">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                
-                <div class="welcome-center-section">
-                    <div class="welcome-title-wrapper">
-                        <h1>مرحباً بك في أثر</h1>
-                    </div>
-                    <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
-                    <div class="welcome-underline"></div>
+            <!-- عبارة الترحيب في اليمين (تأخذ مساحتها الكاملة بمرونة عند غلق الشريط) -->
+            <div class="welcome-center-section" id="welcomeSection">
+                <div class="welcome-title-wrapper">
+                    <h1>مرحباً بك في أثر</h1>
                 </div>
+                <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
+                <div class="welcome-underline"></div>
             </div>
 
             <!-- شريط اسم المستخدم في أقصى اليسار -->
@@ -590,39 +534,40 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لفتح وإغلاق الشريط (تتكيف تلقائياً بين اللابتوب والجوال/الآيباد)
-        const sidebarRight = document.getElementById('sidebarRight');
+        // البرمجة الذكية لفتح وإغلاق الشريط مع حركة عبارة الترحيب بسلاسة تامة
+        const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-        const mobileMenuTriggerBtn = document.getElementById('mobileMenuTriggerBtn');
-        const sidebarOverlay = document.getElementById('sidebarOverlay');
         const toggleIcon = document.getElementById('toggleIcon');
+        const welcomeSection = document.getElementById('welcomeSection');
 
-        // للابتوب: زر السهم الداخلي
         sidebarToggleBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            sidebarRight.classList.toggle('hidden-sidebar');
-            if (sidebarRight.classList.contains('hidden-sidebar')) {
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
-                sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+            
+            if (window.innerWidth <= 1024) {
+                sidebarWrapper.classList.toggle('mobile-open');
+                if (sidebarWrapper.classList.contains('mobile-open')) {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                }
             } else {
-                toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
-                sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                sidebarWrapper.classList.toggle('collapsed');
+                if (sidebarWrapper.classList.contains('collapsed')) {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+                    // تحريك عبارة الترحيب لليسار قليلاً بسلاسة لتأخذ مساحتها عند اختفاء الشريط
+                    welcomeSection.style.transform = 'translateX(-40px)';
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    // إعادة عبارة الترحيب لمكانها الطبيعي عند ظهور الشريط
+                    welcomeSection.style.transform = 'translateX(0)';
+                }
             }
-        });
-
-        // للجوال والآيباد: زر الهيدر (الهمبرغر)
-        mobileMenuTriggerBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            sidebarRight.classList.toggle('mobile-open');
-            sidebarOverlay.classList.toggle('active');
-        });
-
-        // إغلاق القائمة عند الضغط على الخلفية المظللة في الجوال
-        sidebarOverlay.addEventListener('click', function() {
-            sidebarRight.classList.remove('mobile-open');
-            sidebarOverlay.classList.remove('active');
         });
     </script>
 </body>
