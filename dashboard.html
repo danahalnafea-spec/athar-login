@@ -31,7 +31,7 @@
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى الثابت */
+        /* القسم الأيسر: المحتوى الثابت والمرتب */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -54,10 +54,34 @@
             align-items: center;
             flex-direction: row;
             margin-top: 1vh;
-            gap: 20px;
+            gap: 15px;
         }
 
-        /* عبارة الترحيب في اليمين */
+        /* زر القائمة الخاص بالجوال والآيباد (يظهر فقط على الشاشات الصغيرة ليفتح الشريط) */
+        .mobile-menu-trigger-btn {
+            display: none;
+            width: 40px;
+            height: 40px;
+            background-color: #0b253a;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.25);
+            z-index: 999;
+            flex-shrink: 0;
+        }
+
+        /* مجموعة الترحيب */
+        .welcome-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
         .welcome-center-section {
             text-align: right;
             display: flex;
@@ -73,14 +97,14 @@
         }
 
         .welcome-center-section h1 {
-            font-size: clamp(18px, 2.2vw, 28px);
+            font-size: clamp(16px, 2.2vw, 28px);
             font-weight: 900;
             color: #0b253a;
             white-space: nowrap;
         }
 
         .welcome-center-section p {
-            font-size: clamp(10px, 1vw, 13px);
+            font-size: clamp(9px, 1vw, 13px);
             color: #64748b; 
             font-weight: 600;
             white-space: nowrap;
@@ -200,7 +224,7 @@
             font-size: 12px;
         }
 
-        /* الشريط الجانبي في اليمين */
+        /* الشريط الجانبي في اليمين (لللابتوب) */
         .sidebar-right {
             width: 290px; 
             height: 100vh;
@@ -219,7 +243,7 @@
             z-index: 10;
         }
 
-        /* زر السهم تماماً في أعلى زاوية الشريط اليسرى وبارز للخارج مثل الصورة المطلوبة[cite: 11] */
+        /* زر السهم للابتوب في زاوية الشريط اليسرى */
         .sidebar-toggle-btn {
             position: absolute;
             top: 15px;
@@ -245,13 +269,13 @@
             transform: scale(1.1);
         }
 
-        /* عند طي الشريط، يختفي الشريط ويظل السهم بارزاً على الحافة لإرجاعه */
+        /* طي الشريط لللابتوب */
         .sidebar-right.hidden-sidebar {
             width: 0 !important;
             min-width: 0 !important;
             padding: 0 !important;
             border: none !important;
-            overflow: visible !important;
+            overflow: hidden !important;
         }
 
         .sidebar-right.hidden-sidebar .sidebar-toggle-btn {
@@ -329,7 +353,7 @@
             color: #0b253a;
         }
 
-        /* زر تسجيل الخروج مثبت بوضوح تام في أسفل القائمة على جميع الأجهزة */
+        /* زر تسجيل الخروج مثبت في الأسفل تماماً بوضوح تام */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
@@ -371,8 +395,29 @@
             color: #dc2626 !important;
         }
 
-        /* الجوال والآيباد: القائمة الجانبية متجاوبة بالكامل */
+        /* خلفية شفافة تحجب الشاشة عند فتح الشريط في الجوال */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 998;
+        }
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* التجاوب التام والذكي مع الجوال والآيباد */
         @media (max-width: 1024px) {
+            .mobile-menu-trigger-btn {
+                display: flex; /* إظهار زر القائمة في الهيدر للجوال والآيباد */
+            }
+            .sidebar-toggle-btn {
+                display: none; /* إخفاء سهم اللابتوب الداخلي واستبداله بزر الهيدر العلوي */
+            }
             .sidebar-right {
                 position: fixed;
                 right: 0;
@@ -382,23 +427,22 @@
                 z-index: 9999;
                 transform: translateX(100%);
                 box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+                transition: transform 0.3s ease;
             }
             .sidebar-right.mobile-open {
                 transform: translateX(0);
-            }
-            .sidebar-right.hidden-sidebar {
-                width: 280px !important;
-                transform: translateX(100%) !important;
-                border-left: none !important;
             }
         }
     </style>
 </head>
 <body>
 
+    <!-- طبقة التظليل عند فتح القائمة بالجوال -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- الشريط الجانبي في اليمين -->
     <div class="sidebar-right" id="sidebarRight">
-        <!-- زر السهم مطابِق تماماً للصورة في أعلى زاوية الشريط اليسرى وبارز للخارج[cite: 11] -->
+        <!-- زر السهم لللابتوب -->
         <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
             <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
         </button>
@@ -469,13 +513,20 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب في اليمين -->
-            <div class="welcome-center-section">
-                <div class="welcome-title-wrapper">
-                    <h1>مرحباً بك في أثر</h1>
+            <!-- مجموعة الترحيب وزر القائمة للجوال والآيباد -->
+            <div class="welcome-group">
+                <!-- زر فتح القائمة للجوال والآيباد -->
+                <button class="mobile-menu-trigger-btn" id="mobileMenuTriggerBtn" title="قائمة التنقل">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
+                <div class="welcome-center-section">
+                    <div class="welcome-title-wrapper">
+                        <h1>مرحباً بك في أثر</h1>
+                    </div>
+                    <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
+                    <div class="welcome-underline"></div>
                 </div>
-                <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
-                <div class="welcome-underline"></div>
             </div>
 
             <!-- شريط اسم المستخدم في أقصى اليسار -->
@@ -539,4 +590,40 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لزر السهم لفتح
+        // البرمجة الذكية لفتح وإغلاق الشريط (تتكيف تلقائياً بين اللابتوب والجوال/الآيباد)
+        const sidebarRight = document.getElementById('sidebarRight');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const mobileMenuTriggerBtn = document.getElementById('mobileMenuTriggerBtn');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const toggleIcon = document.getElementById('toggleIcon');
+
+        // للابتوب: زر السهم الداخلي
+        sidebarToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebarRight.classList.toggle('hidden-sidebar');
+            if (sidebarRight.classList.contains('hidden-sidebar')) {
+                toggleIcon.classList.remove('fa-chevron-left');
+                toggleIcon.classList.add('fa-chevron-right');
+                sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+            } else {
+                toggleIcon.classList.remove('fa-chevron-right');
+                toggleIcon.classList.add('fa-chevron-left');
+                sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+            }
+        });
+
+        // للجوال والآيباد: زر الهيدر (الهمبرغر)
+        mobileMenuTriggerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebarRight.classList.toggle('mobile-open');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        // إغلاق القائمة عند الضغط على الخلفية المظللة في الجوال
+        sidebarOverlay.addEventListener('click', function() {
+            sidebarRight.classList.remove('mobile-open');
+            sidebarOverlay.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
