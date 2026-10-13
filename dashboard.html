@@ -35,7 +35,7 @@
         .main-content-area {
             flex: 1;
             height: 100vh;
-            padding: 4vh 4vw;
+            padding: 4vh 5vw; /* هوامش متناسقة ومرتبة للـصفحة */
             display: flex;
             flex-direction: column;
             align-items: flex-start;
@@ -56,12 +56,12 @@
             gap: 20px;
         }
 
-        /* حاوية تجمع عبارة الترحيب وزر السهم بجانبها من جهة اليمين */
+        /* حاوية تجمع عبارة الترحيب وزر السهم بجانبها بمسافة أنيقة */
         .welcome-with-toggle {
             display: flex;
             align-items: center;
             gap: 15px;
-            flex-direction: row-reverse; /* يجعل السهم على يمين الترحيب باتجاه الشريط */
+            flex-direction: row-reverse;
         }
 
         .sidebar-toggle-btn {
@@ -87,9 +87,10 @@
             transform: scale(1.1);
         }
 
-        /* شريط اسم المستخدم وقائمة الصلاحية المنسدلة */
+        /* شريط اسم المستخدم وقائمة الصلاحية (بمكان مرتب وغير ملتصق تماماً بالحافة) */
         .top-user-bar-container {
             position: relative;
+            margin-left: 10px; /* مسافة مرتبة من أطرف الشاشة اليسرى */
         }
 
         .top-user-bar {
@@ -97,16 +98,16 @@
             align-items: center;
             gap: 10px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.7);
-            padding: 6px 14px;
+            background: rgba(255, 255, 255, 0.85);
+            padding: 6px 16px;
             border-radius: 30px;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.05);
+            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
             backdrop-filter: blur(5px);
             transition: all 0.3s ease;
         }
 
         .top-user-bar:hover {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 1);
         }
 
         .user-avatar-circle {
@@ -436,7 +437,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- شريط المستخدم يميناً -->
+            <!-- شريط اسم المستخدم في جهة اليسار بشكل أنيق -->
             <div class="top-user-bar-container" id="userBarContainer">
                 <div class="top-user-bar" id="userBarToggle">
                     <div class="user-avatar-circle">
@@ -458,7 +459,7 @@
                 </div>
             </div>
 
-            <!-- عبارة الترحيب وبجانبها زر السهم مباشرة من جهة اليمين -->
+            <!-- عبارة الترحيب وزر السهم بجانبها في جهة اليمين وبمكان مرتب -->
             <div class="welcome-with-toggle">
                 <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
                     <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
