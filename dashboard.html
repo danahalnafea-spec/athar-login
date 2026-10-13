@@ -58,7 +58,7 @@
             gap: 20px;
         }
 
-        /* عبارة الترحيب في اليمين (تتحرك بمرونة عند فتح/إغلاق القائمة) */
+        /* عبارة الترحيب في اليمين (تتحرك بمرونة يميناً ويساراً مع فتح وإغلاق الشريط) */
         .welcome-center-section {
             text-align: right;
             display: flex;
@@ -203,22 +203,11 @@
             font-size: 12px;
         }
 
-        /* حاوية الشريط وزر السهم (تتحرك معاً ككتلة واحدة في اليمين فقط) */
-        .sidebar-wrapper {
-            position: relative;
-            display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            height: 100vh;
-            transition: transform 0.3s ease;
-            z-index: 999;
-        }
-
-        /* زر السهم مستقر وثابت دائماً على حافة الشريط الأيمن */
+        /* زر السهم الثابت تماماً في أقصى الزاوية اليمنى العليا (بجانب عبارة الترحيب) في جميع الحالات */
         .sidebar-external-toggle-btn {
-            position: absolute;
-            top: 25px;
-            right: -18px;
+            position: fixed;
+            top: 22px;
+            right: 25px;
             width: 36px;
             height: 36px;
             background-color: #0b253a;
@@ -231,13 +220,30 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
             font-size: 13px;
-            z-index: 1000;
+            z-index: 10000;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
         .sidebar-external-toggle-btn:hover {
             background-color: #16344e;
             transform: scale(1.1);
+        }
+
+        /* حاوية الشريط الجانبي */
+        .sidebar-wrapper {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            height: 100vh;
+            transition: transform 0.3s ease;
+            z-index: 999;
+            transform: translateX(0); /* الافتراضي: الشريط مفتوح */
+        }
+
+        /* عند طي الشريط، ينسحب لليمين ليختفي تماماً بينما يبقى زر السهم في مكانه الثابت بالأعلى */
+        .sidebar-wrapper.collapsed {
+            transform: translateX(280px);
         }
 
         /* الشريط الجانبي في اليمين */
@@ -253,11 +259,6 @@
             border-left: 1px solid rgba(15, 61, 89, 0.08);
             overflow-y: auto;
             overflow-x: hidden;
-        }
-
-        /* عند طي الشريط، ينسحب بالكامل ومعه زر السهم لليمين تماماً دون الذهاب لليسار */
-        .sidebar-wrapper.collapsed {
-            transform: translateX(280px);
         }
 
         .sidebar-top-content {
@@ -373,7 +374,7 @@
             color: #dc2626 !important;
         }
 
-        /* التجاوب الذكي للجوال والآيباد ليعمل الشريط وزر السهم بكفاءة تامة */
+        /* التجاوب الذكي للشاشات الصغيرة والجوالات */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
                 position: fixed;
@@ -385,23 +386,18 @@
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
-            /* زر السهم يبرز بثبات على الشاشة الصغيرة لفتح الشريط بسهولة */
-            .sidebar-external-toggle-btn {
-                right: -36px;
-                background-color: #0b253a;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- حاوية الشريط وزر السهم -->
-    <div class="sidebar-wrapper collapsed" id="sidebarWrapper">
-        <!-- زر السهم -->
-        <button class="sidebar-external-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
-            <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
-        </button>
+    <!-- زر السهم الثابت في أعلى أقصى اليمين في جميع الحالات (مفتوح أو مغلق) -->
+    <button class="sidebar-external-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+        <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+    </button>
 
+    <!-- حاوية الشريط الجانبي -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
         <div class="sidebar-right" id="sidebarRight">
             <div class="sidebar-top-content">
                 <div class="sidebar-logo">
@@ -465,13 +461,13 @@
     </div>
 
     <!-- القسم الأيسر: المحتوى -->
-    <div class="main-content-area" id="mainContentArea" style="transform: translateX(-280px);">
+    <div class="main-content-area" id="mainContentArea">
         
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب وما تحتها -->
-            <div class="welcome-center-section" id="welcomeSection" style="transform: translateX(-280px);">
+            <!-- عبارة الترحيب وما تحتها (تتحرك بمرونة يميناً ويساراً مع فتح وإغلاق الشريط) -->
+            <div class="welcome-center-section" id="welcomeSection">
                 <div class="welcome-title-wrapper">
                     <h1>مرحباً بك في أثر</h1>
                 </div>
@@ -540,7 +536,7 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لفتح وإغلاق الشريط وزر السهم وحركة عبارة الترحيب
+        // البرمجة الذكية لعمل زر السهم في التحكم بالشريط وعبارة الترحيب معاً
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -549,19 +545,32 @@
         sidebarToggleBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             
-            sidebarWrapper.classList.toggle('collapsed');
-            sidebarWrapper.classList.toggle('mobile-open');
-
-            if (sidebarWrapper.classList.contains('collapsed')) {
-                toggleIcon.classList.remove('fa-chevron-left');
-                toggleIcon.classList.add('fa-chevron-right');
-                sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
-                welcomeSection.style.transform = 'translateX(-280px)';
+            if (window.innerWidth <= 1024) {
+                sidebarWrapper.classList.toggle('mobile-open');
+                if (sidebarWrapper.classList.contains('mobile-open')) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    welcomeSection.style.transform = 'translateX(0)';
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    welcomeSection.style.transform = 'translateX(-280px)';
+                }
             } else {
-                toggleIcon.classList.remove('fa-chevron-right');
-                toggleIcon.classList.add('fa-chevron-left');
-                sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                welcomeSection.style.transform = 'translateX(0)';
+                sidebarWrapper.classList.toggle('collapsed');
+                if (sidebarWrapper.classList.contains('collapsed')) {
+                    // الشريط مغلق: السهم يشير لليمين، وعبارة الترحيب تتحرك لليسار
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
+                    welcomeSection.style.transform = 'translateX(-280px)';
+                } else {
+                    // الشريط مفتوح: السهم يشير لليسار، وعبارة الترحيب تعود لمكانها الأصلي
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    welcomeSection.style.transform = 'translateX(0)';
+                }
             }
         });
     </script>
