@@ -21,9 +21,10 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
             width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
@@ -33,7 +34,7 @@
         /* القسم الأيسر: المحتوى المتجاوب */
         .main-content-area {
             flex: 1;
-            height: 100vh;
+            min-height: 100vh;
             padding: 4vh 4vw;
             display: flex;
             flex-direction: column;
@@ -111,7 +112,7 @@
             transform: rotate(180deg);
         }
 
-        /* القائمة المنسدلة لعرض الصلاحية للقراءة فقط */
+        /* القائمة المنسدلة (عرض الصلاحية للقراءة فقط) */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -198,7 +199,7 @@
         /* الشريط الجانبي في اليمين */
         .sidebar-right {
             width: 290px; 
-            height: 100vh;
+            min-height: 100vh;
             background-color: #eaf4fc;
             display: flex;
             flex-direction: column;
@@ -215,7 +216,6 @@
             align-items: center;
         }
 
-        /* الشعار بمقاس 400px */
         .sidebar-logo {
             width: 100%;
             display: flex;
@@ -224,13 +224,12 @@
         }
 
         .sidebar-logo img {
-            width: 400px; 
+            width: 260px; 
             max-width: 100%;
             height: auto;
             object-fit: contain;
         }
 
-        /* القائمة الجانبية */
         .sidebar-menu {
             list-style: none !important;
             width: 100%;
@@ -278,7 +277,6 @@
             color: #0b253a;
         }
 
-        /* قسم تسجيل الخروج في الأسفل */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
@@ -316,22 +314,58 @@
             color: #dc2626 !important;
         }
 
-        /* التوافق التلقائي للشاشات المختلفة */
-        @media (max-width: 1200px) {
-            .sidebar-right {
-                width: 260px;
+        /* --- نظام التجاوب الدقيق لشاشات الجوال والآيباد --- */
+        @media (max-width: 992px) {
+            body {
+                flex-direction: column-reverse;
+                overflow-y: auto;
+                height: auto;
             }
-            .sidebar-logo img {
-                width: 320px;
-            }
-        }
 
-        @media (max-width: 900px) {
             .sidebar-right {
-                width: 230px;
+                width: 100%;
+                min-height: auto;
+                border-left: none;
+                border-top: 1px solid rgba(15, 61, 89, 0.08);
+                padding: 15px;
             }
-            .sidebar-logo img {
-                width: 260px;
+
+            .main-content-area {
+                width: 100%;
+                min-height: auto;
+                padding: 20px;
+            }
+
+            .header-top-wrapper {
+                flex-direction: column-reverse;
+                align-items: center;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .welcome-center-section {
+                text-align: center;
+                align-items: center;
+                width: 100%;
+            }
+
+            .welcome-title-wrapper {
+                justify-content: center;
+            }
+
+            .welcome-center-section p {
+                white-space: normal;
+            }
+
+            .top-user-bar-container {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .user-dropdown-menu {
+                right: 50%;
+                transform: translateX(50%);
             }
         }
     </style>
@@ -412,67 +446,3 @@
                 </div>
                 <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
                 <div class="welcome-underline"></div>
-            </div>
-
-            <!-- شريط المستخدم يميناً مع قائمة الصلاحية المنسدلة -->
-            <div class="top-user-bar-container" id="userBarContainer">
-                <div class="top-user-bar" id="userBarToggle">
-                    <div class="user-avatar-circle">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div class="user-name-dropdown">
-                        <span id="displayUserName">فجر</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                </div>
-
-                <!-- القائمة المنسدلة (عرض الصلاحية فقط بدون تعديل) -->
-                <div class="user-dropdown-menu" id="userDropdownMenu">
-                    <span class="dropdown-header-label">صلاحية الحساب</span>
-                    <div class="dropdown-role-display">
-                        <span id="displayUserRoleText">مستخدم</span>
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <script>
-        // سحب الاسم المسجل وصلاحية المستخدم وعرضها
-        const savedName = localStorage.getItem('athalUser');
-        const savedRole = localStorage.getItem('athalRole');
-
-        if (savedName) {
-            document.getElementById('displayUserName').textContent = savedName;
-        }
-
-        // تحديد نص الصلاحية (مشرف أو مستخدم) وعرض إعدادات المشرف إن وجدت
-        const roleTextElement = document.getElementById('displayUserRoleText');
-        if (savedRole === 'admin') {
-            roleTextElement.textContent = 'مشرف النظام';
-            document.getElementById('adminSettingsMenu').style.display = 'block';
-        } else {
-            roleTextElement.textContent = 'مستخدم عادي';
-        }
-
-        // تفاعل فتح وإغلاق القائمة المنسدلة عند الضغط على شريط المستخدم
-        const userBarContainer = document.getElementById('userBarContainer');
-        const userBarToggle = document.getElementById('userBarToggle');
-        const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-        userBarToggle.addEventListener('click', function (e) {
-            e.stopPropagation();
-            userDropdownMenu.classList.toggle('show');
-            userBarToggle.classList.toggle('active');
-        });
-
-        // إغلاق القائمة عند النقر في أي مكان خارجها
-        window.addEventListener('click', function () {
-            userDropdownMenu.classList.remove('show');
-            userBarToggle.classList.remove('active');
-        });
-    </script>
-</body>
-</html>
