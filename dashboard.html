@@ -31,7 +31,7 @@
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى الثابت (يتحرك بمرونة عند إغلاق الشريط لتاخذ عبارة الترحيب مساحتها) */
+        /* القسم الأيسر: المحتوى الثابت */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -43,7 +43,7 @@
             min-width: 0;
             overflow-y: auto;
             overflow-x: hidden;
-            transition: padding-right 0.3s ease;
+            transition: all 0.3s ease;
         }
 
         /* الهيدر العلوي */
@@ -55,17 +55,16 @@
             flex-direction: row;
             margin-top: 1vh;
             gap: 20px;
-            transition: all 0.3s ease;
         }
 
-        /* عبارة الترحيب في اليمين (تتحرك بسلاسة لتأخذ مساحة أوسع عند إغلاق القائمة) */
+        /* عبارة الترحيب في اليمين (تتحرك وتأخذ مساحتها بسلاسة عند إغلاق الشريط) */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 4px;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .welcome-title-wrapper {
@@ -202,17 +201,16 @@
             font-size: 12px;
         }
 
-        /* حاوية الشريط وزر السهم (تتحرك ككتلة واحدة يميناً ويساراً) */
+        /* حاوية الشريط الجانبي */
         .sidebar-wrapper {
             position: relative;
             display: flex;
             align-items: flex-start;
             flex-shrink: 0;
             height: 100vh;
-            transition: transform 0.3s ease;
         }
 
-        /* زر السهم الخارجي المرتبط بالشريط تماماً */
+        /* زر السهم ثابت في مكانه تماماً ولا يتحرك نهائياً عند طي القائمة */
         .sidebar-external-toggle-btn {
             position: absolute;
             top: 25px;
@@ -251,11 +249,17 @@
             border-left: 1px solid rgba(15, 61, 89, 0.08);
             overflow-y: auto;
             overflow-x: hidden;
+            transition: transform 0.3s ease, width 0.3s ease, opacity 0.3s ease;
         }
 
-        /* عندما يُطوى الشريط، يذهب للخارج ويترك مساحة الشاشة كاملة لعبارة الترحيب */
-        .sidebar-wrapper.collapsed {
-            transform: translateX(298px);
+        /* عند طي الشريط، يختفي الشريط بسلاسة ويبقى زر السهم ثابتاً في مكانه الأصلي تماماً كما في صورتك الثانية */
+        .sidebar-wrapper.collapsed .sidebar-right {
+            transform: translateX(100%);
+            width: 0 !important;
+            padding: 0 !important;
+            border: none !important;
+            opacity: 0;
+            pointer-events: none;
         }
 
         .sidebar-top-content {
@@ -378,7 +382,7 @@
                 right: 0;
                 top: 0;
                 z-index: 9999;
-                transform: translateX(298px);
+                transform: translateX(100%);
                 transition: transform 0.3s ease;
             }
             .sidebar-wrapper.mobile-open {
@@ -389,9 +393,9 @@
 </head>
 <body>
 
-    <!-- حاوية الشريط وزر السهم -->
+    <!-- حاوية الشريط وزر السهم الثابت -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
-        <!-- زر السهم الخارجي -->
+        <!-- زر السهم دائم وثابت في مكانه الأصلي تماماً -->
         <button class="sidebar-external-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
             <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
         </button>
@@ -464,7 +468,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب في اليمين (تأخذ مساحتها الكاملة بمرونة عند غلق الشريط) -->
+            <!-- عبارة الترحيب في اليمين (تتحرك بمرونة عند فتح/إغلاق القائمة) -->
             <div class="welcome-center-section" id="welcomeSection">
                 <div class="welcome-title-wrapper">
                     <h1>مرحباً بك في أثر</h1>
@@ -534,7 +538,7 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لفتح وإغلاق الشريط مع حركة عبارة الترحيب بسلاسة تامة
+        // البرمجة الذكية لثبات زر السهم في مكانه وحركة عبارة الترحيب
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -558,13 +562,13 @@
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
-                    // تحريك عبارة الترحيب لليسار قليلاً بسلاسة لتأخذ مساحتها عند اختفاء الشريط
-                    welcomeSection.style.transform = 'translateX(-40px)';
+                    // تحريك عبارة الترحيب لليسار بسلاسة لتأخذ مساحتها عند إغلاق الشريط
+                    welcomeSection.style.transform = 'translateX(-280px)';
                 } else {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    // إعادة عبارة الترحيب لمكانها الطبيعي عند ظهور الشريط
+                    // إعادة عبارة الترحيب لمكانها الطبيعي عند فتح الشريط
                     welcomeSection.style.transform = 'translateX(0)';
                 }
             }
