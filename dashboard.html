@@ -1,1 +1,478 @@
-الصباح بسويه 
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أثر - لوحة التحكم</title>
+    <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-image: url('bg-dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            direction: rtl;
+        }
+
+        /* القسم الأيسر: المحتوى المتجاوب */
+        .main-content-area {
+            flex: 1;
+            height: 100vh;
+            padding: 4vh 4vw;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+            min-width: 0;
+        }
+
+        /* الهيدر العلوي */
+        .header-top-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-direction: row;
+            margin-top: 1vh;
+        }
+
+        /* شريط اسم المستخدم وقائمة الصلاحية المنسدلة */
+        .top-user-bar-container {
+            position: relative;
+        }
+
+        .top-user-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 6px 14px;
+            border-radius: 30px;
+            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.05);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .top-user-bar:hover {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .user-avatar-circle {
+            width: 36px;
+            height: 36px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #0b253a;
+            box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
+            flex-shrink: 0;
+        }
+
+        .user-avatar-circle i {
+            font-size: 15px;
+        }
+
+        .user-name-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #0b253a;
+            white-space: nowrap;
+        }
+
+        .user-name-dropdown i {
+            font-size: 10px;
+            color: #0b253a;
+            transition: transform 0.3s ease;
+        }
+
+        .top-user-bar.active .user-name-dropdown i {
+            transform: rotate(180deg);
+        }
+
+        /* القائمة المنسدلة لعرض الصلاحية للقراءة فقط */
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 170px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 100;
+            border: 1px solid rgba(11, 37, 58, 0.08);
+            text-align: right;
+        }
+
+        .user-dropdown-menu.show {
+            display: flex;
+        }
+
+        .dropdown-header-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            padding: 0 6px;
+        }
+
+        .dropdown-role-display {
+            background: #f1f5f9;
+            color: #0b253a;
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: default;
+        }
+
+        .dropdown-role-display i {
+            color: #4e9cd8;
+            font-size: 12px;
+        }
+
+        /* عبارة الترحيب في جهة اليسار */
+        .welcome-center-section {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .welcome-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .welcome-center-section h1 {
+            font-size: clamp(20px, 2.2vw, 28px);
+            font-weight: 900;
+            color: #0b253a;
+            white-space: nowrap;
+        }
+
+        .welcome-center-section p {
+            font-size: clamp(10px, 1vw, 13px);
+            color: #64748b; 
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .welcome-underline {
+            width: 45px;
+            height: 3px;
+            background-color: #4e9cd8;
+            border-radius: 2px;
+            margin-top: 4px;
+        }
+
+        /* الشريط الجانبي في اليمين */
+        .sidebar-right {
+            width: 290px; 
+            height: 100vh;
+            background-color: #eaf4fc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 15px 20px 15px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
+        }
+
+        .sidebar-top-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* الشعار بمقاس 400px */
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-logo img {
+            width: 400px; 
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        /* القائمة الجانبية */
+        .sidebar-menu {
+            list-style: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            list-style: none !important;
+            width: 100%;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 9px 14px;
+            color: #0b253a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu li.active a {
+            background-color: #d1e7fb; 
+            color: #0b253a;
+            font-weight: 800;
+        }
+
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: rgba(59, 130, 246, 0.08);
+        }
+
+        .sidebar-menu li a i {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+            color: #0b253a;
+        }
+
+        /* قسم تسجيل الخروج في الأسفل */
+        .sidebar-bottom-content {
+            width: 100%;
+            border-top: 1px solid rgba(15, 61, 89, 0.12);
+            padding-top: 8px;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 9px 14px;
+            color: #0b253a !important;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-link i {
+            font-size: 15px;
+            color: #0b253a !important;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #dc2626 !important;
+        }
+
+        .logout-link:hover i {
+            color: #dc2626 !important;
+        }
+
+        /* التوافق التلقائي للشاشات المختلفة */
+        @media (max-width: 1200px) {
+            .sidebar-right {
+                width: 260px;
+            }
+            .sidebar-logo img {
+                width: 320px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .sidebar-right {
+                width: 230px;
+            }
+            .sidebar-logo img {
+                width: 260px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الشريط الجانبي في اليمين -->
+    <div class="sidebar-right">
+        <div class="sidebar-top-content">
+            <div class="sidebar-logo">
+                <img src="logo.png" alt="شعار منصة أثر">
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="dashboard.html">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>البيانات</span>
+                        <i class="fa-solid fa-database"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines"></i>
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users"></i>
+                    </a>
+                </li>
+                <!-- إعدادات النظام للمشرف -->
+                <li id="adminSettingsMenu" style="display: none;">
+                    <a href="#">
+                        <span>إعدادات النظام</span>
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-bottom-content">
+            <a href="index.html" class="logout-link">
+                <span>تسجيل الخروج</span>
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- القسم الأيسر: المحتوى المرتب -->
+    <div class="main-content-area">
+        
+        <!-- الهيدر العلوي -->
+        <div class="header-top-wrapper">
+            <!-- عبارة الترحيب يساراً -->
+            <div class="welcome-center-section">
+                <div class="welcome-title-wrapper">
+                    <h1>مرحباً بك في أثر</h1>
+                </div>
+                <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
+                <div class="welcome-underline"></div>
+            </div>
+
+            <!-- شريط المستخدم يميناً مع قائمة الصلاحية المنسدلة -->
+            <div class="top-user-bar-container" id="userBarContainer">
+                <div class="top-user-bar" id="userBarToggle">
+                    <div class="user-avatar-circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                    <div class="user-name-dropdown">
+                        <span id="displayUserName">فجر</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <!-- القائمة المنسدلة (عرض الصلاحية فقط بدون تعديل) -->
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <span class="dropdown-header-label">صلاحية الحساب</span>
+                    <div class="dropdown-role-display">
+                        <span id="displayUserRoleText">مستخدم</span>
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // سحب الاسم المسجل وصلاحية المستخدم وعرضها
+        const savedName = localStorage.getItem('athalUser');
+        const savedRole = localStorage.getItem('athalRole');
+
+        if (savedName) {
+            document.getElementById('displayUserName').textContent = savedName;
+        }
+
+        // تحديد نص الصلاحية (مشرف أو مستخدم) وعرض إعدادات المشرف إن وجدت
+        const roleTextElement = document.getElementById('displayUserRoleText');
+        if (savedRole === 'admin') {
+            roleTextElement.textContent = 'مشرف النظام';
+            document.getElementById('adminSettingsMenu').style.display = 'block';
+        } else {
+            roleTextElement.textContent = 'مستخدم عادي';
+        }
+
+        // تفاعل فتح وإغلاق القائمة المنسدلة عند الضغط على شريط المستخدم
+        const userBarContainer = document.getElementById('userBarContainer');
+        const userBarToggle = document.getElementById('userBarToggle');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+        userBarToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            userDropdownMenu.classList.toggle('show');
+            userBarToggle.classList.toggle('active');
+        });
+
+        // إغلاق القائمة عند النقر في أي مكان خارجها
+        window.addEventListener('click', function () {
+            userDropdownMenu.classList.remove('show');
+            userBarToggle.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
