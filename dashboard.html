@@ -22,6 +22,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
             width: 100vw;
             height: 100vh;
             overflow: hidden;
@@ -57,7 +58,7 @@
             gap: 20px;
         }
 
-        /* عبارة الترحيب وما تحتها (تتحرك يميناً عند فتح الشريط، ويساراً عند إغلاقه) */
+        /* عبارة الترحيب في اليمين (تتحرك بمرونة عند فتح/إغلاق القائمة) */
         .welcome-center-section {
             text-align: right;
             display: flex;
@@ -65,7 +66,7 @@
             align-items: flex-start;
             gap: 4px;
             transition: transform 0.3s ease;
-            transform: translateX(0); /* الوضع الافتراضي والشريط مفتوح (يمين) */
+            transform: translateX(0);
         }
 
         .welcome-title-wrapper {
@@ -202,7 +203,7 @@
             font-size: 12px;
         }
 
-        /* حاوية الشريط وزر السهم (يتحركان معاً ككتلة واحدة) */
+        /* حاوية الشريط وزر السهم (تتحرك معاً ككتلة واحدة) */
         .sidebar-wrapper {
             position: relative;
             display: flex;
@@ -210,9 +211,10 @@
             flex-shrink: 0;
             height: 100vh;
             transition: transform 0.3s ease;
+            z-index: 999;
         }
 
-        /* زر السهم الخارجي المرتبط بالشريط */
+        /* زر السهم الخارجي في مكانه الثابت الأصلي بجانب الشريط تماماً */
         .sidebar-external-toggle-btn {
             position: absolute;
             top: 25px;
@@ -229,7 +231,7 @@
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
             font-size: 13px;
-            z-index: 9999;
+            z-index: 1000;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
 
@@ -253,7 +255,7 @@
             overflow-x: hidden;
         }
 
-        /* عندما يُغلق الشريط، يختفي الشريط ومعه زر السهم إلى يمين الشاشة تماماً */
+        /* عندما يُغلق الشريط، يختفي الشريط وزر السهم معاً بسلاسة إلى يمين الشاشة تماماً دون الذهاب لليسار */
         .sidebar-wrapper.collapsed {
             transform: translateX(298px);
         }
@@ -371,15 +373,13 @@
             color: #dc2626 !important;
         }
 
-        /* التجاوب الذكي للشاشات الصغيرة */
+        /* التجاوب الذكي للشاشات الصغيرة والجوالات لتظهر القائمة بشكل مثالي عند النقر */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
                 position: fixed;
                 right: 0;
                 top: 0;
-                z-index: 9999;
                 transform: translateX(298px);
-                transition: transform 0.3s ease;
             }
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
@@ -389,11 +389,11 @@
 </head>
 <body>
 
-    <!-- حاوية الشريط وزر السهم (يتحركان معاً) -->
-    <div class="sidebar-wrapper" id="sidebarWrapper">
+    <!-- حاوية الشريط وزر السهم -->
+    <div class="sidebar-wrapper collapsed" id="sidebarWrapper">
         <!-- زر السهم -->
         <button class="sidebar-external-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
-            <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
+            <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
         </button>
 
         <div class="sidebar-right" id="sidebarRight">
@@ -459,13 +459,13 @@
     </div>
 
     <!-- القسم الأيسر: المحتوى -->
-    <div class="main-content-area" id="mainContentArea">
+    <div class="main-content-area" id="mainContentArea" style="transform: translateX(-280px);">
         
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب وما تحتها (تتحرك لليسار عند غلق الشريط، وتعود لليمين عند فتحه) -->
-            <div class="welcome-center-section" id="welcomeSection">
+            <!-- عبارة الترحيب وما تحتها -->
+            <div class="welcome-center-section" id="welcomeSection" style="transform: translateX(-280px);">
                 <div class="welcome-title-wrapper">
                     <h1>مرحباً بك في أثر</h1>
                 </div>
@@ -534,7 +534,7 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لحركة الشريط وزر السهم وعبارة الترحيب معاً
+        // البرمجة الذكية لفتح وإغلاق الشريط على الجوال والشاشات الكبيرة مع حركة الترحيب
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -545,14 +545,15 @@
             
             if (window.innerWidth <= 1024) {
                 sidebarWrapper.classList.toggle('mobile-open');
+                sidebarWrapper.classList.toggle('collapsed');
                 if (sidebarWrapper.classList.contains('mobile-open')) {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    welcomeSection.style.transform = 'translateX(-280px)';
-                } else {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     welcomeSection.style.transform = 'translateX(0)';
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    welcomeSection.style.transform = 'translateX(-280px)';
                 }
             } else {
                 sidebarWrapper.classList.toggle('collapsed');
@@ -560,13 +561,11 @@
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
-                    // عند إخفاء الشريط: تتحرك عبارة الترحيب لليسار لتأخذ مساحتها
                     welcomeSection.style.transform = 'translateX(-280px)';
                 } else {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    // عند إظهار الشريط: تعود عبارة الترحيب لليمين
                     welcomeSection.style.transform = 'translateX(0)';
                 }
             }
