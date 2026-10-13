@@ -22,155 +22,39 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            width: 100%;
-            min-height: 100vh;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
-            flex-direction: row;
-            direction: rtl;
-            overflow-x: hidden;
-        }
-
-        /* الشريط الجانبي المرن والمتجاوب تلقائياً مع كافة الأجهزة */
-        .sidebar-right {
-            width: 280px;
-            min-width: 260px;
-            min-height: 100vh;
-            background-color: #eaf4fc;
-            display: flex;
-            flex-direction: column;
             justify-content: space-between;
-            padding: 15px;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
-            border-left: 1px solid rgba(15, 61, 89, 0.08);
-            z-index: 10;
+            align-items: stretch;
+            direction: rtl;
         }
 
-        .sidebar-top-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .sidebar-logo {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-        }
-
-        .sidebar-logo img {
-            width: 100%;
-            max-width: 200px;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .sidebar-menu {
-            list-style: none !important;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            list-style: none !important;
-            width: 100%;
-        }
-
-        .sidebar-menu li a {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 10px 14px;
-            color: #0b253a;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .sidebar-menu li.active a {
-            background-color: #d1e7fb; 
-            color: #0b253a;
-            font-weight: 800;
-        }
-
-        .sidebar-menu li a:hover:not(.active) {
-            background-color: rgba(59, 130, 246, 0.08);
-        }
-
-        .sidebar-menu li a i {
-            font-size: 15px;
-            width: 20px;
-            text-align: center;
-            color: #0b253a;
-        }
-
-        .sidebar-bottom-content {
-            width: 100%;
-            border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 10px;
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 10px 14px;
-            color: #0b253a !important;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .logout-link i {
-            font-size: 15px;
-            color: #0b253a !important;
-            width: 20px;
-            text-align: center;
-        }
-
-        .logout-link:hover {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: #dc2626 !important;
-        }
-
-        .logout-link:hover i {
-            color: #dc2626 !important;
-        }
-
-        /* القسم الأيسر: المحتوى المرتب تلقائياً */
+        /* القسم الأيسر: المحتوى */
         .main-content-area {
             flex: 1;
-            min-height: 100vh;
+            height: 100vh;
             padding: 4vh 4vw;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             position: relative;
             min-width: 0;
+            overflow-y: auto;
         }
 
+        /* الهيدر العلوي */
         .header-top-wrapper {
             width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             flex-direction: row;
-            gap: 20px;
+            margin-top: 1vh;
         }
 
+        /* شريط اسم المستخدم وقائمة الصلاحية المنسدلة */
         .top-user-bar-container {
             position: relative;
         }
@@ -229,6 +113,7 @@
             transform: rotate(180deg);
         }
 
+        /* القائمة المنسدلة (عرض الصلاحية فقط للقراءة) */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -275,13 +160,13 @@
             font-size: 12px;
         }
 
+        /* عبارة الترحيب في جهة اليسار */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 4px;
-            max-width: 100%;
         }
 
         .welcome-title-wrapper {
@@ -291,17 +176,17 @@
         }
 
         .welcome-center-section h1 {
-            font-size: clamp(18px, 2.5vw, 28px);
+            font-size: clamp(20px, 2.2vw, 28px);
             font-weight: 900;
             color: #0b253a;
-            white-space: normal;
+            white-space: nowrap;
         }
 
         .welcome-center-section p {
-            font-size: clamp(11px, 1.2vw, 13px);
+            font-size: clamp(10px, 1vw, 13px);
             color: #64748b; 
             font-weight: 600;
-            white-space: normal;
+            white-space: nowrap;
         }
 
         .welcome-underline {
@@ -312,78 +197,139 @@
             margin-top: 4px;
         }
 
-        /* نظام التجاوب الذكي للشاشات الصغيرة جداً والهواتف الذكية */
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column !important;
-            }
+        /* الشريط الجانبي ثابت وثابت مكانه في اليمين على كل الأجهزة */
+        .sidebar-right {
+            width: 290px; 
+            height: 100vh;
+            background-color: #eaf4fc;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 15px 20px 15px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            flex-shrink: 0;
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
+            overflow-y: auto;
+        }
 
+        .sidebar-top-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 5px; 
+        }
+
+        .sidebar-logo img {
+            width: 240px; 
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            list-style: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            list-style: none !important;
+            width: 100%;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 9px 14px;
+            color: #0b253a;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu li.active a {
+            background-color: #d1e7fb; 
+            color: #0b253a;
+            font-weight: 800;
+        }
+
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: rgba(59, 130, 246, 0.08);
+        }
+
+        .sidebar-menu li a i {
+            font-size: 15px;
+            width: 20px;
+            text-align: center;
+            color: #0b253a;
+        }
+
+        .sidebar-bottom-content {
+            width: 100%;
+            border-top: 1px solid rgba(15, 61, 89, 0.12);
+            padding-top: 8px;
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 9px 14px;
+            color: #0b253a !important;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-link i {
+            font-size: 15px;
+            color: #0b253a !important;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #dc2626 !important;
+        }
+
+        .logout-link:hover i {
+            color: #dc2626 !important;
+        }
+
+        /* تحسينات بسيطة للمقاسات المتوسطة لتتزامن بنعومة */
+        @media (max-width: 1200px) {
             .sidebar-right {
-                width: 100% !important;
-                min-width: 100% !important;
-                min-height: auto !important;
-                border-left: none !important;
-                border-bottom: 1px solid rgba(15, 61, 89, 0.08);
-                padding: 12px !important;
+                width: 240px;
             }
-
-            .sidebar-top-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                flex-wrap: wrap;
-            }
-
-            .sidebar-logo {
-                width: auto;
-                margin-bottom: 0;
-            }
-
             .sidebar-logo img {
-                max-width: 130px;
-            }
-
-            .sidebar-menu {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 5px;
-                margin-top: 10px;
-            }
-
-            .sidebar-menu li {
-                width: auto !important;
-            }
-
-            .sidebar-menu li a {
-                padding: 6px 10px;
-                font-size: 12px;
-            }
-
-            .sidebar-bottom-content {
-                display: none; /* إخفاء زر الخروج العادي في القائمة الأفقية للجوال وتوفير مساحة */
-            }
-
-            .main-content-area {
-                padding: 20px 15px;
-            }
-
-            .header-top-wrapper {
-                flex-direction: column-reverse;
-                align-items: stretch;
-                gap: 15px;
-            }
-
-            .top-user-bar-container {
-                display: flex;
-                justify-content: flex-end;
+                width: 200px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- الشريط الجانبي في اليمين -->
+    <!-- الشريط الجانبي في اليمين (ثابت على جميع الأجهزة) -->
     <div class="sidebar-right">
         <div class="sidebar-top-content">
             <div class="sidebar-logo">
@@ -445,7 +391,7 @@
         </div>
     </div>
 
-    <!-- القسم الأيسر: المحتوى المرتب -->
+    <!-- القسم الأيسر: المحتوى -->
     <div class="main-content-area">
         
         <!-- الهيدر العلوي -->
