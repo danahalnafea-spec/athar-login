@@ -58,16 +58,14 @@
             gap: 20px;
         }
 
-        /* حاوية الترحيب وزر السهم المدمج معه لضمان بقائهما معاً */
+        /* مجموعة الترحيب وزر السهم الثابت المدمج معه في مكانه تماماً */
         .welcome-container-group {
             display: flex;
             align-items: center;
             gap: 15px;
-            transition: transform 0.3s ease;
-            transform: translateX(0);
         }
 
-        /* زر السهم الجديد بجانب عبارة الترحيب */
+        /* زر السهم الثابت في مكانه بجانب عبارة الترحيب دون أن يتحرك من مكانه إطلاقاً */
         .header-toggle-btn {
             width: 36px;
             height: 36px;
@@ -245,7 +243,7 @@
             transform: translateX(0); /* الافتراضي: الشريط مفتوح */
         }
 
-        /* عند طي الشريط، ينسحب لليمين ليختفي تماماً */
+        /* عند طي الشريط، ينسحب لليمين ليختفي تماماً بينما مكان زر السهم ثابت في مكانه بالأعلى */
         .sidebar-wrapper.collapsed {
             transform: translateX(280px);
         }
@@ -465,7 +463,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- مجموعة الترحيب وزر السهم بجانبها في أقصى اليمين تماماً -->
+            <!-- مجموعة الترحيب وزر السهم الثابت في مكانه دون تغير في موضعه -->
             <div class="welcome-container-group" id="welcomeContainerGroup">
                 <button class="header-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
                     <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
@@ -540,11 +538,10 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية لعمل زر السهم في التحكم بالشريط ومكان الترحيب
+        // البرمجة الذكية لتبديل شكل اتجاه السهم والتحكم بالشريط دون تغيير مكان الزر
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
-        const welcomeContainerGroup = document.getElementById('welcomeContainerGroup');
 
         sidebarToggleBtn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -554,26 +551,22 @@
                 if (sidebarWrapper.classList.contains('mobile-open')) {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
-                    welcomeContainerGroup.style.transform = 'translateX(0)';
                 } else {
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
-                    welcomeContainerGroup.style.transform = 'translateX(-280px)';
                 }
             } else {
                 sidebarWrapper.classList.toggle('collapsed');
                 if (sidebarWrapper.classList.contains('collapsed')) {
-                    // الشريط مغلق: السهم يشير لليمين ومجموعة الترحيب تنتقل لليسار قليلاً لتتوسط الشاشة
+                    // الشريط مغلق: يتغير اتجاه السهم فقط لليمين ليدل على فتح الشريط مستقبلاً
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إرجاع القائمة');
-                    welcomeContainerGroup.style.transform = 'translateX(-280px)';
                 } else {
-                    // الشريط مفتوح: السهم يشير لليسار ومجموعة الترحيب تعود لمكانها الأيمن الطبيعي
+                    // الشريط مفتوح: يتغير اتجاه السهم لليسار ليدل على إغلاق الشريط
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    welcomeContainerGroup.style.transform = 'translateX(0)';
                 }
             }
         });
