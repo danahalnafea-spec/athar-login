@@ -3,37 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>المبادرات - منصة أثر</title>
+    <title>المبادرات - منصة أفق</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
     <style>
-        body {
-            overflow-y: auto !important;
+        /* ضبط هيكل الصفحة بالكامل ليطابق لوحة التحكم تماماً وتثبيت القائمة يميناً */
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+            overflow-x: hidden;
         }
+
+        .page-layout {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* القائمة الجانبية الثابتة على اليمين */
+        .sidebar {
+            width: 260px;
+            background-color: #1b4332;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 100;
+        }
+
+        .sidebar .logo-side {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #2d6a4f;
+        }
+
+        .sidebar .logo-side img {
+            width: 140px;
+            height: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 20px 0;
+            margin: 0;
+            flex: 1;
+        }
+
+        .sidebar-menu li a {
+            display: block;
+            padding: 14px 25px;
+            color: #e2e8f0;
+            text-decoration: none;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+
+        .sidebar-menu li.active a, .sidebar-menu li a:hover {
+            background-color: #2d6a4f;
+            color: white;
+            border-right: 4px solid #52b788;
+        }
+
+        /* المحتوى الرئيسي وترك مساحة للقائمة الجانبية */
+        .main-content {
+            margin-right: 260px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .navbar {
+            height: 70px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .user-info {
+            font-weight: bold;
+            color: #1b4332;
+            font-size: 16px;
+        }
+
+        .content-body {
+            padding: 30px;
+            background-color: #f8f9fa;
+        }
+
+        /* بطاقات الإحصائيات العلوية */
         .stats-grid-top {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
             margin-bottom: 20px;
         }
+
         .stat-card-top {
             background: #ffffff;
-            padding: 15px 10px;
+            padding: 15px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
             border-right: 4px solid #1b4332;
         }
+
         .stat-card-top span {
             display: block;
-            font-size: 12px;
+            font-size: 13px;
             color: #64748b;
             margin-bottom: 5px;
         }
+
         .stat-card-top strong {
-            font-size: 16px;
+            font-size: 17px;
             color: #0f172a;
         }
+
         .card-box {
             background: #ffffff;
             padding: 20px;
@@ -41,6 +138,7 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.04);
             margin-bottom: 20px;
         }
+
         .card-box h3 {
             margin-top: 0;
             color: #1b4332;
@@ -48,134 +146,189 @@
             padding-bottom: 8px;
             font-size: 16px;
         }
+
         .initiative-details-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 15px;
             margin-top: 15px;
         }
+
         .detail-box {
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-radius: 8px;
             padding: 15px;
         }
+
         .detail-box h4 {
             margin: 0 0 8px 0;
             color: #1b4332;
             font-size: 14px;
         }
+
         .detail-box p {
             margin: 0;
             font-size: 13px;
             color: #475569;
             line-height: 1.5;
         }
+
+        /* تنسيق الرسوم البيانية */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        .notes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notes-list li {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+            color: #334155;
+        }
     </style>
 </head>
-<body style="display: flex;">
+<body>
 
-    <!-- القائمة الجانبية المعتمدة بملف style.css -->
-    <div class="sidebar">
-        <div class="logo-side">
-            <img src="logo.png" alt="شعار منصة أثر">
+    <div class="page-layout">
+        <!-- القائمة الجانبية الثابتة -->
+        <div class="sidebar">
+            <div class="logo-side">
+                <img src="logo.png" alt="شعار منصة أثر">
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="index.html">الرئيسية</a></li>
+                <li class="active"><a href="initiatives.html">المبادرات</a></li>
+                <li><a href="#">المؤشرات</a></li>
+                <li><a href="#">البيانات</a></li>
+                <li><a href="#">التقارير</a></li>
+                <li><a href="#">المستفيدون</a></li>
+                <li><a href="#">الإعدادات</a></li>
+            </ul>
         </div>
-        <ul class="sidebar-menu">
-            <li><a href="index.html">الرئيسية</a></li>
-            <li class="active"><a href="initiatives.html">المبادرات</a></li>
-            <li><a href="#">المؤشرات</a></li>
-            <li><a href="#">البيانات</a></li>
-            <li><a href="#">التقارير</a></li>
-            <li><a href="#">المستفيدون</a></li>
-            <li><a href="#">الإعدادات</a></li>
-        </ul>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="main-content">
+            <div class="navbar">
+                <div class="user-info" id="displayedUserName">مرحباً، زائر</div>
+                <div>
+                    <a href="index.html" onclick="logout()" style="color: #d90429; text-decoration: none; font-weight: bold; font-size: 14px; cursor: pointer;">تسجيل خروج</a>
+                </div>
+            </div>
+
+            <div class="content-body">
+                <!-- بطاقات الإحصائيات العلوية -->
+                <div class="stats-grid-top">
+                    <div class="stat-card-top">
+                        <span>عدد المتطوعين</span>
+                        <strong>120</strong>
+                    </div>
+                    <div class="stat-card-top">
+                        <span>ساعات التطوع</span>
+                        <strong>960 ساعة</strong>
+                    </div>
+                    <div class="stat-card-top">
+                        <span>المستفيدين</span>
+                        <strong>5,400</strong>
+                    </div>
+                    <div class="stat-card-top">
+                        <span>الفرص التطوعية</span>
+                        <strong>15 فرصة</strong>
+                    </div>
+                    <div class="stat-card-top">
+                        <span>مؤشر الرضا</span>
+                        <strong>95.4%</strong>
+                    </div>
+                    <div class="stat-card-top">
+                        <span>العائد الاقتصادي</span>
+                        <strong>180,000 ر.س</strong>
+                    </div>
+                </div>
+
+                <!-- البحث والتصفية في الأعلى -->
+                <div class="card-box">
+                    <h3>البحث والتصفية في المبادرات</h3>
+                    <div style="display: flex; gap: 12px; margin-top: 10px;">
+                        <input type="text" id="searchInput" style="flex: 1; padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;" placeholder="ابحث عن المبادرة، الهدف، الأنشطة، أو المؤشرات..." onkeyup="filterInitiatives()">
+                        <select id="filterSelect" style="padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background: white;" onchange="filterInitiatives()">
+                            <option value="all">جميع المجالات</option>
+                            <option value="education">التعليم والتدريب</option>
+                            <option value="economy">التمكين الاقتصادي</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- بيانات وتفاصيل المبادرة -->
+                <div class="card-box">
+                    <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
+                    <div class="initiative-details-grid">
+                        <div class="detail-box" data-category="education">
+                            <h4>بيانات المبادرة والأهداف</h4>
+                            <p><strong>اسم المبادرة:</strong> أفق للتحول الرقمي</p>
+                            <p><strong>الأهداف:</strong> تسهيل الخدمات الأكاديمية ورفع مستوى جودة الدعم الطلابي.</p>
+                        </div>
+
+                        <div class="detail-box" data-category="education">
+                            <h4>الأنشطة والمستفيدون</h4>
+                            <p><strong>الأنشطة:</strong> ورش عمل تفاعلية، إرشادات تسجيل المواد.</p>
+                            <p><strong>المستفيدون:</strong> طلاب وطالبات الجامعة (المستهدف: 5,400).</p>
+                        </div>
+
+                        <div class="detail-box" data-category="economy">
+                            <h4>المؤشرات والنتائج</h4>
+                            <p><strong>نوع المؤشر:</strong> سرعة إنجاز الطلبات.</p>
+                            <p><strong>النتيجة الحالية:</strong> 95.4% نسبة رضا عالية.</p>
+                        </div>
+
+                        <div class="detail-box" data-category="economy">
+                            <h4>الأثر والأدلة</h4>
+                            <p><strong>مستوى الأثر:</strong> 4.8 / 5</p>
+                            <p><strong>الأدلة:</strong> تقارير العمادة لعام 2026.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- الرسوم البيانية والملاحظات -->
+                <div class="grid-container">
+                    <div class="left-column">
+                        <div class="card-box">
+                            <h3>إحصائيات المبادرات والتفاعل</h3>
+                            <div class="chart-container">
+                                <canvas id="initiativesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="right-column">
+                        <div class="card-box">
+                            <h3>الملاحظات والتوجيهات</h3>
+                            <ul class="notes-list">
+                                <li>📌 متابعة تقارير القبول والتسجيل للفصل الدراسي الحالي.</li>
+                                <li>📌 مراجعة إحصائيات المبادرات واعتماد التوصيات.</li>
+                                <li>📌 تحديث بيانات الطلاب وتفعيل ورش العمل.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
-    <div class="main-content">
-        <!-- شريط النافبار العلوي والتأكد من نقل اسم المستخدم المسجل تلقائياً -->
-        <div class="navbar">
-            <div class="user-info" id="displayedUserName">مرحباً، زائر</div>
-            <div>
-                <a href="index.html" onclick="logout()" style="color: #d90429; text-decoration: none; font-weight: bold; font-size: 14px; cursor: pointer;">تسجيل خروج</a>
-            </div>
-        </div>
-
-        <div class="content-body">
-            <!-- بطاقات الإحصائيات العلوية المطابقة للرئيسية -->
-            <div class="stats-grid-top">
-                <div class="stat-card-top">
-                    <span>عدد المتطوعين</span>
-                    <strong>120</strong>
-                </div>
-                <div class="stat-card-top">
-                    <span>ساعات التطوع</span>
-                    <strong>960 ساعة</strong>
-                </div>
-                <div class="stat-card-top">
-                    <span>المستفيدين</span>
-                    <strong>5,400</strong>
-                </div>
-                <div class="stat-card-top">
-                    <span>الفرص التطوعية</span>
-                    <strong>15 فرصة</strong>
-                </div>
-                <div class="stat-card-top">
-                    <span>مؤشر الرضا</span>
-                    <strong>95.4%</strong>
-                </div>
-                <div class="stat-card-top">
-                    <span>العائد الاقتصادي</span>
-                    <strong>180,000 ر.س</strong>
-                </div>
-            </div>
-
-            <!-- قسم البحث والفلترة بأعلى الصفحة -->
-            <div class="card-box">
-                <h3>البحث والتصفية في المبادرات</h3>
-                <div style="display: flex; gap: 12px; margin-top: 10px;">
-                    <input type="text" id="searchInput" style="flex: 1; padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;" placeholder="ابحث عن المبادرة، الهدف، الأنشطة، أو المؤشرات..." onkeyup="filterInitiatives()">
-                    <select id="filterSelect" style="padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background: white;" onchange="filterInitiatives()">
-                        <option value="all">جميع المجالات</option>
-                        <option value="education">التعليم والتدريب</option>
-                        <option value="economy">التمكين الاقتصادي</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- بيانات وتفاصيل المبادرة التفصيلية -->
-            <div class="card-box">
-                <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
-                <div class="initiative-details-grid">
-                    <div class="detail-box" data-category="education">
-                        <h4>بيانات المبادرة والأهداف</h4>
-                        <p><strong>اسم المبادرة:</strong> أفق للتحول الرقمي</p>
-                        <p><strong>الأهداف:</strong> تسهيل الخدمات الأكاديمية ورفع مستوى جودة الدعم الطلابي.</p>
-                    </div>
-
-                    <div class="detail-box" data-category="education">
-                        <h4>الأنشطة والمستفيدون</h4>
-                        <p><strong>الأنشطة:</strong> ورش عمل تفاعلية، إرشادات تسجيل المواد.</p>
-                        <p><strong>المستفيدون:</strong> طلاب وطالبات الجامعة (المستهدف: 5,400).</p>
-                    </div>
-
-                    <div class="detail-box" data-category="economy">
-                        <h4>المؤشرات والنتائج</h4>
-                        <p><strong>نوع المؤشر:</strong> سرعة إنجاز الطلبات.</p>
-                        <p><strong>النتيجة الحالية:</strong> 95.4% نسبة رضا عالية.</p>
-                    </div>
-
-                    <div class="detail-box" data-category="economy">
-                        <h4>الأثر والأدلة</h4>
-                        <p><strong>مستوى الأثر:</strong> 4.8 / 5</p>
-                        <p><strong>الأدلة:</strong> تقارير العمادة لعام 2026.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- سكريبت نقل الاسم المعتمد في index.html بـ athalUser -->
+    <!-- السكريبت (نقل الاسم، الرسوم، والبحث) -->
     <script>
         window.onload = function() {
             const savedUser = localStorage.getItem('athalUser') || localStorage.getItem('username');
@@ -187,6 +340,27 @@
         function logout() {
             localStorage.removeItem('athalUser');
         }
+
+        // رسم بياني 1
+        const ctx1 = document.getElementById('initiativesChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['مبادرة القبول', 'مبادرة الإرشاد', 'تطوير التسجيل', 'الدعم الأكاديمي'],
+                datasets: [{
+                    label: 'عدد المشاركين',
+                    data: [120, 190, 300, 250],
+                    backgroundColor: 'rgba(27, 67, 50, 0.8)',
+                    borderColor: '#1b4332',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
 
         function filterInitiatives() {
             const searchValue = document.getElementById('searchInput').value.toLowerCase();
