@@ -180,7 +180,6 @@
             cursor: pointer;
         }
 
-        /* تخطيط الشبكة للرسوم البيانية والمحتوى */
         .grid-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -293,11 +292,11 @@
 
     <!-- المحتوى الرئيسي -->
     <main class="main-content-area">
-        <!-- الهيدر مع الترحيب التلقائي باسم المستخدم -->
+        <!-- الهيدر مع الترحيب التلقائي باسم المستخدم المسجل -->
         <header class="top-dashboard-header">
             <h2>مبادرة أفق - عمادة القبول والتسجيل</h2>
             <div class="welcome-user">
-                مرحباً، <span id="userNameDisplay">لين</span>
+                مرحباً، <span id="userNameDisplay">زائر</span>
             </div>
         </header>
 
@@ -329,7 +328,7 @@
             </div>
         </div>
 
-        <!-- شريط البحث والفلترة -->
+        <!-- 1. شريط البحث والفلترة في أعلى شيء كما طلبتِ -->
         <div class="card">
             <h3>البحث والتصفية في المبادرات</h3>
             <div class="search-filter-section">
@@ -342,7 +341,7 @@
             </div>
         </div>
 
-        <!-- تفاصيل المبادرة التفصيلية في الأعلى -->
+        <!-- 2. تفاصيل المبادرة التفصيلية -->
         <div class="card">
             <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
             <div class="initiative-details-grid">
@@ -372,7 +371,7 @@
             </div>
         </div>
 
-        <!-- قسم الرسوم البيانية والملاحظات والتنبيهات -->
+        <!-- 3. الرسوم البيانية والملاحظات والتنبيهات -->
         <div class="grid-container">
             <div class="left-column">
                 <div class="card">
@@ -420,14 +419,12 @@
         </div>
     </main>
 
-    <!-- سكريبت الرسوم البيانية وجلب الاسم والفلترة -->
+    <!-- سكريبت جافاسكريبت لجلب اسم المستخدم المسجل والرسوم البيانية والفلترة -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('username') || localStorage.getItem('user_name') || localStorage.getItem('name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('userNameDisplay').textContent = savedName;
-            } else {
-                document.getElementById('userNameDisplay').textContent = "لين";
             }
         });
 
