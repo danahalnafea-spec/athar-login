@@ -5,213 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المبادرات - منصة أفق</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <style>
-    body {
-        background-color: #f4f6f8;
-        margin: 0;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        display: flex;
-        direction: rtl;
-    }
-
-    /* القائمة الجانبية المطابقة لمنصة أثر */
-    .sidebar-wrapper {
-        position: fixed;
-        right: 0;
-        top: 0;
-        width: 240px;
-        height: 100vh;
-        background: #0d3b38;
-        color: #ffffff;
-        box-shadow: -2px 0 10px rgba(0,0,0,0.1);
-        padding: 20px 15px;
-        box-sizing: border-box;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-
-    .sidebar-logo {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .sidebar-logo img {
-        max-width: 120px;
-        height: auto;
-        display: block;
-        margin: 0 auto 10px;
-    }
-
-    .sidebar-menu {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .sidebar-menu li {
-        width: 100%;
-        margin: 0;
-    }
-
-    .sidebar-menu a {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 12px 15px;
-        color: #cbd5e1;
-        text-decoration: none;
-        border-radius: 8px;
-        font-size: 14px;
-        font-weight: 500;
-        white-space: nowrap;
-        text-align: right;
-    }
-
-    .sidebar-menu a.active, .sidebar-menu a:hover {
-        background: #145a55;
-        color: #ffffff;
-        font-weight: bold;
-    }
-
-    .logout-btn {
-        background: #fee2e2;
-        color: #991b1b;
-        text-align: center;
-        padding: 10px;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: bold;
-        font-size: 13px;
-        display: block;
-        margin-top: 10px;
-    }
-
-    /* المحتوى الرئيسي */
-    .main-content-area {
-        flex: 1;
-        padding: 25px;
-        margin-right: 240px;
-    }
-
-    .top-dashboard-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        background: #ffffff;
-        padding: 15px 25px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.04);
-    }
-
-    .welcome-user {
-        font-size: 18px;
-        font-weight: bold;
-        color: #0d3b38;
-    }
-
-    /* بطاقات الإحصائيات العلوية المطابقة للرئيسية */
-    .stats-grid-top {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-        gap: 12px;
-        margin-bottom: 20px;
-    }
-
-    .stat-card-top {
-        background: #ffffff;
-        padding: 15px 10px;
-        border-radius: 10px;
-        text-align: center;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-        border-right: 4px solid #0d3b38;
-    }
-
-    .stat-card-top span {
-        display: block;
-        font-size: 12px;
-        color: #64748b;
-        margin-bottom: 5px;
-    }
-
-    .stat-card-top strong {
-        font-size: 16px;
-        color: #0f172a;
-    }
-
-    .card {
-        background: #ffffff;
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.04);
-        margin-bottom: 20px;
-    }
-
-    .card h3 {
-        margin-top: 0;
-        color: #0d3b38;
-        border-bottom: 2px solid #0d3b38;
-        padding-bottom: 8px;
-        font-size: 16px;
-    }
-
-    .search-filter-section {
-        display: flex;
-        gap: 12px;
-        margin-top: 10px;
-    }
-
-    .search-input {
-        flex: 1;
-        padding: 10px 15px;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        font-size: 14px;
-        outline: none;
-    }
-
-    .filter-select {
-        padding: 10px 15px;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        font-size: 14px;
-        background: white;
-        cursor: pointer;
-    }
-
-    .initiative-details-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 15px;
-        margin-top: 15px;
-    }
-
-    .detail-box {
-        background: #f8fafc;
-        border: 1px solid #e2e8f0;
-        border-radius: 8px;
-        padding: 15px;
-    }
-
-    .detail-box h4 {
-        margin: 0 0 8px 0;
-        color: #0d3b38;
-        font-size: 14px;
-    }
-
-    .detail-box p {
-        margin: 0;
-        font-size: 13px;
-        color: #475569;
-        line-height: 1.5;
-    }
-</style>
+    <style>
         body {
             background-color: #f4f6f8;
             margin: 0;
@@ -220,7 +14,7 @@
             direction: rtl;
         }
 
-        /* القائمة الجانبية بنمط منصة أثر */
+        /* القائمة الجانبية المطابقة لمنصة أثر ومنسقة بدون تداخل */
         .sidebar-wrapper {
             position: fixed;
             right: 0;
@@ -255,22 +49,26 @@
             padding: 0;
             margin: 0;
             flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
         }
 
         .sidebar-menu li {
-            margin-bottom: 8px;
+            width: 100%;
+            margin: 0;
         }
 
         .sidebar-menu a {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            display: block;
             padding: 12px 15px;
             color: #cbd5e1;
             text-decoration: none;
             border-radius: 8px;
             font-size: 14px;
             font-weight: 500;
+            white-space: nowrap;
+            text-align: right;
         }
 
         .sidebar-menu a.active, .sidebar-menu a:hover {
@@ -292,7 +90,7 @@
             margin-top: 10px;
         }
 
-        /* محتوى الصفحة الرئيسي */
+        /* المحتوى الرئيسي */
         .main-content-area {
             flex: 1;
             padding: 25px;
@@ -316,7 +114,7 @@
             color: #0d3b38;
         }
 
-        /* بطاقات الإحصائيات العلوية */
+        /* بطاقات الإحصائيات العلوية المطابقة للرئيسية */
         .stats-grid-top {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -385,61 +183,6 @@
             cursor: pointer;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
-        }
-
-        .chart-container {
-            position: relative;
-            height: 250px;
-            width: 100%;
-        }
-
-        .doughnut-flex {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .doughnut-legend {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            width: 50%;
-        }
-
-        .doughnut-legend li {
-            font-size: 13px;
-            margin-bottom: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .legend-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-left: 6px;
-        }
-
-        .notes-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .notes-list li {
-            padding: 10px;
-            border-bottom: 1px solid #e2e8f0;
-            font-size: 13px;
-            color: #334155;
-        }
-
         .initiative-details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -466,12 +209,6 @@
             color: #475569;
             line-height: 1.5;
         }
-
-        @media (max-width: 900px) {
-            .main-content-area { margin-right: 0; }
-            .grid-container { grid-template-columns: 1fr; }
-            .sidebar-wrapper { transform: translateX(100%); }
-        }
     </style>
 </head>
 <body>
@@ -497,7 +234,6 @@
 
     <!-- المحتوى الرئيسي -->
     <main class="main-content-area">
-        <!-- الهيدر مع الترحيب التلقائي باسم المستخدم المسجل -->
         <header class="top-dashboard-header">
             <h2>مبادرة أفق - عمادة القبول والتسجيل</h2>
             <div class="welcome-user">
@@ -533,7 +269,7 @@
             </div>
         </div>
 
-        <!-- 1. شريط البحث والفلترة في أعلى شيء كما طلبتِ -->
+        <!-- شريط البحث والفلترة في الأعلى -->
         <div class="card">
             <h3>البحث والتصفية في المبادرات</h3>
             <div class="search-filter-section">
@@ -546,7 +282,7 @@
             </div>
         </div>
 
-        <!-- 2. تفاصيل المبادرة التفصيلية -->
+        <!-- بيانات وتفاصيل المبادرة -->
         <div class="card">
             <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
             <div class="initiative-details-grid">
@@ -575,100 +311,13 @@
                 </div>
             </div>
         </div>
-
-        <!-- 3. الرسوم البيانية والملاحظات والتنبيهات -->
-        <div class="grid-container">
-            <div class="left-column">
-                <div class="card">
-                    <h3>إحصائيات المبادرات والتفاعل</h3>
-                    <div class="chart-container">
-                        <canvas id="initiativesChart"></canvas>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h3>توزيع المبادرات حسب مسارات أفق</h3>
-                    <div class="doughnut-flex">
-                        <div class="chart-container" style="width: 45%;">
-                            <canvas id="progressChart"></canvas>
-                        </div>
-                        <ul class="doughnut-legend">
-                            <li><span><span class="legend-dot" style="background: #0d3b38;"></span>مسار القبول والتسجيل</span> <strong>40%</strong></li>
-                            <li><span><span class="legend-dot" style="background: #145a55;"></span>مسار الإرشاد الأكاديمي</span> <strong>30%</strong></li>
-                            <li><span><span class="legend-dot" style="background: #2dd4bf;"></span>مسار الدعم والخدمات</span> <strong>20%</strong></li>
-                            <li><span><span class="legend-dot" style="background: #a7f3d0;"></span>مسار التقييم والتطوير</span> <strong>10%</strong></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <div class="right-column">
-                <div class="card">
-                    <h3>الملاحظات والتوجيهات</h3>
-                    <ul class="notes-list">
-                        <li>📌 متابعة تقارير القبول والتسجيل للفصل الدراسي الحالي.</li>
-                        <li>📌 مراجعة إحصائيات المبادرات واعتماد التوصيات الأخيرة.</li>
-                        <li>📌 تحديث بيانات الطلاب وتفعيل ورش العمل المقررة.</li>
-                        <li>📌 عقد اجتماع فريق التطوير لمبادرة أفق الأسبوع القادم.</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <h3>تنبيهات سريعة</h3>
-                    <ul class="notes-list">
-                        <li>🔔 الموعد النهائي لرفع التقارير: 25 أكتوبر.</li>
-                        <li>🔔 اكتمال تسجيل 85% من الطلاب المستهدفين.</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
     </main>
 
-    <!-- سكريبت جافاسكريبت لجلب اسم المستخدم المسجل والرسوم البيانية والفلترة -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('username') || localStorage.getItem('user_name') || localStorage.getItem('name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('userNameDisplay').textContent = savedName;
-            }
-        });
-
-        // رسم بياني 1: المبادرات والتفاعل
-        const ctx1 = document.getElementById('initiativesChart').getContext('2d');
-        new Chart(ctx1, {
-            type: 'bar',
-            data: {
-                labels: ['مبادرة القبول', 'مبادرة الإرشاد', 'تطوير التسجيل', 'الدعم الأكاديمي'],
-                datasets: [{
-                    label: 'عدد المشاركين',
-                    data: [120, 190, 300, 250],
-                    backgroundColor: 'rgba(13, 59, 56, 0.8)',
-                    borderColor: '#0d3b38',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: { y: { beginAtZero: true } }
-            }
-        });
-
-        // رسم بياني 2: توزيع المبادرات
-        const ctx2 = document.getElementById('progressChart').getContext('2d');
-        new Chart(ctx2, {
-            type: 'doughnut',
-            data: {
-                labels: ['مسار القبول والتسجيل', 'مسار الإرشاد الأكاديمي', 'مسار الدعم والخدمات', 'مسار التقييم والتطوير'],
-                datasets: [{
-                    data: [40, 30, 20, 10],
-                    backgroundColor: ['#0d3b38', '#145a55', '#2dd4bf', '#a7f3d0']
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: { legend: { display: false } }
             }
         });
 
