@@ -325,6 +325,20 @@
             </div>
         </header>
 
+        
+        <!-- 1. شريط البحث والفلترة بأعلى الصفحة -->
+        <div class="card">
+            <h3>البحث والتصفية في المبادرات</h3>
+            <div class="search-filter-section">
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن المبادرة، الهدف، الأنشطة، أو المؤشرات..." onkeyup="filterInitiatives()">
+                <select id="filterSelect" class="filter-select" onchange="filterInitiatives()">
+                    <option value="all">جميع المجالات</option>
+                    <option value="education">التعليم والتدريب</option>
+                    <option value="economy">التمكين الاقتصادي</option>
+                </select>
+            </div>
+        </div>
+
         <!-- بطاقات الإحصائيات العلوية بالكامل -->
         <div class="stats-grid-top">
             <div class="stat-card-top">
@@ -350,19 +364,6 @@
             <div class="stat-card-top">
                 <span>العائد الاقتصادي</span>
                 <strong>180,000 ر.س</strong>
-            </div>
-        </div>
-
-        <!-- 1. شريط البحث والفلترة بأعلى الصفحة -->
-        <div class="card">
-            <h3>البحث والتصفية في المبادرات</h3>
-            <div class="search-filter-section">
-                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن المبادرة، الهدف، الأنشطة، أو المؤشرات..." onkeyup="filterInitiatives()">
-                <select id="filterSelect" class="filter-select" onchange="filterInitiatives()">
-                    <option value="all">جميع المجالات</option>
-                    <option value="education">التعليم والتدريب</option>
-                    <option value="economy">التمكين الاقتصادي</option>
-                </select>
             </div>
         </div>
 
