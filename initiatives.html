@@ -5,148 +5,194 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>المبادرات - منصة أفق</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="style.css">
     <style>
-        /* ضبط هيكل الصفحة بالكامل ليطابق لوحة التحكم تماماً وتثبيت القائمة يميناً */
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100vh;
-            background-color: #f8f9fa;
-            font-family: Arial, sans-serif;
-            overflow-x: hidden;
-        }
-
-        .page-layout {
-            display: flex;
+        body {
+            background-color: #f7f7ff;
+            background-image: url('bg-dashboard.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             width: 100vw;
-            height: 100vh;
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            direction: rtl;
         }
 
-        /* القائمة الجانبية الثابتة على اليمين */
-        .sidebar {
-            width: 260px;
-            background-color: #1b4332;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
+        /* القائمة الجانبية الثابتة والمضبوطة تماماً */
+        .sidebar-wrapper {
             position: fixed;
             right: 0;
             top: 0;
-            z-index: 100;
+            width: 230px;
+            height: 100vh;
+            background: #0d3b38; /* اللون الزيتي الخاص بالمنصة */
+            color: #ffffff;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.15);
+            padding: 20px 15px;
+            box-sizing: border-box;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
-        .sidebar .logo-side {
-            padding: 20px;
+        .sidebar-logo {
             text-align: center;
-            border-bottom: 1px solid #2d6a4f;
+            margin-bottom: 25px;
         }
 
-        .sidebar .logo-side img {
-            width: 140px;
+        .sidebar-logo img {
+            max-width: 130px;
             height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
         .sidebar-menu {
             list-style: none;
-            padding: 20px 0;
+            padding: 0;
             margin: 0;
-            flex: 1;
-        }
-
-        .sidebar-menu li a {
-            display: block;
-            padding: 14px 25px;
-            color: #e2e8f0;
-            text-decoration: none;
-            font-size: 15px;
-            transition: 0.3s;
-        }
-
-        .sidebar-menu li.active a, .sidebar-menu li a:hover {
-            background-color: #2d6a4f;
-            color: white;
-            border-right: 4px solid #52b788;
-        }
-
-        /* المحتوى الرئيسي وترك مساحة للقائمة الجانبية */
-        .main-content {
-            margin-right: 260px;
-            flex: 1;
+            flex-grow: 1;
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            overflow-y: auto;
+            gap: 6px;
         }
 
-        .navbar {
-            height: 70px;
-            background: white;
-            border-bottom: 1px solid #e2e8f0;
+        .sidebar-menu li {
+            width: 100%;
+            margin: 0;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 11px 16px;
+            color: #e2e8f0;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            text-align: right;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-menu a.active, .sidebar-menu a:hover {
+            background: #145a55;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .logout-btn {
+            background: #fee2e2;
+            color: #991b1b;
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 13px;
+            display: block;
+        }
+
+        /* المنطقة الرئيسية للمحتوى */
+        .main-content-area {
+            flex: 1;
+            padding: 25px;
+            margin-right: 230px;
+        }
+
+        .header-section {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
-        .user-info {
+        .welcome-user {
+            font-size: 18px;
             font-weight: bold;
-            color: #1b4332;
-            font-size: 16px;
-        }
-
-        .content-body {
-            padding: 30px;
-            background-color: #f8f9fa;
+            color: #0d3b38;
         }
 
         /* بطاقات الإحصائيات العلوية */
         .stats-grid-top {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin-bottom: 20px;
         }
 
         .stat-card-top {
-            background: #ffffff;
-            padding: 15px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 10px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-            border-right: 4px solid #1b4332;
+            border-right: 4px solid #0d3b38;
         }
 
         .stat-card-top span {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
             margin-bottom: 5px;
         }
 
         .stat-card-top strong {
-            font-size: 17px;
+            font-size: 16px;
             color: #0f172a;
         }
 
-        .card-box {
-            background: #ffffff;
+        .card {
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             margin-bottom: 20px;
         }
 
-        .card-box h3 {
+        .card h3 {
             margin-top: 0;
-            color: #1b4332;
-            border-bottom: 2px solid #1b4332;
+            color: #0d3b38;
+            border-bottom: 2px solid #0d3b38;
             padding-bottom: 8px;
             font-size: 16px;
         }
 
+        /* شريط البحث والفلترة */
+        .search-filter-section {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .filter-select {
+            padding: 10px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        /* شبكة التفاصيل */
         .initiative-details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -163,7 +209,7 @@
 
         .detail-box h4 {
             margin: 0 0 8px 0;
-            color: #1b4332;
+            color: #0d3b38;
             font-size: 14px;
         }
 
@@ -174,7 +220,7 @@
             line-height: 1.5;
         }
 
-        /* تنسيق الرسوم البيانية */
+        /* مخطط الشبكة للرسوم البيانية والملاحظات */
         .grid-container {
             display: grid;
             grid-template-columns: 2fr 1fr;
@@ -183,8 +229,38 @@
 
         .chart-container {
             position: relative;
-            height: 250px;
+            height: 230px;
             width: 100%;
+        }
+
+        .doughnut-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .doughnut-legend {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 50%;
+        }
+
+        .doughnut-legend li {
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 6px;
         }
 
         .notes-list {
@@ -199,19 +275,25 @@
             font-size: 13px;
             color: #334155;
         }
+
+        @media (max-width: 900px) {
+            .main-content-area { margin-right: 0; }
+            .grid-container { grid-template-columns: 1fr; }
+            .sidebar-wrapper { transform: translateX(100%); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="page-layout">
-        <!-- القائمة الجانبية الثابتة -->
-        <div class="sidebar">
-            <div class="logo-side">
-                <img src="logo.png" alt="شعار منصة أثر">
+    <!-- القائمة الجانبية باللون الزيتي والتنسيق المستقيم -->
+    <aside class="sidebar-wrapper">
+        <div>
+            <div class="sidebar-logo">
+                <img src="logo.png" alt="شعار أثر">
             </div>
             <ul class="sidebar-menu">
                 <li><a href="index.html">الرئيسية</a></li>
-                <li class="active"><a href="initiatives.html">المبادرات</a></li>
+                <li><a href="initiatives.html" class="active">المبادرات</a></li>
                 <li><a href="#">المؤشرات</a></li>
                 <li><a href="#">البيانات</a></li>
                 <li><a href="#">التقارير</a></li>
@@ -219,129 +301,153 @@
                 <li><a href="#">الإعدادات</a></li>
             </ul>
         </div>
+        <a href="index.html" onclick="logout()" class="logout-btn">تسجيل الخروج</a>
+    </aside>
 
-        <!-- المحتوى الرئيسي -->
-        <div class="main-content">
-            <div class="navbar">
-                <div class="user-info" id="displayedUserName">مرحباً، زائر</div>
-                <div>
-                    <a href="index.html" onclick="logout()" style="color: #d90429; text-decoration: none; font-weight: bold; font-size: 14px; cursor: pointer;">تسجيل خروج</a>
-                </div>
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content-area">
+        <!-- الهيدر مع الترحيب التلقائي باسم المستخدم المسجل -->
+        <header class="header-section">
+            <h2>مبادرة أفق - عمادة القبول والتسجيل</h2>
+            <div class="welcome-user">
+                مرحباً، <span id="userNameDisplay">زائر</span>
             </div>
+        </header>
 
-            <div class="content-body">
-                <!-- بطاقات الإحصائيات العلوية -->
-                <div class="stats-grid-top">
-                    <div class="stat-card-top">
-                        <span>عدد المتطوعين</span>
-                        <strong>120</strong>
-                    </div>
-                    <div class="stat-card-top">
-                        <span>ساعات التطوع</span>
-                        <strong>960 ساعة</strong>
-                    </div>
-                    <div class="stat-card-top">
-                        <span>المستفيدين</span>
-                        <strong>5,400</strong>
-                    </div>
-                    <div class="stat-card-top">
-                        <span>الفرص التطوعية</span>
-                        <strong>15 فرصة</strong>
-                    </div>
-                    <div class="stat-card-top">
-                        <span>مؤشر الرضا</span>
-                        <strong>95.4%</strong>
-                    </div>
-                    <div class="stat-card-top">
-                        <span>العائد الاقتصادي</span>
-                        <strong>180,000 ر.س</strong>
-                    </div>
-                </div>
-
-                <!-- البحث والتصفية في الأعلى -->
-                <div class="card-box">
-                    <h3>البحث والتصفية في المبادرات</h3>
-                    <div style="display: flex; gap: 12px; margin-top: 10px;">
-                        <input type="text" id="searchInput" style="flex: 1; padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px;" placeholder="ابحث عن المبادرة، الهدف، الأنشطة، أو المؤشرات..." onkeyup="filterInitiatives()">
-                        <select id="filterSelect" style="padding: 10px 15px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; background: white;" onchange="filterInitiatives()">
-                            <option value="all">جميع المجالات</option>
-                            <option value="education">التعليم والتدريب</option>
-                            <option value="economy">التمكين الاقتصادي</option>
-                        </select>
-                    </div>
-                </div>
-
-                <!-- بيانات وتفاصيل المبادرة -->
-                <div class="card-box">
-                    <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
-                    <div class="initiative-details-grid">
-                        <div class="detail-box" data-category="education">
-                            <h4>بيانات المبادرة والأهداف</h4>
-                            <p><strong>اسم المبادرة:</strong> أفق للتحول الرقمي</p>
-                            <p><strong>الأهداف:</strong> تسهيل الخدمات الأكاديمية ورفع مستوى جودة الدعم الطلابي.</p>
-                        </div>
-
-                        <div class="detail-box" data-category="education">
-                            <h4>الأنشطة والمستفيدون</h4>
-                            <p><strong>الأنشطة:</strong> ورش عمل تفاعلية، إرشادات تسجيل المواد.</p>
-                            <p><strong>المستفيدون:</strong> طلاب وطالبات الجامعة (المستهدف: 5,400).</p>
-                        </div>
-
-                        <div class="detail-box" data-category="economy">
-                            <h4>المؤشرات والنتائج</h4>
-                            <p><strong>نوع المؤشر:</strong> سرعة إنجاز الطلبات.</p>
-                            <p><strong>النتيجة الحالية:</strong> 95.4% نسبة رضا عالية.</p>
-                        </div>
-
-                        <div class="detail-box" data-category="economy">
-                            <h4>الأثر والأدلة</h4>
-                            <p><strong>مستوى الأثر:</strong> 4.8 / 5</p>
-                            <p><strong>الأدلة:</strong> تقارير العمادة لعام 2026.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- الرسوم البيانية والملاحظات -->
-                <div class="grid-container">
-                    <div class="left-column">
-                        <div class="card-box">
-                            <h3>إحصائيات المبادرات والتفاعل</h3>
-                            <div class="chart-container">
-                                <canvas id="initiativesChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="right-column">
-                        <div class="card-box">
-                            <h3>الملاحظات والتوجيهات</h3>
-                            <ul class="notes-list">
-                                <li>📌 متابعة تقارير القبول والتسجيل للفصل الدراسي الحالي.</li>
-                                <li>📌 مراجعة إحصائيات المبادرات واعتماد التوصيات.</li>
-                                <li>📌 تحديث بيانات الطلاب وتفعيل ورش العمل.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
+        <!-- بطاقات الإحصائيات العلوية بالكامل -->
+        <div class="stats-grid-top">
+            <div class="stat-card-top">
+                <span>عدد المتطوعين</span>
+                <strong>120</strong>
+            </div>
+            <div class="stat-card-top">
+                <span>ساعات التطوع</span>
+                <strong>960 ساعة</strong>
+            </div>
+            <div class="stat-card-top">
+                <span>المستفيدين</span>
+                <strong>5,400</strong>
+            </div>
+            <div class="stat-card-top">
+                <span>الفرص التطوعية</span>
+                <strong>15 فرصة</strong>
+            </div>
+            <div class="stat-card-top">
+                <span>مؤشر الرضا</span>
+                <strong>95.4%</strong>
+            </div>
+            <div class="stat-card-top">
+                <span>العائد الاقتصادي</span>
+                <strong>180,000 ر.س</strong>
             </div>
         </div>
-    </div>
 
-    <!-- السكريبت (نقل الاسم، الرسوم، والبحث) -->
+        <!-- 1. شريط البحث والفلترة بأعلى الصفحة -->
+        <div class="card">
+            <h3>البحث والتصفية في المبادرات</h3>
+            <div class="search-filter-section">
+                <input type="text" id="searchInput" class="search-input" placeholder="ابحث عن المبادرة، الهدف، الأنشطة، أو المؤشرات..." onkeyup="filterInitiatives()">
+                <select id="filterSelect" class="filter-select" onchange="filterInitiatives()">
+                    <option value="all">جميع المجالات</option>
+                    <option value="education">التعليم والتدريب</option>
+                    <option value="economy">التمكين الاقتصادي</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- 2. بيانات وتفاصيل المبادرة التفصيلية (مبادرة أفق) -->
+        <div class="card">
+            <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
+            <div class="initiative-details-grid">
+                <div class="detail-box" data-category="education">
+                    <h4>بيانات المبادرة والأهداف</h4>
+                    <p><strong>اسم المبادرة:</strong> أفق للتحول الرقمي</p>
+                    <p><strong>الأهداف:</strong> تسهيل الخدمات الأكاديمية ورفع مستوى جودة الدعم الطلابي.</p>
+                </div>
+
+                <div class="detail-box" data-category="education">
+                    <h4>الأنشطة والمستفيدون</h4>
+                    <p><strong>الأنشطة:</strong> ورش عمل تفاعلية، إرشادات تسجيل المواد.</p>
+                    <p><strong>المستفيدون:</strong> طلاب وطالبات الجامعة (المستهدف: 5,400).</p>
+                </div>
+
+                <div class="detail-box" data-category="economy">
+                    <h4>المؤشرات والنتائج</h4>
+                    <p><strong>نوع المؤشر:</strong> سرعة إنجاز الطلبات.</p>
+                    <p><strong>النتيجة الحالية:</strong> 95.4% نسبة رضا عالية.</p>
+                </div>
+
+                <div class="detail-box" data-category="economy">
+                    <h4>الأثر والأدلة</h4>
+                    <p><strong>مستوى الأثر:</strong> 4.8 / 5</p>
+                    <p><strong>الأدلة:</strong> تقارير العمادة لعام 2026.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. الرسوم البيانية الكاملة والملاحظات والتنبيهات -->
+        <div class="grid-container">
+            <div class="left-column">
+                <div class="card">
+                    <h3>إحصائيات المبادرات والتفاعل</h3>
+                    <div class="chart-container">
+                        <canvas id="initiativesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>توزيع المبادرات حسب مسارات أفق</h3>
+                    <div class="doughnut-flex">
+                        <div class="chart-container" style="width: 45%;">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                        <ul class="doughnut-legend">
+                            <li><span><span class="legend-dot" style="background: #0d3b38;"></span>مسار القبول والتسجيل</span> <strong>40%</strong></li>
+                            <li><span><span class="legend-dot" style="background: #145a55;"></span>مسار الإرشاد الأكاديمي</span> <strong>30%</strong></li>
+                            <li><span><span class="legend-dot" style="background: #2dd4bf;"></span>مسار الدعم والخدمات</span> <strong>20%</strong></li>
+                            <li><span><span class="legend-dot" style="background: #a7f3d0;"></span>مسار التقييم والتطوير</span> <strong>10%</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card">
+                    <h3>الملاحظات والتوجيهات</h3>
+                    <ul class="notes-list">
+                        <li>📌 متابعة تقارير القبول والتسجيل للفصل الدراسي الحالي.</li>
+                        <li>📌 مراجعة إحصائيات المبادرات واعتماد التوصيات الأخيرة.</li>
+                        <li>📌 تحديث بيانات الطلاب وتفعيل ورش العمل المقررة.</li>
+                        <li>📌 عقد اجتماع فريق التطوير لمبادرة أفق الأسبوع القادم.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>تنبيهات سريعة</h3>
+                    <ul class="notes-list">
+                        <li>🔔 الموعد النهائي لرفع التقارير: 25 أكتوبر.</li>
+                        <li>🔔 اكتمال تسجيل 85% من الطلاب المستهدفين.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- سكريبت جافاسكريبت المطور للجلب المباشر والتصفية والرسوم -->
     <script>
-        window.onload = function() {
-            const savedUser = localStorage.getItem('athalUser') || localStorage.getItem('username');
-            if (savedUser && savedUser.trim() !== "") {
-                document.getElementById('displayedUserName').innerText = "مرحباً، " + savedUser;
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedName = localStorage.getItem('athalUser') || localStorage.getItem('username') || localStorage.getItem('user_name') || localStorage.getItem('name');
+            if (savedName && savedName.trim() !== "") {
+                document.getElementById('userNameDisplay').textContent = savedName;
             }
-        };
+        });
 
         function logout() {
             localStorage.removeItem('athalUser');
+            localStorage.removeItem('username');
         }
 
-        // رسم بياني 1
+        // رسم بياني 1: المبادرات والتفاعل
         const ctx1 = document.getElementById('initiativesChart').getContext('2d');
         new Chart(ctx1, {
             type: 'bar',
@@ -350,8 +456,8 @@
                 datasets: [{
                     label: 'عدد المشاركين',
                     data: [120, 190, 300, 250],
-                    backgroundColor: 'rgba(27, 67, 50, 0.8)',
-                    borderColor: '#1b4332',
+                    backgroundColor: 'rgba(13, 59, 56, 0.8)',
+                    borderColor: '#0d3b38',
                     borderWidth: 1
                 }]
             },
@@ -359,6 +465,24 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // رسم بياني 2: توزيع المبادرات
+        const ctx2 = document.getElementById('progressChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['مسار القبول والتسجيل', 'مسار الإرشاد الأكاديمي', 'مسار الدعم والخدمات', 'مسار التقييم والتطوير'],
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: ['#0d3b38', '#145a55', '#2dd4bf', '#a7f3d0']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
             }
         });
 
