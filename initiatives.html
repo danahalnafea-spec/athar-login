@@ -3,27 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة المبادرات - أفق</title>
+    <title>المبادرات - منصة أفق</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #f7f7ff;
+            background-image: url('bg-dashboard.png');
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            direction: rtl;
+        }
+
+        .main-content-area {
+            flex: 1;
+            padding: 20px;
+            margin-right: 220px;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .user-info {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: #2c3e50;
+            border-bottom: 2px solid #6c5ce7;
+            padding-bottom: 8px;
+        }
+
+        .notes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notes-list li {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .notes-list li:last-child {
+            border-bottom: none;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 280px;
+            width: 100%;
+        }
+
+        /* Sidebar Styles */
+        .sidebar-wrapper {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 200px;
+            height: 100vh;
+            background: #ffffff;
+            box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+            padding: 20px 10px;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .sidebar-logo img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 20px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 12px;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 10px 15px;
+            color: #333;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .sidebar-menu a.active, .sidebar-menu a:hover {
+            background: #6c5ce7;
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .main-content-area {
+                margin-right: 0;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar-wrapper {
+                transform: translateX(100%);
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- الهيدر والشريط العلوي -->
-    <header class="top-bar-container">
-        <div class="top-bar">
-            <button id="sidebarToggleBtn" class="sidebar-toggle-btn">
-                <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
-            </button>
-            <div class="welcome-title-wrapper">
-                <h1 class="welcome-center-section">مبادرة أفق</h1>
-            </div>
-        </div>
-    </header>
 
-    <!-- القائمة الجانبية -->
+    <!-- الشريط الجانبي -->
     <aside class="sidebar-wrapper" id="sidebarWrapper">
         <div class="sidebar-logo">
-            <img src="logo.png" alt="أفق">
+            <img src="logo.png" alt="شعار أفق">
         </div>
         <ul class="sidebar-menu">
             <li><a href="index.html">الرئيسية</a></li>
@@ -32,12 +164,102 @@
         </ul>
     </aside>
 
-    <!-- المحتوى الرئيسي للمبادرات -->
+    <!-- المحتوى الرئيسي -->
     <main class="main-content-area">
-        <section class="content-container">
-            <h2>قائمة المبادرات</h2>
-            <p>هنا يمكنك عرض وإدارة جميع المبادرات الخاصة ببرنامج أفق.</p>
-        </section>
+        <!-- الهيدر واسم المستخدم -->
+        <header class="header-section">
+            <h2>مبادرة أفق - عمادة القبول والتسجيل</h2>
+            <div class="user-info">
+                أهلاً بك، <span>د. مزنة</span>
+            </div>
+        </header>
+
+        <div class="grid-container">
+            <!-- قسم الرسوم البيانية والإحصائيات -->
+            <div class="left-column">
+                <div class="card">
+                    <h3>إحصائيات المبادرات والتفاعل</h3>
+                    <div class="chart-container">
+                        <canvas id="initiativesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>نسبة الإنجاز حسب الأقسام</h3>
+                    <div class="chart-container">
+                        <canvas id="progressChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- قسم الملاحظات والتنبيهات -->
+            <div class="right-column">
+                <div class="card">
+                    <h3>الملاحظات والتوجيهات</h3>
+                    <ul class="notes-list">
+                        <li>📌 متابعة تقارير القبول والتسجيل للفصل الدراسي الحالي.</li>
+                        <li>📌 مراجعة إحصائيات المبادرات واعتماد التوصيات الأخيرة.</li>
+                        <li>📌 تحديث بيانات الطلاب وتفعيل ورش العمل المقررة.</li>
+                        <li>📌 عقد اجتماع الدكتورة مزنة مع فريق التطوير الأسبوع القادم.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>تنبيهات سريعة</h3>
+                    <ul class="notes-list">
+                        <li>🔔 الموعد النهائي لرفع التقارير: 25 أكتوبر.</li>
+                        <li>🔔 اكتمال تسجيل 85% من الطلاب المستهدفين.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </main>
+
+    <!-- سكريبت الرسوم البيانية -->
+    <script>
+        // رسم بياني 1: المبادرات والتفاعل
+        const ctx1 = document.getElementById('initiativesChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['مبادرة القبول', 'مبادرة الإرشاد', 'تطوير التسجيل', 'الدعم الأكاديمي'],
+                datasets: [{
+                    label: 'عدد المشاركين',
+                    data: [120, 190, 300, 250],
+                    backgroundColor: 'rgba(108, 92, 231, 0.7)',
+                    borderColor: 'rgba(108, 92, 231, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+
+        // رسم بياني 2: نسبة الإنجاز
+        const ctx2 = document.getElementById('progressChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['مكتملة', 'قيد التنفيذ', 'قيد المراجعة'],
+                datasets: [{
+                    data: [55, 30, 15],
+                    backgroundColor: [
+                        '#2ecc71',
+                        '#f1c40f',
+                        '#e74c3c'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    </script>
 </body>
 </html>
