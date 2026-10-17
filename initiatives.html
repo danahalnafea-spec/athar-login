@@ -67,19 +67,28 @@
             width: 100%;
             margin: 0;
         }
+/* تغميق ألوان النصوص في القائمة الجانبية */
+.sidebar-menu a {
+    display: block;
+    padding: 11px 16px;
+    color: #1e293b; /* لون أسود/رمادي داكن واضح جداً بدلاً من الباهت */
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600; /* زيادة سمك الخط لتوضيح الكلمات */
+    white-space: nowrap;
+    text-align: right;
+    transition: all 0.2s ease;
+}
 
-        .sidebar-menu a {
-            display: block;
-            padding: 11px 16px;
-            color: #e2e8f0;
-            text-decoration: none;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            white-space: nowrap;
-            text-align: right;
-            transition: all 0.2s ease;
-        }
+/* جعل الصفحة/القائمة التي تدخلين عليها باللون الكحلي الداكن مع نص أبيض واضح */
+.sidebar-menu a.active, .sidebar-menu a:hover {
+    background: #0f172a; /* لون كحلي داكن فخم (Dark Navy) */
+    color: #ffffff; /* لون الخط أبيض ناصع ليبرز بوضوح */
+    font-weight: bold;
+}
+
+    
 
         .sidebar-menu a.active, .sidebar-menu a:hover {
             background: #145a55;
