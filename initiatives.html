@@ -84,6 +84,7 @@
             font-weight: bold;
             font-size: 13px;
             display: block;
+            margin-top: 10px;
         }
 
         /* محتوى الصفحة الرئيسي */
@@ -93,7 +94,6 @@
             margin-right: 240px;
         }
 
-        /* الهيدر العلوي المطابق للوحة التحكم والصفحة الرئيسية */
         .top-dashboard-header {
             display: flex;
             justify-content: space-between;
@@ -111,17 +111,17 @@
             color: #0d3b38;
         }
 
-        /* بطاقات الإحصائيات العلوية (مثل عدد المتطوعين والساعات) */
+        /* بطاقات الإحصائيات العلوية */
         .stats-grid-top {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
             margin-bottom: 20px;
         }
 
         .stat-card-top {
             background: #ffffff;
-            padding: 15px;
+            padding: 15px 10px;
             border-radius: 10px;
             text-align: center;
             box-shadow: 0 2px 5px rgba(0,0,0,0.03);
@@ -130,13 +130,13 @@
 
         .stat-card-top span {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             color: #64748b;
             margin-bottom: 5px;
         }
 
         .stat-card-top strong {
-            font-size: 18px;
+            font-size: 16px;
             color: #0f172a;
         }
 
@@ -156,7 +156,6 @@
             font-size: 16px;
         }
 
-        /* البحث والفلترة */
         .search-filter-section {
             display: flex;
             gap: 12px;
@@ -181,7 +180,62 @@
             cursor: pointer;
         }
 
-        /* شبكة بيانات المبادرة التفصيلية */
+        /* تخطيط الشبكة للرسوم البيانية والمحتوى */
+        .grid-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .chart-container {
+            position: relative;
+            height: 250px;
+            width: 100%;
+        }
+
+        .doughnut-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .doughnut-legend {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            width: 50%;
+        }
+
+        .doughnut-legend li {
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 6px;
+        }
+
+        .notes-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .notes-list li {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
+            color: #334155;
+        }
+
         .initiative-details-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -211,13 +265,14 @@
 
         @media (max-width: 900px) {
             .main-content-area { margin-right: 0; }
+            .grid-container { grid-template-columns: 1fr; }
             .sidebar-wrapper { transform: translateX(100%); }
         }
     </style>
 </head>
 <body>
 
-    <!-- القائمة الجانبية المطابقة لنموذج أثر -->
+    <!-- القائمة الجانبية -->
     <aside class="sidebar-wrapper">
         <div>
             <div class="sidebar-logo">
@@ -238,27 +293,27 @@
 
     <!-- المحتوى الرئيسي -->
     <main class="main-content-area">
-        <!-- هيدر الصفحة الرئيسية مع اسم المستخدم الديناميكي -->
+        <!-- الهيدر مع الترحيب التلقائي باسم المستخدم -->
         <header class="top-dashboard-header">
             <h2>مبادرة أفق - عمادة القبول والتسجيل</h2>
             <div class="welcome-user">
-                مرحباً، <span id="userNameDisplay">زائر</span>
+                مرحباً، <span id="userNameDisplay">لين</span>
             </div>
         </header>
 
-        <!-- بطاقات الإحصائيات العلوية المطلوبة (عدد المتطوعين، الساعات، المستفيدون...) -->
+        <!-- بطاقات الإحصائيات العلوية -->
         <div class="stats-grid-top">
             <div class="stat-card-top">
                 <span>عدد المتطوعين</span>
-                <strong>120 متطوعاً</strong>
+                <strong>120</strong>
             </div>
             <div class="stat-card-top">
-                <span>عدد ساعات التطوع</span>
+                <span>ساعات التطوع</span>
                 <strong>960 ساعة</strong>
             </div>
             <div class="stat-card-top">
-                <span>عدد المستفيدين</span>
-                <strong>5,400 مستفيد</strong>
+                <span>المستفيدين</span>
+                <strong>5,400</strong>
             </div>
             <div class="stat-card-top">
                 <span>الفرص التطوعية</span>
@@ -287,7 +342,7 @@
             </div>
         </div>
 
-        <!-- بيانات وتفاصيل المبادرة التفصيلية في الأعلى -->
+        <!-- تفاصيل المبادرة التفصيلية في الأعلى -->
         <div class="card">
             <h3>بيانات وتفاصيل المبادرة (مبادرة أفق)</h3>
             <div class="initiative-details-grid">
@@ -316,16 +371,102 @@
                 </div>
             </div>
         </div>
+
+        <!-- قسم الرسوم البيانية والملاحظات والتنبيهات -->
+        <div class="grid-container">
+            <div class="left-column">
+                <div class="card">
+                    <h3>إحصائيات المبادرات والتفاعل</h3>
+                    <div class="chart-container">
+                        <canvas id="initiativesChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>توزيع المبادرات حسب مسارات أفق</h3>
+                    <div class="doughnut-flex">
+                        <div class="chart-container" style="width: 45%;">
+                            <canvas id="progressChart"></canvas>
+                        </div>
+                        <ul class="doughnut-legend">
+                            <li><span><span class="legend-dot" style="background: #0d3b38;"></span>مسار القبول والتسجيل</span> <strong>40%</strong></li>
+                            <li><span><span class="legend-dot" style="background: #145a55;"></span>مسار الإرشاد الأكاديمي</span> <strong>30%</strong></li>
+                            <li><span><span class="legend-dot" style="background: #2dd4bf;"></span>مسار الدعم والخدمات</span> <strong>20%</strong></li>
+                            <li><span><span class="legend-dot" style="background: #a7f3d0;"></span>مسار التقييم والتطوير</span> <strong>10%</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card">
+                    <h3>الملاحظات والتوجيهات</h3>
+                    <ul class="notes-list">
+                        <li>📌 متابعة تقارير القبول والتسجيل للفصل الدراسي الحالي.</li>
+                        <li>📌 مراجعة إحصائيات المبادرات واعتماد التوصيات الأخيرة.</li>
+                        <li>📌 تحديث بيانات الطلاب وتفعيل ورش العمل المقررة.</li>
+                        <li>📌 عقد اجتماع فريق التطوير لمبادرة أفق الأسبوع القادم.</li>
+                    </ul>
+                </div>
+
+                <div class="card">
+                    <h3>تنبيهات سريعة</h3>
+                    <ul class="notes-list">
+                        <li>🔔 الموعد النهائي لرفع التقارير: 25 أكتوبر.</li>
+                        <li>🔔 اكتمال تسجيل 85% من الطلاب المستهدفين.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
     </main>
 
-    <!-- سكريبت جافاسكريبت لجلب اسم المستخدم ديناميكياً والفلترة -->
+    <!-- سكريبت الرسوم البيانية وجلب الاسم والفلترة -->
     <script>
         window.addEventListener('DOMContentLoaded', () => {
             const savedName = localStorage.getItem('username') || localStorage.getItem('user_name') || localStorage.getItem('name');
             if (savedName && savedName.trim() !== "") {
                 document.getElementById('userNameDisplay').textContent = savedName;
             } else {
-                document.getElementById('userNameDisplay').textContent = "لين"; // اسم افتراضي
+                document.getElementById('userNameDisplay').textContent = "لين";
+            }
+        });
+
+        // رسم بياني 1: المبادرات والتفاعل
+        const ctx1 = document.getElementById('initiativesChart').getContext('2d');
+        new Chart(ctx1, {
+            type: 'bar',
+            data: {
+                labels: ['مبادرة القبول', 'مبادرة الإرشاد', 'تطوير التسجيل', 'الدعم الأكاديمي'],
+                datasets: [{
+                    label: 'عدد المشاركين',
+                    data: [120, 190, 300, 250],
+                    backgroundColor: 'rgba(13, 59, 56, 0.8)',
+                    borderColor: '#0d3b38',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+
+        // رسم بياني 2: توزيع المبادرات
+        const ctx2 = document.getElementById('progressChart').getContext('2d');
+        new Chart(ctx2, {
+            type: 'doughnut',
+            data: {
+                labels: ['مسار القبول والتسجيل', 'مسار الإرشاد الأكاديمي', 'مسار الدعم والخدمات', 'مسار التقييم والتطوير'],
+                datasets: [{
+                    data: [40, 30, 20, 10],
+                    backgroundColor: ['#0d3b38', '#145a55', '#2dd4bf', '#a7f3d0']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } }
             }
         });
 
