@@ -1,57 +1,193 @@
-<div class="space-y-4 max-w-4xl mx-auto p-4">
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>المبادرات - عمادة القبول والتسجيل</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Cairo', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
 
-  <!-- مبادرة 1 -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between hover:shadow-md transition">
-    <div class="space-y-2">
-      <!-- اسم المبادرة -->
-      <h3 class="text-xl font-bold text-gray-900">مبادرة سامقات</h3>
-      
-      <!-- المجال بلون مميز -->
-      <div>
-        <span class="inline-block bg-emerald-50 text-emerald-700 text-sm font-semibold px-3 py-1 rounded-md">
-          المجتمع والاستدامة
-        </span>
+  <div class="flex">
+    <!-- القائمة الجانبية (Sidebar) -->
+    <aside class="w-64 bg-white border-l border-gray-200 min-h-screen p-4 hidden md:block">
+      <div class="flex items-center justify-between mb-8 px-2">
+        <h1 class="text-xl font-bold text-gray-900">أثر</h1>
+      </div>
+      <ul class="space-y-2">
+        <li>
+          <a href="index.html" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
+            <i class="fa-solid fa-house"></i>
+            <span>الرئيسية</span>
+          </a>
+        </li>
+        <li>
+          <a href="initiatives.html" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg bg-indigo-50 text-indigo-600 font-semibold">
+            <i class="fa-solid fa-flag"></i>
+            <span>المبادرات</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>المؤشرات</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
+            <i class="fa-solid fa-chart-line"></i>
+            <span>البيانات</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
+            <i class="fa-solid fa-database"></i>
+            <span>التقارير</span>
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-1 p-6 md:p-8">
+      <header class="mb-6">
+        <h2 class="text-2xl font-bold text-gray-900">مبادرات الكلية التطبيقية</h2>
+        <p class="text-sm text-gray-500">استعراض المبادرات المجتمعية ومستوى الأثر</p>
+      </header>
+
+      <!-- شريط البحث والتصفية -->
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-lg text-sm outline-none">
+          <option value="">جميع المجالات</option>
+          <option value="المجتمع والاستدامة">المجتمع والاستدامة</option>
+          <option value="التعليم والتدريب المهني">التعليم والتدريب المهني</option>
+          <option value="التمكين الثقافي والبرمجي">التمكين الثقافي والبرمجي</option>
+        </select>
+        <input type="text" id="searchInput" placeholder="ابحث عن اسم المبادرة..." class="flex-1 p-3 bg-white border border-gray-200 rounded-lg text-sm outline-none">
       </div>
 
-      <!-- تفاصيل المستفيدين والأثر -->
-      <div class="pt-2 text-sm text-gray-600 space-y-1">
-        <p><span class="font-medium text-gray-800">المستفيدون:</span> 17</p>
-        <p><span class="font-medium text-gray-800">مستوى الأثر:</span> 5 / 5</p>
-      </div>
-    </div>
+      <!-- قائمة المبادرات (تحت بعضها البعض في سطر مستقل) -->
+      <div id="cardsContainer" class="space-y-4">
 
-    <!-- الحالة بلون مميز في الأسفل -->
-    <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
-      <span class="text-xs text-gray-500">الحالة</span>
-      <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">
-        مكتملة
-      </span>
-    </div>
+        <!-- مبادرة 1 -->
+        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="المجتمع والاستدامة">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة سامقات</h3>
+            <div class="mb-3">
+              <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-md">
+                المجتمع والاستدامة
+              </span>
+            </div>
+            <div class="text-sm text-gray-600 space-y-1 mb-4">
+              <p>المستفيدون: 17</p>
+              <p>مستوى الأثر: 5 / 5</p>
+            </div>
+          </div>
+          <div>
+            <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
+              مكتملة
+            </span>
+          </div>
+        </div>
+
+        <!-- مبادرة 2 -->
+        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="التمكين الثقافي والبرمجي">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة أفق التقنية</h3>
+            <div class="mb-3">
+              <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md">
+                التمكين الثقافي والبرمجي
+              </span>
+            </div>
+            <div class="text-sm text-gray-600 space-y-1 mb-4">
+              <p>المستفيدون: 240</p>
+              <p>مستوى الأثر: 4.6 / 5</p>
+            </div>
+          </div>
+          <div>
+            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
+              نشطة
+            </span>
+          </div>
+        </div>
+
+        <!-- مبادرة 3 -->
+        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="التعليم والتدريب المهني">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة محترف</h3>
+            <div class="mb-3">
+              <span class="inline-block bg-purple-50 text-purple-700 text-xs font-semibold px-2.5 py-1 rounded-md">
+                التعليم والتدريب المهني
+              </span>
+            </div>
+            <div class="text-sm text-gray-600 space-y-1 mb-4">
+              <p>المستفيدون: 568</p>
+              <p>مستوى الأثر: 4.1 / 5</p>
+            </div>
+          </div>
+          <div>
+            <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
+              مكتملة
+            </span>
+          </div>
+        </div>
+
+        <!-- مبادرة 4 -->
+        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="المجتمع والاستدامة">
+          <div>
+            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة الحرف اليدوية</h3>
+            <div class="mb-3">
+              <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-md">
+                المجتمع والاستدامة
+              </span>
+            </div>
+            <div class="text-sm text-gray-600 space-y-1 mb-4">
+              <p>المستفيدون: 95</p>
+              <p>مستوى الأثر: 4.3 / 5</p>
+            </div>
+          </div>
+          <div>
+            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
+              نشطة
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </main>
   </div>
 
-  <!-- مبادرة 2 -->
-  <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between hover:shadow-md transition">
-    <div class="space-y-2">
-      <h3 class="text-xl font-bold text-gray-900">مبادرة أفق التقنية</h3>
-      
-      <div>
-        <span class="inline-block bg-blue-50 text-blue-700 text-sm font-semibold px-3 py-1 rounded-md">
-          التمكين الثقافي والبرمجي
-        </span>
-      </div>
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const cards = document.querySelectorAll('.card');
 
-      <div class="pt-2 text-sm text-gray-600 space-y-1">
-        <p><span class="font-medium text-gray-800">المستفيدون:</span> 240</p>
-        <p><span class="font-medium text-gray-800">مستوى الأثر:</span> 4.6 / 5</p>
-      </div>
-    </div>
+    function filterCards() {
+      const searchTerm = searchInput.value.toLowerCase();
+      const selectedCategory = categoryFilter.value;
 
-    <div class="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between">
-      <span class="text-xs text-gray-500">الحالة</span>
-      <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
-        نشطة
-      </span>
-    </div>
-  </div>
+      cards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const category = card.getAttribute('data-category');
 
-</div>
+        const matchesSearch = title.includes(searchTerm);
+        const matchesCategory = !selectedCategory || category === selectedCategory;
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    searchInput.addEventListener('input', filterCards);
+    categoryFilter.addEventListener('change', filterCards);
+  </script>
+</body>
+</html>
