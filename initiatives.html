@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>المبادرات - عمادة القبول والتسجيل</title>
+  <title>المبادرات - منصة أثر</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -11,152 +11,144 @@
     body { font-family: 'Cairo', sans-serif; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-800 min-h-screen">
+<body class="bg-[#f8fafc] text-gray-800 min-h-screen">
 
   <div class="flex">
     <!-- القائمة الجانبية (Sidebar) -->
-    <aside class="w-64 bg-white border-l border-gray-200 min-h-screen p-4 hidden md:block">
+    <aside class="w-64 bg-white border-l border-gray-200 min-h-screen p-5 hidden md:block flex-shrink-0">
+      <!-- شعار أثر فوق القائمة الجانبية -->
       <div class="flex items-center justify-between mb-8 px-2">
-        <h1 class="text-xl font-bold text-gray-900">أثر</h1>
+        <div class="flex items-center gap-3">
+          <img src="logo.png" alt="شعار أثر" class="h-10 w-auto object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/40?text=أثر';">
+          <span class="text-2xl font-bold text-teal-800">أثر</span>
+        </div>
       </div>
-      <ul class="space-y-2">
-        <li>
-          <a href="index.html" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
-            <i class="fa-solid fa-house"></i>
-            <span>الرئيسية</span>
-          </a>
-        </li>
-        <li>
-          <a href="initiatives.html" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg bg-indigo-50 text-indigo-600 font-semibold">
-            <i class="fa-solid fa-flag"></i>
-            <span>المبادرات</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
-            <i class="fa-solid fa-folder-open"></i>
-            <span>المؤشرات</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
-            <i class="fa-solid fa-chart-line"></i>
-            <span>البيانات</span>
-          </a>
-        </li>
-        <li>
-          <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50">
-            <i class="fa-solid fa-database"></i>
-            <span>التقارير</span>
-          </a>
-        </li>
-      </ul>
+
+      <nav class="space-y-1">
+        <a href="index.html" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+          <i class="fa-solid fa-house text-lg"></i>
+          <span class="font-medium">الرئيسية</span>
+        </a>
+        <a href="initiatives.html" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl bg-teal-50 text-teal-700 font-bold transition">
+          <i class="fa-solid fa-flag text-lg"></i>
+          <span>المبادرات</span>
+        </a>
+        <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+          <i class="fa-solid fa-chart-pie text-lg"></i>
+          <span class="font-medium">المؤشرات</span>
+        </a>
+        <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+          <i class="fa-solid fa-database text-lg"></i>
+          <span class="font-medium">البيانات</span>
+        </a>
+        <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
+          <i class="fa-solid fa-file-lines text-lg"></i>
+          <span class="font-medium">التقارير</span>
+        </a>
+      </nav>
     </aside>
 
     <!-- المحتوى الرئيسي -->
-    <main class="flex-1 p-6 md:p-8">
-      <header class="mb-6">
-        <h2 class="text-2xl font-bold text-gray-900">مبادرات الكلية التطبيقية</h2>
-        <p class="text-sm text-gray-500">استعراض المبادرات المجتمعية ومستوى الأثر</p>
+    <main class="flex-1 p-6 md:p-10 max-w-6xl">
+      <!-- العنوان الرئيسي -->
+      <header class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">المبادرات</h1>
       </header>
 
-      <!-- شريط البحث والتصفية -->
+      <!-- أدوات البحث والتصفية -->
       <div class="flex flex-col md:flex-row gap-4 mb-6">
-        <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-lg text-sm outline-none">
+        <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-teal-500">
           <option value="">جميع المجالات</option>
           <option value="المجتمع والاستدامة">المجتمع والاستدامة</option>
-          <option value="التعليم والتدريب المهني">التعليم والتدريب المهني</option>
+          <option value="التعليم والتدريب">التعليم والتدريب</option>
           <option value="التمكين الثقافي والبرمجي">التمكين الثقافي والبرمجي</option>
         </select>
-        <input type="text" id="searchInput" placeholder="ابحث عن اسم المبادرة..." class="flex-1 p-3 bg-white border border-gray-200 rounded-lg text-sm outline-none">
+        <input type="text" id="searchInput" placeholder="ابحث عن اسم المبادرة..." class="flex-1 p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-teal-500">
       </div>
 
-      <!-- قائمة المبادرات (تحت بعضها البعض في سطر مستقل) -->
+      <!-- قائمة المبادرات بتنسيق الصفوف الأفقية -->
       <div id="cardsContainer" class="space-y-4">
 
         <!-- مبادرة 1 -->
-        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="المجتمع والاستدامة">
-          <div>
+        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="المجتمع والاستدامة">
+          <div class="md:w-1/3">
             <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة سامقات</h3>
-            <div class="mb-3">
-              <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-md">
-                المجتمع والاستدامة
-              </span>
-            </div>
-            <div class="text-sm text-gray-600 space-y-1 mb-4">
-              <p>المستفيدون: 17</p>
-              <p>مستوى الأثر: 5 / 5</p>
-            </div>
-          </div>
-          <div>
-            <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
-              مكتملة
+            <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
+              المجتمع والاستدامة
             </span>
           </div>
-        </div>
+
+          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
+              <span class="text-base font-bold text-gray-800">17</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
+              <span class="text-base font-bold text-gray-800">5 / 5</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
+              <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                مكتملة
+              </span>
+            </div>
+          </div>
+        </a>
 
         <!-- مبادرة 2 -->
-        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="التمكين الثقافي والبرمجي">
-          <div>
+        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="التمكين الثقافي والبرمجي">
+          <div class="md:w-1/3">
             <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة أفق التقنية</h3>
-            <div class="mb-3">
-              <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-2.5 py-1 rounded-md">
-                التمكين الثقافي والبرمجي
-              </span>
-            </div>
-            <div class="text-sm text-gray-600 space-y-1 mb-4">
-              <p>المستفيدون: 240</p>
-              <p>مستوى الأثر: 4.6 / 5</p>
-            </div>
-          </div>
-          <div>
-            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
-              نشطة
+            <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+              التمكين الثقافي والبرمجي
             </span>
           </div>
-        </div>
+
+          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
+              <span class="text-base font-bold text-gray-800">240</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
+              <span class="text-base font-bold text-gray-800">4.6 / 5</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
+              <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
+                نشطة
+              </span>
+            </div>
+          </div>
+        </a>
 
         <!-- مبادرة 3 -->
-        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="التعليم والتدريب المهني">
-          <div>
+        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="التعليم والتدريب">
+          <div class="md:w-1/3">
             <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة محترف</h3>
-            <div class="mb-3">
-              <span class="inline-block bg-purple-50 text-purple-700 text-xs font-semibold px-2.5 py-1 rounded-md">
-                التعليم والتدريب المهني
-              </span>
-            </div>
-            <div class="text-sm text-gray-600 space-y-1 mb-4">
-              <p>المستفيدون: 568</p>
-              <p>مستوى الأثر: 4.1 / 5</p>
-            </div>
-          </div>
-          <div>
-            <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
-              مكتملة
+            <span class="inline-block bg-purple-50 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">
+              التعليم والتدريب
             </span>
           </div>
-        </div>
 
-        <!-- مبادرة 4 -->
-        <div class="card bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col justify-between" data-category="المجتمع والاستدامة">
-          <div>
-            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة الحرف اليدوية</h3>
-            <div class="mb-3">
-              <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-md">
-                المجتمع والاستدامة
+          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
+              <span class="text-base font-bold text-gray-800">568</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
+              <span class="text-base font-bold text-gray-800">4.1 / 5</span>
+            </div>
+            <div>
+              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
+              <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                مكتملة
               </span>
             </div>
-            <div class="text-sm text-gray-600 space-y-1 mb-4">
-              <p>المستفيدون: 95</p>
-              <p>مستوى الأثر: 4.3 / 5</p>
-            </div>
           </div>
-          <div>
-            <span class="bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full inline-block">
-              نشطة
-            </span>
-          </div>
-        </div>
+        </a>
 
       </div>
     </main>
