@@ -1,211 +1,431 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>المبادرات - منصة أثر</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body { font-family: 'Cairo', sans-serif; }
-  </style>
-</head>
-<body class="bg-[#f8fafc] text-gray-800 min-h-screen">
-
-  <div class="flex">
-    <!-- القائمة الجانبية (Sidebar) -->
-    <aside class="w-64 bg-white border-l border-gray-200 min-h-screen p-5 hidden md:block flex-shrink-0">
-      <!-- شعار أثر فوق القائمة الجانبية -->
-      <div class="flex items-center justify-between mb-8 px-2">
-        <div class="flex items-center gap-3">
-          <img src="logo.png" alt="شعار أثر" class="h-10 w-auto object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/40?text=أثر';">
-          <span class="text-2xl font-bold text-teal-800">أثر</span>
-        </div>
-      </div>
-
-      <nav class="space-y-1">
-        <a href="index.html" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <i class="fa-solid fa-house text-lg"></i>
-          <span class="font-medium">الرئيسية</span>
-        </a>
-        <a href="initiatives.html" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl bg-teal-50 text-teal-700 font-bold transition">
-          <i class="fa-solid fa-flag text-lg"></i>
-          <span>المبادرات</span>
-        </a>
-        <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <i class="fa-solid fa-chart-pie text-lg"></i>
-          <span class="font-medium">المؤشرات</span>
-        </a>
-        <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <i class="fa-solid fa-database text-lg"></i>
-          <span class="font-medium">البيانات</span>
-        </a>
-        <a href="#" class="flex items-center space-x-3 space-x-reverse px-4 py-3 rounded-xl text-gray-600 hover:bg-gray-50 transition">
-          <i class="fa-solid fa-file-lines text-lg"></i>
-          <span class="font-medium">التقارير</span>
-        </a>
-      </nav>
-    </aside>
-
-    <!-- المحتوى الرئيسي -->
-    <main class="flex-1 p-6 md:p-10 max-w-6xl">
-      <!-- العنوان الرئيسي -->
-      <header class="mb-8">
-        <h1 class="text-3xl font-bold text-gray-900">المبادرات</h1>
-      </header>
-
-      <!-- أدوات البحث والتصفية -->
-      <div class="flex flex-col md:flex-row gap-4 mb-6">
-        <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-teal-500">
-          <option value="">جميع المجالات</option>
-          <option value="المجتمع والاستدامة">المجتمع والاستدامة</option>
-          <option value="التعليم والتدريب">التعليم والتدريب</option>
-          <option value="التمكين الثقافي والبرمجي">التمكين الثقافي والبرمجي</option>
-        </select>
-        <input type="text" id="searchInput" placeholder="ابحث عن اسم المبادرة..." class="flex-1 p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-teal-500">
-      </div>
-
-      <!-- قائمة المبادرات بتنسيق الصفوف الأفقية -->
-      <div id="cardsContainer" class="space-y-4">
-
-        <!-- مبادرة 1 -->
-        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="المجتمع والاستدامة">
-          <div class="md:w-1/3">
-            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة سامقات</h3>
-            <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
-              المجتمع والاستدامة
-            </span>
-          </div>
-
-          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
-              <span class="text-base font-bold text-gray-800">17</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
-              <span class="text-base font-bold text-gray-800">5 / 5</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
-              <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
-                مكتملة
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- مبادرة 2 -->
-        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="التمكين الثقافي والبرمجي">
-          <div class="md:w-1/3">
-            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة أفق التقنية</h3>
-            <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
-              التمكين الثقافي والبرمجي
-            </span>
-          </div>
-
-          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
-              <span class="text-base font-bold text-gray-800">240</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
-              <span class="text-base font-bold text-gray-800">4.6 / 5</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
-              <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
-                نشطة
-              </span>
-            </div>
-          </div>
-        </a>
-
-        <!-- مبادرة 3 -->
-        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="التعليم والتدريب">
-          <div class="md:w-1/3">
-            <h3 class="text-lg font-bold text-gray-900 mb-1">مبادرة محترف</h3>
-            <span class="inline-block bg-purple-50 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">
-              التعليم والتدريب
-            </span>
-          </div>
-
-          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
-              <span class="text-base font-bold text-gray-800">568</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
-              <span class="text-base font-bold text-gray-800">4.1 / 5</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
-              <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
-                مكتملة
-              </span>
-            </div>
-          </div>
-        </a>
-
-      </div>
-    </main>
-  </div>
-  
-        <!-- مبادرة 2 -->
-        <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 block cursor-pointer" data-category="التمكين الثقافي والبرمجي">
-          <div class="md:w-1/3">
-            <h3 class="text-lg font-bold text-gray-900 mb-1">عشوائي</h3>
-            <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
-              التمكين الثقافي والبرمجي
-            </span>
-          </div>
-
-          <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
-              <span class="text-base font-bold text-gray-800">240</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
-              <span class="text-base font-bold text-gray-800">4.6 / 5</span>
-            </div>
-            <div>
-              <span class="block text-xs text-gray-500 mb-1">الحالة</span>
-              <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
-                نشطة
-              </span>
-            </div>
-          </div>
-        </a>
-  <script>
-    const searchInput = document.getElementById('searchInput');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const cards = document.querySelectorAll('.card');
-
-    function filterCards() {
-      const searchTerm = searchInput.value.toLowerCase();
-      const selectedCategory = categoryFilter.value;
-
-      cards.forEach(card => {
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const category = card.getAttribute('data-category');
-
-        const matchesSearch = title.includes(searchTerm);
-        const matchesCategory = !selectedCategory || category === selectedCategory;
-
-        if (matchesSearch && matchesCategory) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة أثر - المبادرات</title>
+    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --sidebar-width: 280px;
         }
-      });
-    }
 
-    searchInput.addEventListener('input', filterCards);
-    categoryFilter.addEventListener('change', filterCards);
-  </script>
+        * {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        /* القاعدة العامة لضبط خلفية المنصة وتثبيت الشاشة */
+        body {
+            background-color: #f0f7ff;
+            background-image: url('bg-dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            direction: rtl;
+        }
+
+        /* المحتوى الرئيسي الأيسر المتمدد مع إمكانية التمرير */
+        .main-content-area {
+            flex: 1;
+            height: 100vh;
+            padding: 4vh 3vw;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+
+        /* زر السهم لإخفاء وإظهار القائمة الجانبية */
+        .sidebar-toggle-btn {
+            position: fixed;
+            top: 25px;
+            right: calc(var(--sidebar-width) + 15px);
+            transform: none;
+            width: 34px;
+            height: 34px;
+            background-color: #0b253a;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
+            font-size: 12px;
+            z-index: 10000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        body.sidebar-is-collapsed .sidebar-toggle-btn {
+            right: 20px; 
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
+        }
+
+        /* حاوية الشريط الجانبي في اليمين */
+        .sidebar-wrapper {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            height: 100vh;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            transform: translateX(0);
+        }
+
+        .sidebar-wrapper.collapsed {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        /* القائمة المنسدلة للمستخدم في أقصى اليسار */
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 170px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 100;
+            border: 1px solid rgba(11, 37, 58, 0.08);
+            text-align: right;
+        }
+
+        .user-dropdown-menu.show {
+            display: flex;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-wrapper {
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 9999;
+                transform: translateX(var(--sidebar-width));
+            }
+            .sidebar-wrapper.mobile-open {
+                transform: translateX(0);
+            }
+            body.sidebar-is-collapsed .sidebar-toggle-btn {
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- زر السهم المتجاوب -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+        <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+    </button>
+
+    <!-- حاوية الشريط الجانبي في اليمين -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <aside class="w-[280px] bg-[#eaf4fc] border-l border-[#0f3d59]/15 h-screen p-4 flex flex-col justify-between shadow-lg overflow-y-auto">
+            <div>
+                <!-- شعار أثر -->
+                <div class="flex items-center justify-center mb-6 mt-1">
+                    <img src="logo.png" alt="شعار أثر" class="w-[195px] object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/195?text=أثر';">
+                </div>
+
+                <!-- القائمة -->
+                <nav class="space-y-1.5">
+                    <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house w-5 text-center"></i>
+                    </a>
+                    <a href="initiatives.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl bg-[#d1e7fb] text-[#0b253a] font-extrabold transition text-sm">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>البيانات</span>
+                        <i class="fa-solid fa-database w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users w-5 text-center"></i>
+                    </a>
+                    <!-- إعدادات النظام للمشرف -->
+                    <li id="adminSettingsMenu" style="display: none;" class="list-none">
+                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear w-5 text-center"></i>
+                        </a>
+                    </li>
+                </nav>
+            </div>
+
+            <!-- زر تسجيل الخروج -->
+            <div class="border-t border-[#0f3d59]/15 pt-3 mt-auto">
+                <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-red-500/10 hover:text-red-600 font-bold transition text-sm">
+                    <span>تسجيل الخروج</span>
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- المحتوى الرئيسي الأيسر -->
+    <main class="main-content-area" id="mainContentArea">
+        
+        <!-- الهيدر العلوي (العنوان في اليمين واسم المستخدم في اليسار) -->
+        <header class="w-full flex justify-between items-center mb-8 relative">
+            <div class="text-right">
+                <h1 class="text-2xl md:text-3xl font-black text-[#0b253a]">المبادرات</h1>
+                <div class="w-12 h-1 bg-[#4e9cd8] rounded mt-1"></div>
+            </div>
+
+            <!-- شريط اسم المستخدم وصلاحيات الحساب (في أقصى اليسار) -->
+            <div class="relative" id="userBarContainer">
+                <div id="userBarToggle" class="flex items-center gap-2.5 cursor-pointer bg-white/90 px-4 py-1.5 rounded-full shadow-sm hover:bg-white transition backdrop-blur-sm">
+                    <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#0b253a] shadow-sm">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-sm font-bold text-[#0b253a]">
+                        <span id="displayUserName">مستخدم</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                    </div>
+                </div>
+
+                <!-- القائمة المنسدلة للصلاحية -->
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <span class="text-[11px] text-gray-500 font-semibold px-1.5">صلاحية الحساب</span>
+                    <div class="bg-slate-100 text-[#0b253a] px-2.5 py-2 rounded-lg text-xs font-bold flex items-center justify-between">
+                        <span id="displayUserRoleText">مستخدم عادي</span>
+                        <i class="fa-solid fa-lock text-[#4e9cd8] text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- أدوات البحث والتصفية -->
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+            <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] shadow-sm text-[#0b253a] font-medium cursor-pointer">
+                <option value="">جميع المجالات</option>
+                <option value="المجتمع والاستدامة">المجتمع والاستدامة</option>
+                <option value="التعليم والتدريب">التعليم والتدريب</option>
+                <option value="التمكين الثقافي والبرمجي">التمكين الثقافي والبرمجي</option>
+            </select>
+            <div class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[#4e9cd8]">
+                <i class="fa-solid fa-search text-gray-400"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن اسم المبادرة..." class="w-full text-sm outline-none text-[#0b253a] bg-transparent">
+            </div>
+        </div>
+
+        <!-- قائمة المبادرات بتنسيق الصفوف الأفقية -->
+        <div id="cardsContainer" class="space-y-4 pb-10">
+
+            <!-- مبادرة سامقات -->
+            <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer text-decoration-none" data-category="المجتمع والاستدامة">
+                <div class="md:w-1/3">
+                    <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة سامقات</h3>
+                    <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full">
+                        المجتمع والاستدامة
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
+                        <span class="text-base font-bold text-[#0b253a]">17</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
+                        <span class="text-base font-bold text-[#0b253a]">5 / 5</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">الحالة</span>
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                            مكتملة
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- مبادرة أفق التقنية -->
+            <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer text-decoration-none" data-category="التمكين الثقافي والبرمجي">
+                <div class="md:w-1/3">
+                    <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة أفق التقنية</h3>
+                    <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">
+                        التمكين الثقافي والبرمجي
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
+                        <span class="text-base font-bold text-[#0b253a]">240</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
+                        <span class="text-base font-bold text-[#0b253a]">5 / 4.6</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">الحالة</span>
+                        <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
+                            نشطة
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- مبادرة محترف -->
+            <a href="initiative-details.html" class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-pointer text-decoration-none" data-category="التعليم والتدريب">
+                <div class="md:w-1/3">
+                    <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة محترف</h3>
+                    <span class="inline-block bg-purple-50 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full">
+                        التعليم والتدريب
+                    </span>
+                </div>
+
+                <div class="flex items-center justify-between w-full md:w-2/3 grid grid-cols-3 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">المستفيدون</span>
+                        <span class="text-base font-bold text-[#0b253a]">568</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">مستوى الأثر</span>
+                        <span class="text-base font-bold text-[#0b253a]">5 / 4.1</span>
+                    </div>
+                    <div>
+                        <span class="block text-xs text-gray-500 mb-1">الحالة</span>
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                            مكتملة
+                        </span>
+                    </div>
+                </div>
+            </a>
+
+        </div>
+    </main>
+
+    <script>
+        // سحب الاسم المسجل وصلاحية المستخدم وعرضها
+        const savedName = localStorage.getItem('athalUser');
+        const savedRole = localStorage.getItem('athalRole');
+
+        if (savedName) {
+            document.getElementById('displayUserName').textContent = savedName;
+        }
+
+        const roleTextElement = document.getElementById('displayUserRoleText');
+        if (savedRole === 'admin') {
+            roleTextElement.textContent = 'مشرف النظام';
+            document.getElementById('adminSettingsMenu').style.display = 'block';
+        } else {
+            roleTextElement.textContent = 'مستخدم عادي';
+        }
+
+        // تفاعل القائمة المنسدلة لحساب المستخدم
+        const userBarToggle = document.getElementById('userBarToggle');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+        userBarToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            userDropdownMenu.classList.toggle('show');
+            userBarToggle.classList.toggle('active');
+        });
+
+        window.addEventListener('click', function () {
+            userDropdownMenu.classList.remove('show');
+            userBarToggle.classList.remove('active');
+        });
+
+        // البرمجة التفاعلية لزر السهم لطي أو إظهار القائمة الجانبية
+        const sidebarWrapper = document.getElementById('sidebarWrapper');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const bodyElement = document.body;
+
+        sidebarToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (window.innerWidth <= 1024) {
+                sidebarWrapper.classList.toggle('mobile-open');
+                if (sidebarWrapper.classList.contains('mobile-open')) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    bodyElement.classList.remove('sidebar-is-collapsed');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    bodyElement.classList.add('sidebar-is-collapsed');
+                }
+            } else {
+                sidebarWrapper.classList.toggle('collapsed');
+                if (sidebarWrapper.classList.contains('collapsed')) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
+                    bodyElement.classList.add('sidebar-is-collapsed');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    bodyElement.classList.remove('sidebar-is-collapsed');
+                }
+            }
+        });
+
+        // نظام البحث والفلترة الفعال للمبادرات
+        const searchInput = document.getElementById('searchInput');
+        const categoryFilter = document.getElementById('categoryFilter');
+        const cards = document.querySelectorAll('.card');
+
+        function filterCards() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedCategory = categoryFilter.value;
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                const category = card.getAttribute('data-category');
+
+                const matchesSearch = title.includes(searchTerm);
+                const matchesCategory = !selectedCategory || category === selectedCategory;
+
+                if (matchesSearch && matchesCategory) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', filterCards);
+        categoryFilter.addEventListener('change', filterCards);
+    </script>
 </body>
 </html>
