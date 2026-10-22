@@ -32,7 +32,7 @@
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى الثابت */
+        /* القسم الأيسر: المحتوى */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -59,15 +59,23 @@
             position: relative;
         }
 
-        /* عبارة الترحيب في اليمين (تتحرك بمرونة عند فتح/إغلاق الشريط) */
+        /* عبارة الترحيب: ثابتة، واضحة، ومرتبة تماماً بجانب السهم في كل الحالات دون أي اختفاء أو تعفيس */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 4px;
-            transition: transform 0.3s ease;
-            transform: translateX(0);
+            flex-shrink: 0;
+            max-width: 100%;
+            white-space: nowrap;
+            transition: margin-right 0.3s ease;
+            margin-right: 0px; /* المكان الطبيعي عندما تكون القائمة مفتوحة */
+        }
+
+        /* عندما تُغلق القائمة، يزداد هامش اليمين بسلاسة لينزلق النص ليقترب من السهم مباشرة وبشكل واضح تماماً */
+        body.sidebar-is-collapsed .welcome-center-section {
+            margin-right: 45px; 
         }
 
         .welcome-title-wrapper {
@@ -98,15 +106,11 @@
             margin-top: 4px;
         }
 
-        /* ==========================================
-           تحكم بمكان وتصميم زر السهم بكل سهولة من هنا:
-           - top: المسافة من أعلى الشاشة
-           - right: المسافة من أقصى اليمين
-           ========================================== */
+        /* زر السهم الثابت في أعلى أقصى اليمين */
         .sidebar-toggle-btn {
             position: fixed;
             top: 25px;
-            right: 50px;
+            right: 15px;
             width: 36px;
             height: 36px;
             background-color: #0b253a;
@@ -243,10 +247,9 @@
             height: 100vh;
             transition: transform 0.3s ease;
             z-index: 999;
-            transform: translateX(0); /* الافتراضي: الشريط مفتوح */
+            transform: translateX(0);
         }
 
-        /* عندما يُغلق الشريط، ينسحب لليمين ليختفي تماماً */
         .sidebar-wrapper.collapsed {
             transform: translateX(280px);
         }
@@ -285,7 +288,7 @@
         .sidebar-logo img {
             width: 195px; 
             max-width: 100%;
-            height: auto;⁠<li>
+            height: auto;
             object-fit: contain;
         }
 
@@ -396,7 +399,7 @@
 </head>
 <body>
 
-    <!-- زر السهم الثابت في أعلى أقصى اليمين (مكانه الأصلي) -->
+    <!-- زر السهم الثابت في أعلى أقصى اليمين -->
     <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
         <i class="fa-solid fa-chevron-left" id="toggleIcon"></i>
     </button>
@@ -471,7 +474,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب في اليمين (تتحرك بمرونة عند طي الشريط) -->
+            <!-- عبارة الترحيب في اليمين -->
             <div class="welcome-center-section" id="welcomeSection">
                 <div class="welcome-title-wrapper">
                     <h1>مرحباً بك في أثر</h1>
@@ -496,7 +499,7 @@
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
                     <div class="dropdown-role-display">
-                        <span id="displayUserRoleText">مستخدم</span>
+                        <span id="displayUserRoleText">مستخدم عادي</span>
                         <i class="fa-solid fa-lock"></i>
                     </div>
                 </div>
@@ -541,11 +544,11 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية للتحكم الكامل بالشريط وفتح وإغلاق القائمة واستجابة زر السهم الثابت
+        // البرمجة الذكية للتحكم الكامل بالشريط وفتح وإغلاق القائمة بالاعتماد على الـ body
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
-        const welcomeSection = document.getElementById('welcomeSection');
+        const bodyElement = document.body;
 
         sidebarToggleBtn.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -555,26 +558,25 @@
                 if (sidebarWrapper.classList.contains('mobile-open')) {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
-                    welcomeSection.style.transform = 'translateX(0)';
+                    bodyElement.classList.remove('sidebar-is-collapsed');
                 } else {
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
-                    welcomeSection.style.transform = 'translateX(-280px)';
+                    bodyElement.classList.add('sidebar-is-collapsed');
                 }
             } else {
                 sidebarWrapper.classList.toggle('collapsed');
                 if (sidebarWrapper.classList.contains('collapsed')) {
-                    // الشريط مغلق: يتحول اتجاه السهم لليمين، وتتحرك عبارة الترحيب لليسار بمرونة
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
-                    welcomeSection.style.transform = 'translateX(-280px)';
+                    // تفعيل كلاس الإغلاق ليتفاعل الهامش وينزلق النص قرب السهم تماماً
+                    bodyElement.classList.add('sidebar-is-collapsed');
                 } else {
-                    // الشريط مفتوح: يتحول اتجاه السهم لليسار، وتعود عبارة الترحيب لمكانها الطبيعي
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    welcomeSection.style.transform = 'translateX(0)';
+                    bodyElement.classList.remove('sidebar-is-collapsed');
                 }
             }
         });
