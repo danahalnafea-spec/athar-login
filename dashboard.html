@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
+        :root {
+            --sidebar-width: 280px;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -16,10 +20,11 @@
             font-family: 'Cairo', sans-serif;
         }
 
+        /* القاعدة المرنة العامة للشاشة بالكامل وتمنع أي تكسر */
         body {
             background-color: #f0f7ff;
             background-image: url('bg-dashboard.png');
-            background-size: 100% 100%;
+            background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
@@ -32,14 +37,14 @@
             direction: rtl;
         }
 
-        /* القسم الأيسر: المحتوى الثابت */
+        /* القسم الرئيسي الأيسر للمحتوى */
         .main-content-area {
             flex: 1;
             height: 100vh;
-            padding: 4vh 4vw;
+            padding: 4vh 3vw;
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
+            align-items: stretch;
             position: relative;
             min-width: 0;
             overflow-y: auto;
@@ -55,42 +60,49 @@
             align-items: center;
             flex-direction: row;
             margin-top: 1vh;
-            gap: 20px;
+            gap: 15px;
             position: relative;
         }
 
-        /* عبارة الترحيب في اليمين: مستقرة ومرتبة */
+        /* عبارة الترحيب: ثابتة ومستقرة تماماً وتتجاوب مع العرض */
         .welcome-center-section {
             text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             gap: 4px;
-            flex-shrink: 0;
-            max-width: 100%;
-            white-space: nowrap;
+            margin-right: 0px;
+            flex-shrink: 1;
+            min-width: 0;
             position: relative;
             z-index: 10;
+            transition: margin-right 0.3s ease;
         }
 
         .welcome-title-wrapper {
             display: flex;
             align-items: center;
             gap: 8px;
+            width: 100%;
         }
 
+        /* أحجام خطوط مرنة تتكيف تلقائياً عبر دالة clamp لجميع الأجهزة */
         .welcome-center-section h1 {
-            font-size: clamp(18px, 2.2vw, 28px);
+            font-size: clamp(15px, 2.2vw, 26px);
             font-weight: 900;
             color: #0b253a;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .welcome-center-section p {
-            font-size: clamp(10px, 1vw, 13px);
+            font-size: clamp(9px, 1vw, 13px);
             color: #64748b; 
             font-weight: 600;
             white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .welcome-underline {
@@ -101,10 +113,11 @@
             margin-top: 4px;
         }
 
+        /* زر السهم المتجاوب تماماً */
         .sidebar-toggle-btn {
             position: fixed;
-            top: 25px; /* يرتفع ليصبح في الأعلى عند القوس الأزرق */
-            right: 295px; /* يتبع حافة القائمة عندما تكون مفتوحة */
+            top: 25px;
+            right: calc(var(--sidebar-width) + 15px);
             transform: none;
             width: 34px;
             height: 34px;
@@ -119,12 +132,11 @@
             box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
             font-size: 12px;
             z-index: 10000;
-            transition: right 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
         }
 
-        /* عندما تُغلق القائمة، ينتقل الزر ليستقر كاملاً وواضحاً عند القوس الأزرق في أقصى اليمين */
+        /* عندما تُغلق القائمة، يستقر الزر بدقة عند الحافة اليمنى */
         body.sidebar-is-collapsed .sidebar-toggle-btn {
-            top: 25px;
             right: 20px; 
         }
 
@@ -133,19 +145,10 @@
             transform: scale(1.1);
         }
 
-        /* عندما تُغلق القائمة، ينتقل الزر ليثبت ببارز واضح على أقصى حافة الشاشة اليمنى */
-        body.sidebar-is-collapsed .sidebar-toggle-btn {
-            right: 14px; 
-        }
-
-        .sidebar-toggle-btn:hover {
-            background-color: #16344e;
-            transform: translateY(-50%) scale(1.1);
-        }
-
-        /* شريط اسم المستخدم وقائمة الصلاحية في أقصى اليسار */
+        /* شريط اسم المستخدم في أقصى اليسار */
         .top-user-bar-container {
             position: relative;
+            flex-shrink: 0;
         }
 
         .top-user-bar {
@@ -202,7 +205,7 @@
             transform: rotate(180deg);
         }
 
-        /* القائمة المنسدلة */
+        /* القائمة المنسدلة للمستخدم */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -256,18 +259,18 @@
             align-items: flex-start;
             flex-shrink: 0;
             height: 100vh;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 999;
             transform: translateX(0);
         }
 
         .sidebar-wrapper.collapsed {
-            transform: translateX(280px);
+            transform: translateX(var(--sidebar-width));
         }
 
         /* الشريط الجانبي في اليمين */
         .sidebar-right {
-            width: 280px; 
+            width: var(--sidebar-width); 
             height: 100vh;
             background-color: #eaf4fc;
             display: flex;
@@ -285,7 +288,6 @@
             flex-direction: column;
             align-items: center;
             width: 100%;
-            min-width: 256px;
         }
 
         .sidebar-logo {
@@ -351,12 +353,11 @@
             color: #0b253a;
         }
 
-        /* زر تسجيل الخروج مثبت بوضوح تام وثبات في أسفل القائمة */
+        /* زر تسجيل الخروج مثبت أسفل القائمة */
         .sidebar-bottom-content {
             width: 100%;
             border-top: 1px solid rgba(15, 61, 89, 0.12);
             padding-top: 12px;
-            min-width: 256px;
             margin-top: auto !important;
             background-color: #eaf4fc;
         }
@@ -393,27 +394,27 @@
             color: #dc2626 !important;
         }
 
-        /* التجاوب الذكي للشاشات الصغيرة والجوالات */
+        /* التجاوب الشامل للشاشات الصغيرة والجوالات */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
                 position: fixed;
                 right: 0;
                 top: 0;
                 z-index: 9999;
-                transform: translateX(280px);
+                transform: translateX(var(--sidebar-width));
             }
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
             body.sidebar-is-collapsed .sidebar-toggle-btn {
-                right: -6px;
+                right: 20px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- زر السهم الثابت في الشاشة ليظل ظاهراً وقابلاً للضغط في كل الحالات -->
+    <!-- زر السهم المتجاوب -->
     <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
@@ -488,7 +489,7 @@
         <!-- الهيدر العلوي -->
         <div class="header-top-wrapper">
             
-            <!-- عبارة الترحيب في اليمين -->
+            <!-- عبارة الترحيب مستقرة تماماً ومرتبة -->
             <div class="welcome-center-section" id="welcomeSection">
                 <div class="welcome-title-wrapper">
                     <h1>مرحباً بك في أثر</h1>
@@ -504,7 +505,7 @@
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <div class="user-name-dropdown">
-                        <span id="displayUserName">فجر</span>
+                        <span id="displayUserName">مستخدم</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                 </div>
@@ -558,7 +559,7 @@
             userBarToggle.classList.remove('active');
         });
 
-        // البرمجة الذكية للتحكم بفتح وإغلاق القائمة وحركة الزر والانتقال
+        // البرمجة الذكية المتجاوبة لفتح وإغلاق القائمة
         const sidebarWrapper = document.getElementById('sidebarWrapper');
         const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         const toggleIcon = document.getElementById('toggleIcon');
@@ -581,13 +582,11 @@
             } else {
                 sidebarWrapper.classList.toggle('collapsed');
                 if (sidebarWrapper.classList.contains('collapsed')) {
-                    // القائمة مغلقة: السهم يتجه لليسار، ويتحرك الزر ليثبت على حافة الشاشة اليمنى
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
                     bodyElement.classList.add('sidebar-is-collapsed');
                 } else {
-                    // القائمة مفتوحة: السهم يتجه لليمين، ويعود الزر ليثبت على حافة القائمة
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
