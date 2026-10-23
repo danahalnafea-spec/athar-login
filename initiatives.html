@@ -262,7 +262,6 @@
                     </div>
                 </div>
 
-                <!-- إرجاع المستفيدون والتاريخ جنباً إلى جنب بنفس الحجم تماماً -->
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-xs font-bold text-gray-700 mb-1">المستفيدون</label>
@@ -270,17 +269,17 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-gray-700 mb-1">تاريخ التنفيذ</label>
-                        <input type="date" id="initDate" required class="w-full h-11 px-2 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                        <input type="date" id="initDate" required class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
                     </div>
                 </div>
 
-<div>
-    <label class="block text-xs font-bold text-gray-700 mb-1">مستوى الأثر (من 5)</label>
-    <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl h-11 px-3.5">
-        <input type="number" id="initImpactNum" step="0.01" min="0" max="5" placeholder="أدخل الرقم (مثال: 4.5)" required class="w-full text-sm outline-none bg-transparent text-[#0b253a]">
-        <span class="text-xs font-bold text-gray-500 whitespace-nowrap px-2.5 bg-gray-100 py-1 rounded-lg">/ 5</span>
-    </div>
-</div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">مستوى الأثر (من 5)</label>
+                    <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl h-11 px-3.5">
+                        <input type="number" id="initImpactNum" step="0.01" min="0" max="5" placeholder="أدخل الرقم (مثال: 4.33)" required class="w-full text-sm outline-none bg-transparent text-[#0b253a]">
+                        <span class="text-xs font-bold text-gray-500 whitespace-nowrap px-2.5 bg-gray-100 py-1 rounded-lg">/ 5</span>
+                    </div>
+                </div>
 
                 <div class="flex justify-end gap-2 pt-3">
                     <button type="button" id="closeModalBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
@@ -300,11 +299,10 @@
                 { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
-            // التأكد من استدعاء المبادرات المخزنة أولاً، وإذا لم توجد يتم استخدام الافتراضية
+            // جلب البيانات المخزنة مسبقاً أو تعبئة الافتراضية
             let storedInitiatives = localStorage.getItem('athalInitiatives');
             let initiatives = storedInitiatives ? JSON.parse(storedInitiatives) : defaultInitiatives;
 
-            // حفظ القائمة في الـ LocalStorage
             if (!storedInitiatives) {
                 localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
             }
@@ -467,7 +465,7 @@
                     initiatives[index] = newItem;
                 }
 
-                // حفظ التغييرات دائمًا
+                // حفظ البيانات بشكل دائم في متصفح المستخدم
                 localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
                 modal.classList.add('hidden');
                 renderInitiatives();
@@ -542,6 +540,7 @@
             }
 
             if (searchInput) searchInput.addEventListener('input', filterCards);
+            if (categoryFilter) categoryFilter.categoryFilter?.addEventListener('change', filterCards);
             if (categoryFilter) categoryFilter.addEventListener('change', filterCards);
         });
     </script>
