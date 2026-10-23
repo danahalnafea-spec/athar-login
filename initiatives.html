@@ -306,30 +306,30 @@
                 }
             }
 
-            // ألوان المجالات (خلفية شفافة وفاتحة مع نص بلون المجال)
+            // ألوان المجالات
             function getCategoryBadgeStyle(category) {
                 switch(category) {
                     case 'التطوير المهني':
-                        return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;'; // أزرق افتح
+                        return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;';
                     case 'التمكين الاقتصادي':
-                        return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;'; // بنفسجي افتح
+                        return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;';
                     case 'اقتصاد':
-                        return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;'; // أخضر افتح
+                        return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;';
                     case 'الأنظمة والتأمين':
-                        return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;'; // برتقالي افتح
+                        return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;';
                     default:
                         return 'background-color: #f3f4f6; color: #374151;';
                 }
             }
 
-            // ألوان الحالة (نشطة ومكتملة بنفس لون الأخضر والأزرق ولكن بدرجة أغمق وأوضح)
+            // ألوان الحالة (خلفية افتح مع كتابة داكنة وواضحة جداً)
             function getStatusBadgeStyle(status) {
                 if (status === 'نشطة') {
-                    return 'background-color: #15803d; color: #ffffff;'; // أخضر غامق جداً ومميز
+                    return 'background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;'; // أخضر فاتح للخلفية مع نص أخضر غامق
                 } else if (status === 'مكتملة') {
-                    return 'background-color: #1d4ed8; color: #ffffff;'; // أزرق غامق جداً ومميز
+                    return 'background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;'; // أزرق فاتح للخلفية مع نص أزرق غامق
                 } else {
-                    return 'background-color: #e5e7eb; color: #374151;';
+                    return 'background-color: #f3f4f6; color: #374151;';
                 }
             }
 
@@ -389,7 +389,7 @@
                             </div>
                             <div>
                                 <span class="block text-xs text-gray-500 mb-1">الحالة</span>
-                                <span class="inline-block text-xs font-bold px-3 py-1 rounded-full shadow-sm" style="${statusStyle}">${item.status}</span>
+                                <span class="inline-block text-xs font-extrabold px-3 py-1 rounded-full shadow-sm" style="${statusStyle}">${item.status}</span>
                             </div>
                         </div>
                     `;
