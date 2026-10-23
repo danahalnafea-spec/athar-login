@@ -306,30 +306,30 @@
                 }
             }
 
-            // دالة تحديد ألوان المجالات بناءً على اختيارك
+            // ألوان المجالات (خلفية شفافة وفاتحة مع نص بلون المجال)
             function getCategoryBadgeStyle(category) {
                 switch(category) {
                     case 'التطوير المهني':
-                        return 'background-color: #72b8e020; color: #72b8e0; border: 1px solid #72b8e050;'; // أزرق
+                        return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;'; // أزرق افتح
                     case 'التمكين الاقتصادي':
-                        return 'background-color: #ce8be820; color: #a14bc2; border: 1px solid #ce8be850;'; // بنفسجي
+                        return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;'; // بنفسجي افتح
                     case 'اقتصاد':
-                        return 'background-color: #5ebf5f20; color: #2d8a2e; border: 1px solid #5ebf5f50;'; // أخضر
+                        return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;'; // أخضر افتح
                     case 'الأنظمة والتأمين':
-                        return 'background-color: #d9a63820; color: #b37e0c; border: 1px solid #d9a63850;'; // برتقالي
+                        return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;'; // برتقالي افتح
                     default:
                         return 'background-color: #f3f4f6; color: #374151;';
                 }
             }
 
-            // دالة تحديد ألوان الحالة (نشطة: أخضر ، مكتملة: أزرق بتدرج مختلف)
+            // ألوان الحالة (نشطة ومكتملة بنفس لون الأخضر والأزرق ولكن بدرجة أغمق وأوضح)
             function getStatusBadgeStyle(status) {
                 if (status === 'نشطة') {
-                    return 'background-color: #10b981; color: #ffffff;'; // أخضر غامق واضح للحالة النشطة
+                    return 'background-color: #15803d; color: #ffffff;'; // أخضر غامق جداً ومميز
                 } else if (status === 'مكتملة') {
-                    return 'background-color: #3b82f6; color: #ffffff;'; // أزرق غامق واضح للحالة المكتملة
+                    return 'background-color: #1d4ed8; color: #ffffff;'; // أزرق غامق جداً ومميز
                 } else {
-                    return 'background-color: #e5e7eb; color: #374151;'; // افتراضي
+                    return 'background-color: #e5e7eb; color: #374151;';
                 }
             }
 
