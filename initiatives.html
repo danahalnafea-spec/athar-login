@@ -89,6 +89,15 @@
             text-align: right;
         }
         .user-dropdown-menu.show { display: flex; }
+
+        /* توحيد مظهر الحقول */
+        #initiativeForm input, 
+        #initiativeForm select {
+            background-color: #ffffff !important;
+            color: #0b253a !important;
+            border: 1px solid #e5e7eb !important;
+        }
+
         @media (max-width: 1024px) {
             .sidebar-wrapper {
                 position: fixed;
@@ -223,14 +232,14 @@
 
     <!-- نافذة منبثقة لإضافة أو تعديل مبادرة (Modal) -->
     <div id="initiativeModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl relative text-right overflow-hidden">
+        <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl relative text-right">
             <h3 id="modalTitle" class="text-xl font-black text-[#0b253a] mb-4">إضافة مبادرة جديدة</h3>
             <form id="initiativeForm" class="space-y-3.5">
                 <input type="hidden" id="initiativeIndex">
                 
                 <div>
                     <label class="block text-xs font-bold text-gray-700 mb-1">اسم المبادرة</label>
-                    <input type="text" id="initName" required class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                    <input type="text" id="initName" required class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -253,14 +262,16 @@
                     </div>
                 </div>
 
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">المستفيدون</label>
-                    <input type="number" id="initBeneficiaries" required class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">تاريخ التنفيذ</label>
-                     <input type="date" id="initDate" required style="height: 44px !important; line-height: 1.2;" class="w-full px-3.5 py-0 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                <!-- إرجاع المستفيدون والتاريخ جنباً إلى جنب بنفس الحجم تماماً -->
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">المستفيدون</label>
+                        <input type="number" id="initBeneficiaries" required class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">تاريخ التنفيذ</label>
+                        <input type="date" id="initDate" required class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                    </div>
                 </div>
 
                 <div>
@@ -279,10 +290,9 @@
         </div>
     </div>
 
-    <!-- سكربت التشغيل الديناميكي وتوزيع الألوان المطلوبة -->
+    <!-- سكربت التشغيل الحافظ للبيانات -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // تحديث حالة مبادرة متأهب إلى "مكتملة"
             const defaultInitiatives = [
                 { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
                 { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
@@ -290,7 +300,14 @@
                 { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
-            let initiatives = JSON.parse(localStorage.getItem('athalInitiatives')) || defaultInitiatives;
+            // التأكد من استدعاء المبادرات المخزنة أولاً، وإذا لم توجد يتم استخدام الافتراضية
+            let storedInitiatives = localStorage.getItem('athalInitiatives');
+            let initiatives = storedInitiatives ? JSON.parse(storedInitiatives) : defaultInitiatives;
+
+            // حفظ القائمة في الـ LocalStorage
+            if (!storedInitiatives) {
+                localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
+            }
 
             const savedName = localStorage.getItem('athalUser');
             const savedRole = localStorage.getItem('athalRole');
@@ -450,6 +467,7 @@
                     initiatives[index] = newItem;
                 }
 
+                // حفظ التغييرات دائمًا
                 localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
                 modal.classList.add('hidden');
                 renderInitiatives();
