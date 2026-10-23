@@ -471,31 +471,43 @@
             }
         });
 
-        // نظام البحث والفلترة الفعال للمبادرات
-const searchInput = document.getElementById('searchInput');
-const categoryFilter = document.getElementById('categoryFilter');
-const cards = document.querySelectorAll('#cardsContainer .card');
+<!-- نظام البحث والفلترة الفعال للمبادرات -->
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const categoryFilter = document.getElementById('categoryFilter');
+  const cards = document.querySelectorAll('#cardsContainer .card');
 
-        function filterCards ()(
-const searchTerm = searchinput.value.toLowerCase().trim();
-const selectedCategory = categoryFilter.value.toLowerCase().trim();
-        
-cards. forEach(card => {
-const cardText = card.innerText.toLowerCase();
-    
-const matchesSearch = !searchTerm || cardText.includes(searchTerm);
-const matchesCategory = !selectedCategory || cardText. includes (selectedCategory) ;
-    
-if (matchesSearch & matchesCategory) (
-card.style.display "block';
-} else {
-card.style.display = 'none';
-   }
-  });
-}
+  // دالة لتوحيد النصوص وتجاهل الاختلاف في الهمزات والتاء المربوطة
+  function normalizeText(text) {
+    if (!text) return '';
+    return text.toLowerCase()
+               .replace(/[أإآ]/g, 'ا')
+               .replace(/ة/g, 'ه')
+               .trim();
+  }
 
-searchInput.addEventListener('input', filterCards);
-categoryFilter.addEventListener('change', filterCards);
-  </script>
-    </body>
-        </html>
+  function filterCards() {
+    const searchTerm = normalizeText(searchInput.value);
+    const selectedCategory = normalizeText(categoryFilter.value);
+
+    cards.forEach(card => {
+      const cardText = normalizeText(card.innerText);
+
+      const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+      const matchesCategory = !selectedCategory || cardText.includes(selectedCategory);
+
+      if (matchesSearch && matchesCategory) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  if (searchInput && categoryFilter) {
+    searchInput.addEventListener('input', filterCards);
+    categoryFilter.addEventListener('change', filterCards);
+  }
+</script>
+</body>
+</html>
