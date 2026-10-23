@@ -473,41 +473,46 @@
 
 <!-- نظام البحث والفلترة الفعال للمبادرات -->
 <script>
-  const searchInput = document.getElementById('searchInput');
-  const categoryFilter = document.getElementById('categoryFilter');
-  const cards = document.querySelectorAll('#cardsContainer .card');
+  document.addEventListener("DOMContentLoaded", function() {
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const cards = document.querySelectorAll('#cardsContainer .card');
 
-  // دالة لتوحيد النصوص وتجاهل الاختلاف في الهمزات والتاء المربوطة
-  function normalizeText(text) {
-    if (!text) return '';
-    return text.toLowerCase()
-               .replace(/[أإآ]/g, 'ا')
-               .replace(/ة/g, 'ه')
-               .trim();
-  }
+    function normalizeText(text) {
+      if (!text) return '';
+      return text.toLowerCase()
+                 .replace(/[أإآ]/g, 'ا')
+                 .replace(/ة/g, 'ه')
+                 .trim();
+    }
 
-  function filterCards() {
-    const searchTerm = normalizeText(searchInput.value);
-    const selectedCategory = normalizeText(categoryFilter.value);
+    function filterCards() {
+      if (!searchInput || !categoryFilter) return;
+      
+      const searchTerm = normalizeText(searchInput.value);
+      const selectedCategory = normalizeText(categoryFilter.value);
 
-    cards.forEach(card => {
-      const cardText = normalizeText(card.innerText);
+      cards.forEach(card => {
+        const cardText = normalizeText(card.innerText);
 
-      const matchesSearch = !searchTerm || cardText.includes(searchTerm);
-      const matchesCategory = !selectedCategory || cardText.includes(selectedCategory);
+        const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+        const matchesCategory = !selectedCategory || cardText.includes(selectedCategory);
 
-      if (matchesSearch && matchesCategory) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  }
+        if (matchesSearch && matchesCategory) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
 
-  if (searchInput && categoryFilter) {
-    searchInput.addEventListener('input', filterCards);
-    categoryFilter.addEventListener('change', filterCards);
-  }
+    if (searchInput) {
+      searchInput.addEventListener('input', filterCards);
+    }
+    if (categoryFilter) {
+      categoryFilter.addEventListener('change', filterCards);
+    }
+  });
 </script>
 </body>
 </html>
