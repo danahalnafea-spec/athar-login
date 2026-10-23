@@ -462,8 +462,7 @@
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
                     sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
-                    bodyElement.classList.add('sidebar-is-collapsed');
-                } else {
+                    bodyElement.classList.add('sidebar-is-collapsed'); 
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
@@ -476,31 +475,24 @@
 const searchInput = document.getElementById('searchInput');
 const categoryFilter = document.getElementById('categoryFilter');
 const cards = document.querySelectorAll('#cardsContainer .card');
-function normalizeText(text) {
-  return text.toLowerCase().replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').trim();
-}
 
-function filterCards() {
-  const searchTerm = normalizeText(searchInput.value);
-  const selectedCategory = normalizeText(categoryFilter.value);
-
-  cards.forEach(card => {
-    const cardText = normalizeText(card.innerText);
-
-    const matchesSearch = !searchTerm || cardText.includes(searchTerm);
-    const matchesCategory = !selectedCategory || cardText.includes(selectedCategory);
-
-    if (matchesSearch && matchesCategory) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
+        function filterCards ()(
+const searchTerm = searchinput.value.toLowerCase().trim();
+const selectedCategory = categoryFilter.value.toLowerCase().trim();
+        
+cards. forEach(card => {
+const cardText = card.innerText.toLowerCase();
+    
+const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+const matchesCategory = !selectedCategory || cardText. includes (selectedCategory) ;
+    
+if (matchesSearch & matchesCategory) (
+card.style.display "block';
+} else {
+card.style.display = 'none';
+   }
   });
 }
-        
-searchInput.addEventListener('input', filterCards);
-categoryFilter.addEventListener('change', filterCards);
-</script>
 
 searchInput.addEventListener('input', filterCards);
 categoryFilter.addEventListener('change', filterCards);
