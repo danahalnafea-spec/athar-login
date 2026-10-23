@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -288,11 +289,10 @@
             </form>
         </div>
     </div>
-
-    <!-- سكربت التشغيل الحافظ للبيانات -->
+    <!-- سكربت التشغيل الحافظ للبيانات لدعم تقييم إضافة المشرف -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // قاعدة البيانات الأساسية للمبادرات
+            // 1. القائمة الافتراضية
             const defaultInitiatives = [
                 { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
                 { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
@@ -300,20 +300,15 @@
                 { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
-            // دمج البيانات المحفوظة محلياً مع الافتراضية لضمان عدم ضياع أي إضافة جديدة
-            let initiatives = defaultInitiatives;
-            try {
-                const storedInitiatives = localStorage.getItem('athalInitiatives');
-                if (storedInitiatives) {
-                    const parsed = JSON.parse(storedInitiatives);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        initiatives = parsed;
-                    }
-                } else {
-                    localStorage.setItem('athalInitiatives', JSON.stringify(defaultInitiatives));
-                }
-            } catch (e) {
-                console.error(e);
+            // 2. فحص الذاكرة المحلية أولاً: إذا أضافت الدكتورة أي شيء تُحفظ دائماً ولا تعود للافتراضي أبداً
+            let initiatives = [];
+            const savedData = localStorage.getItem('athalInitiatives');
+            
+            if (savedData && savedData !== '[]') {
+                initiatives = JSON.parse(savedData);
+            } else {
+                initiatives = defaultInitiatives;
+                localStorage.setItem('athalInitiatives', JSON.stringify(defaultInitiatives));
             }
 
             const savedName = localStorage.getItem('athalUser');
@@ -338,36 +333,24 @@
                 }
             }
 
-            // ألوان المجالات
             function getCategoryBadgeStyle(category) {
                 switch(category) {
-                    case 'التطوير المهني':
-                        return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;';
-                    case 'التمكين الاقتصادي':
-                        return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;';
-                    case 'اقتصاد':
-                        return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;';
-                    case 'الأنظمة والتأمين':
-                        return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;';
-                    default:
-                        return 'background-color: #f3f4f6; color: #374151;';
+                    case 'التطوير المهني': return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;';
+                    case 'التمكين الاقتصادي': return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;';
+                    case 'اقتصاد': return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;';
+                    case 'الأنظمة والتأمين': return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;';
+                    default: return 'background-color: #f3f4f6; color: #374151;';
                 }
             }
 
-            // ألوان الحالة
             function getStatusBadgeStyle(status) {
-                if (status === 'نشطة') {
-                    return 'background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;';
-                } else if (status === 'مكتملة') {
-                    return 'background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;';
-                } else if (status === 'قيد التنفيذ') {
-                    return 'background-color: #FFE87C; color: #785900; border: 1px solid #fcd34d;';
-                } else {
-                    return 'background-color: #f3f4f6; color: #374151;';
-                }
+                if (status === 'نشطة') return 'background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;';
+                if (status === 'مكتملة') return 'background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;';
+                if (status === 'قيد التنفيذ') return 'background-color: #FFE87C; color: #785900; border: 1px solid #fcd34d;';
+                return 'background-color: #f3f4f6; color: #374151;';
             }
 
-            // عرض المبادرات
+            // رسم وتحديث الواجهة
             function renderInitiatives() {
                 const container = document.getElementById('cardsContainer');
                 if (!container) return;
@@ -434,7 +417,7 @@
 
             renderInitiatives();
 
-            // Modal Controls
+            // النافذة المنبثقة للنموذج
             const modal = document.getElementById('initiativeModal');
             const openAddBtn = document.getElementById('openAddModalBtn');
             const closeBtn = document.getElementById('closeModalBtn');
@@ -470,13 +453,13 @@
                     };
 
                     if (index === '') {
-                        initiatives.push(newItem);
+                        initiatives.unshift(newItem); // إضافة المبادرة الجديدة في أول القائمة لتظهر فوراً للدكتورة فوق
                     } else {
                         newItem.id = initiatives[index].id;
                         initiatives[index] = newItem;
                     }
 
-                    // الحفظ الفوري والإلزامي في الذاكرة المحلية
+                    // حفظ النتيجة فوراً في ذاكرة المتصفح
                     localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
                     modal.classList.add('hidden');
                     renderInitiatives();
@@ -507,7 +490,7 @@
                 }
             };
 
-            // القائمة المنسدلة للمستخدم
+            // القوائم الجانبية والمنسدلة
             const userBarToggle = document.getElementById('userBarToggle');
             const userDropdownMenu = document.getElementById('userDropdownMenu');
             if (userBarToggle && userDropdownMenu) {
@@ -518,7 +501,6 @@
                 window.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
             }
 
-            // السهم الجانبي
             const sidebarWrapper = document.getElementById('sidebarWrapper');
             const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
             const toggleIcon = document.getElementById('toggleIcon');
@@ -532,7 +514,7 @@
                 });
             }
 
-            // البحث والفلترة
+            // التصفية والبحث
             const searchInput = document.getElementById('searchInput');
             const categoryFilter = document.getElementById('categoryFilter');
 
@@ -554,6 +536,5 @@
             if (searchInput) searchInput.addEventListener('input', filterCards);
             if (categoryFilter) categoryFilter.addEventListener('change', filterCards);
         });
-    </script>
-</body>
+    </script
 </html>
