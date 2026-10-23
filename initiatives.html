@@ -1,7 +1,297 @@
-    <!-- سكربت التشغيل الحافظ للبيانات لدعم تقييم إضافة المشرف -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة أثر - المبادرات</title>
+    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --sidebar-width: 280px; }
+        * { font-family: 'Cairo', sans-serif; }
+        body {
+            background-color: #f0f7ff;
+            background-image: url('bg-dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            direction: rtl;
+        }
+        .main-content-area {
+            flex: 1;
+            height: 100vh;
+            padding: 4vh 3vw;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: all 0.3s ease;
+        }
+        .sidebar-toggle-btn {
+            position: fixed;
+            top: 25px;
+            right: calc(var(--sidebar-width) + 15px);
+            transform: none;
+            width: 34px;
+            height: 34px;
+            background-color: #0b253a;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
+            font-size: 12px;
+            z-index: 10000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
+        }
+        body.sidebar-is-collapsed .sidebar-toggle-btn { right: 20px; }
+        .sidebar-toggle-btn:hover { background-color: #16344e; transform: scale(1.1); }
+        .sidebar-wrapper {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            height: 100vh;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            transform: translateX(0);
+        }
+        .sidebar-wrapper.collapsed { transform: translateX(var(--sidebar-width)); }
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 170px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 100;
+            border: 1px solid rgba(11, 37, 58, 0.08);
+            text-align: right;
+        }
+        .user-dropdown-menu.show { display: flex; }
+
+        /* توحيد مظهر الحقول */
+        #initiativeForm input, 
+        #initiativeForm select {
+            background-color: #ffffff !important;
+            color: #0b253a !important;
+            border: 1px solid #e5e7eb !important;
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-wrapper {
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 9999;
+                transform: translateX(var(--sidebar-width));
+            }
+            .sidebar-wrapper.mobile-open { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- زر السهم المتجاوب -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+        <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+    </button>
+
+    <!-- حاوية الشريط الجانبي في اليمين -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <aside class="w-[280px] bg-[#eaf4fc] border-l border-[#0f3d59]/15 h-screen p-4 flex flex-col justify-between shadow-lg overflow-y-auto">
+            <div>
+                <!-- شعار أثر -->
+                <div class="flex items-center justify-center mb-6 mt-1">
+                    <img src="logo.png" alt="شعار أثر" class="w-[195px] object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/195?text=أثر';">
+                </div>
+                <!-- القائمة -->
+                <nav class="space-y-1.5">
+                    <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house w-5 text-center"></i>
+                    </a>
+                    <a href="initiatives.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl bg-[#d1e7fb] text-[#0b253a] font-extrabold transition text-sm">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>البيانات</span>
+                        <i class="fa-solid fa-database w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines w-5 text-center"></i>
+                    </a>
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users w-5 text-center"></i>
+                    </a>
+                    <!-- إعدادات النظام للمشرف -->
+                    <div id="adminSettingsMenu" style="display: none;">
+                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear w-5 text-center"></i>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+            <!-- زر تسجيل الخروج -->
+            <div class="border-t border-[#0f3d59]/15 pt-3 mt-auto">
+                <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-red-500/10 hover:text-red-600 font-bold transition text-sm">
+                    <span>تسجيل الخروج</span>
+                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
+                </a>
+            </div>
+        </aside>
+    </div>
+
+    <!-- المحتوى الرئيسي الأيسر -->
+    <main class="main-content-area" id="mainContentArea">
+        <!-- الهيدر العلوي -->
+        <header class="w-full flex justify-between items-center mb-8 relative">
+            <div class="text-right">
+                <h1 class="text-2xl md:text-3xl font-black text-[#0b253a]">المبادرات</h1>
+                <div class="w-12 h-1 bg-[#4e9cd8] rounded mt-1"></div>
+            </div>
+            
+            <!-- شريط اسم المستخدم -->
+            <div class="relative" id="userBarContainer">
+                <div id="userBarToggle" class="flex items-center gap-2.5 cursor-pointer bg-white/90 px-4 py-1.5 rounded-full shadow-sm hover:bg-white transition backdrop-blur-sm">
+                    <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#0b253a] shadow-sm">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-sm font-bold text-[#0b253a]">
+                        <span id="displayUserName">مستخدم</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                    </div>
+                </div>
+                <!-- القائمة المنسدلة للصلاحية -->
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <span class="text-[11px] text-gray-500 font-semibold px-1.5">صلاحية الحساب</span>
+                    <div class="bg-slate-100 text-[#0b253a] px-2.5 py-2 rounded-lg text-xs font-bold flex items-center justify-between">
+                        <span id="displayUserRoleText">مستخدم عادي</span>
+                        <i class="fa-solid fa-lock text-[#4e9cd8] text-xs"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- زر إضافة مبادرة (يظهر للمشرف فقط) -->
+        <div id="adminActionContainer" class="mb-4" style="display: none;">
+            <button id="openAddModalBtn" class="bg-[#0b253a] hover:bg-[#16344e] text-white px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm transition">
+                <i class="fa-solid fa-plus"></i>
+                <span>إضافة مبادرة جديدة</span>
+            </button>
+        </div>
+
+        <!-- أدوات البحث والتصفية -->
+        <div class="flex flex-col md:flex-row gap-4 mb-6">
+            <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] shadow-sm text-[#0b253a] font-medium cursor-pointer">
+                <option value="">جميع المجالات</option>
+                <option value="التطوير المهني">التطوير المهني</option>
+                <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
+                <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
+                <option value="اقتصاد">اقتصاد</option>
+            </select>
+            <div class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[#4e9cd8]">
+                <i class="fa-solid fa-search text-gray-400"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن مبادرة أو جهة..." class="w-full text-sm outline-none text-[#0b253a] bg-transparent">
+            </div>
+        </div>
+
+        <!-- قائمة المبادرات الديناميكية -->
+        <div id="cardsContainer" class="space-y-4 pb-10">
+            <!-- سيتم تعبئة المبادرات وتحديثها تلقائياً عبر الجافاسكريبت -->
+        </div>
+    </main>
+
+    <!-- نافذة منبثقة لإضافة أو تعديل مبادرة (Modal) -->
+    <div id="initiativeModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl relative text-right">
+            <h3 id="modalTitle" class="text-xl font-black text-[#0b253a] mb-4">إضافة مبادرة جديدة</h3>
+            <form id="initiativeForm" class="space-y-3.5">
+                <input type="hidden" id="initiativeIndex">
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">اسم المبادرة</label>
+                    <input type="text" id="initName" required class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">المجال</label>
+                        <select id="initCategory" class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                            <option value="التطوير المهني">التطوير المهني</option>
+                            <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
+                            <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
+                            <option value="اقتصاد">اقتصاد</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">الحالة</label>
+                        <select id="initStatus" class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                            <option value="مكتملة">مكتملة</option>
+                            <option value="نشطة">نشطة</option>
+                            <option value="قيد التنفيذ">قيد التنفيذ</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">المستفيدون</label>
+                        <input type="number" id="initBeneficiaries" required class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-700 mb-1">تاريخ التنفيذ</label>
+                        <input type="date" id="initDate" required class="w-full h-11 px-2 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1"> مستوى الأثر </label>
+                    <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl h-11 px-3.5">
+                        <input type="number" id="initImpactNum" step="0.01" min="0" max="5" placeholder="أدخل الرقم (مثال: 4.5)" required class="w-full text-sm outline-none bg-transparent text-[#0b253a]">
+                        <span class="text-xs font-bold text-gray-500 whitespace-nowrap px-2.5 bg-gray-100 py-1 rounded-lg">/ 5</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" id="closeModalBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
+                    <button type="submit" class="px-5 py-2 bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl text-sm font-bold transition">حفظ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+<!-- سكربت التشغيل الحافظ للبيانات لدعم تقييم إضافة المشرف بدون أخطاء -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // 1. القائمة الافتراضية
+            // 1. القائمة الافتراضية الأساسية
             const defaultInitiatives = [
                 { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
                 { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
@@ -9,15 +299,21 @@
                 { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
-            // 2. فحص الذاكرة المحلية أولاً: إذا أضافت الدكتورة أي شيء تُحفظ دائماً ولا تعود للافتراضي أبداً
-            let initiatives = [];
-            const savedData = localStorage.getItem('athalInitiatives');
-            
-            if (savedData && savedData !== '[]') {
-                initiatives = JSON.parse(savedData);
-            } else {
+            // 2. تحميل البيانات بطريقة آمنة تمنع الشاشة البيضاء تماماً
+            let initiatives = defaultInitiatives;
+            try {
+                const savedData = localStorage.getItem('athalInitiatives');
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        initiatives = parsed;
+                    }
+                } else {
+                    localStorage.setItem('athalInitiatives', JSON.stringify(defaultInitiatives));
+                }
+            } catch (err) {
+                console.error("خطأ في قراءة البيانات، الاستعراض الافتراضي:", err);
                 initiatives = defaultInitiatives;
-                localStorage.setItem('athalInitiatives', JSON.stringify(defaultInitiatives));
             }
 
             const savedName = localStorage.getItem('athalUser');
@@ -162,13 +458,13 @@
                     };
 
                     if (index === '') {
-                        initiatives.unshift(newItem); // إضافة المبادرة الجديدة في أول القائمة لتظهر فوراً للدكتورة فوق
+                        initiatives.unshift(newItem); // إضافة المبادرة الجديدة في أول القائمة
                     } else {
                         newItem.id = initiatives[index].id;
                         initiatives[index] = newItem;
                     }
 
-                    // حفظ النتيجة فوراً في ذاكرة المتصفح
+                    // حفظ النتيجة فوراً في ذاكرة المتصفح للأبد
                     localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
                     modal.classList.add('hidden');
                     renderInitiatives();
@@ -246,3 +542,5 @@
             if (categoryFilter) categoryFilter.addEventListener('change', filterCards);
         });
     </script>
+    </body>
+</html>
