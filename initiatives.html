@@ -18,7 +18,6 @@
             font-family: 'Cairo', sans-serif;
         }
 
-        /* القاعدة العامة لضبط خلفية المنصة وتثبيت الشاشة */
         body {
             background-color: #f0f7ff;
             background-image: url('bg-dashboard.png');
@@ -35,7 +34,6 @@
             direction: rtl;
         }
 
-        /* المحتوى الرئيسي الأيسر المتمدد مع إمكانية التمرير */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -50,7 +48,6 @@
             transition: all 0.3s ease;
         }
 
-        /* زر السهم لإخفاء وإظهار القائمة الجانبية */
         .sidebar-toggle-btn {
             position: fixed;
             top: 25px;
@@ -81,7 +78,6 @@
             transform: scale(1.1);
         }
 
-        /* حاوية الشريط الجانبي في اليمين */
         .sidebar-wrapper {
             position: relative;
             display: flex;
@@ -97,7 +93,6 @@
             transform: translateX(var(--sidebar-width));
         }
 
-        /* القائمة المنسدلة للمستخدم في أقصى اليسار */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -129,9 +124,6 @@
             }
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
-            }
-            body.sidebar-is-collapsed .sidebar-toggle-btn {
-                right: 20px;
             }
         }
     </style>
@@ -179,12 +171,12 @@
                         <i class="fa-solid fa-users w-5 text-center"></i>
                     </a>
                     <!-- إعدادات النظام للمشرف -->
-                    <li id="adminSettingsMenu" style="display: none;" class="list-none">
+                    <div id="adminSettingsMenu" style="display: none;">
                         <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
                             <span>إعدادات النظام</span>
                             <i class="fa-solid fa-gear w-5 text-center"></i>
                         </a>
-                    </li>
+                    </div>
                 </nav>
             </div>
 
@@ -201,14 +193,14 @@
     <!-- المحتوى الرئيسي الأيسر -->
     <main class="main-content-area" id="mainContentArea">
         
-        <!-- الهيدر العلوي (العنوان في اليمين واسم المستخدم في اليسار) -->
+        <!-- الهيدر العلوي -->
         <header class="w-full flex justify-between items-center mb-8 relative">
             <div class="text-right">
                 <h1 class="text-2xl md:text-3xl font-black text-[#0b253a]">المبادرات</h1>
                 <div class="w-12 h-1 bg-[#4e9cd8] rounded mt-1"></div>
             </div>
 
-            <!-- شريط اسم المستخدم وصلاحيات الحساب (في أقصى اليسار) -->
+            <!-- شريط اسم المستخدم -->
             <div class="relative" id="userBarContainer">
                 <div id="userBarToggle" class="flex items-center gap-2.5 cursor-pointer bg-white/90 px-4 py-1.5 rounded-full shadow-sm hover:bg-white transition backdrop-blur-sm">
                     <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#0b253a] shadow-sm">
@@ -235,9 +227,9 @@
         <div class="flex flex-col md:flex-row gap-4 mb-6">
             <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] shadow-sm text-[#0b253a] font-medium cursor-pointer">
                 <option value="">جميع المجالات</option>
-                <option value=التطويرالمهني">التطوير المهني</option>
+                <option value="التطوير المهني">التطوير المهني</option>
                 <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
-                <option value=" الانظمه والتامين">الانظمه والتامين</option>
+                <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
                 <option value="اقتصاد">اقتصاد</option>
             </select>
             <div class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[#4e9cd8]">
@@ -246,11 +238,11 @@
             </div>
         </div>
 
-        <!-- قائمة المبادرات بتنسيق البطاقات الأفقية المطابقة لتصميمك الجديد -->
+        <!-- قائمة المبادرات -->
         <div id="cardsContainer" class="space-y-4 pb-10">
 
             <!-- مبادرة سامقات -->
-            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4" data-category="المجتمع والاستدامة">
+            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="md:w-1/3 text-right">
                     <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة سامقات</h3>
                     <span class="inline-block bg-emerald-50 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
@@ -265,7 +257,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center ⁠justify-center gap-8⁠ w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                <div class="w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
                     <div>
                         <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users text-[10px] ml-1"></i> المستفيدون</span>
                         <span class="text-base font-bold text-[#0b253a]">17</span>
@@ -287,8 +279,8 @@
                 </div>
             </div>
 
-            <!-- مبادرة محترف  -->
-            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4" data-category="التمكين الثقافي والبرمجي">
+            <!-- مبادرة محترف -->
+            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="md:w-1/3 text-right">
                     <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة محترف</h3>
                     <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
@@ -303,7 +295,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center ⁠justify-center gap-8⁠ w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                <div class="w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
                     <div>
                         <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users text-[10px] ml-1"></i> المستفيدون</span>
                         <span class="text-base font-bold text-[#0b253a]">568</span>
@@ -319,21 +311,21 @@
                     <div>
                         <span class="block text-xs text-gray-500 mb-1">الحالة</span>
                         <span class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-3 py-1 rounded-full">
-                            مكتمله
+                            مكتملة
                         </span>
                     </div>
                 </div>
             </div>
 
-                       <!-- مبادرة فهيم  -->
-            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4" data-category="التمكين الثقافي والبرمجي">
+            <!-- مبادرة فهيم -->
+            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="md:w-1/3 text-right">
                     <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة فهيم</h3>
                     <span class="inline-block bg-blue-50 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
                         اقتصاد  
                     </span>
                     <div>
-                        <a href="initiative-details.html?initiative=tech" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-[#0b253a] hover:text-white text-[#0b253a] text-xs font-bold px-3.5 py-1.5 rounded-lg transition border border-gray-200">
+                        <a href="initiative-details.html?initiative=fahim" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-[#0b253a] hover:text-white text-[#0b253a] text-xs font-bold px-3.5 py-1.5 rounded-lg transition border border-gray-200">
                             <i class="fa-solid fa-file-lines text-xs"></i>
                             <span>عرض التفاصيل</span>
                             <i class="fa-solid fa-angle-left text-xs"></i>
@@ -341,7 +333,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center ⁠justify-center gap-8⁠ w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                <div class="w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
                     <div>
                         <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users text-[10px] ml-1"></i> المستفيدون</span>
                         <span class="text-base font-bold text-[#0b253a]">144</span>
@@ -364,14 +356,14 @@
             </div>
             
             <!-- مبادرة متأهب -->
-            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4" data-category="التعليم والتدريب">
+            <div class="card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
                 <div class="md:w-1/3 text-right">
                     <h3 class="text-lg font-bold text-[#0b253a] mb-1">مبادرة متأهب</h3>
                     <span class="inline-block bg-purple-50 text-purple-700 text-xs font-semibold px-3 py-1 rounded-full mb-2">
-                       الانظمه والتامين
+                       الأنظمة والتأمين
                     </span>
                     <div>
-                        <a href="initiative-details.html?initiative=sharakah" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-[#0b253a] hover:text-white text-[#0b253a] text-xs font-bold px-3.5 py-1.5 rounded-lg transition border border-gray-200">
+                        <a href="initiative-details.html?initiative=mataheb" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-[#0b253a] hover:text-white text-[#0b253a] text-xs font-bold px-3.5 py-1.5 rounded-lg transition border border-gray-200">
                             <i class="fa-solid fa-file-lines text-xs"></i>
                             <span>عرض التفاصيل</span>
                             <i class="fa-solid fa-angle-left text-xs"></i>
@@ -379,7 +371,7 @@
                     </div>
                 </div>
 
-                <div class="flex items-center ⁠justify-center gap-8⁠ w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
+                <div class="w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
                     <div>
                         <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users text-[10px] ml-1"></i> المستفيدون</span>
                         <span class="text-base font-bold text-[#0b253a]">387</span>
@@ -404,115 +396,100 @@
         </div>
     </main>
 
+    <!-- سكربت مدمج سليم وآمن 100% لتشغيل اسم المستخدم، القوائم، والبحث والفلترة -->
     <script>
-        // سحب الاسم المسجل وصلاحية المستخدم وعرضها
-        const savedName = localStorage.getItem('athalUser');
-        const savedRole = localStorage.getItem('athalRole');
+        document.addEventListener("DOMContentLoaded", function() {
+            // 1. جلب اسم وصلاحية المستخدم
+            const savedName = localStorage.getItem('athalUser');
+            const savedRole = localStorage.getItem('athalRole');
 
-        if (savedName) {
-            document.getElementById('displayUserName').textContent = savedName;
-        }
+            if (savedName) {
+                const displayNameEl = document.getElementById('displayUserName');
+                if (displayNameEl) displayNameEl.textContent = savedName;
+            }
 
-        const roleTextElement = document.getElementById('displayUserRoleText');
-        if (savedRole === 'admin') {
-            roleTextElement.textContent = 'مشرف النظام';
-            document.getElementById('adminSettingsMenu').style.display = 'block';
-        } else {
-            roleTextElement.textContent = 'مستخدم عادي';
-        }
-
-        // تفاعل القائمة المنسدلة لحساب المستخدم
-        const userBarToggle = document.getElementById('userBarToggle');
-        const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-        userBarToggle.addEventListener('click', function (e) {
-            e.stopPropagation();
-            userDropdownMenu.classList.toggle('show');
-            userBarToggle.classList.toggle('active');
-        });
-
-        window.addEventListener('click', function () {
-            userDropdownMenu.classList.remove('show');
-            userBarToggle.classList.remove('active');
-        });
-
-        // البرمجة التفاعلية لزر السهم لطي أو إظهار القائمة الجانبية
-        const sidebarWrapper = document.getElementById('sidebarWrapper');
-        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-        const toggleIcon = document.getElementById('toggleIcon');
-        const bodyElement = document.body;
-
-        sidebarToggleBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            if (window.innerWidth <= 1024) {
-                sidebarWrapper.classList.toggle('mobile-open');
-                if (sidebarWrapper.classList.contains('mobile-open')) {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                    bodyElement.classList.remove('sidebar-is-collapsed');
+            const roleTextElement = document.getElementById('displayUserRoleText');
+            if (roleTextElement) {
+                if (savedRole === 'admin') {
+                    roleTextElement.textContent = 'مشرف النظام';
+                    const adminMenu = document.getElementById('adminSettingsMenu');
+                    if (adminMenu) adminMenu.style.display = 'block';
                 } else {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    bodyElement.classList.add('sidebar-is-collapsed');
-                }
-            } else {
-                sidebarWrapper.classList.toggle('collapsed');
-                if (sidebarWrapper.classList.contains('collapsed')) {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
-                    bodyElement.classList.add('sidebar-is-collapsed'); 
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    bodyElement.classList.remove('sidebar-is-collapsed');
+                    roleTextElement.textContent = 'مستخدم عادي';
                 }
             }
+
+            // 2. تفاعل القائمة المنسدلة للمستخدم
+            const userBarToggle = document.getElementById('userBarToggle');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+            if (userBarToggle && userDropdownMenu) {
+                userBarToggle.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    userDropdownMenu.classList.toggle('show');
+                    userBarToggle.classList.toggle('active');
+                });
+
+                window.addEventListener('click', function () {
+                    userDropdownMenu.classList.remove('show');
+                    userBarToggle.classList.remove('active');
+                });
+            }
+
+            // 3. تحكم السهم الجانبي
+            const sidebarWrapper = document.getElementById('sidebarWrapper');
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const bodyElement = document.body;
+
+            if (sidebarToggleBtn && sidebarWrapper) {
+                sidebarToggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebarWrapper.classList.toggle('collapsed');
+                    bodyElement.classList.toggle('sidebar-is-collapsed');
+                    if (sidebarWrapper.classList.contains('collapsed')) {
+                        toggleIcon.className = "fa-solid fa-chevron-left";
+                        sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
+                    } else {
+                        toggleIcon.className = "fa-solid fa-chevron-right";
+                        sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    }
+                });
+            }
+
+            // 4. نظام البحث والفلترة الفعّال
+            const searchInput = document.getElementById('searchInput');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const cards = document.querySelectorAll('#cardsContainer .card');
+
+            function normalizeText(text) {
+                if (!text) return '';
+                return text.toLowerCase()
+                           .replace(/[أإآ]/g, 'ا')
+                           .replace(/ة/g, 'ه')
+                           .trim();
+            }
+
+            function filterCards() {
+                const searchTerm = searchInput ? normalizeText(searchInput.value) : '';
+                const selectedCategory = categoryFilter ? normalizeText(categoryFilter.value) : '';
+
+                cards.forEach(card => {
+                    const cardText = normalizeText(card.innerText);
+                    const matchesSearch = !searchTerm || cardText.includes(searchTerm);
+                    const matchesCategory = !selectedCategory || cardText.includes(selectedCategory);
+
+                    if (matchesSearch && matchesCategory) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+
+            if (searchInput) searchInput.addEventListener('input', filterCards);
+            if (categoryFilter) categoryFilter.addEventListener('change', filterCards);
         });
-
-<!-- نظام البحث والفلترة الفعال للمبادرات -->
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.getElementById('searchInput');
-    const categoryFilter = document.getElementById('categoryFilter');
-    const cards = document.querySelectorAll('#cardsContainer .card');
-
-    function normalizeText(text) {
-      if (!text) return '';
-      return text.toLowerCase()
-                 .replace(/[أإآ]/g, 'ا')
-                 .replace(/ة/g, 'ه')
-                 .trim();
-    }
-
-    function filterCards() {
-      if (!searchInput || !categoryFilter) return;
-      
-      const searchTerm = normalizeText(searchInput.value);
-      const selectedCategory = normalizeText(categoryFilter.value);
-
-      cards.forEach(card => {
-        const cardText = normalizeText(card.innerText);
-
-        const matchesSearch = !searchTerm || cardText.includes(searchTerm);
-        const matchesCategory = !selectedCategory || cardText.includes(selectedCategory);
-
-        if (matchesSearch && matchesCategory) {
-          card.style.display = 'block';
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    }
-
-    if (searchInput) {
-      searchInput.addEventListener('input', filterCards);
-    }
-    if (categoryFilter) {
-      categoryFilter.addEventListener('change', filterCards);
-    }
-  });
-</script>
+    </script>
 </body>
 </html>
