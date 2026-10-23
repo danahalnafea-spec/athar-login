@@ -292,6 +292,7 @@
     <!-- سكربت التشغيل الحافظ للبيانات -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // قاعدة البيانات الأساسية للمبادرات
             const defaultInitiatives = [
                 { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
                 { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
@@ -299,12 +300,20 @@
                 { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
-            // جلب البيانات المخزنة مسبقاً أو تعبئة الافتراضية
-            let storedInitiatives = localStorage.getItem('athalInitiatives');
-            let initiatives = storedInitiatives ? JSON.parse(storedInitiatives) : defaultInitiatives;
-
-            if (!storedInitiatives) {
-                localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
+            // دمج البيانات المحفوظة محلياً مع الافتراضية لضمان عدم ضياع أي إضافة جديدة
+            let initiatives = defaultInitiatives;
+            try {
+                const storedInitiatives = localStorage.getItem('athalInitiatives');
+                if (storedInitiatives) {
+                    const parsed = JSON.parse(storedInitiatives);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        initiatives = parsed;
+                    }
+                } else {
+                    localStorage.setItem('athalInitiatives', JSON.stringify(defaultInitiatives));
+                }
+            } catch (e) {
+                console.error(e);
             }
 
             const savedName = localStorage.getItem('athalUser');
@@ -361,6 +370,7 @@
             // عرض المبادرات
             function renderInitiatives() {
                 const container = document.getElementById('cardsContainer');
+                if (!container) return;
                 container.innerHTML = '';
 
                 initiatives.forEach((item, index) => {
@@ -443,33 +453,35 @@
                 closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
             }
 
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const index = document.getElementById('initiativeIndex').value;
-                const impactVal = document.getElementById('initImpactNum').value;
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    const index = document.getElementById('initiativeIndex').value;
+                    const impactVal = document.getElementById('initImpactNum').value;
 
-                const newItem = {
-                    id: 'custom_' + Date.now(),
-                    name: document.getElementById('initName').value,
-                    category: document.getElementById('initCategory').value,
-                    beneficiaries: document.getElementById('initBeneficiaries').value,
-                    date: document.getElementById('initDate').value,
-                    impact: impactVal + ' / 5',
-                    status: document.getElementById('initStatus').value
-                };
+                    const newItem = {
+                        id: 'custom_' + Date.now(),
+                        name: document.getElementById('initName').value,
+                        category: document.getElementById('initCategory').value,
+                        beneficiaries: document.getElementById('initBeneficiaries').value,
+                        date: document.getElementById('initDate').value,
+                        impact: impactVal + ' / 5',
+                        status: document.getElementById('initStatus').value
+                    };
 
-                if (index === '') {
-                    initiatives.push(newItem);
-                } else {
-                    newItem.id = initiatives[index].id;
-                    initiatives[index] = newItem;
-                }
+                    if (index === '') {
+                        initiatives.push(newItem);
+                    } else {
+                        newItem.id = initiatives[index].id;
+                        initiatives[index] = newItem;
+                    }
 
-                // حفظ البيانات بشكل دائم في متصفح المستخدم
-                localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
-                modal.classList.add('hidden');
-                renderInitiatives();
-            });
+                    // الحفظ الفوري والإلزامي في الذاكرة المحلية
+                    localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
+                    modal.classList.add('hidden');
+                    renderInitiatives();
+                });
+            }
 
             window.openEditModal = function(index) {
                 const item = initiatives[index];
@@ -540,7 +552,6 @@
             }
 
             if (searchInput) searchInput.addEventListener('input', filterCards);
-            if (categoryFilter) categoryFilter.categoryFilter?.addEventListener('change', filterCards);
             if (categoryFilter) categoryFilter.addEventListener('change', filterCards);
         });
     </script>
