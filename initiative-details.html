@@ -1,16 +1,158 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تفاصيل المبادرة</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل المبادرة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <!-- مكتبة أيقونات FontAwesome التفاعلية -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f7ff;
+            background-image: url('bg-dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+    </style>
 </head>
-<body class="bg-[#f8fafc] text-gray-800 p-8">
-  <div class="max-w-4xl mx-auto">
-    <a href="initiatives.html" class="text-teal-700 hover:underline mb-4 inline-block">&rarr; العودة للمبادرات</a>
-    <h1 class="text-2xl font-bold mt-4">تفاصيل المبادرة</h1>
-  </div>
+<body class="text-gray-800 p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- زر العودة للمبادرات -->
+        <a href="initiatives.html" class="inline-flex items-center gap-2 text-[#0b253a] bg-white/80 hover:bg-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm border border-gray-100 mb-4">
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+            <span>العودة للمبادرات</span>
+        </a>
+        
+        <h1 class="text-2xl font-black text-[#0b253a] mt-2 mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-circle-info text-[#4e9cd8]"></i>
+            <span>تفاصيل المبادرة</span>
+        </h1>
+
+        <!-- هيدر بيانات المبادرة الأساسية -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 id="detailName" class="text-xl font-bold text-[#0b253a]">مبادرة سامقات</h2>
+                <span id="detailStatus" class="bg-teal-100 text-teal-800 text-xs font-semibold px-3 py-1 rounded-full">مكتملة</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600 border-t border-gray-100 pt-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-[#4e9cd8]"></i>
+                    <span class="font-semibold text-gray-700">المجال:</span> <span id="detailCategory">التمكين الاقتصادي</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-building text-[#4e9cd8]"></i>
+                    <span class="font-semibold text-gray-700">الجهة:</span> <span id="detailDept">قسم إدارة الأعمال</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-regular fa-calendar-days text-[#4e9cd8]"></i>
+                    <span class="font-semibold text-gray-700">تاريخ التنفيذ:</span> <span id="detailDate">2025-11-30</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- بطاقات الملخص السريع للأرقام بحُلة وتنسيق جديد -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            <!-- بطاقة إجمالي المستفيدين -->
+            <div class="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div>
+                    <div class="text-sm text-gray-500 font-medium flex items-center gap-1.5 mb-1">
+                        <span>إجمالي المستفيدين</span>
+                    </div>
+                    <div id="detailBeneficiaries" class="text-2xl font-black text-[#0b253a]">17</div>
+                </div>
+                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-teal-100">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+
+            <!-- بطاقة مستوى الأثر -->
+            <div class="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div>
+                    <div class="text-sm text-gray-500 font-medium flex items-center gap-1.5 mb-1">
+                        <span>مستوى الأثر</span>
+                    </div>
+                    <div id="detailImpact" class="text-2xl font-black text-[#0b253a]">5 / 5</div>
+                </div>
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-blue-100">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم الأهداف والأنشطة -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-bullseye"></i>
+                </span>
+                <span>الأهداف والأنشطة</span>
+            </h3>
+            <p class="text-gray-400 italic text-sm pr-10"></p>
+        </div>
+
+        <!-- قسم مؤشرات الأداء والمستفيدين -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </span>
+                <span>مؤشرات الأداء والمستفيدين</span>
+            </h3>
+            <p class="text-gray-400 italic text-sm pr-10"></p>
+        </div>
+
+        <!-- قسم النتائج والأثر والأدلة -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-folder-closed"></i>
+                </span>
+                <span>النتائج والأثر والأدلة الداعمة</span>
+            </h3>
+            <p class="text-gray-400 italic text-sm pr-10"></p>
+        </div>
+
+    </div>
+
+    <!-- كود جافاسكريبت قراءة وتبديل البيانات تلقائياً -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const initiativeId = urlParams.get('initiative') || 'samqat';
+
+            const initiativesData = {
+                'samqat': { name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
+                'tech': { name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
+                'fahim': { name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
+                'mataheb': { name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
+            };
+
+            let savedInitiatives = [];
+            try {
+                const saved = localStorage.getItem('athalInitiatives');
+                if (saved) savedInitiatives = JSON.parse(saved);
+            } catch(e) {}
+
+            let currentItem = savedInitiatives.find(item => item.id === initiativeId);
+            if (!currentItem) {
+                currentItem = initiativesData[initiativeId] || initiativesData['samqat'];
+            }
+
+            document.getElementById('detailName').textContent = currentItem.name;
+            document.getElementById('detailCategory').textContent = currentItem.category;
+            document.getElementById('detailDept').textContent = currentItem.dept || 'قسم إدارة الأعمال';
+            document.getElementById('detailDate').textContent = currentItem.date;
+            document.getElementById('detailBeneficiaries').textContent = currentItem.beneficiaries;
+            document.getElementById('detailImpact').textContent = currentItem.impact;
+            document.getElementById('detailStatus').textContent = currentItem.status;
+        });
+    </script>
 </body>
 </html>
