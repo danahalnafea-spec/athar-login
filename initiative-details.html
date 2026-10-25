@@ -102,14 +102,6 @@
             <i class="fa-solid fa-bullseye text-rose-500 ml-2"></i>
             أهداف المبادرة
         </h4>
-
-        <button
-            type="button"
-            id="addGoalBtn"
-            class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl text-sm font-bold transition">
-            <i class="fa-solid fa-plus ml-1"></i>
-            إضافة هدف
-        </button>
     </div>
 
     <!-- قائمة الأهداف -->
@@ -142,16 +134,6 @@
             </span>
             أنشطة المبادرة
         </h3>
-
-        <button
-            type="button"
-            id="addActivityBtn"
-            class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl text-sm font-bold transition">
-
-            <i class="fa-solid fa-plus ml-1"></i>
-            إضافة نشاط
-
-        </button>
     </div>
 
     <!-- قائمة الأنشطة -->
@@ -220,283 +202,59 @@
             document.getElementById('detailImpact').textContent = currentItem.impact;
             document.getElementById('detailStatus').textContent = currentItem.status;
         });
-        // قائمة أهداف المبادرة
-// معرفة المبادرة الحالية من الرابط
-const currentInitiativeId =
-    new URLSearchParams(window.location.search).get("initiative") || "samqat";
-
-// مفتاح حفظ خاص بكل مبادرة
-const goalsStorageKey = "athar_goals_" + currentInitiativeId;
-
-// استرجاع الأهداف المحفوظة
-let goals = JSON.parse(localStorage.getItem(goalsStorageKey) || "[]");
-
-// تحديد عناصر الصفحة
-const addGoalBtn = document.getElementById("addGoalBtn");
-const goalsList = document.getElementById("goalsList");
-
-// عرض الأهداف
-// عرض الأهداف مع أزرار التعديل والحذف
-function displayGoals() {
-    goalsList.innerHTML = "";
-
-    if (goals.length === 0) {
-        goalsList.innerHTML =
-            '<p class="text-gray-400 text-sm">لا توجد أهداف مضافة حتى الآن.</p>';
-        return;
-    }
-
-    goals.forEach(function(goal, index) {
-
-        const goalCard = document.createElement("div");
-
-        goalCard.className =
-            "bg-gray-50 border border-gray-100 rounded-xl p-4 flex justify-between items-center gap-3";
-
-        const goalText = document.createElement("p");
-        goalText.className = "font-semibold text-gray-700";
-        goalText.textContent = "🎯 " + goal;
-
-        const buttons = document.createElement("div");
-        buttons.className = "flex gap-2";
-
-        // زر التعديل
-        const editBtn = document.createElement("button");
-        editBtn.type = "button";
-        editBtn.textContent = "تعديل";
-        editBtn.className =
-            "bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm";
-
-        editBtn.addEventListener("click", function() {
-            const updatedGoal = prompt("عدلي الهدف:", goal);
-
-            if (updatedGoal && updatedGoal.trim() !== "") {
-                goals[index] = updatedGoal.trim();
-
-                localStorage.setItem(
-                    goalsStorageKey,
-                    JSON.stringify(goals)
-                );
-
-                displayGoals();
+                // عرض الأهداف والأنشطة المحفوظة للقراءة فقط، دون أزرار إدارة.
+        const currentInitiativeId = new URLSearchParams(window.location.search).get("initiative") || "samqat";
+        function readSavedList(key) {
+            try {
+                const value = JSON.parse(localStorage.getItem(key) || "[]");
+                return Array.isArray(value) ? value : [];
+            } catch (error) {
+                return [];
             }
-        });
+        }
 
-        // زر الحذف
-        const deleteBtn = document.createElement("button");
-        deleteBtn.type = "button";
-        deleteBtn.textContent = "حذف";
-        deleteBtn.className =
-            "bg-red-100 text-red-600 px-3 py-1 rounded-lg text-sm";
+        const goals = readSavedList("athar_goals_" + currentInitiativeId);
+        const goalsList = document.getElementById("goalsList");
+        if (goals.length > 0) {
+            goalsList.replaceChildren();
+            goals.forEach(goal => {
+                const card = document.createElement("div");
+                card.className = "bg-gray-50 border border-gray-100 rounded-xl p-4";
+                const text = document.createElement("p");
+                text.className = "font-semibold text-gray-700";
+                text.textContent = "🎯 " + goal;
+                card.appendChild(text);
+                goalsList.appendChild(card);
+            });
+        }
 
-        deleteBtn.addEventListener("click", function() {
-            if (confirm("هل أنتِ متأكدة من حذف هذا الهدف؟")) {
-                goals.splice(index, 1);
-
-                localStorage.setItem(
-                    goalsStorageKey,
-                    JSON.stringify(goals)
-                );
-
-                displayGoals();
-            }
-        });
-
-        buttons.appendChild(editBtn);
-        buttons.appendChild(deleteBtn);
-
-        goalCard.appendChild(goalText);
-        goalCard.appendChild(buttons);
-
-        goalsList.appendChild(goalCard);
-    });
-}
-   
-// إضافة هدف جديد
-addGoalBtn.addEventListener("click", function() {
-    const newGoal = prompt("اكتبي هدف المبادرة:");
-
-    if (newGoal && newGoal.trim() !== "") {
-        goals.push(newGoal.trim());
-
-// حفظ الأهداف
-localStorage.setItem(goalsStorageKey, JSON.stringify(goals));
-
-displayGoals();
-    }
-});
-// عرض الأهداف المحفوظة عند فتح الصفحة
-displayGoals();
-// ==============================
-// قسم إدارة أنشطة المبادرة
-// ==============================
-
-// مفتاح حفظ الأنشطة لكل مبادرة
-const activitiesStorageKey = "athar_activities_" + currentInitiativeId;
-
-// استرجاع الأنشطة المحفوظة
-let activities = JSON.parse(
-    localStorage.getItem(activitiesStorageKey) || "[]"
-);
-
-// عناصر قسم الأنشطة
-const addActivityBtn = document.getElementById("addActivityBtn");
-const activitiesList = document.getElementById("activitiesList");
-
-// حفظ الأنشطة
-function saveActivities() {
-    localStorage.setItem(
-        activitiesStorageKey,
-        JSON.stringify(activities)
-    );
-}
-
-// عرض الأنشطة
-function displayActivities() {
-    activitiesList.innerHTML = "";
-
-    if (activities.length === 0) {
-        activitiesList.innerHTML =
-            '<p class="text-gray-400 text-sm">لا توجد أنشطة مضافة حتى الآن.</p>';
-        return;
-    }
-
-activities.forEach(function(activity, index) {
-            const card = document.createElement("div");
-
-        card.className =
-            "bg-gray-50 border border-gray-100 rounded-xl p-4";
-
-        const title = document.createElement("h4");
-        title.className = "font-bold text-[#0b253a] mb-2";
-        title.textContent = "📋 " + activity.name;
-
-        const date = document.createElement("p");
-        date.className = "text-sm text-gray-600 mb-1";
-        date.textContent = "📅 التاريخ: " + activity.date;
-
-        const responsible = document.createElement("p");
-        responsible.className = "text-sm text-gray-600 mb-1";
-        responsible.textContent = "👤 المسؤولة: " + activity.responsible;
-
-        const status = document.createElement("p");
-        status.className = "text-sm font-semibold text-blue-600";
-        status.textContent = "الحالة: " + activity.status;
-
-        card.appendChild(title);
-        card.appendChild(date);
-        card.appendChild(responsible);
-        card.appendChild(status);
-
-// حاوية أزرار التحكم
-const buttons = document.createElement("div");
-buttons.className = "flex gap-2 mt-4";
-
-// زر تعديل النشاط
-const editBtn = document.createElement("button");
-editBtn.type = "button";
-editBtn.textContent = "✏️ تعديل";
-editBtn.className =
-    "bg-blue-100 text-blue-700 px-3 py-2 rounded-lg text-sm font-bold";
-
-editBtn.addEventListener("click", function() {
-
-    const name = prompt("عدلي اسم النشاط:", activity.name);
-    if (name === null) return;
-    if (!name.trim()) return alert("اسم النشاط مطلوب");
-
-    const date = prompt("عدلي تاريخ النشاط:", activity.date);
-    if (date === null) return;
-    if (!date.trim()) return alert("تاريخ النشاط مطلوب");
-
-    const responsible = prompt(
-        "عدلي اسم المسؤولة:",
-        activity.responsible
-    );
-    if (responsible === null) return;
-    if (!responsible.trim()) return alert("اسم المسؤولة مطلوب");
-
-    const status = prompt(
-        "عدلي الحالة: لم يبدأ / قيد التنفيذ / مكتمل",
-        activity.status
-    );
-    if (status === null) return;
-    if (!status.trim()) return alert("حالة النشاط مطلوبة");
-
-    activities[index] = {
-        name: name.trim(),
-        date: date.trim(),
-        responsible: responsible.trim(),
-        status: status.trim()
-    };
-
-    saveActivities();
-    displayActivities();
-});
-
-// زر حذف النشاط
-const deleteBtn = document.createElement("button");
-deleteBtn.type = "button";
-deleteBtn.textContent = "🗑️ حذف";
-deleteBtn.className =
-    "bg-red-100 text-red-600 px-3 py-2 rounded-lg text-sm font-bold";
-
-deleteBtn.addEventListener("click", function() {
-
-    const confirmed = confirm(
-        "هل أنتِ متأكدة من حذف هذا النشاط؟"
-    );
-
-    if (confirmed) {
-        activities.splice(index, 1);
-
-        saveActivities();
-        displayActivities();
-    }
-});
-
-// إضافة الأزرار إلى البطاقة
-buttons.appendChild(editBtn);
-buttons.appendChild(deleteBtn);
-
-card.appendChild(buttons);
-activitiesList.appendChild(card);
-    });
-}
-
-// إضافة نشاط جديد
-addActivityBtn.addEventListener("click", function() {
-
-    const name = prompt("اكتبي اسم النشاط:");
-    if (name === null || name.trim() === "") return;
-
-    const date = prompt("اكتبي تاريخ النشاط (YYYY-MM-DD):");
-    if (date === null || date.trim() === "") return;
-
-    const responsible = prompt("من المسؤولة عن النشاط؟");
-    if (responsible === null || responsible.trim() === "") return;
-
-    const status = prompt(
-        "حالة النشاط: لم يبدأ / قيد التنفيذ / مكتمل"
-    );
-    if (status === null || status.trim() === "") return;
-
-    const newActivity = {
-        name: name.trim(),
-        date: date.trim(),
-        responsible: responsible.trim(),
-        status: status.trim()
-    };
-
-    activities.push(newActivity);
-
-    saveActivities();
-    displayActivities();
-});
-
-// عرض الأنشطة عند فتح الصفحة
-displayActivities();
+        const activities = readSavedList("athar_activities_" + currentInitiativeId);
+        const activitiesList = document.getElementById("activitiesList");
+        activitiesList.replaceChildren();
+        if (!activities.length) {
+            const empty = document.createElement("p");
+            empty.className = "text-gray-400 text-sm";
+            empty.textContent = "لا توجد أنشطة مضافة حتى الآن.";
+            activitiesList.appendChild(empty);
+        } else {
+            activities.forEach(activity => {
+                const card = document.createElement("div");
+                card.className = "bg-gray-50 border border-gray-100 rounded-xl p-4";
+                const fields = [
+                    ["h4", "font-bold text-[#0b253a] mb-2", "📋 " + (activity.name || "")],
+                    ["p", "text-sm text-gray-600 mb-1", "📅 التاريخ: " + (activity.date || "")],
+                    ["p", "text-sm text-gray-600 mb-1", "👤 المسؤولة: " + (activity.responsible || "")],
+                    ["p", "text-sm font-semibold text-blue-600", "الحالة: " + (activity.status || "")]
+                ];
+                fields.forEach(([tag, cls, value]) => {
+                    const el = document.createElement(tag);
+                    el.className = cls;
+                    el.textContent = value;
+                    card.appendChild(el);
+                });
+                activitiesList.appendChild(card);
+            });
+        }
     </script>
 </body>
 </html>
-
