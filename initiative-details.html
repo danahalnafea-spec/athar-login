@@ -86,52 +86,28 @@
             </div>
         </div>
 
-        <!-- قسم الأهداف والأنشطة -->
-        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
-            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-lg bg-rose-50 text-rose-500 flex items-center justify-center text-sm">
-                    <i class="fa-solid fa-bullseye"></i>
-                </span>
-                <span>الأهداف والأنشطة</span>
-            </h3>
-            <!-- قسم الأهداف -->
-<div class="mt-5">
-
-    <div class="flex justify-between items-center mb-4">
-        <h4 class="text-base font-bold text-[#0b253a]">
-            <i class="fa-solid fa-bullseye text-rose-500 ml-2"></i>
-            أهداف المبادرة
-        </h4>
-    </div>
-
-    <!-- قائمة الأهداف -->
-    <div id="goalsList" class="space-y-3"></div>
-
-</div>
+        <!-- بطاقة الأهداف والأنشطة - بيانات ثابتة في الكود مع إمكانية تعديل محلي للمشرف -->
+        <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" id="initiativeWorkCard">
+          <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4">
+            <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2"><i class="fa-solid fa-bullseye text-rose-500"></i> الأهداف والأنشطة</h3>
+            <button type="button" id="editWorkBtn" hidden class="bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl px-4 py-2 text-sm font-bold flex items-center gap-2"><i class="fa-solid fa-pen"></i> تعديل</button>
+          </div>
+          <div id="initiativeWorkContent" class="space-y-6"></div>
+        </section>
+        <div id="workModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="workModalTitle">
+          <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-xl" dir="rtl">
+            <h3 id="workModalTitle" class="text-xl font-black text-[#0b253a] mb-2">تعديل الأهداف والأنشطة</h3>
+            <p class="text-sm text-gray-500 mb-5">عدّلي بيانات كل نشاط وأهدافه، أو أضيفي نشاطًا جديدًا.</p>
+            <form id="workForm">
+              <div id="workEditorRows" class="space-y-4"></div>
+              <button type="button" id="addWorkActivity" class="mt-4 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold text-sm"><i class="fa-solid fa-plus ml-1"></i> إضافة نشاط</button>
+              <div class="flex gap-2 mt-6 justify-start border-t pt-4">
+                <button type="submit" class="bg-[#0b253a] text-white px-6 py-2.5 rounded-xl font-bold">حفظ التعديلات</button>
+                <button type="button" id="cancelWorkEdit" class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-xl font-bold">إلغاء</button>
+              </div>
+            </form>
+          </div>
         </div>
-        <!-- قسم الأنشطة -->
-<div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
-
-    <div class="flex justify-between items-center mb-4 border-b border-gray-100 pb-3">
-
-        <h3 class="text-lg font-bold text-[#0b253a] flex items-center gap-2">
-            <span class="w-8 h-8 rounded-lg bg-blue-50 text-blue-500 flex items-center justify-center">
-                <i class="fa-solid fa-list-check"></i>
-            </span>
-            أنشطة المبادرة
-        </h3>
-    </div>
-
-    <!-- قائمة الأنشطة -->
-    <div id="activitiesList" class="space-y-3">
-
-        <p class="text-gray-400 text-sm">
-            لا توجد أنشطة مضافة حتى الآن.
-        </p>
-
-    </div>
-
-</div>
         <!-- قسم مؤشرات الأداء والمستفيدين -->
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
             <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
@@ -188,64 +164,229 @@
             document.getElementById('detailImpact').textContent = currentItem.impact;
             document.getElementById('detailStatus').textContent = currentItem.status;
         });
-                // عرض الأهداف والأنشطة المحفوظة للقراءة فقط، دون أزرار إدارة.
-        const currentInitiativeId = new URLSearchParams(window.location.search).get("initiative") || "samqat";
-        function readSavedList(key) {
-            try {
-                const value = JSON.parse(localStorage.getItem(key) || "[]");
-                return Array.isArray(value) ? value : [];
-            } catch (error) {
-                return [];
-            }
-        }
 
-        const goals = readSavedList("athar_goals_" + currentInitiativeId);
-        const goalsList = document.getElementById("goalsList");
-        goalsList.replaceChildren();
-        if (goals.length > 0) {
-            goals.forEach(goal => {
-                const card = document.createElement("div");
-                card.className = "bg-gray-50 border border-gray-100 rounded-xl p-4";
-                const text = document.createElement("p");
-                text.className = "font-semibold text-gray-700";
-                text.textContent = "🎯 " + goal;
-                card.appendChild(text);
-                goalsList.appendChild(card);
-            });
-        } else {
-            const empty = document.createElement("p");
-            empty.className = "text-gray-400 text-sm";
-            empty.textContent = "لا توجد أهداف مضافة حتى الآن.";
-            goalsList.appendChild(empty);
+        // البيانات الأصلية مكتوبة داخل الملف؛ لا تعتمد على بيانات المتصفح لظهورها.
+        const initialWork = {
+  "samqat": [
+    {
+      "name": "الاستقلالية الاقتصادية وريادة الأعمال النسائية",
+      "date": "2025-11-19",
+      "status": "مكتمل",
+      "responsible": "د. كريمة حسن محمد",
+      "goals": [
+        "تمكين المرأة من تحقيق الاكتفاء المالي الذاتي عبر اكتساب مهارات إدارة الموارد وبناء مصادر دخل مستدامة.",
+        "تنمية روح المبادرة والابتكار لدى المشاركات لتحويل الأفكار إلى مشاريع ريادية ناجحة.",
+        "تعزيز مشاركة المرأة في التنمية الاقتصادية من خلال دعم دورها كقائدة ومؤسسة للأعمال"
+      ]
+    }
+  ],
+  "tech": [
+    {
+      "name": "الشهادة الاحترافية طريقك للانطلاق في سوق العمل",
+      "date": "2025-09-30",
+      "status": "مكتمل",
+      "responsible": "أ. مشاعل الحربي، أ. غدير العلماني",
+      "goals": [
+        "التعرف على الأكاديمية المالية وأهم الشهادات التي تقدمها.",
+        "معرفة الفئة المستهدفة للشهادات الاحترافية.",
+        "آلية التسجيل للاختبارات وكيفية الوصول للمادة العلمية وطريقة المذاكرة.",
+        "آلية احتساب النتائج والاجتياز وطريقة إصدار الشهادة.",
+        "أهمية الحصول على الشهادة الاحترافية.",
+        "تجربة خريجة سابقة في الحصول على الشهادة الاحترافية"
+      ]
+    },
+    {
+      "name": "تميز وارتقِ بمستقبلك وابدأ رحلتك في احتراف إدارة المخاطر",
+      "date": "2025-12-08",
+      "status": "مكتمل",
+      "responsible": "د. أحمد سيد",
+      "goals": [
+        "التعرف على أهمية الحصول على الشهادات الاحترافية في مجال إدارة المخاطر.",
+        "التعرف على أهم الشهادات الاحترافية الحديثة المعتمدة والمقدمة من الأكاديمية المالية.",
+        "التعرف على أهم الشهادات الدولية في مجال إدارة المخاطر والجهات المانحة.",
+        "تمكين المشاركين من اختيار الشهادة المناسبة بناءً على الأهداف الوظيفية.",
+        "استعراض المادة العلمية للشهادة الاحترافية «أساسيات إدارة المخاطر في الخدمات المالية» المقدمة من الأكاديمية المالية"
+      ]
+    },
+    {
+      "name": "الشهادة الاحترافية بوابتك الذهبية نحو بناء مستقبلك المهني",
+      "date": "2025-11-18",
+      "status": "مكتمل",
+      "responsible": "م. مشاعل محمد الحربي، الطالبة مريم محمد بوعبيد، الطالبة لمار حسين القحطاني",
+      "goals": [
+        "التعرف على دليل الشهادات الاحترافية وأهم الشهادات في مجال المالية وإدارة المخاطر والتأمين.",
+        "التعرف على أهمية الحصول على الشهادات الاحترافية في تغيير المسار المهني وفتح آفاق المستقبل.",
+        "التعرف على أهمية الاستثمار في الذات وتحقيق التميز والارتقاء بالمستقبل المهني"
+      ]
+    }
+  ],
+  "fahim": [
+    {
+      "name": "سلسلة ورش عن التكنولوجيا المالية والتأمين الرقمي: تحول يعزز الاستدامة والشمول المالي (اللقاء الأول)",
+      "date": "2025-12-11",
+      "status": "مكتمل",
+      "responsible": "د. منى حليم، د. أحمد سيد",
+      "goals": [
+        "التعريف بالتكنولوجيا المالية (Fintech) وأهميتها ودورها في تطوير الخدمات المالية ودعم أهداف الاستدامة.",
+        "التعريف بالتأمين الرقمي وأهميته وفوائده ونماذجه الحديثة.",
+        "استعراض أهم الحلول الرقمية والتقنيات المالية والتأمينية.",
+        "دور التحول الرقمي والتقنيات المالية في تحقيق الشمول المالي والاستدامة.",
+        "أهمية التشريعات والدعم المؤسسي في تمكين التحول الرقمي وتعزيز استدامة الاقتصاد."
+      ]
+    },
+    {
+      "name": "ادّخر.. استثمر.. احمِ مستقبلك (اليوم الأول)",
+      "date": "2025-10-15",
+      "status": "مكتمل",
+      "responsible": "شركة التأمين الجزيرة تكافل من بنك الجزيرة",
+      "goals": [
+        "نشر ثقافة الادخار بين طلبة الجامعة.",
+        "تعريف الطلبة بالمنتجات التأمينية ودورها في حماية المستقبل.",
+        "ربط مفهوم الادخار بالتخطيط المالي والتأميني.",
+        "بناء شراكة مجتمعية بين الجامعة ومؤسسات مالية وتأمينية.",
+        "الاحتفاء باليوم العالمي للادخار بطريقة تفاعلية ومؤثرة."
+      ]
+    }
+  ],
+  "mataheb": [
+    {
+      "name": "من الوعي إلى الأمان المالي",
+      "date": "2025-10-26",
+      "status": "مكتمل",
+      "responsible": "أ. جبريل آل خميس",
+      "goals": [
+        "رفع مستوى الوعي المالي.",
+        "تعزيز ثقافة الادخار.",
+        "تمكين المشاركين من حماية أنفسهم ماليًا.",
+        "تنمية مهارات اتخاذ القرار المالي السليم.",
+        "تشجيع التخطيط للمستقبل المالي.",
+        "نشر ثقافة المسؤولية المالية الفردية والمجتمعية."
+      ]
+    },
+    {
+      "name": "ما بعد التخرج لمتخصصي التأمين",
+      "date": "2025-09-17",
+      "status": "مكتمل",
+      "responsible": "م. عبد العزيز الظفر",
+      "goals": [
+        "التعرف على المهارات المطلوبة في قطاع التأمين.",
+        "التعرف على الفرص الوظيفية في قطاع التأمين.",
+        "التعرف على الطريقة الأنسب للتقديم على الوظائف في قطاع التأمين.",
+        "أهمية الحصول على الشهادات الاحترافية."
+      ]
+    }
+  ]
+};
+        const workId = new URLSearchParams(location.search).get('initiative') || 'samqat';
+        const workKey = 'athar_work_v2_' + workId;
+        const admin = localStorage.getItem('athalRole') === 'admin';
+        const content = document.getElementById('initiativeWorkContent');
+        const modal = document.getElementById('workModal');
+        const editor = document.getElementById('workEditorRows');
+        const editBtn = document.getElementById('editWorkBtn');
+        const inputStyle = 'w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300';
+        let work = loadWork();
+        function loadWork() {
+          try {
+            const saved = JSON.parse(localStorage.getItem(workKey));
+            if (Array.isArray(saved)) return saved;
+          } catch(e) {}
+          return structuredClone(initialWork[workId] || []);
         }
-
-        const activities = readSavedList("athar_activities_" + currentInitiativeId);
-        const activitiesList = document.getElementById("activitiesList");
-        activitiesList.replaceChildren();
-        if (!activities.length) {
-            const empty = document.createElement("p");
-            empty.className = "text-gray-400 text-sm";
-            empty.textContent = "لا توجد أنشطة مضافة حتى الآن.";
-            activitiesList.appendChild(empty);
-        } else {
-            activities.forEach(activity => {
-                const card = document.createElement("div");
-                card.className = "bg-gray-50 border border-gray-100 rounded-xl p-4";
-                const fields = [
-                    ["h4", "font-bold text-[#0b253a] mb-2", "📋 " + (activity.name || "")],
-                    ["p", "text-sm text-gray-600 mb-1", "📅 التاريخ: " + (activity.date || "")],
-                    ["p", "text-sm text-gray-600 mb-1", "👤 المسؤولة: " + (activity.responsible || "")],
-                    ["p", "text-sm font-semibold text-blue-600", "الحالة: " + (activity.status || "")]
-                ];
-                fields.forEach(([tag, cls, value]) => {
-                    const el = document.createElement(tag);
-                    el.className = cls;
-                    el.textContent = value;
-                    card.appendChild(el);
-                });
-                activitiesList.appendChild(card);
-            });
+        function node(tag, cls, value) {
+          const el = document.createElement(tag);
+          if (cls) el.className = cls;
+          if (value !== undefined) el.textContent = value;
+          return el;
         }
+        function renderWork() {
+          content.replaceChildren();
+          if (!work.length) {
+            content.appendChild(node('p','text-gray-500 text-sm','لا توجد أنشطة مسجلة لهذه المبادرة.'));
+            return;
+          }
+          const headings = node('div','mb-3');
+          headings.appendChild(node('h4','font-bold text-[#0b253a] mb-1','الأنشطة وأهدافها'));
+          headings.appendChild(node('p','text-sm text-gray-500','كل نشاط يتضمن أهدافه الخاصة ومعلومات تنفيذه.'));
+          content.appendChild(headings);
+          work.forEach((a,i) => {
+            const block = node('section','rounded-xl border border-gray-200 overflow-hidden');
+            const header = node('div','bg-slate-50 px-4 py-3 font-bold text-[#0b253a]',(i+1) + '. ' + (a.name || 'نشاط بدون اسم'));
+            block.appendChild(header);
+            const body = node('div','p-4');
+            body.appendChild(node('h5','font-bold text-[#0b253a] mb-2','الأهداف:'));
+            const ul = node('ul','list-disc pr-6 space-y-1 text-sm text-gray-700 mb-4');
+            (Array.isArray(a.goals) ? a.goals : []).forEach(g => ul.appendChild(node('li','leading-7',g)));
+            body.appendChild(ul);
+            const tableWrap = node('div','overflow-x-auto');
+            const table = node('table','w-full text-sm text-right border-collapse');
+            const thead = node('thead','bg-slate-50');
+            const trh = node('tr','');
+            ['النشاط','التاريخ','الحالة','المسؤول'].forEach(x => trh.appendChild(node('th','border border-gray-200 px-3 py-2 whitespace-nowrap',x)));
+            thead.appendChild(trh); table.appendChild(thead);
+            const tbody = node('tbody',''); const tr = node('tr','');
+            [a.name,formatDate(a.date),a.status,a.responsible].forEach(x => tr.appendChild(node('td','border border-gray-200 px-3 py-2 align-top',x || '—')));
+            tbody.appendChild(tr); table.appendChild(tbody); tableWrap.appendChild(table); body.appendChild(tableWrap);
+            block.appendChild(body); content.appendChild(block);
+          });
+        }
+        function formatDate(d) {
+          const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
+          return m ? `${m[3]}/${m[2]}/${m[1]}` : (d || '');
+        }
+        function field(label,type,value,prop) {
+          const wrap = node('label','block');
+          wrap.appendChild(node('span','block text-sm font-bold text-gray-700 mb-1',label));
+          const input = node(type === 'textarea' ? 'textarea' : 'input',inputStyle);
+          if (type !== 'textarea') input.type = type;
+          input.value = value || '';
+          input.dataset.prop = prop;
+          if (prop === 'name') input.required = true;
+          if (type === 'textarea') input.rows = 5;
+          wrap.appendChild(input);
+          return wrap;
+        }
+        function addEditorRow(a = {name:'',date:'',status:'مكتمل',responsible:'',goals:[]}) {
+          const card = node('section','border border-gray-200 rounded-xl p-4 space-y-3');
+          const top = node('div','flex items-center justify-between gap-2');
+          top.appendChild(node('h4','font-bold text-[#0b253a]','بيانات النشاط'));
+          const del = node('button','text-red-600 bg-red-50 rounded-lg px-3 py-1 text-sm font-bold','حذف النشاط');
+          del.type = 'button';
+          del.onclick = () => { if (confirm('حذف هذا النشاط من القائمة؟')) card.remove(); };
+          top.appendChild(del); card.appendChild(top);
+          card.appendChild(field('اسم النشاط','text',a.name,'name'));
+          const grid = node('div','grid grid-cols-1 md:grid-cols-2 gap-3');
+          grid.appendChild(field('التاريخ','date',a.date,'date'));
+          grid.appendChild(field('الحالة','text',a.status,'status'));
+          card.appendChild(grid);
+          card.appendChild(field('مسؤول النشاط','text',a.responsible,'responsible'));
+          card.appendChild(field('الأهداف (كل هدف في سطر مستقل)','textarea',(a.goals || []).join('\n'),'goals'));
+          editor.appendChild(card);
+        }
+        function closeEditor() { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+        if (admin) {
+          editBtn.hidden = false;
+          editBtn.onclick = () => {
+            editor.replaceChildren();
+            work.forEach(a => addEditorRow(a));
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+          };
+        }
+        document.getElementById('addWorkActivity').onclick = () => addEditorRow();
+        document.getElementById('cancelWorkEdit').onclick = closeEditor;
+        document.getElementById('workForm').onsubmit = e => {
+          e.preventDefault();
+          if (!admin) return;
+          const updated = [...editor.children].map(card => {
+            const read = prop => card.querySelector('[data-prop="'+prop+'"]')?.value.trim() || '';
+            return {name:read('name'),date:read('date'),status:read('status'),responsible:read('responsible'),goals:read('goals').split('\n').map(x=>x.trim()).filter(Boolean)};
+          });
+          if (updated.some(a => !a.name)) { alert('اسم النشاط مطلوب.'); return; }
+          work = updated;
+          localStorage.setItem(workKey,JSON.stringify(work));
+          renderWork(); closeEditor();
+        };
+        renderWork();
     </script>
 </body>
 </html>
