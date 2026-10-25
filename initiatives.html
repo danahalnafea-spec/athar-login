@@ -311,6 +311,31 @@
         <button type="button" id="activitiesManagerAdd" class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl font-bold text-sm">+ إضافة نشاط</button>
       </div>
     </section>
+    <!-- نافذة إضافة وتعديل الأهداف والأنشطة بنفس تصميم إضافة المبادرة -->
+    <div id="entryEditorModal" class="fixed inset-0 z-[80] bg-black/50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="entryEditorTitle">
+      <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl text-right my-auto" dir="rtl">
+        <h3 id="entryEditorTitle" class="text-xl font-black text-[#0b253a] mb-5">إضافة</h3>
+        <form id="entryEditorForm" class="space-y-4">
+          <div id="goalEditorFields" class="hidden">
+            <label for="entryGoal" class="block text-xs font-bold text-gray-700 mb-2">نص الهدف</label>
+            <textarea id="entryGoal" rows="3" placeholder="اكتبي هدف المبادرة" class="w-full px-3.5 py-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] resize-y"></textarea>
+          </div>
+          <div id="activityEditorFields" class="hidden space-y-4">
+            <div><label for="entryActivityName" class="block text-xs font-bold text-gray-700 mb-2">اسم النشاط</label><input id="entryActivityName" type="text" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"></div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div><label for="entryActivityDate" class="block text-xs font-bold text-gray-700 mb-2">تاريخ النشاط</label><input id="entryActivityDate" type="date" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"></div>
+              <div><label for="entryActivityStatus" class="block text-xs font-bold text-gray-700 mb-2">الحالة</label><select id="entryActivityStatus" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"><option value="لم يبدأ">لم يبدأ</option><option value="قيد التنفيذ">قيد التنفيذ</option><option value="مكتمل">مكتمل</option></select></div>
+            </div>
+            <div><label for="entryActivityResponsible" class="block text-xs font-bold text-gray-700 mb-2">المسؤولة عن النشاط</label><input id="entryActivityResponsible" type="text" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"></div>
+          </div>
+          <p id="entryEditorError" class="text-red-600 text-xs font-semibold hidden" role="alert"></p>
+          <div class="flex justify-end gap-2 pt-3">
+            <button type="submit" class="px-5 py-2 bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl text-sm font-bold transition">حفظ</button>
+            <button type="button" id="entryEditorCancel" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
+          </div>
+        </form>
+      </div>
+    </div>
     <script>
         document.addEventListener("DOMContentLoaded", function(){
                     
@@ -378,6 +403,66 @@
                 return 'background-color: #f3f4f6; color: #374151;';
             }
 
+            // نموذج موحد للإضافة والتعديل بدل نوافذ prompt التقليدية.
+            const entryModal = document.getElementById('entryEditorModal');
+            const entryForm = document.getElementById('entryEditorForm');
+            const entryError = document.getElementById('entryEditorError');
+            let editorSave = null;
+            function closeEntryEditor() {
+                entryModal.classList.add('hidden');
+                entryModal.classList.remove('flex');
+                editorSave = null;
+            }
+            document.getElementById('entryEditorCancel').addEventListener('click', closeEntryEditor);
+            entryModal.addEventListener('click', (event) => { if (event.target === entryModal) closeEntryEditor(); });
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !entryModal.classList.contains('hidden')) closeEntryEditor();
+            });
+            function openEntryEditor(type, existing, onSave) {
+                if (!isAdmin) return;
+                entryForm.reset();
+                entryError.classList.add('hidden');
+                const isGoal = type === 'goal';
+                document.getElementById('entryEditorTitle').textContent =
+                    (existing === null ? 'إضافة ' : 'تعديل ') + (isGoal ? 'هدف' : 'نشاط');
+                document.getElementById('goalEditorFields').classList.toggle('hidden', !isGoal);
+                document.getElementById('activityEditorFields').classList.toggle('hidden', isGoal);
+                if (isGoal) {
+                    document.getElementById('entryGoal').value = existing || '';
+                } else if (existing) {
+                    document.getElementById('entryActivityName').value = existing.name || '';
+                    document.getElementById('entryActivityDate').value = existing.date || '';
+                    document.getElementById('entryActivityResponsible').value = existing.responsible || '';
+                    document.getElementById('entryActivityStatus').value = existing.status || 'لم يبدأ';
+                }
+                editorSave = { isGoal, onSave };
+                entryModal.classList.remove('hidden');
+                entryModal.classList.add('flex');
+                (isGoal ? document.getElementById('entryGoal') : document.getElementById('entryActivityName')).focus();
+            }
+            entryForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+                if (!editorSave || !isAdmin) return;
+                let value;
+                if (editorSave.isGoal) {
+                    value = document.getElementById('entryGoal').value.trim();
+                } else {
+                    value = {
+                        name: document.getElementById('entryActivityName').value.trim(),
+                        date: document.getElementById('entryActivityDate').value.trim(),
+                        responsible: document.getElementById('entryActivityResponsible').value.trim(),
+                        status: document.getElementById('entryActivityStatus').value
+                    };
+                }
+                if (!value || (!editorSave.isGoal && (!value.name || !value.date || !value.responsible || !value.status))) {
+                    entryError.textContent = 'فضلاً عبّئي جميع الحقول المطلوبة.';
+                    entryError.classList.remove('hidden');
+                    return;
+                }
+                editorSave.onSave(value);
+                closeEntryEditor();
+            });
+
             // إدارة أهداف المبادرة (للمشرف فقط)، باستخدام نفس مفتاح صفحة التفاصيل.
             function getGoalsForInitiative(id) {
                 try {
@@ -421,14 +506,12 @@
                         const edit = document.createElement('button');
                         edit.className = 'text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg';
                         edit.textContent = 'تعديل';
-                        edit.onclick = () => {
-                            const updated = prompt('عدلي الهدف:', goal);
-                            if (updated === null || !updated.trim()) return;
+                        edit.onclick = () => openEntryEditor('goal', goal, (updated) => {
                             const latest = getGoalsForInitiative(initiative.id);
-                            latest[goalIndex] = updated.trim();
+                            latest[goalIndex] = updated;
                             localStorage.setItem(key, JSON.stringify(latest));
                             refresh();
-                        };
+                        });
                         const remove = document.createElement('button');
                         remove.className = 'text-sm bg-red-100 text-red-700 px-3 py-1 rounded-lg';
                         remove.textContent = 'حذف';
@@ -444,14 +527,12 @@
                         list.appendChild(row);
                     });
                 }
-                add.onclick = () => {
-                    const goal = prompt('اكتبي هدف المبادرة:');
-                    if (goal === null || !goal.trim()) return;
+                add.onclick = () => openEntryEditor('goal', null, (goal) => {
                     const goals = getGoalsForInitiative(initiative.id);
-                    goals.push(goal.trim());
+                    goals.push(goal);
                     localStorage.setItem(key, JSON.stringify(goals));
                     refresh();
-                };
+                });
                 refresh();
                 panel.scrollIntoView({behavior: 'smooth', block: 'center'});
             };
@@ -475,22 +556,6 @@
                 const list = document.getElementById('activitiesManagerList');
                 document.getElementById('activitiesManagerTitle').textContent = 'إدارة أنشطة ' + initiative.name;
                 panel.classList.remove('hidden');
-                function askActivity(previous) {
-                    const fields = [
-                        ['name', 'اسم النشاط'],
-                        ['date', 'تاريخ النشاط (YYYY-MM-DD)'],
-                        ['responsible', 'المسؤولة عن النشاط'],
-                        ['status', 'الحالة: لم يبدأ / قيد التنفيذ / مكتمل']
-                    ];
-                    const result = {};
-                    for (const [key, label] of fields) {
-                        const value = prompt(label, previous ? (previous[key] || '') : '');
-                        if (value === null) return null;
-                        if (!value.trim()) { alert(label + ' مطلوب'); return null; }
-                        result[key] = value.trim();
-                    }
-                    return result;
-                }
                 function refresh() {
                     list.replaceChildren();
                     const activities = getActivitiesForInitiative(initiative.id);
@@ -512,14 +577,12 @@
                         edit.type = 'button';
                         edit.className = 'text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg';
                         edit.textContent = 'تعديل';
-                        edit.onclick = () => {
-                            const updated = askActivity(activity);
-                            if (!updated) return;
+                        edit.onclick = () => openEntryEditor('activity', activity, (updated) => {
                             const latest = getActivitiesForInitiative(initiative.id);
                             latest[activityIndex] = updated;
                             localStorage.setItem(key, JSON.stringify(latest));
                             refresh();
-                        };
+                        });
                         const remove = document.createElement('button');
                         remove.type = 'button';
                         remove.className = 'text-sm bg-red-100 text-red-700 px-3 py-1 rounded-lg';
@@ -536,14 +599,12 @@
                         list.appendChild(row);
                     });
                 }
-                document.getElementById('activitiesManagerAdd').onclick = () => {
-                    const activity = askActivity(null);
-                    if (!activity) return;
+                document.getElementById('activitiesManagerAdd').onclick = () => openEntryEditor('activity', null, (activity) => {
                     const latest = getActivitiesForInitiative(initiative.id);
                     latest.push(activity);
                     localStorage.setItem(key, JSON.stringify(latest));
                     refresh();
-                };
+                });
                 refresh();
             };
 
