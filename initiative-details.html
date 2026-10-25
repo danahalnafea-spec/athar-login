@@ -9,6 +9,8 @@
     <!-- مكتبة أيقونات FontAwesome التفاعلية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ضمان إخفاء زر التعديل عن المستخدم العادي حتى مع فئات Tailwind */
+        #editWorkBtn[hidden] { display: none !important; }
         body {
             font-family: 'Cairo', sans-serif;
             background-color: #f0f7ff;
