@@ -320,13 +320,9 @@
             <label for="entryGoal" class="block text-xs font-bold text-gray-700 mb-2">نص الهدف</label>
             <textarea id="entryGoal" rows="3" placeholder="اكتبي هدف المبادرة" class="w-full px-3.5 py-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] resize-y"></textarea>
           </div>
-          <div id="activityEditorFields" class="hidden space-y-4">
-            <div><label for="entryActivityName" class="block text-xs font-bold text-gray-700 mb-2">اسم النشاط</label><input id="entryActivityName" type="text" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"></div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div><label for="entryActivityDate" class="block text-xs font-bold text-gray-700 mb-2">تاريخ النشاط</label><input id="entryActivityDate" type="date" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"></div>
-              <div><label for="entryActivityStatus" class="block text-xs font-bold text-gray-700 mb-2">الحالة</label><select id="entryActivityStatus" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"><option value="لم يبدأ">لم يبدأ</option><option value="قيد التنفيذ">قيد التنفيذ</option><option value="مكتمل">مكتمل</option></select></div>
-            </div>
-            <div><label for="entryActivityResponsible" class="block text-xs font-bold text-gray-700 mb-2">المسؤولة عن النشاط</label><input id="entryActivityResponsible" type="text" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]"></div>
+          <div id="activityEditorFields" class="hidden">
+            <label for="entryActivityName" class="block text-xs font-bold text-gray-700 mb-2">اسم النشاط</label>
+            <input id="entryActivityName" type="text" placeholder="اكتبي اسم النشاط" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]">
           </div>
           <p id="entryEditorError" class="text-red-600 text-xs font-semibold hidden" role="alert"></p>
           <div class="flex justify-end gap-2 pt-3">
@@ -431,9 +427,6 @@
                     document.getElementById('entryGoal').value = existing || '';
                 } else if (existing) {
                     document.getElementById('entryActivityName').value = existing.name || '';
-                    document.getElementById('entryActivityDate').value = existing.date || '';
-                    document.getElementById('entryActivityResponsible').value = existing.responsible || '';
-                    document.getElementById('entryActivityStatus').value = existing.status || 'لم يبدأ';
                 }
                 editorSave = { isGoal, onSave };
                 entryModal.classList.remove('hidden');
@@ -447,14 +440,9 @@
                 if (editorSave.isGoal) {
                     value = document.getElementById('entryGoal').value.trim();
                 } else {
-                    value = {
-                        name: document.getElementById('entryActivityName').value.trim(),
-                        date: document.getElementById('entryActivityDate').value.trim(),
-                        responsible: document.getElementById('entryActivityResponsible').value.trim(),
-                        status: document.getElementById('entryActivityStatus').value
-                    };
+                    value = { name: document.getElementById('entryActivityName').value.trim() };
                 }
-                if (!value || (!editorSave.isGoal && (!value.name || !value.date || !value.responsible || !value.status))) {
+                if (!value || (!editorSave.isGoal && !value.name)) {
                     entryError.textContent = 'فضلاً عبّئي جميع الحقول المطلوبة.';
                     entryError.classList.remove('hidden');
                     return;
@@ -570,7 +558,7 @@
                         row.className = 'bg-gray-50 rounded-xl p-4';
                         const label = document.createElement('div');
                         label.className = 'text-sm text-gray-700 whitespace-pre-line';
-                        label.textContent = '📋 ' + (activity.name || '') + '\n📅 التاريخ: ' + (activity.date || '') + '\n👤 المسؤولة: ' + (activity.responsible || '') + '\nالحالة: ' + (activity.status || '');
+                        label.textContent = '📋 ' + (activity.name || '');
                         const actions = document.createElement('div');
                         actions.className = 'flex gap-2 mt-3';
                         const edit = document.createElement('button');
@@ -579,7 +567,7 @@
                         edit.textContent = 'تعديل';
                         edit.onclick = () => openEntryEditor('activity', activity, (updated) => {
                             const latest = getActivitiesForInitiative(initiative.id);
-                            latest[activityIndex] = updated;
+                            latest[activityIndex] = { ...latest[activityIndex], ...updated };
                             localStorage.setItem(key, JSON.stringify(latest));
                             refresh();
                         });
@@ -626,12 +614,6 @@
                             <div class="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
                                 <button onclick="openEditModal(${index})" class="text-xs bg-amber-50 text-amber-700 hover:bg-amber-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
                                     <i class="fa-solid fa-pen"></i> تعديل
-                                </button>
-                                <button onclick="openGoalsManager(${index})" class="text-xs bg-rose-50 text-rose-700 hover:bg-rose-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
-                                    <i class="fa-solid fa-bullseye"></i> إدارة الأهداف
-                                </button>
-                                <button onclick="openActivitiesManager(${index})" class="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
-                                    <i class="fa-solid fa-list-check"></i> إدارة الأنشطة
                                 </button>
                                 <button onclick="deleteInitiative(${index})" class="text-xs bg-red-50 text-red-700 hover:bg-red-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
                                     <i class="fa-solid fa-trash"></i> حذف
