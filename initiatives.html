@@ -289,6 +289,28 @@
         </div>
     </div>
 <!-- سكربت التشغيل الحافظ للبيانات لدعم تقييم إضافة المشرف بدون أخطاء -->
+    <!-- لوحة إدارة الأهداف: لا تظهر إلا عند اختيار المشرف لإدارة أهداف مبادرة -->
+    <section id="goalsManagerPanel" class="hidden fixed inset-0 z-[60] bg-black/50 p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="goalsManagerTitle">
+        <div class="bg-white max-w-xl mx-auto my-12 rounded-2xl p-6 shadow-xl" dir="rtl">
+            <div class="flex justify-between items-center gap-4 mb-5">
+                <h2 id="goalsManagerTitle" class="text-lg font-black text-[#0b253a]"></h2>
+                <button type="button" onclick="document.getElementById('goalsManagerPanel').classList.add('hidden')" class="text-gray-600 font-bold" aria-label="إغلاق">✕</button>
+            </div>
+            <div id="goalsManagerList" class="space-y-3 mb-5"></div>
+            <button type="button" id="goalsManagerAdd" class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl font-bold text-sm">+ إضافة هدف</button>
+        </div>
+    </section>
+    <!-- إدارة الأنشطة للمشرف -->
+    <section id="activitiesManagerPanel" class="hidden fixed inset-0 z-[60] bg-black/50 p-4 overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="activitiesManagerTitle">
+      <div class="bg-white max-w-xl mx-auto my-12 rounded-2xl p-6 shadow-xl" dir="rtl">
+        <div class="flex justify-between items-center gap-4 mb-5">
+          <h2 id="activitiesManagerTitle" class="text-lg font-black text-[#0b253a]"></h2>
+          <button type="button" id="closeActivitiesManager" class="text-gray-600 font-bold" aria-label="إغلاق">✕</button>
+        </div>
+        <div id="activitiesManagerList" class="space-y-3 mb-5"></div>
+        <button type="button" id="activitiesManagerAdd" class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl font-bold text-sm">+ إضافة نشاط</button>
+      </div>
+    </section>
     <script>
         document.addEventListener("DOMContentLoaded", function(){
                     
@@ -356,6 +378,175 @@
                 return 'background-color: #f3f4f6; color: #374151;';
             }
 
+            // إدارة أهداف المبادرة (للمشرف فقط)، باستخدام نفس مفتاح صفحة التفاصيل.
+            function getGoalsForInitiative(id) {
+                try {
+                    const value = JSON.parse(localStorage.getItem('athar_goals_' + id) || '[]');
+                    return Array.isArray(value) ? value : [];
+                } catch (error) { return []; }
+            }
+
+            window.openGoalsManager = function(index) {
+                if (!isAdmin) return;
+                const initiative = initiatives[index];
+                if (!initiative || !initiative.id) {
+                    alert('تعذر تحديد المبادرة.');
+                    return;
+                }
+                const key = 'athar_goals_' + initiative.id;
+                const panel = document.getElementById('goalsManagerPanel');
+                const title = document.getElementById('goalsManagerTitle');
+                const list = document.getElementById('goalsManagerList');
+                const add = document.getElementById('goalsManagerAdd');
+                title.textContent = 'إدارة أهداف ' + initiative.name;
+                panel.classList.remove('hidden');
+
+                function refresh() {
+                    const goals = getGoalsForInitiative(initiative.id);
+                    list.replaceChildren();
+                    if (!goals.length) {
+                        const empty = document.createElement('p');
+                        empty.className = 'text-sm text-gray-500';
+                        empty.textContent = 'لا توجد أهداف محفوظة لهذه المبادرة.';
+                        list.appendChild(empty);
+                    }
+                    goals.forEach((goal, goalIndex) => {
+                        const row = document.createElement('div');
+                        row.className = 'bg-gray-50 rounded-xl p-3 flex flex-wrap items-center justify-between gap-3';
+                        const label = document.createElement('span');
+                        label.className = 'font-semibold text-gray-700';
+                        label.textContent = '🎯 ' + goal;
+                        const actions = document.createElement('div');
+                        actions.className = 'flex gap-2';
+                        const edit = document.createElement('button');
+                        edit.className = 'text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg';
+                        edit.textContent = 'تعديل';
+                        edit.onclick = () => {
+                            const updated = prompt('عدلي الهدف:', goal);
+                            if (updated === null || !updated.trim()) return;
+                            const latest = getGoalsForInitiative(initiative.id);
+                            latest[goalIndex] = updated.trim();
+                            localStorage.setItem(key, JSON.stringify(latest));
+                            refresh();
+                        };
+                        const remove = document.createElement('button');
+                        remove.className = 'text-sm bg-red-100 text-red-700 px-3 py-1 rounded-lg';
+                        remove.textContent = 'حذف';
+                        remove.onclick = () => {
+                            if (!confirm('هل تريدين حذف هذا الهدف؟')) return;
+                            const latest = getGoalsForInitiative(initiative.id);
+                            latest.splice(goalIndex, 1);
+                            localStorage.setItem(key, JSON.stringify(latest));
+                            refresh();
+                        };
+                        actions.append(edit, remove);
+                        row.append(label, actions);
+                        list.appendChild(row);
+                    });
+                }
+                add.onclick = () => {
+                    const goal = prompt('اكتبي هدف المبادرة:');
+                    if (goal === null || !goal.trim()) return;
+                    const goals = getGoalsForInitiative(initiative.id);
+                    goals.push(goal.trim());
+                    localStorage.setItem(key, JSON.stringify(goals));
+                    refresh();
+                };
+                refresh();
+                panel.scrollIntoView({behavior: 'smooth', block: 'center'});
+            };
+
+            // إدارة أنشطة المبادرة للمشرف فقط، متوافقة مع صفحة التفاصيل.
+            function getActivitiesForInitiative(id) {
+                try {
+                    const value = JSON.parse(localStorage.getItem('athar_activities_' + id) || '[]');
+                    return Array.isArray(value) ? value : [];
+                } catch (error) { return []; }
+            }
+            document.getElementById('closeActivitiesManager').addEventListener('click', () => {
+                document.getElementById('activitiesManagerPanel').classList.add('hidden');
+            });
+            window.openActivitiesManager = function(index) {
+                if (!isAdmin) return;
+                const initiative = initiatives[index];
+                if (!initiative || !initiative.id) return;
+                const key = 'athar_activities_' + initiative.id;
+                const panel = document.getElementById('activitiesManagerPanel');
+                const list = document.getElementById('activitiesManagerList');
+                document.getElementById('activitiesManagerTitle').textContent = 'إدارة أنشطة ' + initiative.name;
+                panel.classList.remove('hidden');
+                function askActivity(previous) {
+                    const fields = [
+                        ['name', 'اسم النشاط'],
+                        ['date', 'تاريخ النشاط (YYYY-MM-DD)'],
+                        ['responsible', 'المسؤولة عن النشاط'],
+                        ['status', 'الحالة: لم يبدأ / قيد التنفيذ / مكتمل']
+                    ];
+                    const result = {};
+                    for (const [key, label] of fields) {
+                        const value = prompt(label, previous ? (previous[key] || '') : '');
+                        if (value === null) return null;
+                        if (!value.trim()) { alert(label + ' مطلوب'); return null; }
+                        result[key] = value.trim();
+                    }
+                    return result;
+                }
+                function refresh() {
+                    list.replaceChildren();
+                    const activities = getActivitiesForInitiative(initiative.id);
+                    if (!activities.length) {
+                        const empty = document.createElement('p');
+                        empty.className = 'text-sm text-gray-500';
+                        empty.textContent = 'لا توجد أنشطة محفوظة لهذه المبادرة.';
+                        list.appendChild(empty);
+                    }
+                    activities.forEach((activity, activityIndex) => {
+                        const row = document.createElement('div');
+                        row.className = 'bg-gray-50 rounded-xl p-4';
+                        const label = document.createElement('div');
+                        label.className = 'text-sm text-gray-700 whitespace-pre-line';
+                        label.textContent = '📋 ' + (activity.name || '') + '\n📅 التاريخ: ' + (activity.date || '') + '\n👤 المسؤولة: ' + (activity.responsible || '') + '\nالحالة: ' + (activity.status || '');
+                        const actions = document.createElement('div');
+                        actions.className = 'flex gap-2 mt-3';
+                        const edit = document.createElement('button');
+                        edit.type = 'button';
+                        edit.className = 'text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-lg';
+                        edit.textContent = 'تعديل';
+                        edit.onclick = () => {
+                            const updated = askActivity(activity);
+                            if (!updated) return;
+                            const latest = getActivitiesForInitiative(initiative.id);
+                            latest[activityIndex] = updated;
+                            localStorage.setItem(key, JSON.stringify(latest));
+                            refresh();
+                        };
+                        const remove = document.createElement('button');
+                        remove.type = 'button';
+                        remove.className = 'text-sm bg-red-100 text-red-700 px-3 py-1 rounded-lg';
+                        remove.textContent = 'حذف';
+                        remove.onclick = () => {
+                            if (!confirm('هل تريدين حذف هذا النشاط؟')) return;
+                            const latest = getActivitiesForInitiative(initiative.id);
+                            latest.splice(activityIndex, 1);
+                            localStorage.setItem(key, JSON.stringify(latest));
+                            refresh();
+                        };
+                        actions.append(edit, remove);
+                        row.append(label, actions);
+                        list.appendChild(row);
+                    });
+                }
+                document.getElementById('activitiesManagerAdd').onclick = () => {
+                    const activity = askActivity(null);
+                    if (!activity) return;
+                    const latest = getActivitiesForInitiative(initiative.id);
+                    latest.push(activity);
+                    localStorage.setItem(key, JSON.stringify(latest));
+                    refresh();
+                };
+                refresh();
+            };
+
             // رسم وتحديث الواجهة
             function renderInitiatives() {
                 const container = document.getElementById('cardsContainer');
@@ -374,6 +565,12 @@
                             <div class="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
                                 <button onclick="openEditModal(${index})" class="text-xs bg-amber-50 text-amber-700 hover:bg-amber-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
                                     <i class="fa-solid fa-pen"></i> تعديل
+                                </button>
+                                <button onclick="openGoalsManager(${index})" class="text-xs bg-rose-50 text-rose-700 hover:bg-rose-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-bullseye"></i> إدارة الأهداف
+                                </button>
+                                <button onclick="openActivitiesManager(${index})" class="text-xs bg-blue-50 text-blue-700 hover:bg-blue-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
+                                    <i class="fa-solid fa-list-check"></i> إدارة الأنشطة
                                 </button>
                                 <button onclick="deleteInitiative(${index})" class="text-xs bg-red-50 text-red-700 hover:bg-red-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
                                     <i class="fa-solid fa-trash"></i> حذف
