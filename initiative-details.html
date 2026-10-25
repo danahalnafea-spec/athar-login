@@ -105,21 +105,7 @@
     </div>
 
     <!-- قائمة الأهداف -->
-    <div id="goalsList" class="space-y-3">
-
-        <div class="bg-gray-50 border border-gray-100 rounded-xl p-4">
-            <p class="font-semibold text-gray-700">
-                🎯 تطوير مهارات المشاركين وتعزيز قدراتهم.
-            </p>
-        </div>
-
-        <div class="bg-gray-50 border border-gray-100 rounded-xl p-4">
-            <p class="font-semibold text-gray-700">
-                🎯 تحقيق أثر إيجابي ومستدام للمستفيدين.
-            </p>
-        </div>
-
-    </div>
+    <div id="goalsList" class="space-y-3"></div>
 
 </div>
         </div>
@@ -215,8 +201,8 @@
 
         const goals = readSavedList("athar_goals_" + currentInitiativeId);
         const goalsList = document.getElementById("goalsList");
+        goalsList.replaceChildren();
         if (goals.length > 0) {
-            goalsList.replaceChildren();
             goals.forEach(goal => {
                 const card = document.createElement("div");
                 card.className = "bg-gray-50 border border-gray-100 rounded-xl p-4";
@@ -226,6 +212,11 @@
                 card.appendChild(text);
                 goalsList.appendChild(card);
             });
+        } else {
+            const empty = document.createElement("p");
+            empty.className = "text-gray-400 text-sm";
+            empty.textContent = "لا توجد أهداف مضافة حتى الآن.";
+            goalsList.appendChild(empty);
         }
 
         const activities = readSavedList("athar_activities_" + currentInitiativeId);
