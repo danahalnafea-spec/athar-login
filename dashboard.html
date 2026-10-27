@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة أثر - لوحة التحكم</title>
-    <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
+
+    <title>منصة أثر - الرئيسية</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
             --sidebar-width: 280px;
+            --navy: #0b253a;
+            --blue: #4e9cd8;
+            --page-bg: #f0f7ff;
+            --sidebar-bg: #eaf4fc;
         }
 
         * {
@@ -20,108 +26,168 @@
             font-family: 'Cairo', sans-serif;
         }
 
-        /* القاعدة المرنة العامة للشاشة بالكامل وتمنع أي تكسر */
         body {
-            background-color: #f0f7ff;
+            background-color: var(--page-bg);
             background-image: url('bg-dashboard.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
+            overflow-x: hidden;
         }
 
-        /* القسم الرئيسي الأيسر للمحتوى */
-        .main-content-area {
-            flex: 1;
+        /* الشريط الجانبي */
+        .sidebar-wrapper {
+            position: fixed;
+            right: 0;
+            top: 0;
             height: 100vh;
-            padding: 4vh 3vw;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            transform: translateX(0);
+        }
+
+        .sidebar-wrapper.collapsed {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        .sidebar-right {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
             display: flex;
             flex-direction: column;
-            align-items: stretch;
-            position: relative;
-            min-width: 0;
+            justify-content: space-between;
+            padding: 15px 12px 20px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
             overflow-y: auto;
             overflow-x: hidden;
-            transition: all 0.3s ease;
         }
 
-        /* الهيدر العلوي */
-        .header-top-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-direction: row;
-            margin-top: 1vh;
-            gap: 15px;
-            position: relative;
-        }
-
-        /* عبارة الترحيب: ثابتة ومستقرة تماماً وتتجاوب مع العرض */
-        .welcome-center-section {
-            text-align: right;
+        .sidebar-top-content {
             display: flex;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-            margin-right: 0px;
-            flex-shrink: 1;
-            min-width: 0;
-            position: relative;
-            z-index: 10;
-            transition: margin-right 0.3s ease;
-        }
-
-        .welcome-title-wrapper {
-            display: flex;
             align-items: center;
-            gap: 8px;
             width: 100%;
         }
 
-        /* أحجام خطوط مرنة تتكيف تلقائياً عبر دالة clamp لجميع الأجهزة */
-        .welcome-center-section h1 {
-            font-size: clamp(15px, 2.2vw, 26px);
-            font-weight: 900;
-            color: #0b253a;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            margin-top: 5px;
         }
 
-        .welcome-center-section p {
-            font-size: clamp(9px, 1vw, 13px);
-            color: #64748b; 
+        .sidebar-logo img {
+            width: 195px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            list-style: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            list-style: none !important;
+            width: 100%;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 13.5px;
             font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
             white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
         }
 
-        .welcome-underline {
-            width: 45px;
-            height: 3px;
-            background-color: #4e9cd8;
-            border-radius: 2px;
-            margin-top: 4px;
+        .sidebar-menu li.active a {
+            background-color: #d1e7fb;
+            color: var(--navy);
+            font-size: 13.5px;
+            font-weight: 600;
         }
 
-        /* زر السهم المتجاوب تماماً */
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: rgba(59, 130, 246, 0.08);
+        }
+
+        .sidebar-menu li a i {
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+            color: var(--navy);
+        }
+
+        .sidebar-bottom-content {
+            width: 100%;
+            border-top: 1px solid rgba(15, 61, 89, 0.12);
+            padding-top: 12px;
+            margin-top: auto !important;
+            background-color: var(--sidebar-bg);
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 11px 12px;
+            color: var(--navy) !important;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .logout-link i {
+            font-size: 14px;
+            color: var(--navy) !important;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #dc2626 !important;
+        }
+
+        /* زر السهم الثابت وموقع انتقاله بحسب إغلاق القائمة */
         .sidebar-toggle-btn {
-            position: fixed;
-            top: 25px;
-            right: calc(var(--sidebar-width) + 15px);
-            transform: none;
-            width: 34px;
-            height: 34px;
-            background-color: #0b253a;
+            position: fixed !important;
+            top: 20px !important;
+            right: calc(var(--sidebar-width) + 15px) !important;
+            width: 36px;
+            height: 36px;
+            background-color: var(--navy);
             color: #ffffff;
             border: none;
             border-radius: 50%;
@@ -129,15 +195,14 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-            font-size: 12px;
-            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
+            font-size: 13px;
+            z-index: 100000;
             transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
         }
 
-        /* عندما تُغلق القائمة، يستقر الزر بدقة عند الحافة اليمنى */
         body.sidebar-is-collapsed .sidebar-toggle-btn {
-            right: 20px; 
+            right: 20px !important;
         }
 
         .sidebar-toggle-btn:hover {
@@ -145,10 +210,70 @@
             transform: scale(1.1);
         }
 
-        /* شريط اسم المستخدم في أقصى اليسار */
+        /* المحتوى الرئيسي: ينسحب ويتمدد عند إغلاق القائمة */
+        .main-content-area {
+            flex: 1;
+            min-height: 100vh;
+            padding: 30px 4vw 50px;
+            margin-right: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.sidebar-is-collapsed .main-content-area {
+            margin-right: 0 !important;
+        }
+
+        .header-top-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            margin-top: 1vh;
+            margin-bottom: 24px;
+            gap: 15px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .page-heading {
+            text-align: right;
+            min-width: 0;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(18px, 2.2vw, 28px);
+            font-weight: 900;
+            color: var(--navy);
+            line-height: 1.7;
+        }
+
+        .page-heading p {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        .heading-underline {
+            width: 45px;
+            height: 3px;
+            background-color: var(--blue);
+            border-radius: 2px;
+            margin-top: 4px;
+        }
+
+        /* اسم المستخدم والقائمة المنسدلة */
         .top-user-bar-container {
             position: relative;
             flex-shrink: 0;
+            z-index: 100;
         }
 
         .top-user-bar {
@@ -165,7 +290,7 @@
         }
 
         .top-user-bar:hover {
-            background: rgba(255, 255, 255, 1);
+            background: #ffffff;
         }
 
         .user-avatar-circle {
@@ -176,13 +301,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #0b253a;
+            color: var(--navy);
             box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
             flex-shrink: 0;
-        }
-
-        .user-avatar-circle i {
-            font-size: 15px;
         }
 
         .user-name-dropdown {
@@ -191,13 +312,13 @@
             gap: 6px;
             font-size: 14px;
             font-weight: 700;
-            color: #0b253a;
+            color: var(--navy);
             white-space: nowrap;
         }
 
         .user-name-dropdown i {
             font-size: 10px;
-            color: #0b253a;
+            color: var(--navy);
             transition: transform 0.3s ease;
         }
 
@@ -205,7 +326,6 @@
             transform: rotate(180deg);
         }
 
-        /* القائمة المنسدلة للمستخدم */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -236,7 +356,7 @@
 
         .dropdown-role-display {
             background: #f1f5f9;
-            color: #0b253a;
+            color: var(--navy);
             padding: 8px 10px;
             border-radius: 8px;
             font-size: 13px;
@@ -244,184 +364,50 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor: default;
         }
 
-        .dropdown-role-display i {
-            color: #4e9cd8;
-            font-size: 12px;
-        }
-
-        /* حاوية الشريط الجانبي */
-        .sidebar-wrapper {
-            position: relative;
-            display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            height: 100vh;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
-            transform: translateX(0);
-        }
-
-        .sidebar-wrapper.collapsed {
-            transform: translateX(var(--sidebar-width));
-        }
-
-        /* الشريط الجانبي في اليمين */
-        .sidebar-right {
-            width: var(--sidebar-width); 
-            height: 100vh;
-            background-color: #eaf4fc;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 15px 12px 20px 12px;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
-            border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .sidebar-top-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .sidebar-logo {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px; 
-            margin-top: 5px;
-        }
-
-        .sidebar-logo img {
-            width: 195px; 
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .sidebar-menu {
-            list-style: none !important;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            list-style: none !important;
-            width: 100%;
-        }
-
-        .sidebar-menu li a {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 10px 12px;
-            color: #0b253a;
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .sidebar-menu li.active a {
-            background-color: #d1e7fb; 
-            color: #0b253a;
-            font-weight: 800;
-        }
-
-        .sidebar-menu li a:hover:not(.active) {
-            background-color: rgba(59, 130, 246, 0.08);
-        }
-
-        .sidebar-menu li a i {
-            font-size: 14px;
-            width: 20px;
-            text-align: center;
-            color: #0b253a;
-        }
-
-        /* زر تسجيل الخروج مثبت أسفل القائمة */
-        .sidebar-bottom-content {
-            width: 100%;
-            border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 12px;
-            margin-top: auto !important;
-            background-color: #eaf4fc;
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 11px 12px;
-            color: #0b253a !important;
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 700;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .logout-link i {
-            font-size: 14px;
-            color: #0b253a !important;
-            width: 20px;
-            text-align: center;
-        }
-
-        .logout-link:hover {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: #dc2626 !important;
-        }
-
-        .logout-link:hover i {
-            color: #dc2626 !important;
-        }
-
-        /* التجاوب الشامل للشاشات الصغيرة والجوالات */
+        /* التجاوب */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
-                position: fixed;
-                right: 0;
-                top: 0;
-                z-index: 9999;
-                transform: translateX(var(--sidebar-width));
+                transform: translateX(100%);
             }
+
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
-            body.sidebar-is-collapsed .sidebar-toggle-btn {
-                right: 20px;
+
+            .sidebar-toggle-btn {
+                position: fixed !important;
+                top: 18px !important;
+                right: 18px !important;
+                left: auto !important;
+            }
+
+            .main-content-area {
+                margin-right: 0 !important;
+                padding: 75px 16px 40px;
             }
         }
     </style>
 </head>
+
 <body>
 
-    <!-- زر السهم المتجاوب -->
-    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+    <!-- زر السهم الثابت -->
+    <button
+        class="sidebar-toggle-btn"
+        id="sidebarToggleBtn"
+        type="button"
+        title="إخفاء/إظهار القائمة"
+        aria-label="إخفاء أو إظهار القائمة"
+        aria-expanded="false">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
 
-    <!-- حاوية الشريط الجانبي -->
+    <!-- الشريط الجانبي -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
         <div class="sidebar-right" id="sidebarRight">
+
             <div class="sidebar-top-content">
                 <div class="sidebar-logo">
                     <img src="logo.png" alt="شعار منصة أثر">
@@ -434,37 +420,42 @@
                             <i class="fa-solid fa-house"></i>
                         </a>
                     </li>
+
                     <li>
                         <a href="initiatives.html">
                             <span>المبادرات</span>
                             <i class="fa-solid fa-folder-open"></i>
                         </a>
                     </li>
+
                     <li>
                         <a href="#">
                             <span>المؤشرات</span>
                             <i class="fa-solid fa-chart-line"></i>
                         </a>
                     </li>
+
                     <li>
                         <a href="#">
                             <span>البيانات</span>
                             <i class="fa-solid fa-database"></i>
                         </a>
                     </li>
+
                     <li>
                         <a href="#">
                             <span>التقارير</span>
                             <i class="fa-solid fa-file-lines"></i>
                         </a>
                     </li>
+
                     <li>
                         <a href="beneficiaries.html">
                             <span>المستفيدون</span>
                             <i class="fa-solid fa-users"></i>
                         </a>
                     </li>
-                    <!-- إعدادات النظام للمشرف -->
+
                     <li id="adminSettingsMenu" style="display: none;">
                         <a href="#">
                             <span>إعدادات النظام</span>
@@ -480,119 +471,143 @@
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </a>
             </div>
+
         </div>
     </div>
 
-    <!-- القسم الأيسر: المحتوى -->
-    <div class="main-content-area" id="mainContentArea">
-        
+    <!-- المحتوى الرئيسي -->
+    <main class="main-content-area" id="mainContentArea">
+
         <!-- الهيدر العلوي -->
-        <div class="header-top-wrapper">
-            
-            <!-- عبارة الترحيب مستقرة تماماً ومرتبة -->
-            <div class="welcome-center-section" id="welcomeSection">
-                <div class="welcome-title-wrapper">
-                    <h1>مرحباً بك في أثر</h1>
-                </div>
-                <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
-                <div class="welcome-underline"></div>
+        <header class="header-top-wrapper">
+
+            <div class="page-heading">
+                <h1>الرئيسية</h1>
+                <div class="heading-underline"></div>
+                <p>لوحة التحكم الرئيسية لمتابعة المبادرات والأثر</p>
             </div>
 
-            <!-- شريط اسم المستخدم في أقصى اليسار -->
+            <!-- اسم المستخدم -->
             <div class="top-user-bar-container" id="userBarContainer">
-                <div class="top-user-bar" id="userBarToggle">
+
+                <div class="top-user-bar" id="userBarToggle" role="button" tabindex="0" aria-expanded="false">
                     <div class="user-avatar-circle">
                         <i class="fa-solid fa-user"></i>
                     </div>
+
                     <div class="user-name-dropdown">
                         <span id="displayUserName">مستخدم</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
+
                     <div class="dropdown-role-display">
                         <span id="displayUserRoleText">مستخدم عادي</span>
                         <i class="fa-solid fa-lock"></i>
                     </div>
                 </div>
+
             </div>
+        </header>
 
-        </div>
+        <!-- محتوى الصفحة الرئيسية -->
+        <section class="dashboard-content">
+            <div style="background: rgba(255, 255, 255, 0.94); border: 1px solid #e5edf5; border-radius: 14px; padding: 20px; box-shadow: 0 3px 12px rgba(11, 37, 58, 0.05);">
+                <h2 style="color: var(--navy); font-size: 16px; font-weight: 900; margin-bottom: 8px;">أهلاً بكِ في منصة أثر</h2>
+                <p style="color: #64748b; font-size: 12px; line-height: 1.8;">يمكنكِ التنقل بين أقسام المبادرات والمستفيدين والتقارير بكل سهولة من القائمة الجانبية.</p>
+            </div>
+        </section>
 
-    </div>
+    </main>
 
     <script>
-        // سحب الاسم المسجل وصلاحية المستخدم وعرضها
-        const savedName = localStorage.getItem('athalUser');
-        const savedRole = localStorage.getItem('athalRole');
+        document.addEventListener('DOMContentLoaded', function () {
 
-        if (savedName) {
-            document.getElementById('displayUserName').textContent = savedName;
-        }
+            const savedName = localStorage.getItem('athalUser');
+            const savedRole = localStorage.getItem('athalRole');
+            const isAdmin = savedRole === 'admin';
 
-        // تحديد نص الصلاحية (مشرف أو مستخدم) وعرض إعدادات المشرف إن وجدت
-        const roleTextElement = document.getElementById('displayUserRoleText');
-        if (savedRole === 'admin') {
-            roleTextElement.textContent = 'مشرف النظام';
-            document.getElementById('adminSettingsMenu').style.display = 'block';
-        } else {
-            roleTextElement.textContent = 'مستخدم عادي';
-        }
+            const displayName = document.getElementById('displayUserName');
+            const roleText = document.getElementById('displayUserRoleText');
+            const adminMenu = document.getElementById('adminSettingsMenu');
 
-        // تفاعل فتح وإغلاق القائمة المنسدلة للحساب
-        const userBarContainer = document.getElementById('userBarContainer');
-        const userBarToggle = document.getElementById('userBarToggle');
-        const userDropdownMenu = document.getElementById('userDropdownMenu');
+            if (savedName && displayName) {
+                displayName.textContent = savedName;
+            }
 
-        userBarToggle.addEventListener('click', function (e) {
-            e.stopPropagation();
-            userDropdownMenu.classList.toggle('show');
-            userBarToggle.classList.toggle('active');
-        });
+            if (roleText) {
+                roleText.textContent = isAdmin ? 'مشرف النظام' : 'مستخدم عادي';
+            }
 
-        // إغلاق القائمة المنسدلة عند النقر في أي مكان خارجها
-        window.addEventListener('click', function () {
-            userDropdownMenu.classList.remove('show');
-            userBarToggle.classList.remove('active');
-        });
+            if (isAdmin && adminMenu) {
+                adminMenu.style.display = 'block';
+            }
 
-        // البرمجة الذكية المتجاوبة لفتح وإغلاق القائمة
-        const sidebarWrapper = document.getElementById('sidebarWrapper');
-        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-        const toggleIcon = document.getElementById('toggleIcon');
-        const bodyElement = document.body;
+            const userBarToggle = document.getElementById('userBarToggle');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
 
-        sidebarToggleBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            
-            if (window.innerWidth <= 1024) {
-                sidebarWrapper.classList.toggle('mobile-open');
-                if (sidebarWrapper.classList.contains('mobile-open')) {
+            function toggleUserDropdown(event) {
+                if (event) event.stopPropagation();
+                const isOpen = userDropdownMenu.classList.toggle('show');
+                userBarToggle.classList.toggle('active', isOpen);
+                userBarToggle.setAttribute('aria-expanded', String(isOpen));
+            }
+
+            userBarToggle.addEventListener('click', toggleUserDropdown);
+
+            window.addEventListener('click', function () {
+                userDropdownMenu.classList.remove('show');
+                userBarToggle.classList.remove('active');
+                userBarToggle.setAttribute('aria-expanded', 'false');
+            });
+
+            // السايد بار وزر الحركة المنسدلة وانسحاب المحتوى
+            const sidebarWrapper = document.getElementById('sidebarWrapper');
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const bodyElement = document.body;
+
+            function updateSidebarButton(isOpen) {
+                if (isOpen) {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
-                    bodyElement.classList.remove('sidebar-is-collapsed');
-                } else {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    bodyElement.classList.add('sidebar-is-collapsed');
-                }
-            } else {
-                sidebarWrapper.classList.toggle('collapsed');
-                if (sidebarWrapper.classList.contains('collapsed')) {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
-                    bodyElement.classList.add('sidebar-is-collapsed');
-                } else {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
                     sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    sidebarToggleBtn.setAttribute('aria-expanded', 'true');
                     bodyElement.classList.remove('sidebar-is-collapsed');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
+                    sidebarToggleBtn.setAttribute('aria-expanded', 'false');
+                    bodyElement.classList.add('sidebar-is-collapsed');
                 }
             }
+
+            sidebarToggleBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                if (window.innerWidth <= 1024) {
+                    const isOpen = sidebarWrapper.classList.toggle('mobile-open');
+                    updateSidebarButton(isOpen);
+                } else {
+                    const isCollapsed = sidebarWrapper.classList.toggle('collapsed');
+                    updateSidebarButton(!isCollapsed);
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 1024) {
+                    if (sidebarWrapper.classList.contains('mobile-open') && 
+                        !sidebarWrapper.contains(e.target) && 
+                        !sidebarToggleBtn.contains(e.target)) {
+                        sidebarWrapper.classList.remove('mobile-open');
+                        updateSidebarButton(false);
+                    }
+                }
+            });
+
         });
     </script>
 </body>
