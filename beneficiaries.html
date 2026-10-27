@@ -6,7 +6,6 @@
 
     <title>منصة أثر - المستفيدون</title>
 
-    <!-- نفس مكتبات صفحات المشروع -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,27 +33,25 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
+            overflow-x: hidden;
         }
 
-        /* =========================
-            الشريط الجانبي
-        ========================= */
-
+        /* الشريط الجانبي */
         .sidebar-wrapper {
-            position: relative;
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
             display: flex;
             align-items: flex-start;
             flex-shrink: 0;
-            height: 100vh;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
+            z-index: 9999;
             transform: translateX(0);
         }
 
@@ -183,18 +180,13 @@
             color: #dc2626 !important;
         }
 
-        .logout-link:hover i {
-            color: #dc2626 !important;
-        }
-
-        /* زر السهم: ثابت ومنظم */
+        /* زر السهم: ثابت تماماً لا يتحرك مع السكرول */
         .sidebar-toggle-btn {
-            position: fixed;
-            top: 25px;
-            right: calc(var(--sidebar-width) + 15px);
-            transform: none;
-            width: 34px;
-            height: 34px;
+            position: fixed !important;
+            top: 20px !important;
+            right: calc(var(--sidebar-width) + 15px) !important;
+            width: 36px;
+            height: 36px;
             background-color: var(--navy);
             color: #ffffff;
             border: none;
@@ -203,14 +195,14 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-            font-size: 12px;
-            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
+            font-size: 13px;
+            z-index: 100000;
             transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
         }
 
         body.sidebar-is-collapsed .sidebar-toggle-btn {
-            right: 20px;
+            right: 20px !important;
         }
 
         .sidebar-toggle-btn:hover {
@@ -218,22 +210,23 @@
             transform: scale(1.1);
         }
 
-        /* =========================
-            المحتوى الرئيسي
-        ========================= */
-
+        /* المحتوى الرئيسي مع تفعيل السكرول العمودي بشكل سلس */
         .main-content-area {
             flex: 1;
-            height: 100vh;
-            padding: 4vh 3vw;
+            min-height: 100vh;
+            padding: 30px 4vw 50px;
+            margin-right: var(--sidebar-width); /* مساحة لثبات السايد بار في الشاشات الكبيرة */
             display: flex;
             flex-direction: column;
             align-items: stretch;
             position: relative;
             min-width: 0;
             overflow-y: auto;
-            overflow-x: hidden;
-            transition: all 0.3s ease;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.sidebar-is-collapsed .main-content-area {
+            margin-right: 0;
         }
 
         .header-top-wrapper {
@@ -276,8 +269,7 @@
             margin-top: 4px;
         }
 
-        /* اسم المستخدم */
-
+        /* اسم المستخدم والقائمة المنسدلة */
         .top-user-bar-container {
             position: relative;
             flex-shrink: 0;
@@ -312,10 +304,6 @@
             color: var(--navy);
             box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
             flex-shrink: 0;
-        }
-
-        .user-avatar-circle i {
-            font-size: 15px;
         }
 
         .user-name-dropdown {
@@ -378,15 +366,7 @@
             justify-content: space-between;
         }
 
-        .dropdown-role-display i {
-            color: var(--blue);
-            font-size: 12px;
-        }
-
-        /* =========================
-            بطاقات الإحصائيات
-        ========================= */
-
+        /* بطاقات الإحصائيات */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -466,7 +446,6 @@
         }
 
         /* البحث والتصفية */
-
         .filter-toolbar {
             display: flex;
             gap: 12px;
@@ -522,16 +501,7 @@
             color: #94a3b8;
         }
 
-        .filter-select:focus,
-        .search-box:focus-within {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 2px rgba(78, 156, 216, 0.13);
-        }
-
-        /* =========================
-            جدول المستفيدين
-        ========================= */
-
+        /* جدول المستفيدين */
         .table-panel {
             width: 100%;
             min-width: 0;
@@ -616,10 +586,6 @@
             background: #f8fbff;
         }
 
-        .beneficiaries-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
         .initiative-name {
             color: var(--navy);
             font-size: 12px;
@@ -684,23 +650,7 @@
             line-height: 2;
         }
 
-        .empty-state i {
-            display: block;
-            font-size: 25px;
-            color: #b6c9dc;
-            margin-bottom: 9px;
-        }
-
-        .empty-state strong {
-            display: block;
-            color: var(--navy);
-            font-size: 12px;
-        }
-
-        /* =========================
-            التجاوب
-        ========================= */
-
+        /* التجاوب والشاشات الصغيرة والجوال */
         @media (max-width: 1200px) {
             .summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -708,44 +658,29 @@
         }
 
         @media (max-width: 1024px) {
-            body {
-                overflow: auto;
-            }
-
             .sidebar-wrapper {
-                position: fixed;
-                right: 0;
-                top: 0;
-                z-index: 9999;
-                transform: translateX(100%); /* مخفي تماماً للخارج في الجوال */
+                transform: translateX(100%); /* مخفي للخارج في الجوال */
             }
 
             .sidebar-wrapper.mobile-open {
-                transform: translateX(0); /* يظهر عند النقر على الزر */
+                transform: translateX(0); /* يظهر عند النقر */
             }
 
-            /* تثبيت زر القائمة في أقصى اليمين بشكل دائم ونظيف في الجوال */
+            /* تثبيت زر السهم في أعلى اليمين بثبات تام وعدم تحركه مع السكرول */
             .sidebar-toggle-btn {
                 position: fixed !important;
-                top: 20px !important;
-                right: 20px !important;
+                top: 18px !important;
+                right: 18px !important;
                 left: auto !important;
-                z-index: 99999 !important;
             }
 
             .main-content-area {
-                width: 100%;
-                padding: 75px 20px 30px;
-                height: auto;
-                overflow-y: visible;
+                margin-right: 0 !important;
+                padding: 75px 16px 40px;
             }
         }
 
         @media (max-width: 600px) {
-            .main-content-area {
-                padding: 68px 12px 22px;
-            }
-
             .summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 8px;
@@ -765,7 +700,7 @@
 
 <body>
 
-    <!-- زر السهم المتجاوب -->
+    <!-- زر السهم الثابت والمستقر -->
     <button
         class="sidebar-toggle-btn"
         id="sidebarToggleBtn"
@@ -847,7 +782,7 @@
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
+    <!-- المحتوى الرئيسي (مع سكرول عمودي مرن) -->
     <main class="main-content-area" id="mainContentArea">
 
         <!-- الهيدر العلوي -->
@@ -1039,7 +974,7 @@
                 userBarToggle.setAttribute('aria-expanded', 'false');
             });
 
-            // السايد بار وزر التجوال الموحد
+            // السايد بار وزر التجوال الثابت
             const sidebarWrapper = document.getElementById('sidebarWrapper');
             const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
             const toggleIcon = document.getElementById('toggleIcon');
@@ -1072,7 +1007,6 @@
                 }
             });
 
-            // إغلاق القائمة الجانبية عند النقر خارجها في الجوال
             document.addEventListener('click', function(e) {
                 if (window.innerWidth <= 1024) {
                     if (sidebarWrapper.classList.contains('mobile-open') && 
@@ -1130,7 +1064,7 @@
                 countLabel.textContent = items.length + ' مبادرة';
 
                 if (items.length === 0) {
-                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><strong>لا توجد نتائج مطابقة</strong></td></tr>`;
+                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state" style="padding: 35px 15px; text-align: center;"><i class="fa-solid fa-magnifying-glass" style="font-size:24px; color:#b6c9dc; margin-bottom:8px; display:block;"></i><strong style="color:var(--navy); font-size:12px;">لا توجد نتائج مطابقة</strong></td></tr>`;
                     return;
                 }
 
