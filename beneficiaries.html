@@ -291,12 +291,12 @@
             transform: rotate(180deg);
         }
 
-        /* تعديل القائمة المنسدلة لتبقى متموضعة داخل الشاشة تماماً ولا تخرج يميناً أو يساراً */
+        /* حل جذري لتموضع القائمة في الأيباد والجوال بحيث تبقى من جهة اليمين وتحت الزر تماماً */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
-            left: 0;
-            right: auto;
+            left: auto;
+            right: 0;
             width: 190px;
             background: #ffffff;
             border-radius: 12px;
@@ -308,13 +308,6 @@
             z-index: 100;
             border: 1px solid rgba(11, 37, 58, 0.08);
             text-align: right;
-        }
-
-        @media (min-width: 768px) {
-            .user-dropdown-menu {
-                left: auto;
-                right: 0;
-            }
         }
 
         .user-dropdown-menu.show {
@@ -625,13 +618,7 @@
             line-height: 2;
         }
 
-        /* التجاوب */
-        @media (max-width: 1200px) {
-            .summary-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
+        /* التجاوب للشاشات المتوسطة والأيباد (حتى 1024px) */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
                 transform: translateX(100%);
@@ -651,19 +638,23 @@
             .main-content-area {
                 margin-right: 0 !important;
                 width: 100% !important;
-                padding: 75px 16px 40px;
+                padding: 75px 24px 40px;
+            }
+            
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
         @media (max-width: 600px) {
             .summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 8px;
+                gap: 12px;
             }
 
             .filter-toolbar {
                 flex-direction: column;
-                gap: 8px;
+                gap: 10px;
             }
 
             .filter-select {
@@ -776,7 +767,7 @@
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة: مرتبة ومحصورة داخل حدود الشاشة تماماً -->
+                <!-- القائمة المنسدلة: متمركزة بدقة داخل الشاشة من اليمين تماماً -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
 
@@ -785,7 +776,7 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
 
-                    <!-- زر تسجيل الخروج مرتب باتجاه اليمين -->
+                    <!-- زر تسجيل الخروج مرتب ومتجه لليمين -->
                     <div class="border-t border-gray-100 pt-1">
                         <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-2 px-2.5 py-2 rounded-lg text-red-600 hover:bg-red-50 font-bold transition text-xs">
                             <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
@@ -1088,11 +1079,11 @@
             }
 
             const searchInput = document.getElementById('searchInput');
-            const categoryFilter = document.getElementById('categoryFilter');
+            const categoryHeader = document.getElementById('categoryFilter');
 
             function filterInitiatives() {
                 const term = searchInput.value.toLowerCase();
-                const cat = categoryFilter.value;
+                const cat = categoryHeader.value;
                 const filtered = initiatives.filter(item => {
                     const matchesSearch = !term || item.name.toLowerCase().includes(term);
                     const matchesCat = !cat || item.category === cat;
@@ -1102,7 +1093,7 @@
             }
 
             searchInput.addEventListener('input', filterInitiatives);
-            categoryFilter.addEventListener('change', filterInitiatives);
+            categoryHeader.addEventListener('change', filterInitiatives);
 
             updateSummary(initiatives);
             renderTable(initiatives);
