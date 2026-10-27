@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>منصة أثر - المستفيدون</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,23 +33,25 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
+            overflow-x: hidden;
         }
 
+        /* الشريط الجانبي */
         .sidebar-wrapper {
-            position: relative;
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
             display: flex;
             align-items: flex-start;
             flex-shrink: 0;
-            height: 100vh;
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
+            z-index: 9999;
             transform: translateX(0);
         }
 
@@ -177,17 +180,13 @@
             color: #dc2626 !important;
         }
 
-        .logout-link:hover i {
-            color: #dc2626 !important;
-        }
-
+        /* زر السهم الثابت وموقع انتقاله بحسب إغلاق القائمة */
         .sidebar-toggle-btn {
-            position: fixed;
-            top: 25px;
-            right: calc(var(--sidebar-width) + 15px);
-            transform: none;
-            width: 34px;
-            height: 34px;
+            position: fixed !important;
+            top: 20px !important;
+            right: calc(var(--sidebar-width) + 15px) !important;
+            width: 36px;
+            height: 36px;
             background-color: var(--navy);
             color: #ffffff;
             border: none;
@@ -196,16 +195,14 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-            font-size: 12px;
-            z-index: 10000;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                        background-color 0.3s ease,
-                        transform 0.3s ease;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
+            font-size: 13px;
+            z-index: 100000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
         }
 
         body.sidebar-is-collapsed .sidebar-toggle-btn {
-            right: 20px;
+            right: 20px !important;
         }
 
         .sidebar-toggle-btn:hover {
@@ -213,18 +210,23 @@
             transform: scale(1.1);
         }
 
+        /* المحتوى الرئيسي: ينسحب ويتمدد بمجرد إغلاق القائمة مع تفعيل السكرول */
         .main-content-area {
             flex: 1;
-            height: 100vh;
-            padding: 4vh 3vw;
+            min-height: 100vh;
+            padding: 30px 4vw 50px;
+            margin-right: var(--sidebar-width);
             display: flex;
             flex-direction: column;
             align-items: stretch;
             position: relative;
             min-width: 0;
             overflow-y: auto;
-            overflow-x: hidden;
-            transition: all 0.3s ease;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.sidebar-is-collapsed .main-content-area {
+            margin-right: 0 !important;
         }
 
         .header-top-wrapper {
@@ -267,6 +269,7 @@
             margin-top: 4px;
         }
 
+        /* اسم المستخدم والقائمة المنسدلة */
         .top-user-bar-container {
             position: relative;
             flex-shrink: 0;
@@ -301,10 +304,6 @@
             color: var(--navy);
             box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
             flex-shrink: 0;
-        }
-
-        .user-avatar-circle i {
-            font-size: 15px;
         }
 
         .user-name-dropdown {
@@ -367,11 +366,7 @@
             justify-content: space-between;
         }
 
-        .dropdown-role-display i {
-            color: var(--blue);
-            font-size: 12px;
-        }
-
+        /* بطاقات الإحصائيات */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -450,26 +445,7 @@
             color: #b98523;
         }
 
-        .info-notice {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            background: rgba(232, 244, 255, 0.92);
-            border: 1px solid #d5e9fb;
-            border-radius: 12px;
-            padding: 11px 14px;
-            margin-bottom: 18px;
-            color: #365b78;
-            font-size: 11px;
-            line-height: 1.9;
-        }
-
-        .info-notice i {
-            color: var(--blue);
-            margin-top: 4px;
-            flex-shrink: 0;
-        }
-
+        /* البحث والتصفية */
         .filter-toolbar {
             display: flex;
             gap: 12px;
@@ -525,12 +501,7 @@
             color: #94a3b8;
         }
 
-        .filter-select:focus,
-        .search-box:focus-within {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 2px rgba(78, 156, 216, 0.13);
-        }
-
+        /* جدول المستفيدين */
         .table-panel {
             width: 100%;
             min-width: 0;
@@ -615,10 +586,6 @@
             background: #f8fbff;
         }
 
-        .beneficiaries-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
         .initiative-name {
             color: var(--navy);
             font-size: 12px;
@@ -676,30 +643,6 @@
             color: #ffffff;
         }
 
-        /* زر تعديل بيانات المستفيدين للمشرف */
-        .admin-edit-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 6px 9px;
-            background: #e8f4ff;
-            color: #236a9b;
-            border: 1px solid #cce5f8;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-            white-space: nowrap;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 5px;
-        }
-
-        .admin-edit-btn:hover {
-            background: #236a9b;
-            color: #ffffff;
-        }
-
         .empty-state {
             padding: 35px 15px !important;
             text-align: center !important;
@@ -707,164 +650,48 @@
             line-height: 2;
         }
 
-        .empty-state i {
-            display: block;
-            font-size: 25px;
-            color: #b6c9dc;
-            margin-bottom: 9px;
-        }
-
-        .empty-state strong {
-            display: block;
-            color: var(--navy);
-            font-size: 12px;
-        }
-
+        /* التجاوب (متوافق تماماً مع الأيباد والجوالات) */
         @media (max-width: 1200px) {
             .summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .summary-card {
-                min-height: 82px;
-            }
-
-            .summary-label {
-                font-size: 10px;
             }
         }
 
         @media (max-width: 1024px) {
             .sidebar-wrapper {
-                position: fixed;
-                right: 0;
-                top: 0;
-                z-index: 9999;
-                transform: translateX(var(--sidebar-width));
+                transform: translateX(100%);
             }
 
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
 
-            .main-content-area {
-                width: 100%;
-                padding: 75px 20px 30px;
+            .sidebar-toggle-btn {
+                position: fixed !important;
+                top: 18px !important;
+                right: 18px !important;
+                left: auto !important;
             }
 
-            .header-top-wrapper {
-                margin-top: 5px;
+            .main-content-area {
+                margin-right: 0 !important;
+                padding: 75px 16px 40px;
             }
         }
 
         @media (max-width: 600px) {
-            .main-content-area {
-                padding: 68px 12px 22px;
-            }
-
-            .header-top-wrapper {
-                margin-bottom: 17px;
-                gap: 8px;
-                align-items: flex-start;
-            }
-
-            .page-heading h1 {
-                font-size: 19px;
-            }
-
-            .page-heading p {
-                font-size: 10px;
-                max-width: 190px;
-                line-height: 1.8;
-            }
-
-            .top-user-bar {
-                gap: 6px;
-                padding: 5px 9px;
-            }
-
-            .user-avatar-circle {
-                width: 30px;
-                height: 30px;
-            }
-
-            .user-name-dropdown {
-                font-size: 11px;
-                gap: 5px;
-            }
-
             .summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 8px;
-                margin-bottom: 14px;
-            }
-
-            .summary-card {
-                min-height: 75px;
-                padding: 8px;
-                gap: 5px;
-                border-radius: 11px;
-            }
-
-            .summary-icon {
-                width: 29px;
-                height: 29px;
-                border-radius: 9px;
-                font-size: 13px;
-            }
-
-            .summary-label {
-                font-size: 9px;
-                line-height: 1.7;
-            }
-
-            .summary-value {
-                font-size: 17px;
-            }
-
-            .info-notice {
-                font-size: 10px;
-                padding: 9px 10px;
-                margin-bottom: 13px;
             }
 
             .filter-toolbar {
                 flex-direction: column;
                 gap: 8px;
-                margin-bottom: 13px;
             }
 
             .filter-select {
                 width: 100%;
-                height: 41px;
-            }
-
-            .search-box {
-                flex: auto;
-                width: 100%;
-                height: 41px;
-            }
-
-            .table-heading {
-                padding: 12px;
-            }
-
-            .table-heading h2 {
-                font-size: 12px;
-            }
-
-            .table-count {
-                font-size: 9px;
-                padding: 5px 7px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                scroll-behavior: auto !important;
-                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -872,16 +699,18 @@
 
 <body>
 
+    <!-- زر السهم الثابت -->
     <button
         class="sidebar-toggle-btn"
         id="sidebarToggleBtn"
         type="button"
         title="إخفاء/إظهار القائمة"
         aria-label="إخفاء أو إظهار القائمة"
-        aria-expanded="true">
+        aria-expanded="false">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
 
+    <!-- الشريط الجانبي -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
         <div class="sidebar-right" id="sidebarRight">
 
@@ -952,16 +781,21 @@
         </div>
     </div>
 
+    <!-- المحتوى الرئيسي -->
     <main class="main-content-area" id="mainContentArea">
 
+        <!-- الهيدر العلوي -->
         <header class="header-top-wrapper">
+
             <div class="page-heading">
                 <h1>المستفيدون والفئات المستهدفة</h1>
                 <div class="heading-underline"></div>
                 <p>متابعة أعداد المستفيدين والفئات المستهدفة في المبادرات</p>
             </div>
 
+            <!-- اسم المستخدم -->
             <div class="top-user-bar-container" id="userBarContainer">
+
                 <div class="top-user-bar" id="userBarToggle" role="button" tabindex="0" aria-expanded="false">
                     <div class="user-avatar-circle">
                         <i class="fa-solid fa-user"></i>
@@ -981,9 +815,11 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
                 </div>
+
             </div>
         </header>
 
+        <!-- بطاقات الإحصائيات -->
         <section class="summary-grid" aria-label="ملخص المستفيدين">
 
             <article class="summary-card">
@@ -991,6 +827,7 @@
                     <span class="summary-label">إجمالي المستفيدين الفعلي</span>
                     <span class="summary-value" id="actualTotal">—</span>
                 </div>
+
                 <div class="summary-icon">
                     <i class="fa-solid fa-users"></i>
                 </div>
@@ -1001,6 +838,7 @@
                     <span class="summary-label">إجمالي المستفيدين المستهدف</span>
                     <span class="summary-value" id="targetTotal">—</span>
                 </div>
+
                 <div class="summary-icon">
                     <i class="fa-solid fa-bullseye"></i>
                 </div>
@@ -1011,6 +849,7 @@
                     <span class="summary-label">مبادرات لها فئات مسجلة</span>
                     <span class="summary-value" id="groupsInitiativesTotal">—</span>
                 </div>
+
                 <div class="summary-icon">
                     <i class="fa-solid fa-people-group"></i>
                 </div>
@@ -1021,6 +860,7 @@
                     <span class="summary-label">عدد المبادرات</span>
                     <span class="summary-value" id="initiativeTotal">—</span>
                 </div>
+
                 <div class="summary-icon">
                     <i class="fa-solid fa-folder-open"></i>
                 </div>
@@ -1028,7 +868,9 @@
 
         </section>
 
+        <!-- البحث والتصفية -->
         <section class="filter-toolbar" aria-label="البحث والتصفية">
+
             <select id="categoryFilter" class="filter-select" aria-label="التصفية حسب المجال">
                 <option value="">جميع المجالات</option>
                 <option value="التطوير المهني">التطوير المهني</option>
@@ -1039,25 +881,31 @@
 
             <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
+
                 <input
                     type="search"
                     id="searchInput"
                     placeholder="ابحثي عن مبادرة أو فئة مستهدفة..."
                     aria-label="البحث عن مبادرة أو فئة مستهدفة">
             </div>
+
         </section>
 
+        <!-- جدول المستفيدين -->
         <section class="table-panel">
+
             <div class="table-heading">
                 <div>
                     <h2>بيانات المستفيدين حسب المبادرة</h2>
                     <p>تفاصيل الفئات والأعداد المسجلة لكل مبادرة</p>
                 </div>
+
                 <span class="table-count" id="visibleInitiativesCount">0 مبادرة</span>
             </div>
 
             <div class="table-scroll">
                 <table class="beneficiaries-table">
+
                     <thead>
                         <tr>
                             <th>اسم المبادرة</th>
@@ -1076,18 +924,16 @@
                             </td>
                         </tr>
                     </tbody>
+
                 </table>
             </div>
+
         </section>
 
     </main>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-
-            /* =========================
-               بيانات المستخدم والصلاحيات
-            ========================= */
 
             const savedName = localStorage.getItem('athalUser');
             const savedRole = localStorage.getItem('athalRole');
@@ -1109,34 +955,17 @@
                 adminMenu.style.display = 'block';
             }
 
-            /* القائمة المنسدلة للمستخدم */
-
             const userBarToggle = document.getElementById('userBarToggle');
             const userDropdownMenu = document.getElementById('userDropdownMenu');
 
             function toggleUserDropdown(event) {
-                if (event) {
-                    event.stopPropagation();
-                }
-
+                if (event) event.stopPropagation();
                 const isOpen = userDropdownMenu.classList.toggle('show');
-
                 userBarToggle.classList.toggle('active', isOpen);
                 userBarToggle.setAttribute('aria-expanded', String(isOpen));
             }
 
             userBarToggle.addEventListener('click', toggleUserDropdown);
-
-            userBarToggle.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleUserDropdown(event);
-                }
-            });
-
-            userDropdownMenu.addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
 
             window.addEventListener('click', function () {
                 userDropdownMenu.classList.remove('show');
@@ -1144,8 +973,7 @@
                 userBarToggle.setAttribute('aria-expanded', 'false');
             });
 
-            /* إظهار وإخفاء الشريط الجانبي */
-
+            // السايد بار وزر الحركة وانسحاب المحتوى
             const sidebarWrapper = document.getElementById('sidebarWrapper');
             const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
             const toggleIcon = document.getElementById('toggleIcon');
@@ -1169,7 +997,6 @@
 
             sidebarToggleBtn.addEventListener('click', function (event) {
                 event.stopPropagation();
-
                 if (window.innerWidth <= 1024) {
                     const isOpen = sidebarWrapper.classList.toggle('mobile-open');
                     updateSidebarButton(isOpen);
@@ -1179,92 +1006,37 @@
                 }
             });
 
-            window.addEventListener('resize', function () {
+            document.addEventListener('click', function(e) {
                 if (window.innerWidth <= 1024) {
-                    sidebarWrapper.classList.remove('collapsed');
-                    sidebarWrapper.classList.remove('mobile-open');
-                    updateSidebarButton(false);
-                } else {
-                    sidebarWrapper.classList.remove('mobile-open');
-                    updateSidebarButton(!sidebarWrapper.classList.contains('collapsed'));
+                    if (sidebarWrapper.classList.contains('mobile-open') && 
+                        !sidebarWrapper.contains(e.target) && 
+                        !sidebarToggleBtn.contains(e.target)) {
+                        sidebarWrapper.classList.remove('mobile-open');
+                        updateSidebarButton(false);
+                    }
                 }
             });
 
-            /* قراءة بيانات المبادرات */
-
             const defaultInitiatives = [
-                {
-                    id: 'samqat',
-                    name: 'مبادرة سامقات',
-                    category: 'التمكين الاقتصادي',
-                    beneficiaries: '17',
-                    date: '2025-11-30',
-                    impact: '5 / 5',
-                    status: 'مكتملة'
-                },
-                {
-                    id: 'tech',
-                    name: 'مبادرة محترف',
-                    category: 'التطوير المهني',
-                    beneficiaries: '568',
-                    date: '2025-09-15',
-                    impact: '2.47 / 5',
-                    status: 'مكتملة'
-                },
-                {
-                    id: 'fahim',
-                    name: 'مبادرة فهيم',
-                    category: 'اقتصاد',
-                    beneficiaries: '144',
-                    date: '2025-12-11',
-                    impact: '4.6 / 5',
-                    status: 'نشطة'
-                },
-                {
-                    id: 'mataheb',
-                    name: 'مبادرة متأهب',
-                    category: 'الأنظمة والتأمين',
-                    beneficiaries: '387',
-                    date: '2025-09-15',
-                    impact: '5 / 5',
-                    status: 'مكتملة'
-                }
+                { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
+                { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
+                { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
+                { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
             let initiatives = [];
-
             try {
                 const savedData = localStorage.getItem('athalInitiatives');
-
-                if (savedData !== null) {
-                    const parsedData = JSON.parse(savedData);
-                    initiatives = Array.isArray(parsedData)
-                        ? parsedData
-                        : defaultInitiatives;
-                } else {
-                    initiatives = defaultInitiatives;
-                    localStorage.setItem(
-                        'athalInitiatives',
-                        JSON.stringify(defaultInitiatives)
-                    );
-                }
+                initiatives = savedData ? JSON.parse(savedData) : defaultInitiatives;
             } catch (error) {
-                console.error('تعذرت قراءة بيانات المبادرات:', error);
                 initiatives = defaultInitiatives;
             }
-
-            /* قراءة بيانات المستفيدين */
 
             function getBeneficiaryExtraData() {
                 try {
                     const saved = localStorage.getItem('athar_beneficiary_data');
-                    const parsed = saved ? JSON.parse(saved) : {};
-
-                    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
-                        ? parsed
-                        : {};
+                    return saved ? JSON.parse(saved) : {};
                 } catch (error) {
-                    console.error('تعذرت قراءة بيانات المستفيدين:', error);
                     return {};
                 }
             }
@@ -1273,243 +1045,25 @@
 
             function getInitiativeBeneficiaryInfo(item) {
                 const extra = extraData[item.id] || item.beneficiaryInfo || {};
-
-                const actualRaw =
-                    extra.actual ??
-                    item.beneficiariesActual ??
-                    item.beneficiaries;
-
-                const targetRaw =
-                    extra.target ??
-                    item.beneficiariesTarget;
-
-                const groupsRaw =
-                    extra.groups ??
-                    item.targetGroups ??
-                    item.beneficiaryGroups;
-
                 return {
-                    actual: normalizeCount(actualRaw),
-                    target: normalizeCount(targetRaw),
-                    groups: normalizeGroups(groupsRaw)
+                    actual: Number(extra.actual ?? item.beneficiariesActual ?? item.beneficiaries) || 0,
+                    target: Number(extra.target ?? item.beneficiariesTarget) || null,
+                    groups: Array.isArray(extra.groups) ? extra.groups : []
                 };
             }
-
-            function normalizeCount(value) {
-                if (
-                    value === null ||
-                    value === undefined ||
-                    String(value).trim() === ''
-                ) {
-                    return null;
-                }
-
-                const number = Number(value);
-
-                if (!Number.isFinite(number) || number < 0) {
-                    return null;
-                }
-
-                return number;
-            }
-
-            function normalizeGroups(value) {
-                if (Array.isArray(value)) {
-                    return value
-                        .map(group => String(group).trim())
-                        .filter(Boolean);
-                }
-
-                if (typeof value === 'string' && value.trim()) {
-                    return value
-                        .split(/[,،\n]/)
-                        .map(group => group.trim())
-                        .filter(Boolean);
-                }
-
-                return [];
-            }
-
-            /* =========================
-               تعديل بيانات المستفيدين
-               للمشرف فقط
-            ========================= */
-
-            function editBeneficiaryInfo(item) {
-                // التحقق من صلاحية المشرف قبل السماح بالتعديل
-                if (localStorage.getItem('athalRole') !== 'admin') {
-                    alert('ليس لديك صلاحية تعديل بيانات المستفيدين.');
-                    return;
-                }
-
-                const info = getInitiativeBeneficiaryInfo(item);
-
-                const actualInput = prompt(
-                    'أدخل العدد الفعلي للمستفيدين في ' + item.name + ':',
-                    info.actual !== null ? info.actual : ''
-                );
-
-                if (actualInput === null) {
-                    return;
-                }
-
-                const actual = normalizeCount(actualInput);
-
-                if (actual === null) {
-                    alert('يرجى إدخال عدد فعلي صحيح يساوي صفرًا أو أكثر.');
-                    return;
-                }
-
-                const targetInput = prompt(
-                    'أدخل العدد المستهدف للمستفيدين في ' + item.name + ':',
-                    info.target !== null ? info.target : ''
-                );
-
-                if (targetInput === null) {
-                    return;
-                }
-
-                const target = normalizeCount(targetInput);
-
-                if (target === null) {
-                    alert('يرجى إدخال عدد مستهدف صحيح يساوي صفرًا أو أكثر.');
-                    return;
-                }
-
-                const groupsInput = prompt(
-                    'أدخل الفئات المستهدفة، وافصل بين كل فئة والثانية بفاصلة:',
-                    info.groups.join('، ')
-                );
-
-                if (groupsInput === null) {
-                    return;
-                }
-
-                const groups = normalizeGroups(groupsInput);
-
-                // حفظ التعديلات في بيانات المبادرة
-                extraData[item.id] = {
-                    ...extraData[item.id],
-                    actual: actual,
-                    target: target,
-                    groups: groups
-                };
-
-                try {
-                    localStorage.setItem(
-                        'athar_beneficiary_data',
-                        JSON.stringify(extraData)
-                    );
-
-                    updateSummary(initiatives);
-                    filterInitiatives();
-
-                    alert('تم حفظ بيانات المستفيدين بنجاح.');
-                } catch (error) {
-                    console.error('تعذر حفظ بيانات المستفيدين:', error);
-                    alert('تعذر حفظ التعديلات. تأكد من توفر مساحة تخزين في المتصفح.');
-                }
-            }
-
-            /* تنسيق الأرقام والنصوص */
 
             function formatNumber(value) {
-                if (value === null || value === undefined) {
-                    return 'غير متوفر';
-                }
-
-                return new Intl.NumberFormat('en-US', {
-                    maximumFractionDigits: 2
-                }).format(value);
+                return value === null ? 'غير متوفر' : new Intl.NumberFormat('en-US').format(value);
             }
-
-            function formatCountLabel(count) {
-                return count === 1 ? 'مبادرة واحدة' : count + ' مبادرة';
-            }
-
-            function createElement(tag, className, text) {
-                const element = document.createElement(tag);
-
-                if (className) {
-                    element.className = className;
-                }
-
-                if (text !== undefined && text !== null) {
-                    element.textContent = text;
-                }
-
-                return element;
-            }
-
-            /* ألوان المجالات */
-
-            function getCategoryStyle(category) {
-                switch (category) {
-                    case 'التطوير المهني':
-                        return {
-                            background: '#eaf6fd',
-                            color: '#3a91c2',
-                            border: '#d2eaf8'
-                        };
-
-                    case 'التمكين الاقتصادي':
-                        return {
-                            background: '#f6edfc',
-                            color: '#9b4dbf',
-                            border: '#ebd8f7'
-                        };
-
-                    case 'اقتصاد':
-                        return {
-                            background: '#eaf8eb',
-                            color: '#2e8a32',
-                            border: '#d3eed4'
-                        };
-
-                    case 'الأنظمة والتأمين':
-                        return {
-                            background: '#fff7e4',
-                            color: '#a6790d',
-                            border: '#f4e4b7'
-                        };
-
-                    default:
-                        return {
-                            background: '#f3f4f6',
-                            color: '#475569',
-                            border: '#e5e7eb'
-                        };
-                }
-            }
-
-            /* بناء صفوف الجدول */
 
             function renderTable(items) {
                 const tableBody = document.getElementById('beneficiariesTableBody');
                 const countLabel = document.getElementById('visibleInitiativesCount');
-
                 tableBody.replaceChildren();
-                countLabel.textContent = formatCountLabel(items.length);
+                countLabel.textContent = items.length + ' مبادرة';
 
                 if (items.length === 0) {
-                    const row = document.createElement('tr');
-                    const cell = document.createElement('td');
-
-                    cell.colSpan = 6;
-                    cell.className = 'empty-state';
-
-                    const icon = createElement('i', 'fa-solid fa-magnifying-glass');
-                    const title = createElement('strong', '', 'لا توجد نتائج مطابقة');
-                    const description = createElement(
-                        'span',
-                        '',
-                        'جرّبي تغيير عبارة البحث أو اختيار مجال آخر.'
-                    );
-
-                    cell.append(icon, title, description);
-                    row.appendChild(cell);
-                    tableBody.appendChild(row);
-
+                    tableBody.innerHTML = `<tr><td colspan="6" class="empty-state"><i class="fa-solid fa-magnifying-glass"></i><strong>لا توجد نتائج مطابقة</strong></td></tr>`;
                     return;
                 }
 
@@ -1517,239 +1071,53 @@
                     const row = document.createElement('tr');
                     const info = getInitiativeBeneficiaryInfo(item);
 
-                    /* اسم المبادرة */
-                    const nameCell = document.createElement('td');
-                    const name = createElement(
-                        'div',
-                        'initiative-name',
-                        item.name || 'مبادرة بدون اسم'
-                    );
-
-                    nameCell.appendChild(name);
-
-                    /* المجال */
-                    const categoryCell = document.createElement('td');
-                    const category = createElement(
-                        'span',
-                        'category-badge',
-                        item.category || 'غير محدد'
-                    );
-
-                    const categoryStyle = getCategoryStyle(item.category);
-
-                    category.style.backgroundColor = categoryStyle.background;
-                    category.style.color = categoryStyle.color;
-                    category.style.border = '1px solid ' + categoryStyle.border;
-
-                    categoryCell.appendChild(category);
-
-                    /* الفئات المستهدفة */
-                    const groupsCell = document.createElement('td');
-
-                    if (info.groups.length > 0) {
-                        groupsCell.textContent = info.groups.join('، ');
-                    } else {
-                        groupsCell.appendChild(
-                            createElement('span', 'unavailable', 'غير متوفر')
-                        );
-                    }
-
-                    /* العدد المستهدف */
-                    const targetCell = document.createElement('td');
-
-                    if (info.target !== null) {
-                        targetCell.appendChild(
-                            createElement(
-                                'span',
-                                'number-badge',
-                                formatNumber(info.target)
-                            )
-                        );
-                    } else {
-                        targetCell.appendChild(
-                            createElement('span', 'unavailable', 'غير متوفر')
-                        );
-                    }
-
-                    /* العدد الفعلي */
-                    const actualCell = document.createElement('td');
-
-                    if (info.actual !== null) {
-                        actualCell.appendChild(
-                            createElement(
-                                'span',
-                                'number-badge',
-                                formatNumber(info.actual)
-                            )
-                        );
-                    } else {
-                        actualCell.appendChild(
-                            createElement('span', 'unavailable', 'غير متوفر')
-                        );
-                    }
-
-                    /* رابط التفاصيل وزر التعديل */
-                    const detailsCell = document.createElement('td');
-
-                    const detailsLink = document.createElement('a');
-                    detailsLink.className = 'details-link';
-                    detailsLink.href =
-                        'initiative-details.html?initiative=' +
-                        encodeURIComponent(item.id || 'samqat');
-
-                    const detailsIcon = createElement('i', 'fa-solid fa-file-lines');
-                    const detailsText = createElement('span', '', 'عرض التفاصيل');
-
-                    detailsLink.append(detailsIcon, detailsText);
-                    detailsCell.appendChild(detailsLink);
-
-                    // لا يظهر زر التعديل إلا للمشرف
-                    if (isAdmin) {
-                        const editButton = document.createElement('button');
-
-                        editButton.type = 'button';
-                        editButton.className = 'admin-edit-btn';
-                        editButton.innerHTML =
-                            '<i class="fa-solid fa-pen-to-square"></i>' +
-                            '<span>تعديل البيانات</span>';
-
-                        editButton.addEventListener('click', function () {
-                            editBeneficiaryInfo(item);
-                        });
-
-                        detailsCell.appendChild(document.createElement('br'));
-                        detailsCell.appendChild(editButton);
-                    }
-
-                    row.append(
-                        nameCell,
-                        categoryCell,
-                        groupsCell,
-                        targetCell,
-                        actualCell,
-                        detailsCell
-                    );
-
+                    row.innerHTML = `
+                        <td><div class="initiative-name">${item.name}</div></td>
+                        <td><span class="category-badge">${item.category}</span></td>
+                        <td>${info.groups.length ? info.groups.join('، ') : '<span class="unavailable">غير متوفر</span>'}</td>
+                        <td><span class="number-badge">${formatNumber(info.target)}</span></td>
+                        <td><span class="number-badge">${formatNumber(info.actual)}</span></td>
+                        <td><a href="initiative-details.html?initiative=${item.id}" class="details-link"><i class="fa-solid fa-file-lines"></i><span>عرض التفاصيل</span></a></td>
+                    `;
                     tableBody.appendChild(row);
                 });
             }
 
-            /* تحديث بطاقات الإحصائيات */
-
             function updateSummary(items) {
-                let actualTotal = 0;
-                let targetTotal = 0;
-                let hasActualCount = false;
-                let hasTargetCount = false;
-                let groupsInitiativesTotal = 0;
-
-                items.forEach(function (item) {
+                let actualTotal = 0, targetTotal = 0, groupsCount = 0;
+                items.forEach(item => {
                     const info = getInitiativeBeneficiaryInfo(item);
-
-                    if (info.actual !== null) {
-                        actualTotal += info.actual;
-                        hasActualCount = true;
-                    }
-
-                    if (info.target !== null) {
-                        targetTotal += info.target;
-                        hasTargetCount = true;
-                    }
-
-                    if (info.groups.length > 0) {
-                        groupsInitiativesTotal++;
-                    }
+                    actualTotal += info.actual;
+                    if (info.target) targetTotal += info.target;
+                    if (info.groups.length) groupsCount++;
                 });
 
-                document.getElementById('actualTotal').textContent =
-                    hasActualCount ? formatNumber(actualTotal) : 'غير متوفر';
-
-                document.getElementById('targetTotal').textContent =
-                    hasTargetCount ? formatNumber(targetTotal) : 'غير متوفر';
-
-                document.getElementById('groupsInitiativesTotal').textContent =
-                    formatNumber(groupsInitiativesTotal);
-
-                document.getElementById('initiativeTotal').textContent =
-                    formatNumber(items.length);
+                document.getElementById('actualTotal').textContent = formatNumber(actualTotal);
+                document.getElementById('targetTotal').textContent = formatNumber(targetTotal);
+                document.getElementById('groupsInitiativesTotal').textContent = formatNumber(groupsCount);
+                document.getElementById('initiativeTotal').textContent = formatNumber(items.length);
             }
-
-            /* البحث والتصفية */
 
             const searchInput = document.getElementById('searchInput');
             const categoryFilter = document.getElementById('categoryFilter');
 
             function filterInitiatives() {
-                const searchTerm = searchInput.value.trim().toLocaleLowerCase('ar');
-                const selectedCategory = categoryFilter.value;
-
-                const filtered = initiatives.filter(function (item) {
-                    const info = getInitiativeBeneficiaryInfo(item);
-
-                    const searchableText = [
-                        item.name || '',
-                        item.category || '',
-                        ...info.groups
-                    ].join(' ').toLocaleLowerCase('ar');
-
-                    const matchesSearch =
-                        !searchTerm || searchableText.includes(searchTerm);
-
-                    const matchesCategory =
-                        !selectedCategory || item.category === selectedCategory;
-
-                    return matchesSearch && matchesCategory;
+                const term = searchInput.value.toLowerCase();
+                const cat = categoryFilter.value;
+                const filtered = initiatives.filter(item => {
+                    const matchesSearch = !term || item.name.toLowerCase().includes(term);
+                    const matchesCat = !cat || item.category === cat;
+                    return matchesSearch && matchesCat;
                 });
-
                 renderTable(filtered);
             }
 
             searchInput.addEventListener('input', filterInitiatives);
             categoryFilter.addEventListener('change', filterInitiatives);
 
-            /* تشغيل الصفحة */
-
             updateSummary(initiatives);
             renderTable(initiatives);
-
-            /* تحديث البيانات إذا تغيرت في تبويب آخر */
-
-            window.addEventListener('storage', function (event) {
-                if (
-                    event.key === 'athalInitiatives' ||
-                    event.key === 'athar_beneficiary_data'
-                ) {
-                    try {
-                        const updatedInitiatives =
-                            localStorage.getItem('athalInitiatives');
-
-                        if (
-                            event.key === 'athalInitiatives' &&
-                            updatedInitiatives !== null
-                        ) {
-                            const parsed = JSON.parse(updatedInitiatives);
-
-                            if (Array.isArray(parsed)) {
-                                initiatives = parsed;
-                            }
-                        }
-
-                        Object.keys(extraData).forEach(function (key) {
-                            delete extraData[key];
-                        });
-
-                        Object.assign(extraData, getBeneficiaryExtraData());
-
-                        updateSummary(initiatives);
-                        filterInitiatives();
-                    } catch (error) {
-                        console.error('تعذر تحديث البيانات:', error);
-                    }
-                }
-            });
-
         });
     </script>
-
 </body>
 </html>
