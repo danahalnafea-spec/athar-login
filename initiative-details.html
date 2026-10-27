@@ -485,12 +485,33 @@
             </div>
         </header>
 
-        <!-- تفاصيل المبادرة الديناميكية -->
+        <!-- تفاصيل المبادرة الديناميكية والكاملة -->
         <div id="initiativeDetailsContainer" class="space-y-6 pb-10">
-            <!-- يتم تعبئة التفاصيل ديناميكياً هنا -->
+            <!-- يتم تعبئة التفاصيل الكاملة والأهداف والأنشطة ديناميكياً هنا -->
         </div>
 
     </main>
+
+    <!-- النوافذ المنبثقة لإدارة الأهداف والأنشطة (إن وجدت في صفحتك الأصلية) -->
+    <div id="entryEditorModal" class="fixed inset-0 z-[80] bg-black/50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
+      <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl text-right my-auto" dir="rtl">
+        <h3 id="entryEditorTitle" class="text-xl font-black text-[#0b253a] mb-5">إضافة</h3>
+        <form id="entryEditorForm" class="space-y-4">
+          <div id="goalEditorFields" class="hidden">
+            <label for="entryGoal" class="block text-xs font-bold text-gray-700 mb-2">نص الهدف</label>
+            <textarea id="entryGoal" rows="3" placeholder="اكتبي هدف المبادرة" class="w-full px-3.5 py-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] resize-y"></textarea>
+          </div>
+          <div id="activityEditorFields" class="hidden">
+            <label for="entryActivityName" class="block text-xs font-bold text-gray-700 mb-2">اسم النشاط</label>
+            <input id="entryActivityName" type="text" placeholder="اكتبي اسم النشاط" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]">
+          </div>
+          <div class="flex justify-end gap-2 pt-3">
+            <button type="submit" class="px-5 py-2 bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl text-sm font-bold transition">حفظ</button>
+            <button type="button" id="entryEditorCancel" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -571,7 +592,7 @@
                 }
             });
 
-            // دالة تنسيق لون الحالة لتتطابق تماماً مع صفحة المبادرات
+            // دالة تنسيق لون الحالة لتتطابق تماماً مع صفحة المبادرات (الأزرق للمكتملة)
             function getStatusBadgeStyle(status) {
                 if (status === 'نشطة') return 'background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;';
                 if (status === 'مكتملة') return 'background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;';
@@ -594,10 +615,10 @@
             const initiativeId = urlParams.get('initiative') || 'samqat';
 
             const defaultInitiatives = [
-                { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
-                { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
-                { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
-                { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
+                { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة', department: 'قسم إدارة الأعمال' },
+                { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة', department: 'قسم تقنية المعلومات' },
+                { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة', department: 'قسم الاقتصاد' },
+                { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة', department: 'قسم الأنظمة' }
             ];
 
             let initiatives = defaultInitiatives;
@@ -622,19 +643,48 @@
                         <span class="inline-block text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-sm" style="${statusStyle}">${currentItem.status}</span>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-right">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-right mb-6">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                            <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-building ml-1"></i> الجهة</span>
+                            <span class="text-sm font-bold text-[#0b253a]">${currentItem.department || 'قسم إدارة الأعمال'}</span>
+                        </div>
                         <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
                             <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users ml-1"></i> المستفيدون</span>
                             <span class="text-base font-bold text-[#0b253a]">${currentItem.beneficiaries}</span>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
                             <span class="block text-xs text-gray-500 mb-1"><i class="fa-regular fa-calendar ml-1"></i> تاريخ التنفيذ</span>
-                            <span class="text-base font-bold text-[#0b253a]">${currentItem.date}</span>
+                            <span class="text-sm font-bold text-[#0b253a]">${currentItem.date}</span>
                         </div>
                         <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
                             <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-chart-column ml-1"></i> مستوى الأثر</span>
                             <span class="text-base font-bold text-[#0b253a]">${currentItem.impact}</span>
                         </div>
+                    </div>
+                </div>
+
+                <!-- قسم الأهداف والأنشطة التفصيلية -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-black text-[#0b253a] mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-bullseye text-[#4e9cd8]"></i>
+                            <span>أهداف المبادرة</span>
+                        </h3>
+                        <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside font-semibold">
+                            <li>تمكين المستفيدين وتطوير قدراتهم العملية.</li>
+                            <li>رفع مستوى الوعي وتحقيق الكفاءة المستهدفة.</li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+                        <h3 class="text-lg font-black text-[#0b253a] mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-tasks text-[#4e9cd8]"></i>
+                            <span>أنشطة المبادرة</span>
+                        </h3>
+                        <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside font-semibold">
+                            <li>تنفيذ ورش عمل تدريبية تفاعلية.</li>
+                            <li>متابعة تقييم الأثر وقياس النتائج.</li>
+                        </ul>
                     </div>
                 </div>
             `;
