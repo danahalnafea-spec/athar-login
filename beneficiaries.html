@@ -1,1089 +1,1392 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة أثر - المستفيدون والفئات المستهدفة</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-:root {
-    --sidebar-width: 350px;
-    --navy: #0b253a;
-    --blue: #4e9cd8;
-    --bg: #f0f7ff;
-    --sidebar: #eaf4fc;
-    --muted: #8190a5;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Cairo', sans-serif;
-}
-
-body {
-    direction: rtl;
-    color: var(--navy);
-    min-height: 100vh;
-    display: flex;
-    background-color: var(--bg);
-    background-image: url('bg-dashboard.png');
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-}
-
-/* القائمة الجانبية */
-.sidebar-wrapper {
-    width: var(--sidebar-width);
-    flex-shrink: 0;
-    min-height: 100vh;
-    transition: transform .3s ease;
-    z-index: 999;
-}
-
-.sidebar-right {
-    width: var(--sidebar-width);
-    height: 100vh;
-    position: fixed;
-    top: 0;
-    right: 0;
-    background: var(--sidebar);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 25px 16px 20px;
-    border-left: 1px solid #0f3d5914;
-    overflow-y: auto;
-}
-
-.sidebar-top-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.sidebar-logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin: 5px 0 45px;
-}
-
-.sidebar-logo img {
-    width: 195px;
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-.sidebar-menu {
-    list-style: none;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-}
-
-.sidebar-menu a,
-.logout-link {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
-    padding: 16px 18px;
-    color: var(--navy);
-    text-decoration: none;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 12px;
-    transition: background .2s;
-}
-
-.sidebar-menu a:hover,
-.logout-link:hover {
-    background: #3b82f614;
-}
-
-.sidebar-menu li.active a {
-    background: #d1e7fb;
-    font-weight: 800;
-}
-
-.sidebar-menu i,
-.logout-link i {
-    font-size: 19px;
-    width: 24px;
-    text-align: center;
-}
-
-.sidebar-bottom-content {
-    width: 100%;
-    border-top: 1px solid #0f3d591f;
-    padding-top: 15px;
-    margin-top: auto;
-}
-
-.logout-link {
-    font-weight: 700;
-}
-
-/* المحتوى الرئيسي */
-.main-content-area {
-    flex: 1;
-    min-width: 0;
-    min-height: 100vh;
-    padding: 35px 3vw;
-    display: flex;
-    flex-direction: column;
-}
-
-/* زر القائمة الجانبية */
-.sidebar-toggle-btn {
-    position: fixed;
-    top: 30px;
-    right: calc(var(--sidebar-width) + 15px);
-    width: 44px;
-    height: 44px;
-    background: var(--navy);
-    color: #fff;
-    border: 0;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 3px 10px #0b253a40;
-    font-size: 15px;
-    z-index: 10000;
-    transition: right .3s, transform .3s;
-}
-
-body.sidebar-is-collapsed .sidebar-toggle-btn {
-    right: 20px;
-}
-
-.sidebar-wrapper.collapsed {
-    transform: translateX(var(--sidebar-width));
-}
-
-/* عنوان الصفحة */
-.header-top-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    margin: 20px 0 30px;
-}
-
-.page-heading h1 {
-    font-size: clamp(25px, 2.5vw, 36px);
-    font-weight: 900;
-}
-
-.underline {
-    width: 55px;
-    height: 4px;
-    background: var(--blue);
-    border-radius: 4px;
-    margin-top: 12px;
-}
-
-.intro {
-    color: var(--muted);
-    font-size: 15px;
-    margin-top: 12px;
-    line-height: 1.8;
-}
-
-/* الحساب */
-.top-user-bar-container {
-    position: relative;
-    flex-shrink: 0;
-}
-
-.top-user-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    background: #ffffffed;
-    padding: 7px 15px;
-    border-radius: 30px;
-    box-shadow: 0 3px 12px #0b253a14;
-}
-
-.avatar {
-    width: 40px;
-    height: 40px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 19px;
-}
-
-.user-name-dropdown {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    font-weight: 700;
-    white-space: nowrap;
-}
-
-.user-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    width: 190px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px #0b253a1f;
-    padding: 12px;
-    display: none;
-    flex-direction: column;
-    gap: 8px;
-    z-index: 100;
-}
-
-.user-dropdown-menu.show {
-    display: flex;
-}
-
-.role-display {
-    background: #f1f5f9;
-    padding: 9px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    justify-content: space-between;
-    gap: 8px;
-}
-
-/* الملاحظة */
-.notice {
-    background: #fff;
-    border: 1px solid #d9e9f8;
-    border-radius: 16px;
-    padding: 14px 18px;
-    color: #718198;
-    font-size: 13px;
-    line-height: 1.9;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 14px #0b253a08;
-}
-
-.notice i {
-    color: var(--blue);
-    margin-left: 8px;
-}
-
-/* بطاقات الإحصائيات الأربع - الحجم المصغّر */
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 14px;
-    margin-bottom: 22px;
-}
-
-.summary-card {
-    background: #ffffffed;
-    border: 1px solid #e8eef5;
-    border-radius: 18px;
-    box-shadow: 0 5px 18px #0b253a0b;
-    min-height: 125px;
-    padding: 15px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.summary-icon {
-    color: #559ed1;
-    font-size: 24px;
-    flex-shrink: 0;
-}
-
-.summary-label {
-    font-size: 12px;
-    color: var(--muted);
-    font-weight: 600;
-    line-height: 1.7;
-}
-
-.summary-value {
-    font-size: 23px;
-    font-weight: 900;
-    margin-top: 5px;
-    line-height: 1.4;
-    overflow-wrap: anywhere;
-}
-
-/* سجل المستفيدين */
-.panel {
-    background: #ffffffed;
-    border: 1px solid #e8eef5;
-    border-radius: 22px;
-    box-shadow: 0 5px 18px #0b253a0b;
-    padding: 26px;
-}
-
-.panel-header {
-    margin-bottom: 24px;
-}
-
-.panel-header h2 {
-    font-size: 28px;
-    font-weight: 900;
-}
-
-.panel-header p {
-    font-size: 14px;
-    color: var(--muted);
-    margin-top: 8px;
-}
-
-/* البحث والتصفية */
-.toolbar {
-    display: flex;
-    gap: 14px;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-}
-
-.field {
-    background: white;
-    border: 1px solid #dfe6ee;
-    border-radius: 15px;
-    padding: 13px 15px;
-    color: var(--navy);
-    font-size: 14px;
-    outline: none;
-    min-width: 220px;
-}
-
-.field:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px #4e9cd822;
-}
-
-.search-box {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    flex: 1;
-    min-width: 230px;
-    background: white;
-    border: 1px solid #dfe6ee;
-    border-radius: 15px;
-    padding: 0 18px;
-    color: #8190a5;
-}
-
-.search-box input {
-    border: 0;
-    outline: 0;
-    width: 100%;
-    padding: 13px 0;
-    font-size: 14px;
-    color: var(--navy);
-    background: transparent;
-}
-
-/* جدول المبادرات */
-.table-wrap {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 760px;
-}
-
-thead {
-    background: #edf5fc;
-}
-
-th,
-td {
-    text-align: right;
-    padding: 17px 15px;
-    border-bottom: 1px solid #edf2f7;
-    font-size: 13px;
-    vertical-align: middle;
-}
-
-th {
-    font-size: 14px;
-    font-weight: 800;
-    color: #455a72;
-    white-space: nowrap;
-}
-
-tbody tr:hover {
-    background: #f8fbff;
-}
-
-.pill {
-    display: inline-flex;
-    align-items: center;
-    border-radius: 20px;
-    padding: 5px 11px;
-    background: #eaf4fc;
-    color: #245b82;
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.missing {
-    color: #94a3b8;
-    font-weight: 600;
-}
-
-.details-link {
-    color: #2676ad;
-    font-weight: 800;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-.details-link:hover {
-    text-decoration: underline;
-}
-
-.empty {
-    padding: 30px;
-    text-align: center;
-    color: var(--muted);
-    font-size: 14px;
-}
-
-/* الشاشات المتوسطة */
-@media (max-width: 1250px) {
-    :root {
-        --sidebar-width: 280px;
-    }
-
-    .summary-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
-
-/* الأجهزة اللوحية والجوال */
-@media (max-width: 1024px) {
-    .sidebar-wrapper {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: var(--sidebar-width);
-        transform: translateX(var(--sidebar-width));
-    }
-
-    .sidebar-wrapper.mobile-open {
-        transform: translateX(0);
-    }
-
-    .sidebar-toggle-btn {
-        right: 20px;
-    }
-
-    .main-content-area {
-        width: 100%;
-        padding: 75px 20px 30px;
-    }
-
-    .header-top-wrapper {
-        margin-top: 5px;
-    }
-}
-
-@media (max-width: 600px) {
-    .summary-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .summary-card {
-        min-height: 110px;
-        padding: 14px;
-    }
-
-    .summary-icon {
-        font-size: 22px;
-    }
-
-    .summary-value {
-        font-size: 21px;
-    }
-
-    .header-top-wrapper {
-        align-items: flex-start;
-        flex-wrap: wrap;
-    }
-
-    .page-heading h1 {
-        font-size: 23px;
-    }
-
-    .panel {
-        padding: 18px;
-    }
-
-    .panel-header h2 {
-        font-size: 23px;
-    }
-
-    .toolbar {
-        flex-direction: column;
-    }
-
-    .field,
-    .search-box {
-        width: 100%;
-        min-width: 0;
-        min-height: 48px;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المستفيدون | منصة أثر</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --navy: #0b253a;
+            --blue: #4e9cd8;
+            --bg: #f0f7ff;
+            --sidebar: #eaf4fc;
+            --muted: #8190a5;
+            --border: #e5edf5;
+            --white: #ffffff;
+            --green: #239b70;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            direction: rtl;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--navy);
+            min-height: 100vh;
+            font-variant-numeric: lining-nums;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        button,
+        input,
+        select,
+        td,
+        th,
+        .summary-value,
+        .badge,
+        .user-name,
+        .number {
+            font-variant-numeric: lining-nums;
+        }
+
+        .sidebar-wrapper {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: var(--sidebar-width);
+            z-index: 1000;
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar-right {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            background: var(--sidebar);
+            border-left: 1px solid #dce9f5;
+            padding: 22px 16px;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 90px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar-logo img {
+            max-width: 155px;
+            max-height: 85px;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 7px;
+        }
+
+        .sidebar-menu a,
+        .logout-link {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 12px 15px;
+            color: var(--navy);
+            text-decoration: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.2s ease;
+        }
+
+        .sidebar-menu a i,
+        .logout-link i {
+            width: 22px;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .sidebar-menu a:hover,
+        .sidebar-menu li.active a {
+            background: #d8eafa;
+            color: #267ebc;
+        }
+
+        .sidebar-bottom-content {
+            border-top: 1px solid #d8e6f2;
+            padding-top: 15px;
+        }
+
+        .logout-link:hover {
+            background: #f8e9e9;
+            color: #c0392b;
+        }
+
+        .main-content-area {
+            width: calc(100% - var(--sidebar-width));
+            margin-right: var(--sidebar-width);
+            padding: 25px 30px 40px;
+            min-height: 100vh;
+        }
+
+        .header-top-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .page-heading h1 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 900;
+        }
+
+        .page-heading p {
+            color: var(--muted);
+            font-size: 13px;
+            margin: 6px 0 0;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-menu {
+            position: relative;
+        }
+
+        .user-menu-button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 13px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--navy);
+        }
+
+        .user-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #dceefe;
+            color: #267ebc;
+        }
+
+        .user-info {
+            text-align: right;
+        }
+
+        .user-name {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .user-role {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .user-dropdown {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            min-width: 160px;
+            display: none;
+            padding: 7px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px #0b253a12;
+            z-index: 1100;
+        }
+
+        .user-dropdown.show {
+            display: block;
+        }
+
+        .user-dropdown a {
+            display: block;
+            padding: 10px;
+            color: var(--navy);
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+
+        .user-dropdown a:hover {
+            background: var(--bg);
+        }
+
+        .sidebar-toggle-btn {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            background: white;
+            color: var(--navy);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .notice {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px 17px;
+            margin-bottom: 18px;
+            background: #e9f5ff;
+            border: 1px solid #d6eafa;
+            border-radius: 12px;
+            color: #285b7e;
+            font-size: 12px;
+            line-height: 1.9;
+        }
+
+        .notice i {
+            margin-top: 4px;
+            font-size: 17px;
+        }
+
+        /* البطاقات العلوية بحجم أصغر */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .summary-card {
+            background: #ffffff;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            box-shadow: 0 3px 12px #0b253a08;
+            min-height: 85px;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            overflow: hidden;
+        }
+
+        .summary-content {
+            min-width: 0;
+        }
+
+        .summary-label {
+            font-size: 10px;
+            color: var(--muted);
+            font-weight: 700;
+            line-height: 1.8;
+        }
+
+        .summary-value {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--navy);
+            margin-top: 2px;
+            line-height: 1.5;
+            direction: ltr;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .summary-icon {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: #edf6ff;
+            color: var(--blue);
+            font-size: 17px;
+        }
+
+        .summary-card:nth-child(2) .summary-icon {
+            color: #239b70;
+            background: #e9f8f1;
+        }
+
+        .summary-card:nth-child(3) .summary-icon {
+            color: #9570cf;
+            background: #f2edfc;
+        }
+
+        .summary-card:nth-child(4) .summary-icon {
+            color: #d99537;
+            background: #fff5e5;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 3px 12px #0b253a08;
+        }
+
+        .panel-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 18px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 900;
+        }
+
+        .panel-heading p {
+            margin: 5px 0 0;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 220px;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            color: #91a1b3;
+        }
+
+        .search-box input,
+        .filter-select {
+            width: 100%;
+            height: 44px;
+            background: #fbfdff;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0 40px 0 12px;
+            color: var(--navy);
+            outline: none;
+            font-size: 12px;
+        }
+
+        .filter-select {
+            padding: 0 12px;
+            cursor: pointer;
+        }
+
+        .search-box input:focus,
+        .filter-select:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px #4e9cd81a;
+        }
+
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 800px;
+            border-collapse: collapse;
+            text-align: right;
+        }
+
+        thead {
+            background: #f4f8fc;
+        }
+
+        th {
+            color: #60758a;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 14px 13px;
+            white-space: nowrap;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 14px 13px;
+            font-size: 12px;
+            border-bottom: 1px solid #edf1f6;
+            vertical-align: middle;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: #fafdff;
+        }
+
+        .initiative-name {
+            font-weight: 800;
+            color: var(--navy);
+        }
+
+        .category-text {
+            color: #60758a;
+        }
+
+        .groups-cell {
+            max-width: 250px;
+            line-height: 1.9;
+            color: #50657a;
+        }
+
+        .count-cell {
+            direction: ltr;
+            text-align: right;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #edf6ff;
+            color: #267ebc;
+            border-radius: 20px;
+            padding: 5px 9px;
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .details-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #267ebc;
+            font-size: 11px;
+            font-weight: 800;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .details-link:hover {
+            color: var(--navy);
+        }
+
+        .empty-state {
+            display: none;
+            padding: 35px 15px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .empty-state i {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 28px;
+            color: #a8c7df;
+        }
+
+        .table-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 15px;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        .table-count {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
+        }
+
+        @media (max-width: 1250px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .sidebar-wrapper {
+                transform: translateX(100%);
+                box-shadow: -10px 0 30px #0b253a12;
+            }
+
+            .sidebar-wrapper.mobile-open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle-btn {
+                display: inline-flex;
+            }
+
+            .main-content-area {
+                width: 100%;
+                margin-right: 0;
+                padding: 20px;
+                padding-top: 24px;
+            }
+
+            .header-top-wrapper {
+                margin-top: 5px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-content-area {
+                padding: 15px 12px 25px;
+            }
+
+            .header-top-wrapper {
+                align-items: flex-start;
+                gap: 10px;
+                margin-bottom: 18px;
+            }
+
+            .page-heading h1 {
+                font-size: 19px;
+            }
+
+            .page-heading p {
+                font-size: 11px;
+            }
+
+            .header-actions {
+                gap: 7px;
+            }
+
+            .user-menu-button {
+                padding: 6px;
+                gap: 6px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .user-avatar {
+                width: 34px;
+                height: 34px;
+            }
+
+            .sidebar-toggle-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            .notice {
+                padding: 11px;
+                font-size: 11px;
+            }
+
+            .summary-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 8px;
+                margin-bottom: 14px;
+            }
+
+            .summary-card {
+                min-height: 76px;
+                padding: 8px;
+                gap: 5px;
+                border-radius: 11px;
+            }
+
+            .summary-label {
+                font-size: 9px;
+            }
+
+            .summary-value {
+                font-size: 17px;
+            }
+
+            .summary-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .panel {
+                padding: 13px;
+            }
+
+            .panel-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .panel-heading h2 {
+                font-size: 15px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+                gap: 9px;
+            }
+
+            .table-footer {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .summary-card {
+                padding: 7px 6px;
+            }
+
+            .summary-label {
+                font-size: 8px;
+            }
+
+            .summary-value {
+                font-size: 15px;
+            }
+
+            .summary-icon {
+                width: 26px;
+                height: 26px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<button class="sidebar-toggle-btn" id="sidebarToggleBtn"
-        type="button" aria-label="إظهار أو إخفاء القائمة">
-    <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
-</button>
+    <!-- القائمة الجانبية -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <div class="sidebar-right">
 
-<!-- القائمة الجانبية -->
-<div class="sidebar-wrapper" id="sidebarWrapper">
-    <aside class="sidebar-right">
+            <div class="sidebar-top-content">
+                <div class="sidebar-logo">
+                    <img src="logo.png" alt="شعار منصة أثر">
+                </div>
 
-        <div class="sidebar-top-content">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="dashboard.html">
+                            <span>الرئيسية</span>
+                            <i class="fa-solid fa-house"></i>
+                        </a>
+                    </li>
 
-            <div class="sidebar-logo">
-                <img src="logo.png" alt="شعار منصة أثر">
+                    <li>
+                        <a href="initiatives.html">
+                            <span>المبادرات</span>
+                            <i class="fa-solid fa-folder-open"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>المؤشرات</span>
+                            <i class="fa-solid fa-chart-line"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>البيانات</span>
+                            <i class="fa-solid fa-database"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>التقارير</span>
+                            <i class="fa-solid fa-file-lines"></i>
+                        </a>
+                    </li>
+
+                    <li class="active">
+                        <a href="beneficiaries.html">
+                            <span>المستفيدون</span>
+                            <i class="fa-solid fa-users"></i>
+                        </a>
+                    </li>
+
+                    <li id="adminSettingsMenu" style="display:none">
+                        <a href="#">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <ul class="sidebar-menu">
-
-                <li>
-                    <a href="dashboard.html">
-                        <i class="fa-solid fa-house"></i>
-                        <span>الرئيسية</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="initiatives.html">
-                        <i class="fa-solid fa-folder-open"></i>
-                        <span>المبادرات</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="fa-solid fa-chart-line"></i>
-                        <span>المؤشرات</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="fa-solid fa-database"></i>
-                        <span>البيانات</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="#">
-                        <i class="fa-solid fa-file-lines"></i>
-                        <span>التقارير</span>
-                    </a>
-                </li>
-
-                <li class="active">
-                    <a href="beneficiaries.html">
-                        <i class="fa-solid fa-users"></i>
-                        <span>المستفيدون</span>
-                    </a>
-                </li>
-
-                <li id="adminSettingsMenu" style="display:none">
-                    <a href="#">
-                        <i class="fa-solid fa-gear"></i>
-                        <span>إعدادات النظام</span>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="sidebar-bottom-content">
-            <a href="index.html" class="logout-link">
-                <i class="fa-solid fa-right-from-bracket"></i>
-                <span>تسجيل الخروج</span>
-            </a>
-        </div>
-
-    </aside>
-</div>
-
-<!-- محتوى الصفحة -->
-<main class="main-content-area">
-
-    <header class="header-top-wrapper">
-
-        <div class="page-heading">
-            <h1>المستفيدون والفئات المستهدفة</h1>
-            <div class="underline"></div>
-            <p class="intro">
-                متابعة أعداد المستفيدين والفئات المستهدفة المرتبطة بالمبادرات
-            </p>
-        </div>
-
-        <div class="top-user-bar-container">
-
-            <div class="top-user-bar" id="userBarToggle"
-                 role="button" tabindex="0" aria-expanded="false">
-
-                <div class="avatar">
-                    <i class="fa-solid fa-user"></i>
-                </div>
-
-                <div class="user-name-dropdown">
-                    <span id="displayUserName">مستخدم</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </div>
-
-            </div>
-
-            <div class="user-dropdown-menu" id="userDropdownMenu">
-                <span class="summary-label">صلاحية الحساب</span>
-
-                <div class="role-display">
-                    <span id="displayUserRoleText">مستخدم عادي</span>
-                    <i class="fa-solid fa-lock"></i>
-                </div>
+            <div class="sidebar-bottom-content">
+                <a href="index.html" class="logout-link" id="logoutLink">
+                    <span>تسجيل الخروج</span>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
             </div>
 
         </div>
-
-    </header>
-
-    <div class="notice">
-        <i class="fa-solid fa-circle-info"></i>
-        تظهر الفئات والأعداد حسب البيانات المسجلة في المبادرات.
-        لا تُفترض أعداد أو فئات غير موجودة في البيانات المعتمدة.
     </div>
 
-    <!-- بطاقات الإحصائيات الأربع -->
-    <section class="summary-grid" aria-label="ملخص المستفيدين">
+    <!-- محتوى الصفحة -->
+    <main class="main-content-area">
 
-        <article class="summary-card">
+        <header class="header-top-wrapper">
+            <div class="page-heading">
+                <h1>المستفيدون والفئات المستهدفة</h1>
+                <p>متابعة المستفيدين والفئات المستهدفة في مبادرات منصة أثر.</p>
+            </div>
+
+            <div class="header-actions">
+                <button
+                    type="button"
+                    class="sidebar-toggle-btn"
+                    id="sidebarToggle"
+                    aria-label="فتح القائمة الجانبية">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <div class="user-menu">
+                    <button
+                        type="button"
+                        class="user-menu-button"
+                        id="userMenuButton"
+                        aria-expanded="false">
+                        <div class="user-avatar">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+
+                        <div class="user-info">
+                            <div class="user-name" id="headerUserName">المستخدم</div>
+                            <div class="user-role" id="headerUserRole">مستخدم المنصة</div>
+                        </div>
+
+                        <i class="fa-solid fa-chevron-down" style="font-size:10px"></i>
+                    </button>
+
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="dashboard.html">
+                            <i class="fa-solid fa-house"></i>
+                            الرئيسية
+                        </a>
+
+                        <a href="index.html" id="dropdownLogout">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            تسجيل الخروج
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="notice">
+            <i class="fa-solid fa-circle-info"></i>
             <div>
-                <div class="summary-label">إجمالي المستفيدين الفعلي</div>
-                <div class="summary-value" id="actualTotal">غير متوفر</div>
+                تعرض هذه الصفحة بيانات المستفيدين والفئات المستهدفة المسجلة في بيانات المبادرات.
+                لا تُفترض أعداد أو فئات غير موجودة في البيانات؛ وعند غياب الرقم تظهر عبارة
+                «غير متوفر».
             </div>
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-people-group"></i>
-            </div>
-        </article>
-
-        <article class="summary-card">
-            <div>
-                <div class="summary-label">إجمالي المستفيدين المستهدف</div>
-                <div class="summary-value" id="targetTotal">غير متوفر</div>
-            </div>
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-bullseye"></i>
-            </div>
-        </article>
-
-        <article class="summary-card">
-            <div>
-                <div class="summary-label">المبادرات التي لديها فئات مسجلة</div>
-                <div class="summary-value" id="groupsInitiativesTotal">٠</div>
-            </div>
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-users"></i>
-            </div>
-        </article>
-
-        <article class="summary-card">
-            <div>
-                <div class="summary-label">عدد المبادرات</div>
-                <div class="summary-value" id="initiativeTotal">٠</div>
-            </div>
-
-            <div class="summary-icon">
-                <i class="fa-solid fa-folder-open"></i>
-            </div>
-        </article>
-
-    </section>
-
-    <!-- سجل المستفيدين -->
-    <section class="panel">
-
-        <div class="panel-header">
-            <h2>سجل المستفيدين</h2>
-            <p>ابحثي عن المبادرات والفئات المستهدفة</p>
         </div>
 
-        <div class="toolbar">
+        <!-- البطاقات العلوية -->
+        <section class="summary-grid">
 
-            <select id="categoryFilter" class="field"
-                    aria-label="تصفية حسب المجال">
-                <option value="">جميع المجالات</option>
-            </select>
+            <article class="summary-card">
+                <div class="summary-content">
+                    <div class="summary-label">إجمالي المستفيدين الفعلي</div>
+                    <div class="summary-value" id="actualTotal">0</div>
+                </div>
+                <div class="summary-icon">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </article>
 
-            <div class="search-box">
-                <input id="searchInput" type="search"
-                       placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة..."
-                       aria-label="بحث">
+            <article class="summary-card">
+                <div class="summary-content">
+                    <div class="summary-label">إجمالي المستفيدين المستهدف</div>
+                    <div class="summary-value" id="targetTotal">غير متوفر</div>
+                </div>
+                <div class="summary-icon">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+            </article>
 
-                <i class="fa-solid fa-magnifying-glass"></i>
+            <article class="summary-card">
+                <div class="summary-content">
+                    <div class="summary-label">المبادرات ذات الفئات المسجلة</div>
+                    <div class="summary-value" id="groupsInitiativesTotal">0</div>
+                </div>
+                <div class="summary-icon">
+                    <i class="fa-solid fa-people-group"></i>
+                </div>
+            </article>
+
+            <article class="summary-card">
+                <div class="summary-content">
+                    <div class="summary-label">عدد المبادرات</div>
+                    <div class="summary-value" id="initiativeTotal">0</div>
+                </div>
+                <div class="summary-icon">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+            </article>
+
+        </section>
+
+        <!-- جدول المستفيدين -->
+        <section class="panel">
+
+            <div class="panel-heading">
+                <div>
+                    <h2>بيانات المستفيدين</h2>
+                    <p>استعرضي الفئات المستهدفة والأعداد المسجلة لكل مبادرة.</p>
+                </div>
             </div>
 
-        </div>
+            <div class="filters">
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة..."
+                        aria-label="البحث عن مبادرة أو فئة مستهدفة">
+                </div>
 
-        <div class="table-wrap">
+                <select
+                    class="filter-select"
+                    id="categoryFilter"
+                    aria-label="تصفية حسب تصنيف المبادرة">
+                    <option value="">جميع التصنيفات</option>
+                </select>
+            </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>اسم المبادرة</th>
-                        <th>المجال</th>
-                        <th>الفئات المستهدفة</th>
-                        <th>العدد المستهدف</th>
-                        <th>العدد الفعلي</th>
-                        <th>التفاصيل</th>
-                    </tr>
-                </thead>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم المبادرة</th>
+                            <th>التصنيف</th>
+                            <th>الفئات المستهدفة</th>
+                            <th>العدد المستهدف</th>
+                            <th>العدد الفعلي</th>
+                            <th>التفاصيل</th>
+                        </tr>
+                    </thead>
 
-                <tbody id="beneficiariesTableBody"></tbody>
-            </table>
+                    <tbody id="beneficiariesTableBody"></tbody>
+                </table>
 
-        </div>
+                <div class="empty-state" id="emptyState">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <div>لا توجد بيانات مطابقة للبحث.</div>
+                </div>
+            </div>
 
-    </section>
+            <div class="table-footer">
+                <div>
+                    عدد المبادرات المعروضة:
+                    <span class="table-count" id="displayedCount">0</span>
+                </div>
 
-</main>
+                <div>الأعداد المعروضة تعتمد على البيانات المسجلة.</div>
+            </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
+        </section>
+    </main>
 
-    const $ = id => document.getElementById(id);
+    <script>
+        /* تحويل الأرقام العربية والهندية إلى أرقام إنجليزية */
+        function toEnglishDigits(value) {
+            if (value === null || value === undefined) {
+                return '';
+            }
 
-    function safeRead(key, fallback) {
-        try {
-            const value = JSON.parse(localStorage.getItem(key));
-            return value ?? fallback;
-        } catch {
-            return fallback;
+            const digitMap = {
+                '٠': '0',
+                '١': '1',
+                '٢': '2',
+                '٣': '3',
+                '٤': '4',
+                '٥': '5',
+                '٦': '6',
+                '٧': '7',
+                '٨': '8',
+                '٩': '9',
+                '۰': '0',
+                '۱': '1',
+                '۲': '2',
+                '۳': '3',
+                '۴': '4',
+                '۵': '5',
+                '۶': '6',
+                '۷': '7',
+                '۸': '8',
+                '۹': '9'
+            };
+
+            return String(value).replace(/[٠-٩۰-۹]/g, digit => digitMap[digit]);
         }
-    }
 
-    // بيانات الحساب الحالي
-    const userName = localStorage.getItem('athalUser');
-    const role = localStorage.getItem('athalRole');
-
-    if (userName) {
-        $('displayUserName').textContent = userName;
-    }
-
-    $('displayUserRoleText').textContent =
-        role === 'admin' ? 'مشرف النظام' : 'مستخدم عادي';
-
-    if (role === 'admin') {
-        $('adminSettingsMenu').style.display = 'block';
-    }
-
-    /*
-      تُقرأ المبادرات من athalInitiatives.
-      ويمكن قراءة بيانات المستفيدين الإضافية من athar_beneficiary_data.
-
-      لا تتم إضافة أعداد أو فئات غير موجودة في البيانات.
-    */
-
-    const initiatives = safeRead('athalInitiatives', []);
-    const extraData = safeRead('athar_beneficiary_data', {});
-
-    const rows = initiatives.map(item => {
-
-        const extra = extraData[item.id] || item.beneficiaryInfo || {};
-
-        const actualRaw =
-            extra.actual ??
-            item.beneficiariesActual ??
-            item.beneficiaries;
-
-        const targetRaw =
-            extra.target ??
-            item.beneficiariesTarget;
-
-        const groupsRaw =
-            extra.groups ??
-            item.targetGroups ??
-            item.beneficiaryGroups;
-
-        const groups = Array.isArray(groupsRaw)
-            ? groupsRaw.join('، ')
-            : (
-                typeof groupsRaw === 'string'
-                    ? groupsRaw.trim()
-                    : ''
-            );
-
-        function parseNumber(value) {
+        /* تنسيق الأعداد باستخدام الأرقام الإنجليزية */
+        function formatNumber(value) {
             if (
-                value === undefined ||
                 value === null ||
-                String(value).trim() === ''
+                value === undefined ||
+                value === ''
+            ) {
+                return 'غير متوفر';
+            }
+
+            const normalized = toEnglishDigits(value).trim();
+            const number = Number(normalized);
+
+            if (!Number.isFinite(number)) {
+                return normalized || 'غير متوفر';
+            }
+
+            return new Intl.NumberFormat('en-US', {
+                useGrouping: true,
+                maximumFractionDigits: 2
+            }).format(number);
+        }
+
+        function getStoredJSON(key, fallback) {
+            try {
+                const value = localStorage.getItem(key);
+
+                if (!value) {
+                    return fallback;
+                }
+
+                return JSON.parse(value);
+            } catch (error) {
+                console.warn('تعذر قراءة البيانات:', key, error);
+                return fallback;
+            }
+        }
+
+        function getInitiatives() {
+            const data = getStoredJSON('athalInitiatives', []);
+            return Array.isArray(data) ? data : [];
+        }
+
+        function getExtraData() {
+            const data = getStoredJSON('athar_beneficiary_data', {});
+            return data && typeof data === 'object' ? data : {};
+        }
+
+        function getInitiativeData(item, extraData) {
+            const extra = extraData[item.id] ||
+                item.beneficiaryInfo ||
+                {};
+
+            /*
+             * ملاحظة:
+             * يُستخدم حقل beneficiaries كقيمة فعلية احتياطية
+             * توافقًا مع بنية بيانات المبادرات الحالية.
+             * إذا كان الحقل لا يمثل عددًا فعليًا في مشروعك،
+             * احذفي item.beneficiaries من هذه القائمة.
+             */
+            const actualRaw =
+                extra.actual ??
+                item.beneficiariesActual ??
+                item.beneficiaries ??
+                null;
+
+            const targetRaw =
+                extra.target ??
+                item.beneficiariesTarget ??
+                null;
+
+            const groupsRaw =
+                extra.groups ??
+                item.targetGroups ??
+                item.beneficiaryGroups ??
+                [];
+
+            let groups = [];
+
+            if (Array.isArray(groupsRaw)) {
+                groups = groupsRaw
+                    .map(group => String(group).trim())
+                    .filter(Boolean);
+            } else if (typeof groupsRaw === 'string') {
+                groups = groupsRaw
+                    .split(/[,،\n]/)
+                    .map(group => group.trim())
+                    .filter(Boolean);
+            }
+
+            return {
+                id: item.id || '',
+                name: item.name || 'مبادرة بدون اسم',
+                category: item.category || 'غير محدد',
+                actual: parseCount(actualRaw),
+                target: parseCount(targetRaw),
+                groups: groups,
+                date: item.date || '',
+                status: item.status || ''
+            };
+        }
+
+        function parseCount(value) {
+            if (
+                value === null ||
+                value === undefined ||
+                value === ''
             ) {
                 return null;
             }
 
-            const number = Number(value);
+            const normalized = toEnglishDigits(value)
+                .replace(/,/g, '')
+                .trim();
+
+            const number = Number(normalized);
 
             return Number.isFinite(number) && number >= 0
                 ? number
                 : null;
         }
 
-        return {
-            ...item,
-            groups,
-            actual: parseNumber(actualRaw),
-            target: parseNumber(targetRaw)
-        };
-    });
+        function escapeHTML(value) {
+            return String(value ?? '').replace(/[&<>"']/g, character => {
+                const entities = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                };
 
-    function formatNumber(number) {
-        return number === null
-            ? 'غير متوفر'
-            : number.toLocaleString('ar-SA');
-    }
-
-    function escapeHTML(value) {
-        return String(value ?? '').replace(/[&<>"']/g, character => ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#39;'
-        })[character]);
-    }
-
-    // إنشاء قائمة المجالات من بيانات المبادرات.
-    const categoryFilter = $('categoryFilter');
-
-    const categories = [
-        ...new Set(
-            rows.map(row => row.category).filter(Boolean)
-        )
-    ];
-
-    categories.forEach(category => {
-        const option = document.createElement('option');
-
-        option.value = category;
-        option.textContent = category;
-
-        categoryFilter.appendChild(option);
-    });
-
-    // عرض البيانات وتحديث الإحصائيات.
-    function render() {
-
-        const term = $('searchInput').value
-            .trim()
-            .toLocaleLowerCase('ar');
-
-        const category = categoryFilter.value;
-
-        const shown = rows.filter(row => {
-
-            const matchesCategory =
-                !category || row.category === category;
-
-            const searchable = [
-                row.name,
-                row.category,
-                row.groups
-            ].join(' ').toLocaleLowerCase('ar');
-
-            return matchesCategory && searchable.includes(term);
-        });
-
-        $('initiativeTotal').textContent =
-            shown.length.toLocaleString('ar-SA');
-
-        $('groupsInitiativesTotal').textContent =
-            shown.filter(row => row.groups).length
-                .toLocaleString('ar-SA');
-
-        const actualRows = shown.filter(row => row.actual !== null);
-        const targetRows = shown.filter(row => row.target !== null);
-
-        $('actualTotal').textContent = actualRows.length
-            ? actualRows.reduce((sum, row) => sum + row.actual, 0)
-                .toLocaleString('ar-SA')
-            : 'غير متوفر';
-
-        $('targetTotal').textContent = targetRows.length
-            ? targetRows.reduce((sum, row) => sum + row.target, 0)
-                .toLocaleString('ar-SA')
-            : 'غير متوفر';
-
-        const tbody = $('beneficiariesTableBody');
-
-        tbody.replaceChildren();
-
-        if (!shown.length) {
-
-            const tr = document.createElement('tr');
-
-            tr.innerHTML = `
-                <td colspan="6" class="empty">
-                    لا توجد مبادرات تطابق البحث.
-                </td>
-            `;
-
-            tbody.appendChild(tr);
-            return;
+                return entities[character];
+            });
         }
 
-        shown.forEach(row => {
+        function renderSummary(items) {
+            const actualValues = items
+                .map(item => item.actual)
+                .filter(value => value !== null);
 
-            const tr = document.createElement('tr');
+            const targetValues = items
+                .map(item => item.target)
+                .filter(value => value !== null);
 
-            const detailHref =
-                'initiative-details.html?initiative=' +
-                encodeURIComponent(row.id || '');
+            const actualTotal = actualValues.length
+                ? actualValues.reduce((sum, value) => sum + value, 0)
+                : null;
 
-            tr.innerHTML = `
-                <td>
-                    <strong>
-                        ${escapeHTML(row.name || 'مبادرة بدون اسم')}
-                    </strong>
-                </td>
+            const targetTotal = targetValues.length
+                ? targetValues.reduce((sum, value) => sum + value, 0)
+                : null;
 
-                <td>
-                    ${escapeHTML(row.category || 'غير متوفر')}
-                </td>
+            const initiativesWithGroups = items.filter(
+                item => item.groups.length > 0
+            ).length;
 
-                <td>
-                    ${
-                        row.groups
-                            ? `<span class="pill">${escapeHTML(row.groups)}</span>`
-                            : '<span class="missing">غير متوفر</span>'
-                    }
-                </td>
+            document.getElementById('actualTotal').textContent =
+                actualTotal === null
+                    ? 'غير متوفر'
+                    : formatNumber(actualTotal);
 
-                <td>${formatNumber(row.target)}</td>
+            document.getElementById('targetTotal').textContent =
+                targetTotal === null
+                    ? 'غير متوفر'
+                    : formatNumber(targetTotal);
 
-                <td>${formatNumber(row.actual)}</td>
+            document.getElementById('groupsInitiativesTotal').textContent =
+                formatNumber(initiativesWithGroups);
 
-                <td>
-                    <a class="details-link" href="${detailHref}">
-                        عرض التفاصيل
-                        <i class="fa-solid fa-angle-left"></i>
-                    </a>
-                </td>
-            `;
-
-            tbody.appendChild(tr);
-        });
-    }
-
-    // البحث والتصفية
-    $('searchInput').addEventListener('input', render);
-    categoryFilter.addEventListener('change', render);
-
-    // القائمة المنسدلة للحساب
-    const userToggle = $('userBarToggle');
-    const dropdown = $('userDropdownMenu');
-
-    function toggleDropdown(event) {
-        event.stopPropagation();
-
-        dropdown.classList.toggle('show');
-
-        userToggle.setAttribute(
-            'aria-expanded',
-            dropdown.classList.contains('show')
-        );
-    }
-
-    userToggle.addEventListener('click', toggleDropdown);
-
-    userToggle.addEventListener('keydown', event => {
-        if (event.key === 'Enter' || event.key === ' ') {
-            event.preventDefault();
-            toggleDropdown(event);
+            document.getElementById('initiativeTotal').textContent =
+                formatNumber(items.length);
         }
-    });
 
-    window.addEventListener('click', () => {
-        dropdown.classList.remove('show');
-        userToggle.setAttribute('aria-expanded', 'false');
-    });
+        function renderCategoryOptions(items) {
+            const select = document.getElementById('categoryFilter');
+            const currentValue = select.value;
 
-    // إظهار وإخفاء القائمة الجانبية
-    const sidebar = $('sidebarWrapper');
-    const button = $('sidebarToggleBtn');
-    const icon = $('toggleIcon');
+            const categories = [...new Set(
+                items.map(item => item.category).filter(Boolean)
+            )];
 
-    button.addEventListener('click', () => {
+            select.innerHTML =
+                '<option value="">جميع التصنيفات</option>' +
+                categories.map(category => {
+                    const safeCategory = escapeHTML(category);
 
-        if (window.innerWidth <= 1024) {
+                    return `
+                        <option value="${safeCategory}">
+                            ${safeCategory}
+                        </option>
+                    `;
+                }).join('');
 
-            sidebar.classList.toggle('mobile-open');
+            if (categories.includes(currentValue)) {
+                select.value = currentValue;
+            }
+        }
 
-            const isOpen =
-                sidebar.classList.contains('mobile-open');
+        function renderTable(items) {
+            const tbody = document.getElementById('beneficiariesTableBody');
+            const emptyState = document.getElementById('emptyState');
 
-            icon.className = isOpen
-                ? 'fa-solid fa-chevron-left'
-                : 'fa-solid fa-chevron-right';
+            document.getElementById('displayedCount').textContent =
+                formatNumber(items.length);
 
-        } else {
+            if (!items.length) {
+                tbody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
 
-            sidebar.classList.toggle('collapsed');
+            emptyState.style.display = 'none';
 
-            const isCollapsed =
-                sidebar.classList.contains('collapsed');
+            tbody.innerHTML = items.map(item => {
+                const groupsText = item.groups.length
+                    ? item.groups.map(escapeHTML).join('، ')
+                    : 'غير متوفر';
 
-            document.body.classList.toggle(
-                'sidebar-is-collapsed',
-                isCollapsed
+                const detailsURL = item.id
+                    ? `initiative-details.html?initiative=${encodeURIComponent(item.id)}`
+                    : 'initiative-details.html';
+
+                return `
+                    <tr>
+                        <td>
+                            <div class="initiative-name">
+                                ${escapeHTML(item.name)}
+                            </div>
+                        </td>
+
+                        <td>
+                            <span class="category-text">
+                                ${escapeHTML(item.category)}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="groups-cell">
+                                ${groupsText}
+                            </div>
+                        </td>
+
+                        <td class="count-cell">
+                            ${formatNumber(item.target)}
+                        </td>
+
+                        <td class="count-cell">
+                            ${formatNumber(item.actual)}
+                        </td>
+
+                        <td>
+                            <a class="details-link"
+                               href="${detailsURL}">
+                                عرض التفاصيل
+                                <i class="fa-solid fa-arrow-left"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        let allInitiatives = [];
+
+        function applyFilters() {
+            const searchTerm = toEnglishDigits(
+                document.getElementById('searchInput').value
+            ).trim().toLocaleLowerCase();
+
+            const selectedCategory =
+                document.getElementById('categoryFilter').value;
+
+            const filtered = allInitiatives.filter(item => {
+                const searchableText = toEnglishDigits([
+                    item.name,
+                    item.category,
+                    item.groups.join(' '),
+                    item.actual,
+                    item.target,
+                    item.date
+                ].join(' ')).toLocaleLowerCase();
+
+                const matchesSearch =
+                    !searchTerm || searchableText.includes(searchTerm);
+
+                const matchesCategory =
+                    !selectedCategory ||
+                    item.category === selectedCategory;
+
+                return matchesSearch && matchesCategory;
+            });
+
+            renderTable(filtered);
+        }
+
+        function initializeUserMenu() {
+            const user = getStoredJSON('athalUser', null);
+            const role = localStorage.getItem('athalRole') || '';
+
+            const nameElement =
+                document.getElementById('headerUserName');
+
+            const roleElement =
+                document.getElementById('headerUserRole');
+
+            if (user) {
+                let userName = 'المستخدم';
+
+                if (typeof user === 'string') {
+                    userName = user;
+                } else {
+                    userName =
+                        user.name ||
+                        user.fullName ||
+                        user.username ||
+                        'المستخدم';
+                }
+
+                nameElement.textContent = toEnglishDigits(userName);
+            }
+
+            const roleNames = {
+                admin: 'مدير النظام',
+                manager: 'مدير',
+                user: 'مستخدم المنصة',
+                administrator: 'مدير النظام'
+            };
+
+            roleElement.textContent =
+                roleNames[role] || role || 'مستخدم المنصة';
+
+            const menuButton =
+                document.getElementById('userMenuButton');
+
+            const dropdown =
+                document.getElementById('userDropdown');
+
+            menuButton.addEventListener('click', function () {
+                const isOpen = dropdown.classList.toggle('show');
+                menuButton.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            document.addEventListener('click', function (event) {
+                if (!event.target.closest('.user-menu')) {
+                    dropdown.classList.remove('show');
+                    menuButton.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            if (role === 'admin' || role === 'administrator') {
+                document.getElementById('adminSettingsMenu').style.display =
+                    'block';
+            }
+        }
+
+        function initializeSidebar() {
+            const sidebar = document.getElementById('sidebarWrapper');
+            const toggle = document.getElementById('sidebarToggle');
+
+            toggle.addEventListener('click', function () {
+                sidebar.classList.toggle('mobile-open');
+            });
+
+            document.addEventListener('click', function (event) {
+                if (
+                    window.innerWidth <= 1024 &&
+                    !event.target.closest('#sidebarWrapper') &&
+                    !event.target.closest('#sidebarToggle')
+                ) {
+                    sidebar.classList.remove('mobile-open');
+                }
+            });
+
+            window.addEventListener('resize', function () {
+                if (window.innerWidth > 1024) {
+                    sidebar.classList.remove('mobile-open');
+                }
+            });
+        }
+
+        function initializeLogout() {
+            function logout(event) {
+                event.preventDefault();
+
+                localStorage.removeItem('athalUser');
+                localStorage.removeItem('athalRole');
+
+                window.location.href = 'index.html';
+            }
+
+            document.getElementById('logoutLink')
+                .addEventListener('click', logout);
+
+            document.getElementById('dropdownLogout')
+                .addEventListener('click', logout);
+        }
+
+        function initializePage() {
+            const extraData = getExtraData();
+
+            allInitiatives = getInitiatives().map(item =>
+                getInitiativeData(item, extraData)
             );
 
-            icon.className = isCollapsed
-                ? 'fa-solid fa-chevron-left'
-                : 'fa-solid fa-chevron-right';
+            renderSummary(allInitiatives);
+            renderCategoryOptions(allInitiatives);
+            renderTable(allInitiatives);
+
+            document.getElementById('searchInput')
+                .addEventListener('input', applyFilters);
+
+            document.getElementById('categoryFilter')
+                .addEventListener('change', applyFilters);
+
+            initializeUserMenu();
+            initializeSidebar();
+            initializeLogout();
         }
-    });
 
-    // أول عرض للبيانات
-    render();
-
-});
-</script>
+        document.addEventListener('DOMContentLoaded', initializePage);
+    </script>
 
 </body>
 </html>
