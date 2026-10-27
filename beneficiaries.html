@@ -1,1251 +1,1596 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>منصة أثر | المستفيدون والفئات المستهدفة</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<style>
-:root {
-    --sidebar-width: 280px;
-    --navy: #0b253a;
-    --blue: #4e9cd8;
-    --light-blue: #eaf4fc;
-    --background: #f0f7ff;
-    --muted: #7185a1;
-    --border: #e6edf5;
-}
-
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Cairo', sans-serif;
-}
-
-/* إعداد الصفحة مثل dashboard.html */
-body {
-    background-color: var(--background);
-    background-image: url('bg-dashboard.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    width: 100%;
-    min-width: 320px;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: space-between;
-    align-items: stretch;
-    direction: rtl;
-    color: var(--navy);
-}
-
-/* =========================================
-   الشريط الجانبي الأصلي من dashboard.html
-   ========================================= */
-
-.sidebar-wrapper {
-    position: relative;
-    display: flex;
-    align-items: flex-start;
-    flex-shrink: 0;
-    height: 100vh;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 999;
-    transform: translateX(0);
-}
-
-.sidebar-wrapper.collapsed {
-    transform: translateX(var(--sidebar-width));
-}
-
-.sidebar-right {
-    width: var(--sidebar-width);
-    min-width: var(--sidebar-width);
-    height: 100vh;
-    background-color: #eaf4fc;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 15px 12px 20px 12px;
-    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
-    border-left: 1px solid rgba(15, 61, 89, 0.08);
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.sidebar-top-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-}
-
-.sidebar-logo {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
-    margin-top: 5px;
-}
-
-.sidebar-logo img {
-    width: 195px;
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-}
-
-.sidebar-menu {
-    list-style: none !important;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar-menu li {
-    list-style: none !important;
-    width: 100%;
-}
-
-.sidebar-menu li a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-direction: row-reverse;
-    gap: 12px;
-    padding: 10px 12px;
-    color: #0b253a;
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 600;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.sidebar-menu li.active a {
-    background-color: #d1e7fb;
-    color: #0b253a;
-    font-weight: 800;
-}
-
-.sidebar-menu li a:hover:not(.active) {
-    background-color: rgba(59, 130, 246, 0.08);
-}
-
-.sidebar-menu li a i {
-    font-size: 14px;
-    width: 20px;
-    text-align: center;
-    color: #0b253a;
-}
-
-/* تسجيل الخروج أسفل الشريط */
-.sidebar-bottom-content {
-    width: 100%;
-    border-top: 1px solid rgba(15, 61, 89, 0.12);
-    padding-top: 12px;
-    margin-top: auto !important;
-    background-color: #eaf4fc;
-}
-
-.logout-link {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-direction: row-reverse;
-    gap: 12px;
-    padding: 11px 12px;
-    color: #0b253a !important;
-    text-decoration: none;
-    font-size: 13.5px;
-    font-weight: 700;
-    border-radius: 10px;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.logout-link i {
-    font-size: 14px;
-    color: #0b253a !important;
-    width: 20px;
-    text-align: center;
-}
-
-.logout-link:hover {
-    background-color: rgba(220, 38, 38, 0.1);
-    color: #dc2626 !important;
-}
-
-.logout-link:hover i {
-    color: #dc2626 !important;
-}
-
-/* زر السهم الأصلي */
-.sidebar-toggle-btn {
-    position: fixed;
-    top: 25px;
-    right: calc(var(--sidebar-width) + 15px);
-    transform: none;
-    width: 34px;
-    height: 34px;
-    background-color: #0b253a;
-    color: #ffffff;
-    border: none;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-    font-size: 12px;
-    z-index: 10000;
-    transition:
-        right 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-        background-color 0.3s ease,
-        transform 0.3s ease;
-}
-
-body.sidebar-is-collapsed .sidebar-toggle-btn {
-    right: 20px;
-}
-
-.sidebar-toggle-btn:hover {
-    background-color: #16344e;
-    transform: scale(1.1);
-}
-
-/* =========================================
-   المحتوى الرئيسي
-   ========================================= */
-
-.main-content-area {
-    flex: 1;
-    height: 100vh;
-    padding: 4vh 3vw;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    position: relative;
-    min-width: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    transition: all 0.3s ease;
-}
-
-.page-content {
-    width: 100%;
-    max-width: 1700px;
-    margin: 0 auto;
-}
-
-.header-top-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-direction: row;
-    margin-top: 1vh;
-    margin-bottom: 30px;
-    gap: 15px;
-    position: relative;
-}
-
-.page-heading {
-    text-align: right;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-    min-width: 0;
-}
-
-.page-heading h1 {
-    font-size: clamp(20px, 2.2vw, 30px);
-    font-weight: 900;
-    color: var(--navy);
-}
-
-.title-line {
-    width: 45px;
-    height: 3px;
-    background-color: var(--blue);
-    border-radius: 2px;
-    margin-top: 4px;
-}
-
-.page-description {
-    font-size: 13px;
-    color: #64748b;
-    font-weight: 600;
-    margin-top: 5px;
-    line-height: 1.8;
-}
-
-/* معلومات المستخدم */
-.top-user-bar-container {
-    position: relative;
-    flex-shrink: 0;
-}
-
-.top-user-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 6px 16px;
-    border-radius: 30px;
-    box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
-    backdrop-filter: blur(5px);
-    transition: all 0.3s ease;
-}
-
-.top-user-bar:hover {
-    background: #fff;
-}
-
-.user-avatar-circle {
-    width: 36px;
-    height: 36px;
-    background-color: #fff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--navy);
-    box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
-    flex-shrink: 0;
-}
-
-.user-avatar-circle i {
-    font-size: 15px;
-}
-
-.user-name-dropdown {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--navy);
-    white-space: nowrap;
-}
-
-.user-name-dropdown i {
-    font-size: 10px;
-    color: var(--navy);
-    transition: transform 0.3s ease;
-}
-
-.top-user-bar.active .user-name-dropdown i {
-    transform: rotate(180deg);
-}
-
-.user-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    right: 0;
-    width: 170px;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
-    padding: 10px;
-    display: none;
-    flex-direction: column;
-    gap: 6px;
-    z-index: 100;
-    border: 1px solid rgba(11, 37, 58, 0.08);
-    text-align: right;
-}
-
-.user-dropdown-menu.show {
-    display: flex;
-}
-
-.dropdown-header-label {
-    font-size: 11px;
-    color: #64748b;
-    font-weight: 600;
-    padding: 0 6px;
-}
-
-.dropdown-role-display {
-    background: #f1f5f9;
-    color: var(--navy);
-    padding: 8px 10px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.dropdown-role-display i {
-    color: var(--blue);
-    font-size: 12px;
-}
-
-/* تنبيه البيانات */
-.data-notice {
-    background: #fff;
-    border: 1px solid #d9e9f8;
-    border-radius: 14px;
-    padding: 13px 17px;
-    color: #536b82;
-    font-size: 12px;
-    line-height: 1.9;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 14px #0b253a08;
-}
-
-.data-notice i {
-    color: var(--blue);
-    margin-left: 6px;
-}
-
-/* البطاقات الإحصائية */
-.statistics-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 16px;
-    margin-bottom: 25px;
-}
-
-.statistics-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 20px;
-    box-shadow: 0 5px 20px #0b253a0a;
-    min-width: 0;
-}
-
-.statistics-card span {
-    color: var(--muted);
-    font-size: 12px;
-    display: block;
-    line-height: 1.8;
-}
-
-.statistics-card strong {
-    display: block;
-    font-size: clamp(18px, 2vw, 25px);
-    font-weight: 900;
-    margin-top: 8px;
-    overflow-wrap: anywhere;
-}
-
-.statistics-card > i {
-    color: var(--blue);
-    font-size: 23px;
-    flex-shrink: 0;
-}
-
-/* جدول المستفيدين */
-.content-card {
-    background: #fff;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 24px;
-    box-shadow: 0 5px 20px #0b253a0a;
-    margin-bottom: 20px;
-}
-
-.content-card-header {
-    margin-bottom: 20px;
-}
-
-.content-card-header h2 {
-    font-size: 22px;
-    font-weight: 900;
-}
-
-.content-card-header p {
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 6px;
-}
-
-.filters {
-    display: grid;
-    grid-template-columns: 1fr 260px;
-    gap: 14px;
-    margin-bottom: 20px;
-}
-
-.input-wrapper {
-    position: relative;
-    min-width: 0;
-}
-
-.input-wrapper i {
-    position: absolute;
-    top: 50%;
-    right: 16px;
-    transform: translateY(-50%);
-    color: var(--muted);
-    pointer-events: none;
-}
-
-.input-wrapper input,
-.filters select {
-    width: 100%;
-    height: 48px;
-    border: 1px solid #dce6f1;
-    border-radius: 13px;
-    background: #fff;
-    color: var(--navy);
-    outline: none;
-    padding: 0 15px;
-    font-size: 13px;
-}
-
-.input-wrapper input {
-    padding-right: 45px;
-}
-
-.input-wrapper input:focus,
-.filters select:focus {
-    border-color: var(--blue);
-}
-
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    min-width: 760px;
-    border-collapse: collapse;
-}
-
-th,
-td {
-    padding: 15px 13px;
-    text-align: right;
-    border-bottom: 1px solid #edf2f7;
-    font-size: 13px;
-    vertical-align: middle;
-}
-
-thead {
-    background: #f0f7fc;
-}
-
-th {
-    color: #455a72;
-    font-weight: 800;
-}
-
-tbody tr:hover {
-    background: #f8fbff;
-}
-
-.group-badge {
-    display: inline-block;
-    background: var(--light-blue);
-    color: #245b82;
-    border-radius: 20px;
-    padding: 6px 10px;
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.7;
-}
-
-.not-available {
-    color: #94a3b8;
-}
-
-.details-link {
-    color: #2676ad;
-    text-decoration: none;
-    font-weight: 800;
-    white-space: nowrap;
-}
-
-.details-link:hover {
-    color: var(--navy);
-}
-
-.empty-state {
-    text-align: center;
-    color: var(--muted);
-    padding: 35px 15px;
-}
-
-.data-note {
-    background: #f8fbff;
-    color: var(--muted);
-    border-radius: 12px;
-    padding: 13px;
-    margin-top: 18px;
-    font-size: 12px;
-    line-height: 1.8;
-}
-
-.data-note i {
-    color: var(--blue);
-    margin-left: 6px;
-}
-
-/* إخفاء الإعدادات لغير المشرف */
-[hidden] {
-    display: none !important;
-}
-
-/* الشاشات المتوسطة */
-@media (max-width: 1100px) {
-    .statistics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .filters {
-        grid-template-columns: 1fr;
-    }
-
-    .main-content-area {
-        padding: 70px 22px 25px;
-    }
-}
-
-/* سلوك الشريط الأصلي على الأجهزة الصغيرة */
-@media (max-width: 1024px) {
-    .sidebar-wrapper {
-        position: fixed;
-        right: 0;
-        top: 0;
-        z-index: 9999;
-        transform: translateX(var(--sidebar-width));
-    }
-
-    .sidebar-wrapper.mobile-open {
-        transform: translateX(0);
-    }
-
-    body.sidebar-is-collapsed .sidebar-toggle-btn {
-        right: 20px;
-    }
-}
-
-@media (max-width: 600px) {
-    .main-content-area {
-        padding: 70px 14px 22px;
-    }
-
-    .header-top-wrapper {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .page-heading h1 {
-        font-size: 22px;
-    }
-
-    .top-user-bar {
-        padding: 5px 12px;
-    }
-
-    .statistics-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .statistics-card {
-        padding: 16px;
-    }
-
-    .content-card {
-        padding: 15px;
-    }
-
-    .content-card-header h2 {
-        font-size: 20px;
-    }
-
-    th,
-    td {
-        padding: 12px;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة أثر - المستفيدون</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --navy: #0b253a;
+            --blue: #4e9cd8;
+            --pale: #eaf4fc;
+            --bg: #f0f7ff;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            direction: rtl;
+            color: var(--navy);
+            background: var(--bg) url('bg-dashboard.png') center / cover fixed no-repeat;
+        }
+
+        /* الشريط الجانبي: نفس ألوان وهوية لوحة التحكم */
+        .sidebar-wrapper {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            height: 100vh;
+            transition: transform .3s cubic-bezier(.4, 0, .2, 1);
+            z-index: 999;
+            transform: translateX(0);
+        }
+
+        .sidebar-right {
+            width: var(--sidebar-width);
+            min-width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--pale);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px 12px 20px;
+            box-shadow: -5px 0 25px #0000000f;
+            border-left: 1px solid #0f3d5914;
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-top-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 5px 0 10px;
+        }
+
+        .sidebar-logo img {
+            width: 195px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            list-style: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar-menu a,
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            flex-direction: row-reverse;
+            gap: 12px;
+            width: 100%;
+            padding: 10px 12px;
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all .3s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar-menu a:hover,
+        .logout-link:hover {
+            background: #3b82f614;
+        }
+
+        .sidebar-menu a.active {
+            background: #d1e7fb;
+            color: var(--navy);
+            font-weight: 800;
+        }
+
+        .sidebar-menu a i,
+        .logout-link i {
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+            flex-shrink: 0;
+        }
+
+        .sidebar-bottom-content {
+            width: 100%;
+            border-top: 1px solid #0f3d591f;
+            padding-top: 12px;
+            margin-top: auto;
+            background: var(--pale);
+        }
+
+        .sidebar-toggle-btn {
+            position: fixed;
+            top: 25px;
+            right: calc(var(--sidebar-width) + 15px);
+            width: 34px;
+            height: 34px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            border-radius: 50%;
+            background: var(--navy);
+            color: white;
+            cursor: pointer;
+            z-index: 1001;
+            transition: right .3s, background .2s;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #173c58;
+        }
+
+        body.sidebar-is-collapsed .sidebar-wrapper {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        body.sidebar-is-collapsed .sidebar-toggle-btn {
+            right: 20px;
+        }
+
+        /* المحتوى الرئيسي */
+        .main {
+            flex: 1;
+            min-width: 0;
+            padding: 35px;
+        }
+
+        .user-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #ffffffed;
+            border-radius: 30px;
+            padding: 8px 15px;
+            box-shadow: 0 3px 12px #0b253a14;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: var(--pale);
+        }
+
+        .panel {
+            background: white;
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 22px;
+            border: 1px solid #e8eef5;
+            box-shadow: 0 3px 12px #0b253a0a;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 16px;
+            padding: 18px;
+            border: 1px solid #e8eef5;
+            box-shadow: 0 3px 12px #0b253a0a;
+        }
+
+        .field {
+            width: 100%;
+            padding: 11px 13px;
+            border: 1px solid #dfe7ef;
+            border-radius: 11px;
+            outline: none;
+            background: white;
+            font-size: 13px;
+            color: var(--navy);
+        }
+
+        .field:focus {
+            border-color: var(--blue);
+            box-shadow: 0 0 0 3px #4e9cd822;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .btn-primary {
+            background: var(--navy);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #173c58;
+        }
+
+        .btn-light {
+            background: #edf3f8;
+            color: var(--navy);
+        }
+
+        .btn-danger {
+            background: #fff0f0;
+            color: #b91c1c;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+        }
+
+        th {
+            padding: 13px;
+            text-align: right;
+            background: #f1f7fc;
+            color: #475569;
+            font-size: 12px;
+        }
+
+        td {
+            padding: 13px;
+            border-bottom: 1px solid #edf1f5;
+            font-size: 13px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #dbeafe;
+            color: #1e40af;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 20px;
+            background: #edf2f7;
+            overflow: hidden;
+        }
+
+        .progress div {
+            height: 100%;
+            background: var(--blue);
+            transition: width .3s;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            background: #0008;
+            padding: 18px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 25px;
+            border-radius: 18px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* توافق الشريط الجانبي مع الجوال والأجهزة اللوحية */
+        @media (max-width: 1024px) {
+            body {
+                display: block;
+            }
+
+            .sidebar-wrapper {
+                position: fixed;
+                right: 0;
+                top: 0;
+                z-index: 1500;
+                transform: translateX(var(--sidebar-width));
+            }
+
+            .sidebar-wrapper.mobile-open {
+                transform: translateX(0);
+            }
+
+            body.sidebar-is-collapsed .sidebar-wrapper {
+                transform: translateX(var(--sidebar-width));
+            }
+
+            body.sidebar-is-collapsed .sidebar-toggle-btn {
+                right: 20px;
+            }
+
+            .sidebar-toggle-btn {
+                top: 15px;
+                right: 20px;
+            }
+
+            body:not(.sidebar-is-collapsed) .sidebar-toggle-btn {
+                right: calc(var(--sidebar-width) + 15px);
+            }
+
+            .main {
+                padding: 75px 18px 25px;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .main {
+                padding-right: 12px;
+                padding-left: 12px;
+            }
+
+            .panel {
+                padding: 15px;
+            }
+
+            .stat-card {
+                padding: 13px;
+            }
+
+            .modal-content {
+                padding: 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- زر السهم: نفس زر dashboard.html -->
-<button
-    class="sidebar-toggle-btn"
-    id="sidebarToggleBtn"
-    type="button"
-    title="إخفاء/إظهار القائمة"
-    aria-label="إخفاء أو إظهار القائمة"
->
-    <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
-</button>
+    <!-- زر فتح وإغلاق الشريط الجانبي -->
+    <button id="sidebarToggle" class="sidebar-toggle-btn"
+        type="button" aria-label="فتح أو إغلاق القائمة" title="القائمة">
+        <i class="fa-solid fa-chevron-right"></i>
+    </button>
 
-<!-- الشريط الجانبي الأصلي -->
-<div class="sidebar-wrapper" id="sidebarWrapper">
+    <!-- الشريط الجانبي: الروابط الأساسية نفسها في لوحة التحكم -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <aside class="sidebar-right" id="sidebarRight">
+            <div class="sidebar-top-content">
 
-    <aside class="sidebar-right" id="sidebarRight">
+                <div class="sidebar-logo">
+                    <img src="logo.png" alt="شعار منصة أثر">
+                </div>
 
-        <div class="sidebar-top-content">
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="dashboard.html">
+                            <span>الرئيسية</span>
+                            <i class="fa-solid fa-house"></i>
+                        </a>
+                    </li>
 
-            <div class="sidebar-logo">
-                <img src="logo.png" alt="شعار منصة أثر">
+                    <li>
+                        <a href="initiatives.html">
+                            <span>المبادرات</span>
+                            <i class="fa-solid fa-folder-open"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" data-placeholder-link>
+                            <span>المؤشرات</span>
+                            <i class="fa-solid fa-chart-line"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" data-placeholder-link>
+                            <span>البيانات</span>
+                            <i class="fa-solid fa-database"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" data-placeholder-link>
+                            <span>التقارير</span>
+                            <i class="fa-solid fa-file-lines"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="beneficiaries.html" class="active" aria-current="page">
+                            <span>المستفيدون</span>
+                            <i class="fa-solid fa-users"></i>
+                        </a>
+                    </li>
+
+                    <li id="adminSettingsMenu" class="hidden">
+                        <a href="#" data-placeholder-link>
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
 
-            <ul class="sidebar-menu">
+            <div class="sidebar-bottom-content">
+                <a href="index.html" class="logout-link">
+                    <span>تسجيل الخروج</span>
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+            </div>
+        </aside>
+    </div>
 
-                <li>
-                    <a href="dashboard.html">
-                        <span>الرئيسية</span>
-                        <i class="fa-solid fa-house"></i>
-                    </a>
-                </li>
+    <!-- محتوى الصفحة -->
+    <main class="main">
 
-                <li>
-                    <a href="initiatives.html">
-                        <span>المبادرات</span>
-                        <i class="fa-solid fa-folder-open"></i>
-                    </a>
-                </li>
+        <header class="flex flex-wrap justify-between items-center gap-4 mb-7">
+            <div>
+                <h1 class="text-2xl md:text-3xl font-black">
+                    المستفيدون والفئات المستهدفة
+                </h1>
 
-                <li>
-                    <a href="indicators.html">
-                        <span>المؤشرات</span>
-                        <i class="fa-solid fa-chart-line"></i>
-                    </a>
-                </li>
+                <div class="w-12 h-1 rounded mt-2"
+                    style="background:var(--blue)"></div>
 
-                <li>
-                    <a href="data.html">
-                        <span>البيانات</span>
-                        <i class="fa-solid fa-database"></i>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="reports.html">
-                        <span>التقارير</span>
-                        <i class="fa-solid fa-file-lines"></i>
-                    </a>
-                </li>
-
-                <!-- الصفحة الحالية -->
-                <li class="active">
-                    <a href="beneficiaries.html" aria-current="page">
-                        <span>المستفيدون</span>
-                        <i class="fa-solid fa-users"></i>
-                    </a>
-                </li>
-
-                <!-- تظهر للمشرف فقط -->
-                <li id="adminSettingsMenu" hidden>
-                    <a href="settings.html">
-                        <span>الإعدادات</span>
-                        <i class="fa-solid fa-gear"></i>
-                    </a>
-                </li>
-
-            </ul>
-        </div>
-
-        <div class="sidebar-bottom-content">
-            <a href="index.html" class="logout-link">
-                <span>تسجيل الخروج</span>
-                <i class="fa-solid fa-right-from-bracket"></i>
-            </a>
-        </div>
-
-    </aside>
-</div>
-
-<!-- المحتوى الرئيسي -->
-<main class="main-content-area" id="mainContentArea">
-
-    <div class="page-content">
-
-        <header class="header-top-wrapper">
-
-            <div class="page-heading">
-                <h1>المستفيدون والفئات المستهدفة</h1>
-                <div class="title-line"></div>
-                <p class="page-description">
-                    متابعة أعداد المستفيدين والفئات المستهدفة المرتبطة بالمبادرات
+                <p class="text-sm text-slate-500 mt-2">
+                    متابعة المستفيدين وتنظيم الفئات المرتبطة بالمبادرات.
                 </p>
             </div>
 
-            <div class="top-user-bar-container">
-
-                <div
-                    class="top-user-bar"
-                    id="userBarToggle"
-                    role="button"
-                    tabindex="0"
-                    aria-expanded="false"
-                >
-                    <div class="user-avatar-circle">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-
-                    <div class="user-name-dropdown">
-                        <span id="displayUserName">مستخدم</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
+            <div class="user-bar">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
                 </div>
-
-                <div class="user-dropdown-menu" id="userDropdownMenu">
-                    <span class="dropdown-header-label">صلاحية الحساب</span>
-
-                    <div class="dropdown-role-display">
-                        <span id="displayUserRoleText">مستخدم عادي</span>
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
+                <div>
+                    <div id="userName" class="font-bold text-sm">مستخدم</div>
+                    <div id="userRole" class="text-xs text-slate-500">مستخدم عادي</div>
                 </div>
-
             </div>
         </header>
 
-        <div class="data-notice">
-            <i class="fa-solid fa-circle-info"></i>
-            تظهر الفئات والأعداد حسب البيانات المسجلة في المبادرات. لا تُفترض أعداد أو فئات غير موجودة في البيانات المعتمدة.
-        </div>
+        <!-- الإحصائيات -->
+        <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
 
-        <!-- البطاقات الإحصائية -->
-        <section class="statistics-grid">
+            <div class="stat-card">
+                <p class="text-xs text-slate-500 mb-2">إجمالي المستفيدين المسجلين</p>
+                <p id="totalBeneficiaries" class="text-2xl font-black">0</p>
+                <i class="fa-solid fa-users mt-3" style="color:var(--blue)"></i>
+            </div>
 
-            <article class="statistics-card">
-                <div>
-                    <span>إجمالي المستفيدين الفعلي</span>
-                    <strong id="actualTotal">غير متوفر</strong>
-                </div>
-                <i class="fa-solid fa-people-group"></i>
-            </article>
+            <div class="stat-card">
+                <p class="text-xs text-slate-500 mb-2">الفئات المستهدفة</p>
+                <p id="totalGroups" class="text-2xl font-black">0</p>
+                <i class="fa-solid fa-people-group mt-3" style="color:var(--blue)"></i>
+            </div>
 
-            <article class="statistics-card">
-                <div>
-                    <span>إجمالي المستفيدين المستهدف</span>
-                    <strong id="targetTotal">غير متوفر</strong>
-                </div>
-                <i class="fa-solid fa-bullseye"></i>
-            </article>
+            <div class="stat-card">
+                <p class="text-xs text-slate-500 mb-2">المبادرات المرتبطة</p>
+                <p id="totalInitiatives" class="text-2xl font-black">0</p>
+                <i class="fa-solid fa-folder-open mt-3" style="color:var(--blue)"></i>
+            </div>
 
-            <article class="statistics-card">
-                <div>
-                    <span>المبادرات التي لديها فئات مسجلة</span>
-                    <strong id="groupsTotal">0</strong>
-                </div>
-                <i class="fa-solid fa-users"></i>
-            </article>
-
-            <article class="statistics-card">
-                <div>
-                    <span>عدد المبادرات</span>
-                    <strong id="initiativesTotal">0</strong>
-                </div>
-                <i class="fa-solid fa-folder-open"></i>
-            </article>
+            <div class="stat-card">
+                <p class="text-xs text-slate-500 mb-2">إجمالي العدد المستهدف</p>
+                <p id="totalTarget" class="text-2xl font-black">—</p>
+                <i class="fa-solid fa-bullseye mt-3" style="color:var(--blue)"></i>
+            </div>
 
         </section>
 
         <!-- سجل المستفيدين -->
-        <section class="content-card">
-
-            <div class="content-card-header">
-                <h2>سجل المستفيدين</h2>
-                <p>ابحثي عن المبادرات والفئات المستهدفة</p>
-            </div>
-
-            <div class="filters">
-
-                <div class="input-wrapper">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input
-                        type="search"
-                        id="searchInput"
-                        placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة"
-                        autocomplete="off"
-                    >
+        <section class="panel">
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+                <div>
+                    <h2 class="text-lg font-black">سجل المستفيدين</h2>
+                    <p class="text-xs text-slate-500 mt-1">
+                        البحث والتصفية حسب المبادرة والفئة المستهدفة.
+                    </p>
                 </div>
 
-                <select id="categoryFilter" aria-label="تصفية حسب المجال">
-                    <option value="">جميع المجالات</option>
-                </select>
-
+                <button id="addBeneficiaryBtn" class="btn btn-primary hidden" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    إضافة مستفيد
+                </button>
             </div>
 
-            <div class="table-container">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+                <input id="searchInput" class="field"
+                    placeholder="ابحثي بالاسم أو رقم السجل...">
+
+                <select id="initiativeFilter" class="field">
+                    <option value="">جميع المبادرات</option>
+                </select>
+
+                <select id="groupFilter" class="field">
+                    <option value="">جميع الفئات</option>
+                </select>
+            </div>
+
+            <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
-                            <th>اسم المبادرة</th>
-                            <th>المجال</th>
-                            <th>الفئات المستهدفة</th>
-                            <th>العدد المستهدف</th>
-                            <th>العدد الفعلي</th>
-                            <th>التفاصيل</th>
+                            <th>اسم المستفيد</th>
+                            <th>رقم السجل</th>
+                            <th>المبادرة</th>
+                            <th>الفئة المستهدفة</th>
+                            <th>تاريخ التسجيل</th>
+                            <th id="actionsHeading" class="hidden">الإجراءات</th>
                         </tr>
                     </thead>
-
-                    <tbody id="beneficiariesTableBody"></tbody>
+                    <tbody id="beneficiariesTable"></tbody>
                 </table>
             </div>
 
-            <div id="emptyState" class="empty-state" hidden>
-                لا توجد بيانات مطابقة للبحث.
-            </div>
-
-            <div class="data-note">
-                <i class="fa-solid fa-circle-info"></i>
-                الأعداد والفئات المعروضة تعتمد على البيانات المسجلة لكل مبادرة. الخانات غير المتوفرة لا تُحسب ضمن الإجمالي.
-            </div>
-
+            <p id="emptyBeneficiaries" class="text-center text-sm text-slate-500 py-8">
+                لا توجد سجلات مستفيدين مسجلة حتى الآن.
+            </p>
         </section>
 
+        <!-- الفئات المستهدفة -->
+        <section class="panel">
+            <div class="flex flex-wrap justify-between items-center gap-3 mb-5">
+                <div>
+                    <h2 class="text-lg font-black">الفئات المستهدفة</h2>
+                    <p class="text-xs text-slate-500 mt-1">
+                        عرض الفئات والأعداد المستهدفة المتوفرة لكل مبادرة.
+                    </p>
+                </div>
+
+                <button id="addGroupBtn" class="btn btn-primary hidden" type="button">
+                    <i class="fa-solid fa-plus"></i>
+                    إضافة فئة
+                </button>
+            </div>
+
+            <div id="groupsContainer"
+                class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+            </div>
+
+            <p id="emptyGroups" class="text-center text-sm text-slate-500 py-8">
+                لا توجد فئات مستهدفة محفوظة حتى الآن.
+            </p>
+        </section>
+
+        <p class="text-xs text-slate-500 text-center mt-5">
+            تُحفظ البيانات في هذا المتصفح باستخدام localStorage، ولا تتم مزامنتها تلقائيًا مع الأجهزة الأخرى.
+        </p>
+
+    </main>
+
+    <!-- نافذة إضافة مستفيد -->
+    <div class="modal" id="beneficiaryModal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-5">
+                <h2 id="beneficiaryModalTitle" class="text-xl font-black">
+                    إضافة مستفيد
+                </h2>
+                <button class="btn btn-light" type="button"
+                    data-close="beneficiaryModal" aria-label="إغلاق">✕</button>
+            </div>
+
+            <form id="beneficiaryForm" class="space-y-4">
+                <input type="hidden" id="beneficiaryId">
+
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="beneficiaryName">
+                        اسم المستفيد *
+                    </label>
+                    <input id="beneficiaryName" class="field" required maxlength="100"
+                        placeholder="اسم المستفيد">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="beneficiaryNumber">
+                        رقم السجل
+                    </label>
+                    <input id="beneficiaryNumber" class="field" maxlength="40"
+                        placeholder="رقم داخلي أو رمز">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="beneficiaryDate">
+                        تاريخ التسجيل *
+                    </label>
+                    <input id="beneficiaryDate" type="date" class="field" required>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="beneficiaryInitiative">
+                        المبادرة *
+                    </label>
+                    <select id="beneficiaryInitiative" class="field" required></select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="beneficiaryGroup">
+                        الفئة المستهدفة *
+                    </label>
+                    <select id="beneficiaryGroup" class="field" required></select>
+                </div>
+
+                <p id="beneficiaryError" class="text-sm text-red-600 hidden"></p>
+
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" class="btn btn-light"
+                        data-close="beneficiaryModal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ البيانات</button>
+                </div>
+            </form>
+        </div>
     </div>
-</main>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
+    <!-- نافذة إضافة فئة مستهدفة -->
+    <div class="modal" id="groupModal">
+        <div class="modal-content">
+            <div class="flex justify-between items-center mb-5">
+                <h2 id="groupModalTitle" class="text-xl font-black">
+                    إضافة فئة مستهدفة
+                </h2>
+                <button class="btn btn-light" type="button"
+                    data-close="groupModal" aria-label="إغلاق">✕</button>
+            </div>
 
-    /* =========================================
-       بيانات المستخدم والصلاحيات
-       ========================================= */
+            <form id="groupForm" class="space-y-4">
+                <input type="hidden" id="groupId">
 
-    const savedName = localStorage.getItem("athalUser");
-    const savedRole = localStorage.getItem("athalRole");
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="groupName">
+                        اسم الفئة المستهدفة *
+                    </label>
+                    <input id="groupName" class="field" required maxlength="100"
+                        placeholder="مثال: الطلاب أو الخريجون">
+                </div>
 
-    const displayUserName = document.getElementById("displayUserName");
-    const displayUserRoleText = document.getElementById("displayUserRoleText");
-    const adminSettingsMenu = document.getElementById("adminSettingsMenu");
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="groupInitiative">
+                        المبادرة المرتبطة *
+                    </label>
+                    <select id="groupInitiative" class="field" required></select>
+                </div>
 
-    if (savedName) {
-        displayUserName.textContent = savedName;
-    }
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="groupDescription">
+                        وصف الفئة
+                    </label>
+                    <textarea id="groupDescription" class="field" rows="3"
+                        maxlength="400" placeholder="وصف مختصر للفئة"></textarea>
+                </div>
 
-    if (savedRole === "admin") {
-        displayUserRoleText.textContent = "مشرف النظام";
-        adminSettingsMenu.hidden = false;
-    } else {
-        displayUserRoleText.textContent = "مستخدم عادي";
-        adminSettingsMenu.hidden = true;
-    }
+                <div>
+                    <label class="block text-sm font-bold mb-2" for="groupTargetCount">
+                        العدد المستهدف
+                    </label>
+                    <input id="groupTargetCount" class="field" type="number"
+                        min="0" step="1" placeholder="اتركيه فارغًا إذا لم يتوفر العدد">
+                </div>
 
-    /* القائمة المنسدلة للمستخدم */
+                <p id="groupError" class="text-sm text-red-600 hidden"></p>
 
-    const userBarToggle = document.getElementById("userBarToggle");
-    const userDropdownMenu = document.getElementById("userDropdownMenu");
+                <div class="flex justify-end gap-2 pt-3">
+                    <button type="button" class="btn btn-light"
+                        data-close="groupModal">إلغاء</button>
+                    <button type="submit" class="btn btn-primary">حفظ الفئة</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-    function toggleUserMenu(event) {
-        event.stopPropagation();
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const $ = id => document.getElementById(id);
 
-        const isOpen = userDropdownMenu.classList.toggle("show");
-        userBarToggle.classList.toggle("active", isOpen);
-        userBarToggle.setAttribute("aria-expanded", String(isOpen));
-    }
+            // مفاتيح التخزين المحلية
+            const BENEFICIARIES_KEY = 'athalBeneficiaries';
+            const GROUPS_KEY = 'athalTargetGroups';
+            const INITIATIVES_KEY = 'athalInitiatives';
+            const LEGACY_DATA_KEY = 'athar_beneficiary_data';
 
-    userBarToggle.addEventListener("click", toggleUserMenu);
+            // بيانات المستخدم وصلاحيات الحساب
+            const userName = localStorage.getItem('athalUser');
+            const isAdmin = localStorage.getItem('athalRole') === 'admin';
 
-    userBarToggle.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            toggleUserMenu(event);
-        }
-    });
-
-    window.addEventListener("click", function () {
-        userDropdownMenu.classList.remove("show");
-        userBarToggle.classList.remove("active");
-        userBarToggle.setAttribute("aria-expanded", "false");
-    });
-
-    userDropdownMenu.addEventListener("click", function (event) {
-        event.stopPropagation();
-    });
-
-    /* =========================================
-       فتح وإغلاق الشريط الجانبي
-       بنفس سلوك dashboard.html
-       ========================================= */
-
-    const sidebarWrapper = document.getElementById("sidebarWrapper");
-    const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
-    const toggleIcon = document.getElementById("toggleIcon");
-    const bodyElement = document.body;
-
-    sidebarToggleBtn.addEventListener("click", function (event) {
-        event.stopPropagation();
-
-        if (window.innerWidth <= 1024) {
-
-            sidebarWrapper.classList.toggle("mobile-open");
-
-            if (sidebarWrapper.classList.contains("mobile-open")) {
-                toggleIcon.classList.remove("fa-chevron-right");
-                toggleIcon.classList.add("fa-chevron-left");
-                bodyElement.classList.remove("sidebar-is-collapsed");
-                sidebarToggleBtn.setAttribute("title", "إخفاء القائمة");
-            } else {
-                toggleIcon.classList.remove("fa-chevron-left");
-                toggleIcon.classList.add("fa-chevron-right");
-                bodyElement.classList.add("sidebar-is-collapsed");
-                sidebarToggleBtn.setAttribute("title", "فتح القائمة");
+            if (userName) {
+                $('userName').textContent = userName;
             }
 
-        } else {
+            $('userRole').textContent = isAdmin ? 'مشرف النظام' : 'مستخدم عادي';
 
-            sidebarWrapper.classList.toggle("collapsed");
-
-            if (sidebarWrapper.classList.contains("collapsed")) {
-                toggleIcon.classList.remove("fa-chevron-right");
-                toggleIcon.classList.add("fa-chevron-left");
-                sidebarToggleBtn.setAttribute("title", "فتح القائمة");
-                bodyElement.classList.add("sidebar-is-collapsed");
-            } else {
-                toggleIcon.classList.remove("fa-chevron-left");
-                toggleIcon.classList.add("fa-chevron-right");
-                sidebarToggleBtn.setAttribute("title", "إخفاء القائمة");
-                bodyElement.classList.remove("sidebar-is-collapsed");
+            if (isAdmin) {
+                $('addBeneficiaryBtn').classList.remove('hidden');
+                $('addGroupBtn').classList.remove('hidden');
+                $('actionsHeading').classList.remove('hidden');
+                $('adminSettingsMenu').classList.remove('hidden');
             }
-        }
-    });
 
-    /* =========================================
-       قراءة بيانات المبادرات
-       ========================================= */
+            // قراءة المصفوفات المحفوظة مع معالجة البيانات غير الصالحة
+            function readArray(key) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key) || '[]');
+                    return Array.isArray(data) ? data : [];
+                } catch (error) {
+                    console.warn('تعذر قراءة البيانات:', key, error);
+                    return [];
+                }
+            }
 
-    function readStorage(key, fallback) {
-        try {
-            const value = JSON.parse(localStorage.getItem(key));
-            return value ?? fallback;
-        } catch (error) {
-            return fallback;
-        }
-    }
+            // قراءة كائن البيانات الإضافية القديم إن وُجد
+            function readObject(key) {
+                try {
+                    const data = JSON.parse(localStorage.getItem(key) || '{}');
+                    return data && typeof data === 'object' && !Array.isArray(data)
+                        ? data : {};
+                } catch (error) {
+                    console.warn('تعذر قراءة البيانات الإضافية:', key, error);
+                    return {};
+                }
+            }
 
-    function validNumber(value) {
-        if (
-            value === undefined ||
-            value === null ||
-            String(value).trim() === "" ||
-            !Number.isFinite(Number(value))
-        ) {
-            return null;
-        }
+            const initiatives = readArray(INITIATIVES_KEY);
+            let beneficiaries = readArray(BENEFICIARIES_KEY);
+            let groups = readArray(GROUPS_KEY);
+            const legacyData = readObject(LEGACY_DATA_KEY);
 
-        return Number(value);
-    }
+            // حفظ سجلات المستفيدين
+            function saveBeneficiaries() {
+                localStorage.setItem(BENEFICIARIES_KEY, JSON.stringify(beneficiaries));
+            }
 
-    function formatNumber(value) {
-        return value === null
-            ? "غير متوفر"
-            : value.toLocaleString("ar-SA");
-    }
+            // حفظ الفئات المستهدفة
+            function saveGroups() {
+                localStorage.setItem(GROUPS_KEY, JSON.stringify(groups));
+            }
 
-    function escapeHTML(value) {
-        return String(value ?? "").replace(/[&<>"']/g, function (character) {
-            return {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[character];
-        });
-    }
+            // حماية النصوص قبل عرضها داخل HTML
+            function escapeHTML(value) {
+                return String(value ?? '').replace(/[&<>"']/g, char => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[char]);
+            }
 
-    const storedInitiatives = readStorage("athalInitiatives", []);
-    const initiatives = Array.isArray(storedInitiatives)
-        ? storedInitiatives
-        : [];
+            function initiativeName(id) {
+                const initiative = initiatives.find(item =>
+                    String(item.id) === String(id)
+                );
 
-    const beneficiaryData = readStorage("athar_beneficiary_data", {});
+                return initiative ? (initiative.name || 'مبادرة بدون اسم') : 'مبادرة غير محددة';
+            }
 
-    /* تجهيز بيانات الجدول */
+            function groupName(id) {
+                const group = groups.find(item =>
+                    String(item.id) === String(id)
+                );
 
-    const rows = initiatives.map(function (initiative) {
+                return group ? group.name : 'غير محددة';
+            }
 
-        const extra =
-            beneficiaryData[initiative.id] ||
-            initiative.beneficiaryInfo ||
-            {};
+            function today() {
+                const date = new Date();
+                const year = date.getFullYear();
+                const month = String(date.getMonth() + 1).padStart(2, '0');
+                const day = String(date.getDate()).padStart(2, '0');
 
-        const groupsValue =
-            extra.groups ??
-            initiative.targetGroups ??
-            initiative.beneficiaryGroups ??
-            "";
+                return `${year}-${month}-${day}`;
+            }
 
-        let groups = [];
+            function openModal(id) {
+                $(id).classList.add('show');
+            }
 
-        if (Array.isArray(groupsValue)) {
-            groups = groupsValue
-                .map(String)
-                .map(value => value.trim())
-                .filter(Boolean);
-        } else if (typeof groupsValue === "string") {
-            groups = groupsValue
-                .split(/[،,]/)
-                .map(value => value.trim())
-                .filter(Boolean);
-        }
+            function closeModal(id) {
+                $(id).classList.remove('show');
+            }
 
-        return {
-            id: initiative.id,
-            name: initiative.name || "مبادرة بدون اسم",
-            category: initiative.category || "غير متوفر",
-            groups: groups,
+            // قراءة العدد المستهدف فقط عندما يكون موجودًا وصالحًا
+            function validCount(value) {
+                if (value === null || value === undefined || value === '') {
+                    return null;
+                }
 
-            target: validNumber(
-                extra.target ??
-                initiative.beneficiariesTarget
-            ),
+                const number = Number(value);
 
-            actual: validNumber(
-                extra.actual ??
-                initiative.beneficiariesActual ??
-                initiative.beneficiaries
-            )
-        };
-    });
+                return Number.isFinite(number) && number >= 0
+                    ? number : null;
+            }
 
-    const searchInput = document.getElementById("searchInput");
-    const categoryFilter = document.getElementById("categoryFilter");
-    const tableBody = document.getElementById("beneficiariesTableBody");
-    const emptyState = document.getElementById("emptyState");
+            // تحويل بيانات الفئات القديمة إلى عرض متوافق مع الصفحة.
+            // لا تُحفظ هذه الفئات تلقائيًا في قائمة الفئات الجديدة.
+            function getDisplayGroups() {
+                const result = groups.map(group => ({
+                    ...group,
+                    displayId: String(group.id),
+                    source: 'saved'
+                }));
 
-    /* إضافة المجالات إلى قائمة التصفية */
+                Object.entries(legacyData).forEach(([initiativeId, data]) => {
+                    if (!data || typeof data !== 'object') return;
 
-    const categories = [
-        ...new Set(
-            rows
-                .map(row => row.category)
-                .filter(value => value !== "غير متوفر")
-        )
-    ];
+                    const legacyGroups = Array.isArray(data.groups)
+                        ? data.groups : [];
 
-    categories.forEach(function (category) {
-        const option = document.createElement("option");
-        option.value = category;
-        option.textContent = category;
-        categoryFilter.appendChild(option);
-    });
+                    legacyGroups.forEach((name, index) => {
+                        const groupLabel = String(name || '').trim();
+                        if (!groupLabel) return;
 
-    /* عرض الجدول وتحديث الإحصائيات */
+                        const exists = result.some(group =>
+                            String(group.initiativeId) === String(initiativeId) &&
+                            group.name.trim() === groupLabel
+                        );
 
-    function renderTable() {
+                        if (exists) return;
 
-        const searchTerm = searchInput.value
-            .trim()
-            .toLocaleLowerCase("ar");
+                        result.push({
+                            id: `legacy_${initiativeId}_${index}`,
+                            displayId: `legacy_${initiativeId}_${index}`,
+                            name: groupLabel,
+                            initiativeId,
+                            description: 'فئة مستهدفة واردة من بيانات المبادرة.',
+                            targetCount: null,
+                            source: 'legacy'
+                        });
+                    });
+                });
 
-        const selectedCategory = categoryFilter.value;
+                return result;
+            }
 
-        const filteredRows = rows.filter(function (row) {
+            function fillInitiativeSelect(selectId, selected = '') {
+                const select = $(selectId);
+                select.replaceChildren();
 
-            const searchableText = [
-                row.name,
-                row.category,
-                row.groups.join(" ")
-            ].join(" ").toLocaleLowerCase("ar");
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = initiatives.length
+                    ? 'اختاري المبادرة'
+                    : 'لا توجد مبادرات محفوظة';
 
-            return (
-                (!searchTerm || searchableText.includes(searchTerm)) &&
-                (!selectedCategory || row.category === selectedCategory)
-            );
-        });
+                select.appendChild(placeholder);
 
-        const actualValues = filteredRows.filter(
-            row => row.actual !== null
-        );
+                initiatives.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name || 'مبادرة بدون اسم';
+                    select.appendChild(option);
+                });
 
-        const targetValues = filteredRows.filter(
-            row => row.target !== null
-        );
+                select.value = selected;
+            }
 
-        document.getElementById("actualTotal").textContent =
-            actualValues.length
-                ? formatNumber(
-                    actualValues.reduce(
-                        (sum, row) => sum + row.actual, 0
+            function fillGroupSelect(selected = '') {
+                const select = $('beneficiaryGroup');
+                const initiativeId = $('beneficiaryInitiative').value;
+                const displayGroups = getDisplayGroups();
+
+                select.replaceChildren();
+
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.textContent = 'اختاري الفئة المستهدفة';
+                select.appendChild(placeholder);
+
+                displayGroups
+                    .filter(group =>
+                        group.source === 'saved' &&
+                        (!initiativeId ||
+                        String(group.initiativeId) === String(initiativeId))
                     )
-                )
-                : "غير متوفر";
+                    .forEach(group => {
+                        const option = document.createElement('option');
+                        option.value = group.id;
+                        option.textContent = group.name;
+                        select.appendChild(option);
+                    });
 
-        document.getElementById("targetTotal").textContent =
-            targetValues.length
-                ? formatNumber(
-                    targetValues.reduce(
-                        (sum, row) => sum + row.target, 0
-                    )
-                )
-                : "غير متوفر";
+                select.value = selected;
+            }
 
-        document.getElementById("groupsTotal").textContent =
-            filteredRows
-                .filter(row => row.groups.length > 0)
-                .length
-                .toLocaleString("ar-SA");
+            // تحديث قوائم التصفية والنماذج
+            function refreshFilters() {
+                const oldInitiative = $('initiativeFilter').value;
+                const oldGroup = $('groupFilter').value;
 
-        document.getElementById("initiativesTotal").textContent =
-            filteredRows.length.toLocaleString("ar-SA");
+                $('initiativeFilter').replaceChildren();
 
-        tableBody.replaceChildren();
+                const allInitiatives = document.createElement('option');
+                allInitiatives.value = '';
+                allInitiatives.textContent = 'جميع المبادرات';
+                $('initiativeFilter').appendChild(allInitiatives);
 
-        emptyState.hidden = filteredRows.length > 0;
+                initiatives.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.id;
+                    option.textContent = item.name || 'مبادرة بدون اسم';
+                    $('initiativeFilter').appendChild(option);
+                });
 
-        filteredRows.forEach(function (row) {
+                $('groupFilter').replaceChildren();
 
-            const tr = document.createElement("tr");
+                const allGroups = document.createElement('option');
+                allGroups.value = '';
+                allGroups.textContent = 'جميع الفئات';
+                $('groupFilter').appendChild(allGroups);
 
-            const groupsHTML = row.groups.length
-                ? `<span class="group-badge">${escapeHTML(row.groups.join("، "))}</span>`
-                : `<span class="not-available">غير متوفر</span>`;
+                groups.forEach(group => {
+                    const option = document.createElement('option');
+                    option.value = group.id;
+                    option.textContent = group.name;
+                    $('groupFilter').appendChild(option);
+                });
 
-            const detailURL =
-                "initiative-details.html?initiative=" +
-                encodeURIComponent(row.id || "");
+                $('initiativeFilter').value = oldInitiative;
+                $('groupFilter').value = oldGroup;
 
-            tr.innerHTML = `
-                <td><strong>${escapeHTML(row.name)}</strong></td>
-                <td>${escapeHTML(row.category)}</td>
-                <td>${groupsHTML}</td>
-                <td>${formatNumber(row.target)}</td>
-                <td>${formatNumber(row.actual)}</td>
-                <td>
-                    <a class="details-link" href="${detailURL}">
-                        عرض التفاصيل
-                        <i class="fa-solid fa-angle-left"></i>
-                    </a>
-                </td>
-            `;
+                fillInitiativeSelect('beneficiaryInitiative');
+                fillInitiativeSelect('groupInitiative');
+                fillGroupSelect();
+            }
 
-            tableBody.appendChild(tr);
+            // تحديث الإحصائيات بناءً على السجلات الفعلية والبيانات المتوفرة
+            function refreshStats() {
+                $('totalBeneficiaries').textContent =
+                    beneficiaries.length.toLocaleString('ar-SA');
+
+                const displayGroups = getDisplayGroups();
+
+                $('totalGroups').textContent =
+                    displayGroups.length.toLocaleString('ar-SA');
+
+                const linkedInitiatives = new Set();
+
+                beneficiaries.forEach(item => {
+                    if (item.initiativeId !== null &&
+                        item.initiativeId !== undefined &&
+                        item.initiativeId !== '') {
+                        linkedInitiatives.add(String(item.initiativeId));
+                    }
+                });
+
+                // تضمين المبادرات التي لديها فئات محفوظة
+                groups.forEach(group => {
+                    if (group.initiativeId) {
+                        linkedInitiatives.add(String(group.initiativeId));
+                    }
+                });
+
+                $('totalInitiatives').textContent =
+                    linkedInitiatives.size.toLocaleString('ar-SA');
+
+                // لا نفترض أن العدد المستهدف صفر عندما تكون البيانات غير متوفرة
+                const targets = groups
+                    .map(group => validCount(group.targetCount))
+                    .filter(value => value !== null);
+
+                const hasLegacyTarget = Object.values(legacyData).some(data =>
+                    data && validCount(data.target) !== null
+                );
+
+                if (targets.length > 0) {
+                    const total = targets.reduce((sum, value) => sum + value, 0);
+                    $('totalTarget').textContent = total.toLocaleString('ar-SA');
+                } else if (hasLegacyTarget) {
+                    const total = Object.values(legacyData).reduce((sum, data) => {
+                        const target = data ? validCount(data.target) : null;
+                        return sum + (target === null ? 0 : target);
+                    }, 0);
+
+                    $('totalTarget').textContent = total.toLocaleString('ar-SA');
+                } else {
+                    $('totalTarget').textContent = 'غير متوفر';
+                }
+            }
+
+            // عرض سجلات المستفيدين مع البحث والتصفية
+            function renderBeneficiaries() {
+                const search = $('searchInput').value.trim().toLowerCase();
+                const selectedInitiative = $('initiativeFilter').value;
+                const selectedGroup = $('groupFilter').value;
+
+                const filtered = beneficiaries.filter(item => {
+                    const searchable = [
+                        item.name,
+                        item.number,
+                        initiativeName(item.initiativeId),
+                        groupName(item.groupId)
+                    ].join(' ').toLowerCase();
+
+                    return (!search || searchable.includes(search)) &&
+                        (!selectedInitiative ||
+                            String(item.initiativeId) === selectedInitiative) &&
+                        (!selectedGroup ||
+                            String(item.groupId) === selectedGroup);
+                });
+
+                const table = $('beneficiariesTable');
+                table.replaceChildren();
+
+                filtered.forEach(item => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td class="font-bold">${escapeHTML(item.name)}</td>
+                        <td>${escapeHTML(item.number || '—')}</td>
+                        <td>${escapeHTML(initiativeName(item.initiativeId))}</td>
+                        <td>
+                            <span class="badge">
+                                ${escapeHTML(groupName(item.groupId))}
+                            </span>
+                        </td>
+                        <td>${escapeHTML(item.date || '—')}</td>
+                    `;
+
+                    if (isAdmin) {
+                        const actions = document.createElement('td');
+
+                        actions.innerHTML = `
+                            <div class="flex flex-wrap gap-2">
+                                <button class="btn btn-light"
+                                    data-edit-beneficiary="${escapeHTML(item.id)}"
+                                    type="button">
+                                    <i class="fa-solid fa-pen"></i> تعديل
+                                </button>
+
+                                <button class="btn btn-danger"
+                                    data-delete-beneficiary="${escapeHTML(item.id)}"
+                                    type="button">
+                                    <i class="fa-solid fa-trash"></i> حذف
+                                </button>
+                            </div>
+                        `;
+
+                        row.appendChild(actions);
+                    }
+
+                    table.appendChild(row);
+                });
+
+                $('emptyBeneficiaries').classList.toggle(
+                    'hidden', filtered.length > 0
+                );
+            }
+
+            // عرض الفئات المحفوظة والفئات القديمة المتوفرة في بيانات المبادرات
+            function renderGroups() {
+                const container = $('groupsContainer');
+                container.replaceChildren();
+
+                const displayGroups = getDisplayGroups();
+
+                displayGroups.forEach(group => {
+                    const count = beneficiaries.filter(item =>
+                        String(item.groupId) === String(group.id)
+                    ).length;
+
+                    const target = validCount(group.targetCount);
+
+                    const percent = target !== null && target > 0
+                        ? Math.min(100, Math.round(count / target * 100))
+                        : 0;
+
+                    const card = document.createElement('article');
+                    card.className =
+                        'border border-slate-100 rounded-2xl p-4 bg-white';
+
+                    const targetLabel = target === null
+                        ? 'غير متوفر'
+                        : target.toLocaleString('ar-SA');
+
+                    const progressLabel = target === null
+                        ? 'لا تتوفر بيانات كافية لحساب النسبة'
+                        : `${percent}%`;
+
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl flex items-center justify-center"
+                                 style="background:var(--pale);color:var(--blue)">
+                                <i class="fa-solid fa-people-group"></i>
+                            </div>
+
+                            <span class="badge">
+                                ${count.toLocaleString('ar-SA')} سجل
+                            </span>
+                        </div>
+
+                        <h3 class="font-black mt-4 mb-1">
+                            ${escapeHTML(group.name)}
+                        </h3>
+
+                        <p class="text-xs text-slate-500 mb-3">
+                            ${escapeHTML(initiativeName(group.initiativeId))}
+                        </p>
+
+                        <p class="text-xs text-slate-500 mb-3">
+                            ${group.source === 'legacy'
+                                ? 'مصدر البيانات: بيانات المبادرة المحفوظة'
+                                : 'مصدر البيانات: الفئات المحفوظة'}
+                        </p>
+
+                        <p class="text-sm text-slate-600 mb-4 whitespace-pre-line">
+                            ${escapeHTML(group.description ||
+                                'لا يوجد وصف مضاف لهذه الفئة.')}
+                        </p>
+
+                        <div class="flex justify-between text-xs text-slate-500 mb-2">
+                            <span>المستهدف: ${targetLabel}</span>
+                            <span>${progressLabel}</span>
+                        </div>
+
+                        <div class="progress">
+                            <div style="width:${target === null ? 0 : percent}%"></div>
+                        </div>
+                    `;
+
+                    // أزرار الإدارة تظهر للفئات التي يمكن تعديلها من هذه الصفحة
+                    if (isAdmin && group.source === 'saved') {
+                        const actions = document.createElement('div');
+                        actions.className =
+                            'flex flex-wrap gap-2 mt-4 pt-3 border-t border-slate-100';
+
+                        actions.innerHTML = `
+                            <button class="btn btn-light"
+                                data-edit-group="${escapeHTML(group.id)}"
+                                type="button">
+                                <i class="fa-solid fa-pen"></i> تعديل
+                            </button>
+
+                            <button class="btn btn-danger"
+                                data-delete-group="${escapeHTML(group.id)}"
+                                type="button">
+                                <i class="fa-solid fa-trash"></i> حذف
+                            </button>
+                        `;
+
+                        card.appendChild(actions);
+                    }
+
+                    container.appendChild(card);
+                });
+
+                $('emptyGroups').classList.toggle(
+                    'hidden', displayGroups.length > 0
+                );
+            }
+
+            // تحديث الصفحة كاملة
+            function renderAll() {
+                refreshFilters();
+                refreshStats();
+                renderBeneficiaries();
+                renderGroups();
+            }
+
+            // فتح نموذج إضافة مستفيد
+            $('addBeneficiaryBtn').addEventListener('click', function () {
+                if (!isAdmin) return;
+
+                if (!initiatives.length) {
+                    alert('لا توجد مبادرات محفوظة. أضيفي مبادرة أولًا.');
+                    return;
+                }
+
+                $('beneficiaryForm').reset();
+                $('beneficiaryId').value = '';
+                $('beneficiaryModalTitle').textContent = 'إضافة مستفيد';
+                $('beneficiaryDate').value = today();
+                $('beneficiaryError').classList.add('hidden');
+
+                fillInitiativeSelect('beneficiaryInitiative');
+                fillGroupSelect();
+                openModal('beneficiaryModal');
+            });
+
+            // فتح نموذج إضافة فئة مستهدفة
+            $('addGroupBtn').addEventListener('click', function () {
+                if (!isAdmin) return;
+
+                if (!initiatives.length) {
+                    alert('لا توجد مبادرات محفوظة. أضيفي مبادرة أولًا.');
+                    return;
+                }
+
+                $('groupForm').reset();
+                $('groupId').value = '';
+                $('groupModalTitle').textContent = 'إضافة فئة مستهدفة';
+                $('groupTargetCount').value = '';
+                $('groupError').classList.add('hidden');
+
+                fillInitiativeSelect('groupInitiative');
+                openModal('groupModal');
+            });
+
+            // تحديث الفئات عند تغيير المبادرة في نموذج المستفيد
+            $('beneficiaryInitiative').addEventListener('change', function () {
+                fillGroupSelect();
+            });
+
+            // حفظ بيانات المستفيد والتحقق من ارتباط الفئة بالمبادرة
+            $('beneficiaryForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (!isAdmin) return;
+
+                const id = $('beneficiaryId').value;
+
+                const record = {
+                    id: id || 'beneficiary_' + Date.now(),
+                    name: $('beneficiaryName').value.trim(),
+                    number: $('beneficiaryNumber').value.trim(),
+                    initiativeId: $('beneficiaryInitiative').value,
+                    groupId: $('beneficiaryGroup').value,
+                    date: $('beneficiaryDate').value
+                };
+
+                const matchingGroup = groups.find(group =>
+                    String(group.id) === String(record.groupId)
+                );
+
+                if (!record.name || !record.initiativeId ||
+                    !record.groupId || !record.date) {
+                    $('beneficiaryError').textContent =
+                        'فضلاً عبئي جميع الحقول المطلوبة.';
+                    $('beneficiaryError').classList.remove('hidden');
+                    return;
+                }
+
+                if (!matchingGroup ||
+                    String(matchingGroup.initiativeId) !== String(record.initiativeId)) {
+                    $('beneficiaryError').textContent =
+                        'الفئة المختارة لا تتبع المبادرة المحددة. اختاري فئة محفوظة مرتبطة بالمبادرة.';
+                    $('beneficiaryError').classList.remove('hidden');
+                    return;
+                }
+
+                const index = beneficiaries.findIndex(item =>
+                    String(item.id) === String(id)
+                );
+
+                if (index >= 0) {
+                    beneficiaries[index] = record;
+                } else {
+                    beneficiaries.unshift(record);
+                }
+
+                saveBeneficiaries();
+                closeModal('beneficiaryModal');
+                renderAll();
+            });
+
+            // حفظ الفئة المستهدفة
+            $('groupForm').addEventListener('submit', function (event) {
+                event.preventDefault();
+                if (!isAdmin) return;
+
+                const id = $('groupId').value;
+                const targetValue = $('groupTargetCount').value.trim();
+
+                const record = {
+                    id: id || 'group_' + Date.now(),
+                    name: $('groupName').value.trim(),
+                    initiativeId: $('groupInitiative').value,
+                    description: $('groupDescription').value.trim(),
+                    targetCount: targetValue === ''
+                        ? null
+                        : Number(targetValue)
+                };
+
+                if (!record.name || !record.initiativeId ||
+                    (record.targetCount !== null &&
+                    (!Number.isFinite(record.targetCount) ||
+                    record.targetCount < 0 ||
+                    !Number.isInteger(record.targetCount)))) {
+                    $('groupError').textContent =
+                        'أدخلي اسم الفئة والمبادرة، وتأكدي من صحة العدد المستهدف إذا أدخلتِه.';
+                    $('groupError').classList.remove('hidden');
+                    return;
+                }
+
+                const duplicate = groups.some(group =>
+                    String(group.id) !== String(id) &&
+                    String(group.initiativeId) === String(record.initiativeId) &&
+                    String(group.name).trim() === record.name
+                );
+
+                if (duplicate) {
+                    $('groupError').textContent =
+                        'هذه الفئة مسجلة بالفعل ضمن المبادرة نفسها.';
+                    $('groupError').classList.remove('hidden');
+                    return;
+                }
+
+                const index = groups.findIndex(group =>
+                    String(group.id) === String(id)
+                );
+
+                if (index >= 0) {
+                    groups[index] = record;
+                } else {
+                    groups.unshift(record);
+                }
+
+                saveGroups();
+                closeModal('groupModal');
+                renderAll();
+            });
+
+            // التعامل مع أزرار التعديل والحذف
+            document.addEventListener('click', function (event) {
+                const target = event.target instanceof Element
+                    ? event.target : null;
+
+                if (!target) return;
+
+                const editBeneficiary =
+                    target.closest('[data-edit-beneficiary]');
+
+                if (editBeneficiary && isAdmin) {
+                    const item = beneficiaries.find(record =>
+                        String(record.id) ===
+                        editBeneficiary.dataset.editBeneficiary
+                    );
+
+                    if (!item) return;
+
+                    $('beneficiaryForm').reset();
+                    $('beneficiaryId').value = item.id;
+                    $('beneficiaryName').value = item.name || '';
+                    $('beneficiaryNumber').value = item.number || '';
+                    $('beneficiaryDate').value = item.date || today();
+
+                    fillInitiativeSelect(
+                        'beneficiaryInitiative', item.initiativeId
+                    );
+                    fillGroupSelect(item.groupId);
+
+                    $('beneficiaryModalTitle').textContent =
+                        'تعديل بيانات المستفيد';
+                    $('beneficiaryError').classList.add('hidden');
+                    openModal('beneficiaryModal');
+                    return;
+                }
+
+                const deleteBeneficiary =
+                    target.closest('[data-delete-beneficiary]');
+
+                if (deleteBeneficiary && isAdmin) {
+                    if (!confirm('هل تريدين حذف سجل هذا المستفيد؟')) return;
+
+                    beneficiaries = beneficiaries.filter(item =>
+                        String(item.id) !==
+                        deleteBeneficiary.dataset.deleteBeneficiary
+                    );
+
+                    saveBeneficiaries();
+                    renderAll();
+                    return;
+                }
+
+                const editGroup = target.closest('[data-edit-group]');
+
+                if (editGroup && isAdmin) {
+                    const group = groups.find(item =>
+                        String(item.id) === editGroup.dataset.editGroup
+                    );
+
+                    if (!group) return;
+
+                    $('groupForm').reset();
+                    $('groupId').value = group.id;
+                    $('groupName').value = group.name || '';
+                    $('groupDescription').value = group.description || '';
+                    $('groupTargetCount').value =
+                        group.targetCount ?? '';
+
+                    fillInitiativeSelect(
+                        'groupInitiative', group.initiativeId
+                    );
+
+                    $('groupModalTitle').textContent =
+                        'تعديل الفئة المستهدفة';
+                    $('groupError').classList.add('hidden');
+                    openModal('groupModal');
+                    return;
+                }
+
+                const deleteGroup = target.closest('[data-delete-group]');
+
+                if (deleteGroup && isAdmin) {
+                    const groupId = deleteGroup.dataset.deleteGroup;
+
+                    const linked = beneficiaries.some(item =>
+                        String(item.groupId) === String(groupId)
+                    );
+
+                    const message = linked
+                        ? 'توجد سجلات مستفيدين مرتبطة بهذه الفئة. حذفها سيترك تلك السجلات دون فئة. هل تريدين المتابعة؟'
+                        : 'هل تريدين حذف هذه الفئة المستهدفة؟';
+
+                    if (!confirm(message)) return;
+
+                    groups = groups.filter(item =>
+                        String(item.id) !== String(groupId)
+                    );
+
+                    saveGroups();
+                    renderAll();
+                }
+            });
+
+            // إغلاق النوافذ من زر الإغلاق أو بالنقر خارجها
+            document.querySelectorAll('[data-close]').forEach(button => {
+                button.addEventListener('click', function () {
+                    closeModal(button.dataset.close);
+                });
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', function (event) {
+                    if (event.target === modal) {
+                        closeModal(modal.id);
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Escape') {
+                    document.querySelectorAll('.modal.show').forEach(modal => {
+                        closeModal(modal.id);
+                    });
+                }
+            });
+
+            // البحث والتصفية
+            $('searchInput').addEventListener('input', renderBeneficiaries);
+            $('initiativeFilter').addEventListener('change', renderBeneficiaries);
+            $('groupFilter').addEventListener('change', renderBeneficiaries);
+
+            // إظهار وإخفاء الشريط الجانبي مع المحافظة على التصميم
+            const sidebarWrapper = $('sidebarWrapper');
+            const sidebarToggle = $('sidebarToggle');
+            const toggleIcon = sidebarToggle.querySelector('i');
+
+            function isMobileLayout() {
+                return window.matchMedia('(max-width: 1024px)').matches;
+            }
+
+            function setSidebarState(open) {
+                if (isMobileLayout()) {
+                    sidebarWrapper.classList.toggle('mobile-open', open);
+                    document.body.classList.remove('sidebar-is-collapsed');
+                } else {
+                    sidebarWrapper.classList.remove('mobile-open');
+                    document.body.classList.toggle('sidebar-is-collapsed', !open);
+                }
+
+                toggleIcon.className = open
+                    ? 'fa-solid fa-chevron-right'
+                    : 'fa-solid fa-chevron-left';
+
+                sidebarToggle.setAttribute(
+                    'aria-expanded', String(open)
+                );
+            }
+
+            sidebarToggle.addEventListener('click', function () {
+                if (isMobileLayout()) {
+                    const isOpen =
+                        sidebarWrapper.classList.contains('mobile-open');
+
+                    setSidebarState(!isOpen);
+                } else {
+                    const isOpen =
+                        !document.body.classList.contains('sidebar-is-collapsed');
+
+                    setSidebarState(!isOpen);
+                }
+            });
+
+            // إغلاق القائمة بعد اختيار رابط على الجوال
+            sidebarWrapper.querySelectorAll('.sidebar-menu a').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    if (link.hasAttribute('data-placeholder-link')) {
+                        event.preventDefault();
+                    }
+
+                    if (isMobileLayout()) {
+                        setSidebarState(false);
+                    }
+                });
+            });
+
+            // روابط الأقسام التي لم تُربط بصفحات مستقلة بعد
+            document.querySelectorAll('[data-placeholder-link]').forEach(link => {
+                link.addEventListener('click', function (event) {
+                    event.preventDefault();
+                });
+            });
+
+            // إعادة ضبط القائمة عند تغيير حجم الشاشة
+            window.addEventListener('resize', function () {
+                if (isMobileLayout()) {
+                    document.body.classList.remove('sidebar-is-collapsed');
+                } else {
+                    sidebarWrapper.classList.remove('mobile-open');
+                    document.body.classList.remove('sidebar-is-collapsed');
+                }
+
+                const open = isMobileLayout()
+                    ? sidebarWrapper.classList.contains('mobile-open')
+                    : !document.body.classList.contains('sidebar-is-collapsed');
+
+                toggleIcon.className = open
+                    ? 'fa-solid fa-chevron-right'
+                    : 'fa-solid fa-chevron-left';
+
+                sidebarToggle.setAttribute('aria-expanded', String(open));
+            });
+
+            // عرض البيانات عند فتح الصفحة
+            renderAll();
+            setSidebarState(!isMobileLayout());
         });
-    }
-
-    searchInput.addEventListener("input", renderTable);
-    categoryFilter.addEventListener("change", renderTable);
-
-    renderTable();
-});
-</script>
+    </script>
 
 </body>
 </html>
