@@ -37,6 +37,7 @@ body {
     background-attachment: fixed;
 }
 
+/* القائمة الجانبية */
 .sidebar-wrapper {
     width: var(--sidebar-width);
     flex-shrink: 0;
@@ -132,6 +133,7 @@ body {
     font-weight: 700;
 }
 
+/* المحتوى الرئيسي */
 .main-content-area {
     flex: 1;
     min-width: 0;
@@ -141,6 +143,7 @@ body {
     flex-direction: column;
 }
 
+/* زر القائمة الجانبية */
 .sidebar-toggle-btn {
     position: fixed;
     top: 30px;
@@ -169,13 +172,14 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     transform: translateX(var(--sidebar-width));
 }
 
+/* عنوان الصفحة */
 .header-top-wrapper {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    margin: 20px 0 35px;
+    margin: 20px 0 30px;
 }
 
 .page-heading h1 {
@@ -198,6 +202,7 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     line-height: 1.8;
 }
 
+/* الحساب */
 .top-user-bar-container {
     position: relative;
     flex-shrink: 0;
@@ -253,13 +258,6 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     display: flex;
 }
 
-.summary-label {
-    font-size: 14px;
-    color: var(--muted);
-    font-weight: 600;
-    line-height: 1.8;
-}
-
 .role-display {
     background: #f1f5f9;
     padding: 9px;
@@ -271,15 +269,16 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     gap: 8px;
 }
 
+/* الملاحظة */
 .notice {
     background: #fff;
     border: 1px solid #d9e9f8;
-    border-radius: 17px;
-    padding: 18px 22px;
+    border-radius: 16px;
+    padding: 14px 18px;
     color: #718198;
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.9;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     box-shadow: 0 4px 14px #0b253a08;
 }
 
@@ -288,50 +287,59 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     margin-left: 8px;
 }
 
+/* بطاقات الإحصائيات الأربع - الحجم المصغّر */
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 20px;
-    margin-bottom: 30px;
+    gap: 14px;
+    margin-bottom: 22px;
 }
 
 .summary-card {
     background: #ffffffed;
     border: 1px solid #e8eef5;
-    border-radius: 24px;
+    border-radius: 18px;
     box-shadow: 0 5px 18px #0b253a0b;
-    min-height: 170px;
-    padding: 25px 22px;
+    min-height: 125px;
+    padding: 15px 18px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
 }
 
 .summary-icon {
     color: #559ed1;
-    font-size: 30px;
+    font-size: 24px;
     flex-shrink: 0;
 }
 
+.summary-label {
+    font-size: 12px;
+    color: var(--muted);
+    font-weight: 600;
+    line-height: 1.7;
+}
+
 .summary-value {
-    font-size: clamp(21px, 2vw, 31px);
+    font-size: 23px;
     font-weight: 900;
-    margin-top: 8px;
-    line-height: 1.5;
+    margin-top: 5px;
+    line-height: 1.4;
     overflow-wrap: anywhere;
 }
 
+/* سجل المستفيدين */
 .panel {
     background: #ffffffed;
     border: 1px solid #e8eef5;
-    border-radius: 25px;
+    border-radius: 22px;
     box-shadow: 0 5px 18px #0b253a0b;
-    padding: 30px;
+    padding: 26px;
 }
 
 .panel-header {
-    margin-bottom: 28px;
+    margin-bottom: 24px;
 }
 
 .panel-header h2 {
@@ -340,23 +348,24 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
 }
 
 .panel-header p {
-    font-size: 15px;
+    font-size: 14px;
     color: var(--muted);
     margin-top: 8px;
 }
 
+/* البحث والتصفية */
 .toolbar {
     display: flex;
-    gap: 18px;
-    margin-bottom: 25px;
+    gap: 14px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
 }
 
 .field {
     background: white;
     border: 1px solid #dfe6ee;
-    border-radius: 17px;
-    padding: 15px;
+    border-radius: 15px;
+    padding: 13px 15px;
     color: var(--navy);
     font-size: 14px;
     outline: none;
@@ -376,7 +385,7 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     min-width: 230px;
     background: white;
     border: 1px solid #dfe6ee;
-    border-radius: 17px;
+    border-radius: 15px;
     padding: 0 18px;
     color: #8190a5;
 }
@@ -385,12 +394,13 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     border: 0;
     outline: 0;
     width: 100%;
-    padding: 15px 0;
+    padding: 13px 0;
     font-size: 14px;
     color: var(--navy);
     background: transparent;
 }
 
+/* جدول المبادرات */
 .table-wrap {
     overflow-x: auto;
 }
@@ -408,14 +418,14 @@ thead {
 th,
 td {
     text-align: right;
-    padding: 20px 17px;
+    padding: 17px 15px;
     border-bottom: 1px solid #edf2f7;
-    font-size: 14px;
+    font-size: 13px;
     vertical-align: middle;
 }
 
 th {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 800;
     color: #455a72;
     white-space: nowrap;
@@ -448,13 +458,18 @@ tbody tr:hover {
     white-space: nowrap;
 }
 
+.details-link:hover {
+    text-decoration: underline;
+}
+
 .empty {
-    padding: 35px;
+    padding: 30px;
     text-align: center;
     color: var(--muted);
     font-size: 14px;
 }
 
+/* الشاشات المتوسطة */
 @media (max-width: 1250px) {
     :root {
         --sidebar-width: 280px;
@@ -465,6 +480,7 @@ tbody tr:hover {
     }
 }
 
+/* الأجهزة اللوحية والجوال */
 @media (max-width: 1024px) {
     .sidebar-wrapper {
         position: fixed;
@@ -497,8 +513,22 @@ tbody tr:hover {
         grid-template-columns: 1fr;
     }
 
+    .summary-card {
+        min-height: 110px;
+        padding: 14px;
+    }
+
+    .summary-icon {
+        font-size: 22px;
+    }
+
+    .summary-value {
+        font-size: 21px;
+    }
+
     .header-top-wrapper {
         align-items: flex-start;
+        flex-wrap: wrap;
     }
 
     .page-heading h1 {
@@ -520,11 +550,8 @@ tbody tr:hover {
     .field,
     .search-box {
         width: 100%;
-        min-height: 50px;
-    }
-
-    .summary-card {
-        min-height: 130px;
+        min-width: 0;
+        min-height: 48px;
     }
 }
 </style>
@@ -537,15 +564,18 @@ tbody tr:hover {
     <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
 </button>
 
+<!-- القائمة الجانبية -->
 <div class="sidebar-wrapper" id="sidebarWrapper">
     <aside class="sidebar-right">
 
         <div class="sidebar-top-content">
+
             <div class="sidebar-logo">
                 <img src="logo.png" alt="شعار منصة أثر">
             </div>
 
             <ul class="sidebar-menu">
+
                 <li>
                     <a href="dashboard.html">
                         <i class="fa-solid fa-house"></i>
@@ -594,6 +624,7 @@ tbody tr:hover {
                         <span>إعدادات النظام</span>
                     </a>
                 </li>
+
             </ul>
         </div>
 
@@ -607,6 +638,7 @@ tbody tr:hover {
     </aside>
 </div>
 
+<!-- محتوى الصفحة -->
 <main class="main-content-area">
 
     <header class="header-top-wrapper">
@@ -620,8 +652,10 @@ tbody tr:hover {
         </div>
 
         <div class="top-user-bar-container">
+
             <div class="top-user-bar" id="userBarToggle"
                  role="button" tabindex="0" aria-expanded="false">
+
                 <div class="avatar">
                     <i class="fa-solid fa-user"></i>
                 </div>
@@ -630,15 +664,18 @@ tbody tr:hover {
                     <span id="displayUserName">مستخدم</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
+
             </div>
 
             <div class="user-dropdown-menu" id="userDropdownMenu">
                 <span class="summary-label">صلاحية الحساب</span>
+
                 <div class="role-display">
                     <span id="displayUserRoleText">مستخدم عادي</span>
                     <i class="fa-solid fa-lock"></i>
                 </div>
             </div>
+
         </div>
 
     </header>
@@ -649,6 +686,7 @@ tbody tr:hover {
         لا تُفترض أعداد أو فئات غير موجودة في البيانات المعتمدة.
     </div>
 
+    <!-- بطاقات الإحصائيات الأربع -->
     <section class="summary-grid" aria-label="ملخص المستفيدين">
 
         <article class="summary-card">
@@ -656,6 +694,7 @@ tbody tr:hover {
                 <div class="summary-label">إجمالي المستفيدين الفعلي</div>
                 <div class="summary-value" id="actualTotal">غير متوفر</div>
             </div>
+
             <div class="summary-icon">
                 <i class="fa-solid fa-people-group"></i>
             </div>
@@ -666,6 +705,7 @@ tbody tr:hover {
                 <div class="summary-label">إجمالي المستفيدين المستهدف</div>
                 <div class="summary-value" id="targetTotal">غير متوفر</div>
             </div>
+
             <div class="summary-icon">
                 <i class="fa-solid fa-bullseye"></i>
             </div>
@@ -676,6 +716,7 @@ tbody tr:hover {
                 <div class="summary-label">المبادرات التي لديها فئات مسجلة</div>
                 <div class="summary-value" id="groupsInitiativesTotal">٠</div>
             </div>
+
             <div class="summary-icon">
                 <i class="fa-solid fa-users"></i>
             </div>
@@ -686,6 +727,7 @@ tbody tr:hover {
                 <div class="summary-label">عدد المبادرات</div>
                 <div class="summary-value" id="initiativeTotal">٠</div>
             </div>
+
             <div class="summary-icon">
                 <i class="fa-solid fa-folder-open"></i>
             </div>
@@ -693,6 +735,7 @@ tbody tr:hover {
 
     </section>
 
+    <!-- سجل المستفيدين -->
     <section class="panel">
 
         <div class="panel-header">
@@ -711,12 +754,14 @@ tbody tr:hover {
                 <input id="searchInput" type="search"
                        placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة..."
                        aria-label="بحث">
+
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
         </div>
 
         <div class="table-wrap">
+
             <table>
                 <thead>
                     <tr>
@@ -731,6 +776,7 @@ tbody tr:hover {
 
                 <tbody id="beneficiariesTableBody"></tbody>
             </table>
+
         </div>
 
     </section>
@@ -751,6 +797,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // بيانات الحساب الحالي
     const userName = localStorage.getItem('athalUser');
     const role = localStorage.getItem('athalRole');
 
@@ -766,19 +813,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /*
-      مصدر المبادرات:
-      athalInitiatives
+      تُقرأ المبادرات من athalInitiatives.
+      ويمكن قراءة بيانات المستفيدين الإضافية من athar_beneficiary_data.
 
-      بيانات المستفيدين الإضافية الاختيارية:
-      athar_beneficiary_data
-
-      لا تُضاف فئات أو أعداد افتراضية غير موجودة في البيانات.
+      لا تتم إضافة أعداد أو فئات غير موجودة في البيانات.
     */
 
     const initiatives = safeRead('athalInitiatives', []);
     const extraData = safeRead('athar_beneficiary_data', {});
 
     const rows = initiatives.map(item => {
+
         const extra = extraData[item.id] || item.beneficiaryInfo || {};
 
         const actualRaw =
@@ -797,9 +842,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const groups = Array.isArray(groupsRaw)
             ? groupsRaw.join('، ')
-            : (typeof groupsRaw === 'string' ? groupsRaw.trim() : '');
+            : (
+                typeof groupsRaw === 'string'
+                    ? groupsRaw.trim()
+                    : ''
+            );
 
-        const parseNumber = value => {
+        function parseNumber(value) {
             if (
                 value === undefined ||
                 value === null ||
@@ -813,7 +862,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return Number.isFinite(number) && number >= 0
                 ? number
                 : null;
-        };
+        }
 
         return {
             ...item,
@@ -823,10 +872,11 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    const formatNumber = number =>
-        number === null
+    function formatNumber(number) {
+        return number === null
             ? 'غير متوفر'
             : number.toLocaleString('ar-SA');
+    }
 
     function escapeHTML(value) {
         return String(value ?? '').replace(/[&<>"']/g, character => ({
@@ -838,20 +888,27 @@ document.addEventListener('DOMContentLoaded', () => {
         })[character]);
     }
 
-    // إنشاء خيارات المجالات من بيانات المبادرات الموجودة فعليًا.
+    // إنشاء قائمة المجالات من بيانات المبادرات.
     const categoryFilter = $('categoryFilter');
-    const categories = [...new Set(
-        rows.map(row => row.category).filter(Boolean)
-    )];
+
+    const categories = [
+        ...new Set(
+            rows.map(row => row.category).filter(Boolean)
+        )
+    ];
 
     categories.forEach(category => {
         const option = document.createElement('option');
+
         option.value = category;
         option.textContent = category;
+
         categoryFilter.appendChild(option);
     });
 
+    // عرض البيانات وتحديث الإحصائيات.
     function render() {
+
         const term = $('searchInput').value
             .trim()
             .toLocaleLowerCase('ar');
@@ -859,6 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const category = categoryFilter.value;
 
         const shown = rows.filter(row => {
+
             const matchesCategory =
                 !category || row.category === category;
 
@@ -892,19 +950,25 @@ document.addEventListener('DOMContentLoaded', () => {
             : 'غير متوفر';
 
         const tbody = $('beneficiariesTableBody');
+
         tbody.replaceChildren();
 
         if (!shown.length) {
+
             const tr = document.createElement('tr');
+
             tr.innerHTML = `
                 <td colspan="6" class="empty">
                     لا توجد مبادرات تطابق البحث.
-                </td>`;
+                </td>
+            `;
+
             tbody.appendChild(tr);
             return;
         }
 
         shown.forEach(row => {
+
             const tr = document.createElement('tr');
 
             const detailHref =
@@ -912,14 +976,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 encodeURIComponent(row.id || '');
 
             tr.innerHTML = `
-                <td><strong>${escapeHTML(row.name || 'مبادرة بدون اسم')}</strong></td>
-
-                <td>${escapeHTML(row.category || 'غير متوفر')}</td>
+                <td>
+                    <strong>
+                        ${escapeHTML(row.name || 'مبادرة بدون اسم')}
+                    </strong>
+                </td>
 
                 <td>
-                    ${row.groups
-                        ? `<span class="pill">${escapeHTML(row.groups)}</span>`
-                        : '<span class="missing">غير متوفر</span>'}
+                    ${escapeHTML(row.category || 'غير متوفر')}
+                </td>
+
+                <td>
+                    ${
+                        row.groups
+                            ? `<span class="pill">${escapeHTML(row.groups)}</span>`
+                            : '<span class="missing">غير متوفر</span>'
+                    }
                 </td>
 
                 <td>${formatNumber(row.target)}</td>
@@ -938,15 +1010,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // البحث والتصفية
     $('searchInput').addEventListener('input', render);
     categoryFilter.addEventListener('change', render);
 
-    // القائمة المنسدلة للحساب.
+    // القائمة المنسدلة للحساب
     const userToggle = $('userBarToggle');
     const dropdown = $('userDropdownMenu');
 
     function toggleDropdown(event) {
         event.stopPropagation();
+
         dropdown.classList.toggle('show');
 
         userToggle.setAttribute(
@@ -969,25 +1043,30 @@ document.addEventListener('DOMContentLoaded', () => {
         userToggle.setAttribute('aria-expanded', 'false');
     });
 
-    // إظهار وإخفاء القائمة الجانبية.
+    // إظهار وإخفاء القائمة الجانبية
     const sidebar = $('sidebarWrapper');
     const button = $('sidebarToggleBtn');
     const icon = $('toggleIcon');
 
     button.addEventListener('click', () => {
+
         if (window.innerWidth <= 1024) {
+
             sidebar.classList.toggle('mobile-open');
 
-            const isOpen = sidebar.classList.contains('mobile-open');
+            const isOpen =
+                sidebar.classList.contains('mobile-open');
 
             icon.className = isOpen
                 ? 'fa-solid fa-chevron-left'
                 : 'fa-solid fa-chevron-right';
 
         } else {
+
             sidebar.classList.toggle('collapsed');
 
-            const isCollapsed = sidebar.classList.contains('collapsed');
+            const isCollapsed =
+                sidebar.classList.contains('collapsed');
 
             document.body.classList.toggle(
                 'sidebar-is-collapsed',
@@ -1000,7 +1079,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // أول عرض للبيانات
     render();
+
 });
 </script>
 
