@@ -234,7 +234,7 @@
             margin-top: 4px;
         }
 
-        /* اسم المستخدم والقائمة المنسدلة */
+        /* اسم المستخدم والقائمة المنسدلة (تعديل التموضع للجوال والشاشات) */
         .top-user-bar-container {
             position: relative;
             flex-shrink: 0;
@@ -291,10 +291,12 @@
             transform: rotate(180deg);
         }
 
+        /* تعديل موقع القائمة المنسدلة لتبقى داخل حدود الشاشة تماماً */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
-            right: 0;
+            left: 0;
+            right: auto;
             width: 190px;
             background: #ffffff;
             border-radius: 12px;
@@ -306,6 +308,13 @@
             z-index: 100;
             border: 1px solid rgba(11, 37, 58, 0.08);
             text-align: right;
+        }
+
+        @media (min-width: 768px) {
+            .user-dropdown-menu {
+                left: auto;
+                right: 0;
+            }
         }
 
         .user-dropdown-menu.show {
@@ -767,7 +776,7 @@
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة: مرتبة باتجاه صحيح من اليمين -->
+                <!-- القائمة المنسدلة: أصبحت تفتح بداخل الشاشة تماماً بدون أي خروج للأطراف -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
 
@@ -776,7 +785,7 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
 
-                    <!-- زر تسجيل الخروج مرتب ومتجه لليمين -->
+                    <!-- زر تسجيل الخروج مرتب باتجاه اليمين -->
                     <div class="border-t border-gray-100 pt-1">
                         <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-2 px-2.5 py-2 rounded-lg text-red-600 hover:bg-red-50 font-bold transition text-xs">
                             <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
