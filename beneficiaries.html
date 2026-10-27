@@ -1,14 +1,240 @@
+هذا الكود الجديد والمصمم خصيصاً لجزئيتك (البنت السابعة - المستفيدون والفئات المستهدفة) داخل صفحة تفاصيل المبادرة، بحيث يطابق تماماً الهيكل التصميمي والألوان والخلفيات والخطوط المستخدمة في المشروع (#f0f7ff مع خلفية bg-dashboard.png وألوان النظام الموحدة):
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة أثر - المستفيدون</title>
-    <!-- تضمين نفس خطوط وتنسيقات المشروع الأساسية -->
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <title>المستفيدون والفئات المستهدفة - منصة أثر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style> body { font-family: 'Cairo', sans-serif; } </style>
+    <style>
+        #editBeneficiariesBtn[hidden] { display: none !important; }
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f7ff;
+            background-image: url('bg-dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+    </style>
 </head>
-<body class="bg-[#f8fafc] text-gray-800 flex flex-row-reverse min
+<body class="text-gray-800 p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- زر العودة لصفحة تفاصيل المبادرة -->
+        <a href="initiative-details.html" class="inline-flex items-center gap-2 text-[#0b253a] bg-white/80 hover:bg-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm border border-gray-100 mb-4">
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+            <span>العودة لتفاصيل المبادرة</span>
+        </a>
+        
+        <h1 class="text-2xl font-black text-[#0b253a] mt-2 mb-6 flex items-center gap-2">
+            <i class="fa-solid fa-users text-[#4e9cd8]"></i>
+            <span>المستفيدون والفئات المستهدفة</span>
+        </h1>
+
+        <!-- قسم عرض المستفيدون والفئات المستهدفة -->
+        <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" id="beneficiariesCard">
+          <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4">
+            <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2">
+                <i class="fa-solid fa-user-group text-teal-600"></i> تفاصيل الفئات وعدد المستفيدين
+            </h3>
+            <button type="button" id="editBeneficiariesBtn" hidden class="bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl px-4 py-2 text-sm font-bold flex items-center gap-2">
+                <i class="fa-solid fa-pen"></i> تعديل
+            </button>
+          </div>
+          <div id="beneficiariesContent" class="space-y-6"></div>
+        </section>
+
+        <!-- نافذة التعديل للمشرف -->
+        <div id="beneficiariesModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true">
+          <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-xl" dir="rtl">
+            <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل المستفيدون والفئات المستهدفة</h3>
+            <p class="text-sm text-gray-500 mb-5">عدّلي الفئات المستهدفة وأعدادهم المرتبطة بهذه المبادرة.</p>
+            <form id="beneficiariesForm">
+              <div id="beneficiariesEditorRows" class="space-y-4"></div>
+              <button type="button" id="addBeneficiaryGroup" class="mt-4 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold text-sm">
+                <i class="fa-solid fa-plus ml-1"></i> إضافة فئة مستهدفة
+              </button>
+              <div class="flex gap-2 mt-6 justify-start border-t pt-4">
+                <button type="submit" class="bg-[#0b253a] text-white px-6 py-2.5 rounded-xl font-bold">حفظ التعديلات</button>
+                <button type="button" id="cancelBeneficiariesEdit" class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-xl font-bold">إلغاء</button>
+              </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
+    <!-- كود الجافاسكريبت لربط البيانات وتخزينها محلياً -->
+    <script>
+        const initialBeneficiaries = {
+          "samqat": [
+            {
+              "category": "طالبات الجامعات والشابات المهتمات بريادة الأعمال",
+              "count": "17",
+              "notes": "تم التركيز على تنمية المهارات الاقتصادية والاستقلالية المالية."
+            }
+          ],
+          "tech": [
+            {
+              "category": "طلبة وخريجو تكنولوجيا المعلومات",
+              "count": "568",
+              "notes": "استفادة واسعة من برامج الشهادات الاحترافية وإدارة المخاطر."
+            }
+          ],
+          "fahim": [
+            {
+              "category": "طلبة الجامعات والمهتمين بالتقنية المالية",
+              "count": "144",
+              "notes": "تفاعل ممتاز مع ورش الشمول المالي والتأمين الرقمي."
+            }
+          ],
+          "mataheb": [
+            {
+              "category": "متخصصو قطاع التأمين والمهتمون بالأمان المالي",
+              "count": "387",
+              "notes": "تعزيز الوعي المالي وتنمية مهارات التخطيط للمستقبل."
+            }
+          ]
+        };
+
+        const urlParams = new URLSearchParams(location.search);
+        const currentId = urlParams.get('initiative') || 'samqat';
+        const storageKey = 'athar_beneficiaries_v1_' + currentId;
+        const isAdmin = localStorage.getItem('athalRole') === 'admin';
+        
+        const contentDiv = document.getElementById('beneficiariesContent');
+        const modalDiv = document.getElementById('beneficiariesModal');
+        const editorRows = document.getElementById('beneficiariesEditorRows');
+        const editBtn = document.getElementById('editBeneficiariesBtn');
+        const inputStyle = 'w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300';
+
+        let dataList = loadData();
+
+        function loadData() {
+          try {
+            const saved = JSON.parse(localStorage.getItem(storageKey));
+            if (Array.isArray(saved)) return saved;
+          } catch(e) {}
+          return structuredClone(initialBeneficiaries[currentId] || []);
+        }
+
+        function createEl(tag, cls, text) {
+          const el = document.createElement(tag);
+          if (cls) el.className = cls;
+          if (text !== undefined) el.textContent = text;
+          return el;
+        }
+
+        function renderBeneficiaries() {
+          contentDiv.replaceChildren();
+          if (!dataList.length) {
+            contentDiv.appendChild(createEl('p', 'text-gray-500 text-sm', 'لا توجد بيانات مستفيدين مسجلة لهذه المبادرة.'));
+            return;
+          }
+          
+          dataList.forEach((item, index) => {
+            const block = createEl('div', 'rounded-xl border border-gray-200 p-4 bg-slate-50/50 space-y-3');
+            
+            const topHeader = createEl('div', 'flex justify-between items-center font-bold text-[#0b253a]');
+            topHeader.appendChild(createEl('span', '', (index + 1) + '. الفئة المستهدفة: ' + item.category));
+            const countBadge = createEl('span', 'bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-xs font-semibold', 'العدد: ' + item.count);
+            topHeader.appendChild(countBadge);
+            block.appendChild(topHeader);
+
+            if (item.notes) {
+              const notesP = createEl('p', 'text-sm text-gray-600 border-t border-gray-100 pt-2', 'ملاحظات الاستفادة: ' + item.notes);
+              block.appendChild(notesP);
+            }
+
+            contentDiv.appendChild(block);
+          });
+        }
+
+        function addRow(item = {category: '', count: '', notes: ''}) {
+          const card = createEl('section', 'border border-gray-200 rounded-xl p-4 space-y-3 bg-white');
+          const top = createEl('div', 'flex items-center justify-between gap-2');
+          top.appendChild(createEl('h4', 'font-bold text-[#0b253a]', 'بيانات الفئة المستهدفة'));
+          
+          const delBtn = createEl('button', 'text-red-600 bg-red-50 rounded-lg px-3 py-1 text-sm font-bold', 'حذف');
+          delBtn.type = 'button';
+          delBtn.onclick = () => { if (confirm('حذف هذه الفئة؟')) card.remove(); };
+          top.appendChild(delBtn);
+          card.appendChild(top);
+
+          // حقل الفئة المستهدفة
+          const wrap1 = createEl('label', 'block');
+          wrap1.appendChild(createEl('span', 'block text-sm font-bold text-gray-700 mb-1', 'الفئة المستهدفة'));
+          const input1 = createEl('input', inputStyle);
+          input1.type = 'text';
+          input1.value = item.category || '';
+          input1.dataset.prop = 'category';
+          input1.required = true;
+          wrap1.appendChild(input1);
+          card.appendChild(wrap1);
+
+          // حقل عدد المستفيدين
+          const wrap2 = createEl('label', 'block');
+          wrap2.appendChild(createEl('span', 'block text-sm font-bold text-gray-700 mb-1', 'عدد المستفيدين (رقم)'));
+          const input2 = createEl('input', inputStyle);
+          input2.type = 'number';
+          input2.value = item.count || '';
+          input2.dataset.prop = 'count';
+          input2.required = true;
+          wrap2.appendChild(input2);
+          card.appendChild(wrap2);
+
+          // حقل ملاحظات
+          const wrap3 = createEl('label', 'block');
+          wrap3.appendChild(createEl('span', 'block text-sm font-bold text-gray-700 mb-1', 'ملاحظات تفصيلية (اختياري)'));
+          const input3 = createEl('textarea', inputStyle);
+          input3.rows = 2;
+          input3.value = item.notes || '';
+          input3.dataset.prop = 'notes';
+          wrap3.appendChild(input3);
+          card.appendChild(wrap3);
+
+          editorRows.appendChild(card);
+        }
+
+        if (isAdmin) {
+          editBtn.hidden = false;
+          editBtn.onclick = () => {
+            editorRows.replaceChildren();
+            dataList.forEach(item => addRow(item));
+            modalDiv.classList.remove('hidden');
+            modalDiv.classList.add('flex');
+          };
+        }
+
+        document.getElementById('addBeneficiaryGroup').onclick = () => addRow();
+        document.getElementById('cancelBeneficiariesEdit').onclick = () => {
+          modalDiv.classList.add('hidden');
+          modalDiv.classList.remove('flex');
+        };
+
+        document.getElementById('beneficiariesForm').onsubmit = (e) => {
+          e.preventDefault();
+          if (!isAdmin) return;
+          const updated = [...editorRows.children].map(card => {
+            const getVal = prop => card.querySelector('[data-prop="' + prop + '"]')?.value.trim() || '';
+            return { category: getVal('category'), count: getVal('count'), notes: getVal('notes') };
+          });
+          if (updated.some(x => !x.category || !x.count)) {
+            alert('يرجى تعبئة الفئة المستهدفة وعدد المستفيدين.');
+            return;
+          }
+          dataList = updated;
+          localStorage.setItem(storageKey, JSON.stringify(dataList));
+          renderBeneficiaries();
+          modalDiv.classList.add('hidden');
+          modalDiv.classList.remove('flex');
+        };
+
+        renderBeneficiaries();
+    </script>
+</body>
+</html>
+
