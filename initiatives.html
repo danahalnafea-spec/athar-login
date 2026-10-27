@@ -9,43 +9,76 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --sidebar-width: 280px; }
-        * { font-family: 'Cairo', sans-serif; }
+        :root {
+            --sidebar-width: 280px;
+            --navy: #0b253a;
+            --blue: #4e9cd8;
+            --page-bg: #f0f7ff;
+            --sidebar-bg: #eaf4fc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
         body {
-            background-color: #f0f7ff;
+            background-color: var(--page-bg);
             background-image: url('bg-dashboard.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
+            min-height: 100vh;
             display: flex;
             justify-content: space-between;
             align-items: stretch;
             direction: rtl;
+            overflow-x: hidden;
         }
-        .main-content-area {
-            flex: 1;
+
+        /* الشريط الجانبي */
+        .sidebar-wrapper {
+            position: fixed;
+            right: 0;
+            top: 0;
             height: 100vh;
-            padding: 4vh 3vw;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            transform: translateX(0);
+        }
+
+        .sidebar-wrapper.collapsed {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        .sidebar-right {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
             display: flex;
             flex-direction: column;
-            align-items: stretch;
-            position: relative;
-            min-width: 0;
+            justify-content: space-between;
+            padding: 15px 12px 20px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
             overflow-y: auto;
             overflow-x: hidden;
-            transition: all 0.3s ease;
         }
+
+        /* زر السهم: ثابت تماماً ومكان انتقاله يتبع إغلاق القائمة */
         .sidebar-toggle-btn {
-            position: fixed;
-            top: 25px;
-            right: calc(var(--sidebar-width) + 15px);
-            width: 34px;
-            height: 34px;
-            background-color: #0b253a;
+            position: fixed !important;
+            top: 20px !important;
+            right: calc(var(--sidebar-width) + 15px) !important;
+            width: 36px;
+            height: 36px;
+            background-color: var(--navy);
             color: #ffffff;
             border: none;
             border-radius: 50%;
@@ -53,25 +86,40 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-            font-size: 12px;
-            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
+            font-size: 13px;
+            z-index: 100000;
             transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
         }
-        body.sidebar-is-collapsed .sidebar-toggle-btn { right: 20px; }
-        .sidebar-toggle-btn:hover { background-color: #16344e; transform: scale(1.1); }
-        .sidebar-wrapper {
-            position: relative;
-            display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            height: 100vh;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
-            transform: translateX(0);
+
+        body.sidebar-is-collapsed .sidebar-toggle-btn {
+            right: 20px !important;
         }
-        .sidebar-wrapper.collapsed { transform: translateX(var(--sidebar-width)); }
-        
+
+        .sidebar-toggle-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
+        }
+
+        /* المحتوى الرئيسي: ينسحب ويتمدد عند إغلاق القائمة */
+        .main-content-area {
+            flex: 1;
+            min-height: 100vh;
+            padding: 30px 4vw 50px;
+            margin-right: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.sidebar-is-collapsed .main-content-area {
+            margin-right: 0 !important;
+        }
+
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -98,47 +146,43 @@
             border: 1px solid #e5e7eb !important;
         }
 
-        /* تعديلات الموبايل واللوحي لتجاوب السايد بار تماماً */
         @media (max-width: 1024px) {
-            body {
-                overflow: auto;
-            }
             .sidebar-wrapper {
-                position: fixed;
-                right: 0;
-                top: 0;
-                z-index: 9999;
                 transform: translateX(100%);
             }
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
-            body.sidebar-is-collapsed .sidebar-toggle-btn {
-                right: 20px;
-            }
             .sidebar-toggle-btn {
-                right: 15px;
+                position: fixed !important;
+                top: 18px !important;
+                right: 18px !important;
+                left: auto !important;
+            }
+            .main-content-area {
+                margin-right: 0 !important;
+                padding: 75px 16px 40px;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- زر السهم المتجاوب -->
+    <!-- زر السهم الثابت -->
     <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
 
     <!-- حاوية الشريط الجانبي في اليمين -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
-        <aside class="w-[280px] bg-[#eaf4fc] border-l border-[#0f3d59]/15 h-screen p-4 flex flex-col justify-between shadow-lg overflow-y-auto">
-            <div>
+        <aside class="sidebar-right">
+            <div class="sidebar-top-content w-full flex flex-col items-center">
                 <!-- شعار أثر -->
-                <div class="flex items-center justify-center mb-6 mt-1">
+                <div class="flex items-center justify-center mb-6 mt-1 w-full">
                     <img src="logo.png" alt="شعار أثر" class="w-[195px] object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/195?text=أثر';">
                 </div>
                 <!-- القائمة -->
-                <nav class="space-y-1.5">
+                <nav class="space-y-1.5 w-full">
                     <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
                         <span>الرئيسية</span>
                         <i class="fa-solid fa-house w-5 text-center"></i>
@@ -173,7 +217,7 @@
                 </nav>
             </div>
             <!-- زر تسجيل الخروج -->
-            <div class="border-t border-[#0f3d59]/15 pt-3 mt-auto">
+            <div class="border-t border-[#0f3d59]/15 pt-3 mt-auto w-full">
                 <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-red-500/10 hover:text-red-600 font-bold transition text-sm">
                     <span>تسجيل الخروج</span>
                     <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
@@ -567,25 +611,51 @@
                 window.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
             }
 
-            // تعديل برمجة زر السايد بار ليعمل بسلاسة تامة على الجوال والكمبيوتر
+            // برمجة زر السايد بار وتوسيع المحتوى بسلاسة
             const sidebarWrapper = document.getElementById('sidebarWrapper');
             const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
             const toggleIcon = document.getElementById('toggleIcon');
             const bodyElement = document.body;
+
+            function updateSidebarButton(isOpen) {
+                if (isOpen) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    sidebarToggleBtn.setAttribute('aria-expanded', 'true');
+                    bodyElement.classList.remove('sidebar-is-collapsed');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
+                    sidebarToggleBtn.setAttribute('aria-expanded', 'false');
+                    bodyElement.classList.add('sidebar-is-collapsed');
+                }
+            }
 
             if (sidebarToggleBtn && sidebarWrapper) {
                 sidebarToggleBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     if (window.innerWidth <= 1024) {
                         const isOpen = sidebarWrapper.classList.toggle('mobile-open');
-                        toggleIcon.className = isOpen ? "fa-solid fa-chevron-left" : "fa-solid fa-chevron-right";
+                        updateSidebarButton(isOpen);
                     } else {
-                        sidebarWrapper.classList.toggle('collapsed');
-                        bodyElement.classList.toggle('sidebar-is-collapsed');
-                        toggleIcon.className = sidebarWrapper.classList.contains('collapsed') ? "fa-solid fa-chevron-left" : "fa-solid fa-chevron-right";
+                        const isCollapsed = sidebarWrapper.classList.toggle('collapsed');
+                        updateSidebarButton(!isCollapsed);
                     }
                 });
             }
+
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 1024) {
+                    if (sidebarWrapper.classList.contains('mobile-open') && 
+                        !sidebarWrapper.contains(e.target) && 
+                        !sidebarToggleBtn.contains(e.target)) {
+                        sidebarWrapper.classList.remove('mobile-open');
+                        updateSidebarButton(false);
+                    }
+                }
+            });
 
             const searchInput = document.getElementById('searchInput');
             const categoryFilter = document.getElementById('categoryFilter');
