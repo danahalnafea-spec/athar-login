@@ -37,7 +37,7 @@ body {
     background-attachment: fixed;
 }
 
-/* القائمة الجانبية */
+/* القائمة الجانبية - محفوظة على تصميم الكود الأصلي */
 .sidebar-wrapper {
     width: var(--sidebar-width);
     flex-shrink: 0;
@@ -179,7 +179,7 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     justify-content: space-between;
     align-items: center;
     gap: 20px;
-    margin: 20px 0 30px;
+    margin: 20px 0 25px;
 }
 
 .page-heading h1 {
@@ -273,12 +273,12 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
 .notice {
     background: #fff;
     border: 1px solid #d9e9f8;
-    border-radius: 16px;
-    padding: 14px 18px;
+    border-radius: 14px;
+    padding: 11px 16px;
     color: #718198;
-    font-size: 13px;
+    font-size: 12px;
     line-height: 1.9;
-    margin-bottom: 18px;
+    margin-bottom: 14px;
     box-shadow: 0 4px 14px #0b253a08;
 }
 
@@ -287,30 +287,30 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     margin-left: 8px;
 }
 
-/* بطاقات الإحصائيات الأربع - الحجم الأصغر */
+/* بطاقات الإحصائيات - أصغر حجماً */
 .summary-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 10px;
-    margin-bottom: 18px;
+    gap: 9px;
+    margin-bottom: 16px;
 }
 
 .summary-card {
     background: #ffffffed;
     border: 1px solid #e8eef5;
-    border-radius: 14px;
-    box-shadow: 0 3px 12px #0b253a0b;
-    min-height: 90px;
-    padding: 10px 12px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px #0b253a09;
+    min-height: 72px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 7px;
+    gap: 6px;
 }
 
 .summary-icon {
     color: #559ed1;
-    font-size: 19px;
+    font-size: 17px;
     flex-shrink: 0;
 }
 
@@ -318,13 +318,13 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     font-size: 10px;
     color: var(--muted);
     font-weight: 600;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .summary-value {
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 900;
-    margin-top: 3px;
+    margin-top: 2px;
     line-height: 1.3;
     overflow-wrap: anywhere;
 }
@@ -333,41 +333,41 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
 .panel {
     background: #ffffffed;
     border: 1px solid #e8eef5;
-    border-radius: 22px;
+    border-radius: 20px;
     box-shadow: 0 5px 18px #0b253a0b;
-    padding: 26px;
+    padding: 22px;
 }
 
 .panel-header {
-    margin-bottom: 24px;
+    margin-bottom: 20px;
 }
 
 .panel-header h2 {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 900;
 }
 
 .panel-header p {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--muted);
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 /* البحث والتصفية */
 .toolbar {
     display: flex;
-    gap: 14px;
-    margin-bottom: 24px;
+    gap: 12px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
 }
 
 .field {
     background: white;
     border: 1px solid #dfe6ee;
-    border-radius: 15px;
-    padding: 13px 15px;
+    border-radius: 12px;
+    padding: 11px 13px;
     color: var(--navy);
-    font-size: 14px;
+    font-size: 13px;
     outline: none;
     min-width: 220px;
 }
@@ -385,8 +385,8 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     min-width: 230px;
     background: white;
     border: 1px solid #dfe6ee;
-    border-radius: 15px;
-    padding: 0 18px;
+    border-radius: 12px;
+    padding: 0 15px;
     color: #8190a5;
 }
 
@@ -394,8 +394,8 @@ body.sidebar-is-collapsed .sidebar-toggle-btn {
     border: 0;
     outline: 0;
     width: 100%;
-    padding: 13px 0;
-    font-size: 14px;
+    padding: 11px 0;
+    font-size: 13px;
     color: var(--navy);
     background: transparent;
 }
@@ -418,14 +418,14 @@ thead {
 th,
 td {
     text-align: right;
-    padding: 17px 15px;
+    padding: 14px 12px;
     border-bottom: 1px solid #edf2f7;
-    font-size: 13px;
+    font-size: 12px;
     vertical-align: middle;
 }
 
 th {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 800;
     color: #455a72;
     white-space: nowrap;
@@ -439,10 +439,10 @@ tbody tr:hover {
     display: inline-flex;
     align-items: center;
     border-radius: 20px;
-    padding: 5px 11px;
+    padding: 5px 10px;
     background: #eaf4fc;
     color: #245b82;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 800;
 }
 
@@ -512,17 +512,17 @@ tbody tr:hover {
 @media (max-width: 600px) {
     .summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
+        gap: 7px;
     }
 
     .summary-card {
-        min-height: 82px;
-        padding: 9px;
+        min-height: 66px;
+        padding: 7px 8px;
         gap: 5px;
     }
 
     .summary-icon {
-        font-size: 17px;
+        font-size: 15px;
     }
 
     .summary-label {
@@ -530,7 +530,7 @@ tbody tr:hover {
     }
 
     .summary-value {
-        font-size: 17px;
+        font-size: 15px;
     }
 
     .header-top-wrapper {
@@ -542,12 +542,17 @@ tbody tr:hover {
         font-size: 23px;
     }
 
+    .intro {
+        font-size: 13px;
+    }
+
     .panel {
-        padding: 18px;
+        padding: 15px;
+        border-radius: 16px;
     }
 
     .panel-header h2 {
-        font-size: 23px;
+        font-size: 22px;
     }
 
     .toolbar {
@@ -558,7 +563,7 @@ tbody tr:hover {
     .search-box {
         width: 100%;
         min-width: 0;
-        min-height: 48px;
+        min-height: 45px;
     }
 }
 </style>
@@ -571,7 +576,7 @@ tbody tr:hover {
     <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
 </button>
 
-<!-- القائمة الجانبية -->
+<!-- القائمة الجانبية: الشعار والأيقونات والأسماء والروابط محفوظة -->
 <div class="sidebar-wrapper" id="sidebarWrapper">
     <aside class="sidebar-right">
 
@@ -686,7 +691,7 @@ tbody tr:hover {
         لا تُفترض أعداد أو فئات غير موجودة في البيانات المعتمدة.
     </div>
 
-    <!-- بطاقات الإحصائيات -->
+    <!-- بطاقات الإحصائيات الأربع المصغّرة -->
     <section class="summary-grid" aria-label="ملخص المستفيدين">
 
         <article class="summary-card">
@@ -809,9 +814,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const initiatives = safeRead('athalInitiatives', []);
     const extraData = safeRead('athar_beneficiary_data', {});
 
-    const rows = initiatives.map(item => {
+    function parseNumber(value) {
+        if (
+            value === undefined ||
+            value === null ||
+            String(value).trim() === ''
+        ) {
+            return null;
+        }
 
-        const extra = extraData[item.id] || item.beneficiaryInfo || {};
+        const number = Number(value);
+
+        return Number.isFinite(number) && number >= 0
+            ? number
+            : null;
+    }
+
+    const rows = (Array.isArray(initiatives) ? initiatives : []).map(item => {
+
+        const extra =
+            extraData[item.id] ||
+            item.beneficiaryInfo ||
+            {};
 
         const actualRaw =
             extra.actual ??
@@ -834,22 +858,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     ? groupsRaw.trim()
                     : ''
             );
-
-        function parseNumber(value) {
-            if (
-                value === undefined ||
-                value === null ||
-                String(value).trim() === ''
-            ) {
-                return null;
-            }
-
-            const number = Number(value);
-
-            return Number.isFinite(number) && number >= 0
-                ? number
-                : null;
-        }
 
         return {
             ...item,
@@ -875,7 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })[character]);
     }
 
-    // إنشاء خيارات المجالات من البيانات المتوفرة
+    // إنشاء خيارات المجالات المتوفرة
     const categoryFilter = $('categoryFilter');
 
     const categories = [
