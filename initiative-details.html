@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تفاصيل المبادرة</title>
+    <title>تفاصيل المبادرة - منصة أثر</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <!-- مكتبة أيقونات FontAwesome التفاعلية -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ضمان إخفاء زر التعديل عن المستخدم العادي حتى مع فئات Tailwind */
         #editWorkBtn[hidden] { display: none !important; }
         body {
             font-family: 'Cairo', sans-serif;
@@ -59,22 +57,8 @@
             </div>
         </div>
 
-        <!-- بطاقات الملخص السريع للأرقام بحُلة وتنسيق جديد -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <!-- بطاقة إجمالي المستفيدين -->
-            <div class="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
-                <div>
-                    <div class="text-sm text-gray-500 font-medium flex items-center gap-1.5 mb-1">
-                        <span>إجمالي المستفيدين</span>
-                    </div>
-                    <div id="detailBeneficiaries" class="text-2xl font-black text-[#0b253a]">17</div>
-                </div>
-                <div class="w-12 h-12 bg-teal-50 text-teal-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-teal-100">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-            </div>
-
-            <!-- بطاقة مستوى الأثر -->
+        <!-- بطاقة مستوى الأثر وحدها (بعد حذف بطاقة إجمالي المستفيدين العلوية) -->
+        <div class="mb-6">
             <div class="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
                     <div class="text-sm text-gray-500 font-medium flex items-center gap-1.5 mb-1">
@@ -88,7 +72,7 @@
             </div>
         </div>
 
-        <!-- بطاقة الأهداف والأنشطة - بيانات ثابتة في الكود مع إمكانية تعديل محلي للمشرف -->
+        <!-- بطاقة الأهداف والأنشطة -->
         <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" id="initiativeWorkCard">
           <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4">
             <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2"><i class="fa-solid fa-bullseye text-rose-500"></i> الأهداف والأنشطة</h3>
@@ -96,6 +80,8 @@
           </div>
           <div id="initiativeWorkContent" class="space-y-6"></div>
         </section>
+
+        <!-- نافذة التعديل للأنشطة -->
         <div id="workModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4" role="dialog" aria-modal="true" aria-labelledby="workModalTitle">
           <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-xl" dir="rtl">
             <h3 id="workModalTitle" class="text-xl font-black text-[#0b253a] mb-2">تعديل الأهداف والأنشطة</h3>
@@ -110,13 +96,41 @@
             </form>
           </div>
         </div>
-        <!-- قسم مؤشرات الأداء والمستفيدين -->
+
+        <!-- 👥 قسم المستفيدون والفئات المستهدفة (شغل البنت السابعة - الثلاث مربعات) -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-user-group"></i>
+                </span>
+                <span>المستفيدون والفئات المستهدفة</span>
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-center">
+                <!-- المربع الأول: الفئة المستهدفة -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                    <div class="text-gray-500 font-medium mb-1">الفئة المستهدفة</div>
+                    <div id="detailTargetGroup" class="font-bold text-[#0b253a] text-base">—</div>
+                </div>
+                <!-- المربع الثاني: المستفيدون المستهدفون -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                    <div class="text-gray-500 font-medium mb-1">عدد المستفيدين المستهدف</div>
+                    <div id="detailTargetBeneficiaries" class="font-bold text-[#0b253a] text-base">—</div>
+                </div>
+                <!-- المربع الثالث: المستفيدون الفعليون -->
+                <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                    <div class="text-gray-500 font-medium mb-1">عدد المستفيدين الفعلي</div>
+                    <div id="detailActualBeneficiaries" class="font-bold text-[#0b253a] text-base">—</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم مؤشرات أداء المبادرة (بدون كلمة المستفيدين) -->
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
             <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
                 <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center text-sm">
                     <i class="fa-solid fa-chart-pie"></i>
                 </span>
-                <span>مؤشرات الأداء والمستفيدين</span>
+                <span>مؤشرات أداء المبادرة</span>
             </h3>
             <p class="text-gray-400 italic text-sm pr-10"></p>
         </div>
@@ -141,10 +155,10 @@
             const initiativeId = urlParams.get('initiative') || 'samqat';
 
             const initiativesData = {
-                'samqat': { name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
-                'tech': { name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
-                'fahim': { name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
-                'mataheb': { name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
+                'samqat': { name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', targetGroup: 'رائدات الأعمال والطالبات', targetBeneficiaries: '20', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
+                'tech': { name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', targetGroup: 'طلبة الجامعة والخريجون', targetBeneficiaries: '600', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
+                'fahim': { name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', targetGroup: 'طلبة وخريجو التخصصات المالية', targetBeneficiaries: '150', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
+                'mataheb': { name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', targetGroup: 'طلبة القانون والتأمين والمهتمون', targetBeneficiaries: '400', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             };
 
             let savedInitiatives = [];
@@ -162,123 +176,128 @@
             document.getElementById('detailCategory').textContent = currentItem.category;
             document.getElementById('detailDept').textContent = currentItem.dept || 'قسم إدارة الأعمال';
             document.getElementById('detailDate').textContent = currentItem.date;
-            document.getElementById('detailBeneficiaries').textContent = currentItem.beneficiaries;
             document.getElementById('detailImpact').textContent = currentItem.impact;
             document.getElementById('detailStatus').textContent = currentItem.status;
+
+            // تعبئة بيانات المستفيدين والفئات المستهدفة تلقائياً (شغل البنت السابعة)
+            document.getElementById('detailTargetGroup').textContent = currentItem.targetGroup || '—';
+            document.getElementById('detailTargetBeneficiaries').textContent = currentItem.targetBeneficiaries || '—';
+            document.getElementById('detailActualBeneficiaries').textContent = currentItem.beneficiaries || '—';
         });
 
-        // البيانات الأصلية مكتوبة داخل الملف؛ لا تعتمد على بيانات المتصفح لظهورها.
+        // البيانات الأصلية مكتوبة داخل الملف
         const initialWork = {
-  "samqat": [
-    {
-      "name": "الاستقلالية الاقتصادية وريادة الأعمال النسائية",
-      "date": "2025-11-19",
-      "status": "مكتمل",
-      "responsible": "د. كريمة حسن محمد",
-      "goals": [
-        "تمكين المرأة من تحقيق الاكتفاء المالي الذاتي عبر اكتساب مهارات إدارة الموارد وبناء مصادر دخل مستدامة.",
-        "تنمية روح المبادرة والابتكار لدى المشاركات لتحويل الأفكار إلى مشاريع ريادية ناجحة.",
-        "تعزيز مشاركة المرأة في التنمية الاقتصادية من خلال دعم دورها كقائدة ومؤسسة للأعمال"
-      ]
-    }
-  ],
-  "tech": [
-    {
-      "name": "الشهادة الاحترافية طريقك للانطلاق في سوق العمل",
-      "date": "2025-09-30",
-      "status": "مكتمل",
-      "responsible": "أ. مشاعل الحربي، أ. غدير العلماني",
-      "goals": [
-        "التعرف على الأكاديمية المالية وأهم الشهادات التي تقدمها.",
-        "معرفة الفئة المستهدفة للشهادات الاحترافية.",
-        "آلية التسجيل للاختبارات وكيفية الوصول للمادة العلمية وطريقة المذاكرة.",
-        "آلية احتساب النتائج والاجتياز وطريقة إصدار الشهادة.",
-        "أهمية الحصول على الشهادة الاحترافية.",
-        "تجربة خريجة سابقة في الحصول على الشهادة الاحترافية"
-      ]
-    },
-    {
-      "name": "تميز وارتقِ بمستقبلك وابدأ رحلتك في احتراف إدارة المخاطر",
-      "date": "2025-12-08",
-      "status": "مكتمل",
-      "responsible": "د. أحمد سيد",
-      "goals": [
-        "التعرف على أهمية الحصول على الشهادات الاحترافية في مجال إدارة المخاطر.",
-        "التعرف على أهم الشهادات الاحترافية الحديثة المعتمدة والمقدمة من الأكاديمية المالية.",
-        "التعرف على أهم الشهادات الدولية في مجال إدارة المخاطر والجهات المانحة.",
-        "تمكين المشاركين من اختيار الشهادة المناسبة بناءً على الأهداف الوظيفية.",
-        "استعراض المادة العلمية للشهادة الاحترافية «أساسيات إدارة المخاطر في الخدمات المالية» المقدمة من الأكاديمية المالية"
-      ]
-    },
-    {
-      "name": "الشهادة الاحترافية بوابتك الذهبية نحو بناء مستقبلك المهني",
-      "date": "2025-11-18",
-      "status": "مكتمل",
-      "responsible": "م. مشاعل محمد الحربي، الطالبة مريم محمد بوعبيد، الطالبة لمار حسين القحطاني",
-      "goals": [
-        "التعرف على دليل الشهادات الاحترافية وأهم الشهادات في مجال المالية وإدارة المخاطر والتأمين.",
-        "التعرف على أهمية الحصول على الشهادات الاحترافية في تغيير المسار المهني وفتح آفاق المستقبل.",
-        "التعرف على أهمية الاستثمار في الذات وتحقيق التميز والارتقاء بالمستقبل المهني"
-      ]
-    }
-  ],
-  "fahim": [
-    {
-      "name": "سلسلة ورش عن التكنولوجيا المالية والتأمين الرقمي: تحول يعزز الاستدامة والشمول المالي (اللقاء الأول)",
-      "date": "2025-12-11",
-      "status": "مكتمل",
-      "responsible": "د. منى حليم، د. أحمد سيد",
-      "goals": [
-        "التعريف بالتكنولوجيا المالية (Fintech) وأهميتها ودورها في تطوير الخدمات المالية ودعم أهداف الاستدامة.",
-        "التعريف بالتأمين الرقمي وأهميته وفوائده ونماذجه الحديثة.",
-        "استعراض أهم الحلول الرقمية والتقنيات المالية والتأمينية.",
-        "دور التحول الرقمي والتقنيات المالية في تحقيق الشمول المالي والاستدامة.",
-        "أهمية التشريعات والدعم المؤسسي في تمكين التحول الرقمي وتعزيز استدامة الاقتصاد."
-      ]
-    },
-    {
-      "name": "ادّخر.. استثمر.. احمِ مستقبلك (اليوم الأول)",
-      "date": "2025-10-15",
-      "status": "مكتمل",
-      "responsible": "شركة التأمين الجزيرة تكافل من بنك الجزيرة",
-      "goals": [
-        "نشر ثقافة الادخار بين طلبة الجامعة.",
-        "تعريف الطلبة بالمنتجات التأمينية ودورها في حماية المستقبل.",
-        "ربط مفهوم الادخار بالتخطيط المالي والتأميني.",
-        "بناء شراكة مجتمعية بين الجامعة ومؤسسات مالية وتأمينية.",
-        "الاحتفاء باليوم العالمي للادخار بطريقة تفاعلية ومؤثرة."
-      ]
-    }
-  ],
-  "mataheb": [
-    {
-      "name": "من الوعي إلى الأمان المالي",
-      "date": "2025-10-26",
-      "status": "مكتمل",
-      "responsible": "أ. جبريل آل خميس",
-      "goals": [
-        "رفع مستوى الوعي المالي.",
-        "تعزيز ثقافة الادخار.",
-        "تمكين المشاركين من حماية أنفسهم ماليًا.",
-        "تنمية مهارات اتخاذ القرار المالي السليم.",
-        "تشجيع التخطيط للمستقبل المالي.",
-        "نشر ثقافة المسؤولية المالية الفردية والمجتمعية."
-      ]
-    },
-    {
-      "name": "ما بعد التخرج لمتخصصي التأمين",
-      "date": "2025-09-17",
-      "status": "مكتمل",
-      "responsible": "م. عبد العزيز الظفر",
-      "goals": [
-        "التعرف على المهارات المطلوبة في قطاع التأمين.",
-        "التعرف على الفرص الوظيفية في قطاع التأمين.",
-        "التعرف على الطريقة الأنسب للتقديم على الوظائف في قطاع التأمين.",
-        "أهمية الحصول على الشهادات الاحترافية."
-      ]
-    }
-  ]
-};
+          "samqat": [
+            {
+              "name": "الاستقلالية الاقتصادية وريادة الأعمال النسائية",
+              "date": "2025-11-19",
+              "status": "مكتمل",
+              "responsible": "د. كريمة حسن محمد",
+              "goals": [
+                "تمكين المرأة من تحقيق الاكتفاء المالي الذاتي عبر اكتساب مهارات إدارة الموارد وبناء مصادر دخل مستدامة.",
+                "تنمية روح المبادرة والابتكار لدى المشاركات لتحويل الأفكار إلى مشاريع ريادية ناجحة.",
+                "تعزيز مشاركة المرأة في التنمية الاقتصادية من خلال دعم دورها كقائدة ومؤسسة للأعمال"
+              ]
+            }
+          ],
+          "tech": [
+            {
+              "name": "الشهادة الاحترافية طريقك للانطلاق في سوق العمل",
+              "date": "2025-09-30",
+              "status": "مكتمل",
+              "responsible": "أ. مشاعل الحربي، أ. غدير العلماني",
+              "goals": [
+                "التعرف على الأكاديمية المالية وأهم الشهادات التي تقدمها.",
+                "معرفة الفئة المستهدفة للشهادات الاحترافية.",
+                "آلية التسجيل للاختبارات وكيفية الوصول للمادة العلمية وطريقة المذاكرة.",
+                "آلية احتساب النتائج والاجتياز وطريقة إصدار الشهادة.",
+                "أهمية الحصول على الشهادة الاحترافية.",
+                "تجربة خريجة سابقة في الحصول على الشهادة الاحترافية"
+              ]
+            },
+            {
+              "name": "تميز وارتقِ بمستقبلك وابدأ رحلتك في احتراف إدارة المخاطر",
+              "date": "2025-12-08",
+              "status": "مكتمل",
+              "responsible": "د. أحمد سيد",
+              "goals": [
+                "التعرف على أهمية الحصول على الشهادات الاحترافية في مجال إدارة المخاطر.",
+                "التعرف على أهم الشهادات الاحترافية الحديثة المعتمدة والمقدمة من الأكاديمية المالية.",
+                "التعرف على أهم الشهادات الدولية في مجال إدارة المخاطر والجهات المانحة.",
+                "تمكين المشاركين من اختيار الشهادة المناسبة بناءً على الأهداف الوظيفية.",
+                "استعراض المادة العلمية للشهادة الاحترافية «أساسيات إدارة المخاطر في الخدمات المالية» المقدمة من الأكاديمية المالية"
+              ]
+            },
+            {
+              "name": "الشهادة الاحترافية بوابتك الذهبية نحو بناء مستقبلك المهني",
+              "date": "2025-11-18",
+              "status": "مكتمل",
+              "responsible": "م. مشاعل محمد الحربي، الطالبة مريم محمد بوعبيد، الطالبة لمار حسين القحطاني",
+              "goals": [
+                "التعرف على دليل الشهادات الاحترافية وأهم الشهادات في مجال المالية وإدارة المخاطر والتأمين.",
+                "التعرف على أهمية الحصول على الشهادات الاحترافية في تغيير المسار المهني وفتح آفاق المستقبل.",
+                "التعرف على أهمية الاستثمار في الذات وتحقيق التميز والارتقاء بالمستقبل المهني"
+              ]
+            }
+          ],
+          "fahim": [
+            {
+              "name": "سلسلة ورش عن التكنولوجيا المالية والتأمين الرقمي: تحول يعزز الاستدامة والشمول المالي (اللقاء الأول)",
+              "date": "2025-12-11",
+              "status": "مكتمل",
+              "responsible": "د. منى حليم، د. أحمد سيد",
+              "goals": [
+                "التعريف بالتكنولوجيا المالية (Fintech) وأهميتها ودورها في تطوير الخدمات المالية ودعم أهداف الاستدامة.",
+                "التعريف بالتأمين الرقمي وأهميته وفوائده ونماذجه الحديثة.",
+                "استعراض أهم الحلول الرقمية والتقنيات المالية والتأمينية.",
+                "دور التحول الرقمي والتقنيات المالية في تحقيق الشمول المالي والاستدامة.",
+                "أهمية التشريعات والدعم المؤسسي في تمكين التحول الرقمي وتعزيز استدامة الاقتصاد."
+              ]
+            },
+            {
+              "name": "ادّخر.. استثمر.. احمِ مستقبلك (اليوم الأول)",
+              "date": "2025-10-15",
+              "status": "مكتمل",
+              "responsible": "شركة التأمين الجزيرة تكافل من بنك الجزيرة",
+              "goals": [
+                "نشر ثقافة الادخار بين طلبة الجامعة.",
+                "تعريف الطلبة بالمنتجات التأمينية ودورها في حماية المستقبل.",
+                "ربط مفهوم الادخار بالتخطيط المالي والتأميني.",
+                "بناء شراكة مجتمعية بين الجامعة ومؤسسات مالية وتأمينية.",
+                "الاحتفاء باليوم العالمي للادخار بطريقة تفاعلية ومؤثرة."
+              ]
+            }
+          ],
+          "mataheb": [
+            {
+              "name": "من الوعي إلى الأمان المالي",
+              "date": "2025-10-26",
+              "status": "مكتمل",
+              "responsible": "أ. جبريل آل خميس",
+              "goals": [
+                "رفع مستوى الوعي المالي.",
+                "تعزيز ثقافة الادخار.",
+                "تمكين المشاركين من حماية أنفسهم ماليًا.",
+                "تنمية مهارات اتخاذ القرار المالي السليم.",
+                "تشجيع التخطيط للمستقبل المالي.",
+                "نشر ثقافة المسؤولية المالية الفردية والمجتمعية."
+              ]
+            },
+            {
+              "name": "ما بعد التخرج لمتخصصي التأمين",
+              "date": "2025-09-17",
+              "status": "مكتمل",
+              "responsible": "م. عبد العزيز الظفر",
+              "goals": [
+                "التعرف على المهارات المطلوبة في قطاع التأمين.",
+                "التعرف على الفرص الوظيفية في قطاع التأمين.",
+                "التعرف على الطريقة الأنسب للتقديم على الوظائف في قطاع التأمين.",
+                "أهمية الحصول على الشهادات الاحترافية."
+              ]
+            }
+          ]
+        };
+
         const workId = new URLSearchParams(location.search).get('initiative') || 'samqat';
         const workKey = 'athar_work_v2_' + workId;
         const admin = localStorage.getItem('athalRole') === 'admin';
@@ -288,6 +307,7 @@
         const editBtn = document.getElementById('editWorkBtn');
         const inputStyle = 'w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300';
         let work = loadWork();
+
         function loadWork() {
           try {
             const saved = JSON.parse(localStorage.getItem(workKey));
@@ -295,12 +315,14 @@
           } catch(e) {}
           return structuredClone(initialWork[workId] || []);
         }
+
         function node(tag, cls, value) {
           const el = document.createElement(tag);
           if (cls) el.className = cls;
           if (value !== undefined) el.textContent = value;
           return el;
         }
+
         function renderWork() {
           content.replaceChildren();
           if (!work.length) {
@@ -312,7 +334,7 @@
           headings.appendChild(node('p','text-sm text-gray-500','كل نشاط يتضمن أهدافه الخاصة ومعلومات تنفيذه.'));
           content.appendChild(headings);
           work.forEach((a,i) => {
-            const block = node('section','rounded-xl border border-gray-200 overflow-hidden');
+            const block = node('section','rounded-xl border border-gray-200 overflow-hidden mb-4');
             const header = node('div','bg-slate-50 px-4 py-3 font-bold text-[#0b253a]',(i+1) + '. ' + (a.name || 'نشاط بدون اسم'));
             block.appendChild(header);
             const body = node('div','p-4');
@@ -332,10 +354,12 @@
             block.appendChild(body); content.appendChild(block);
           });
         }
+
         function formatDate(d) {
           const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
           return m ? `${m[3]}/${m[2]}/${m[1]}` : (d || '');
         }
+
         function field(label,type,value,prop) {
           const wrap = node('label','block');
           wrap.appendChild(node('span','block text-sm font-bold text-gray-700 mb-1',label));
@@ -348,6 +372,7 @@
           wrap.appendChild(input);
           return wrap;
         }
+
         function addEditorRow(a = {name:'',date:'',status:'مكتمل',responsible:'',goals:[]}) {
           const card = node('section','border border-gray-200 rounded-xl p-4 space-y-3');
           const top = node('div','flex items-center justify-between gap-2');
@@ -365,6 +390,7 @@
           card.appendChild(field('الأهداف (كل هدف في سطر مستقل)','textarea',(a.goals || []).join('\n'),'goals'));
           editor.appendChild(card);
         }
+
         function closeEditor() { modal.classList.add('hidden'); modal.classList.remove('flex'); }
         if (admin) {
           editBtn.hidden = false;
