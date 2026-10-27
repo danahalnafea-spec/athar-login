@@ -174,7 +174,7 @@
             transform: scale(1.1);
         }
 
-        /* المحتوى الرئيسي: تمديد العرض ليملأ الشاشة بالكامل دون انكماش */
+        /* المحتوى الرئيسي */
         .main-content-area {
             flex: 1;
             min-height: 100vh;
@@ -332,7 +332,7 @@
             margin-bottom: 4px;
         }
 
-        /* بطاقات الإحصائيات (متمددة بعرض الشاشة بالكامل) */
+        /* بطاقات الإحصائيات */
         .summary-grid {
             display: grid;
             grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -411,7 +411,7 @@
             color: #b98523;
         }
 
-        /* البحث والتصفية (بعرض الشاشة بالكامل) */
+        /* البحث والتصفية */
         .filter-toolbar {
             display: flex;
             gap: 16px;
@@ -467,7 +467,7 @@
             color: #94a3b8;
         }
 
-        /* جدول المستفيدين (بعرض الشاشة بالكامل) */
+        /* جدول المستفيدين */
         .table-panel {
             width: 100%;
             min-width: 0;
@@ -767,7 +767,7 @@
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة: الصلاحية وتحتها مباشرة زر تسجيل الخروج -->
+                <!-- القائمة المنسدلة: مرتبة باتجاه صحيح من اليمين -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
 
@@ -776,11 +776,11 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
 
-                    <!-- زر تسجيل الخروج باللون الأحمر تحت الصلاحيات مباشرة -->
+                    <!-- زر تسجيل الخروج مرتب ومتجه لليمين -->
                     <div class="border-t border-gray-100 pt-1">
                         <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-2 px-2.5 py-2 rounded-lg text-red-600 hover:bg-red-50 font-bold transition text-xs">
-                            <span>تسجيل الخروج</span>
                             <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
+                            <span>تسجيل الخروج</span>
                         </a>
                     </div>
                 </div>
