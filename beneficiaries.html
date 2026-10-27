@@ -10,6 +10,7 @@
 
 <style>
 :root {
+    --sidebar-width: 280px;
     --navy: #0b253a;
     --blue: #4e9cd8;
     --light-blue: #eaf4fc;
@@ -22,166 +23,395 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: "Cairo", sans-serif;
+    font-family: 'Cairo', sans-serif;
 }
 
+/* إعداد الصفحة مثل dashboard.html */
 body {
-    min-height: 100vh;
-    background: var(--background);
+    background-color: var(--background);
+    background-image: url('bg-dashboard.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    width: 100%;
+    min-width: 320px;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    direction: rtl;
     color: var(--navy);
 }
 
-.layout {
+/* =========================================
+   الشريط الجانبي الأصلي من dashboard.html
+   ========================================= */
+
+.sidebar-wrapper {
+    position: relative;
     display: flex;
-    min-height: 100vh;
+    align-items: flex-start;
+    flex-shrink: 0;
+    height: 100vh;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    transform: translateX(0);
 }
 
-/* الشريط الجانبي */
-.sidebar {
-    width: 280px;
-    min-width: 280px;
+.sidebar-wrapper.collapsed {
+    transform: translateX(var(--sidebar-width));
+}
+
+.sidebar-right {
+    width: var(--sidebar-width);
+    min-width: var(--sidebar-width);
     height: 100vh;
-    position: sticky;
-    top: 0;
-    flex-shrink: 0;
-    overflow-y: auto;
-    background: var(--light-blue);
-    padding: 25px 15px;
+    background-color: #eaf4fc;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border-left: 1px solid #dce8f4;
+    padding: 15px 12px 20px 12px;
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+    border-left: 1px solid rgba(15, 61, 89, 0.08);
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.logo {
-    text-align: center;
-    margin-bottom: 30px;
+.sidebar-top-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 }
 
-.logo img {
-    width: 170px;
+.sidebar-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+    margin-top: 5px;
+}
+
+.sidebar-logo img {
+    width: 195px;
     max-width: 100%;
+    height: auto;
     object-fit: contain;
 }
 
-.sidebar nav {
+.sidebar-menu {
+    list-style: none !important;
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 6px;
+    padding: 0;
+    margin: 0;
 }
 
-.sidebar a {
+.sidebar-menu li {
+    list-style: none !important;
+    width: 100%;
+}
+
+.sidebar-menu li a {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
     gap: 12px;
-    width: 100%;
-    color: var(--navy);
+    padding: 10px 12px;
+    color: #0b253a;
     text-decoration: none;
-    padding: 12px 14px;
-    border-radius: 12px;
+    font-size: 13.5px;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.sidebar-menu li.active a {
+    background-color: #d1e7fb;
+    color: #0b253a;
+    font-weight: 800;
+}
+
+.sidebar-menu li a:hover:not(.active) {
+    background-color: rgba(59, 130, 246, 0.08);
+}
+
+.sidebar-menu li a i {
     font-size: 14px;
-    font-weight: 700;
-    transition: background 0.2s ease;
-}
-
-.sidebar a:hover {
-    background: #dcecfb;
-}
-
-.sidebar a.active {
-    background: #cfe6fa;
-    color: #164f7b;
-}
-
-.sidebar a i {
-    width: 23px;
+    width: 20px;
     text-align: center;
-    font-size: 17px;
-    flex-shrink: 0;
+    color: #0b253a;
 }
 
-.sidebar-bottom {
-    margin-top: 25px;
-    padding-top: 15px;
-    border-top: 1px solid #d6e5f2;
+/* تسجيل الخروج أسفل الشريط */
+.sidebar-bottom-content {
+    width: 100%;
+    border-top: 1px solid rgba(15, 61, 89, 0.12);
+    padding-top: 12px;
+    margin-top: auto !important;
+    background-color: #eaf4fc;
 }
 
-/* المحتوى */
-.main {
+.logout-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 12px;
+    padding: 11px 12px;
+    color: #0b253a !important;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 700;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.logout-link i {
+    font-size: 14px;
+    color: #0b253a !important;
+    width: 20px;
+    text-align: center;
+}
+
+.logout-link:hover {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #dc2626 !important;
+}
+
+.logout-link:hover i {
+    color: #dc2626 !important;
+}
+
+/* زر السهم الأصلي */
+.sidebar-toggle-btn {
+    position: fixed;
+    top: 25px;
+    right: calc(var(--sidebar-width) + 15px);
+    transform: none;
+    width: 34px;
+    height: 34px;
+    background-color: #0b253a;
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
+    font-size: 12px;
+    z-index: 10000;
+    transition:
+        right 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        background-color 0.3s ease,
+        transform 0.3s ease;
+}
+
+body.sidebar-is-collapsed .sidebar-toggle-btn {
+    right: 20px;
+}
+
+.sidebar-toggle-btn:hover {
+    background-color: #16344e;
+    transform: scale(1.1);
+}
+
+/* =========================================
+   المحتوى الرئيسي
+   ========================================= */
+
+.main-content-area {
     flex: 1;
+    height: 100vh;
+    padding: 4vh 3vw;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    position: relative;
     min-width: 0;
-    background:
-        radial-gradient(circle at 10% 90%, #d9efff 0, transparent 35%),
-        var(--background);
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: all 0.3s ease;
 }
 
 .page-content {
-    padding: 32px;
+    width: 100%;
     max-width: 1700px;
     margin: 0 auto;
 }
 
-.page-header {
+.header-top-wrapper {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 20px;
+    flex-direction: row;
+    margin-top: 1vh;
     margin-bottom: 30px;
+    gap: 15px;
+    position: relative;
 }
 
-.page-header h1 {
-    font-size: clamp(24px, 3vw, 34px);
+.page-heading {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    min-width: 0;
+}
+
+.page-heading h1 {
+    font-size: clamp(20px, 2.2vw, 30px);
     font-weight: 900;
+    color: var(--navy);
 }
 
 .title-line {
-    width: 58px;
-    height: 5px;
-    background: var(--blue);
-    border-radius: 10px;
-    margin-top: 9px;
+    width: 45px;
+    height: 3px;
+    background-color: var(--blue);
+    border-radius: 2px;
+    margin-top: 4px;
 }
 
 .page-description {
-    color: var(--muted);
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-.user-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: white;
-    border-radius: 30px;
-    padding: 9px 17px;
-    box-shadow: 0 4px 15px #0b253a0d;
-}
-
-.user-icon {
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: var(--light-blue);
-    color: #317db8;
-}
-
-.user-info strong,
-.user-info small {
-    display: block;
-}
-
-.user-info strong {
     font-size: 13px;
+    color: #64748b;
+    font-weight: 600;
+    margin-top: 5px;
+    line-height: 1.8;
 }
 
-.user-info small {
-    color: var(--muted);
+/* معلومات المستخدم */
+.top-user-bar-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.top-user-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 6px 16px;
+    border-radius: 30px;
+    box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
+}
+
+.top-user-bar:hover {
+    background: #fff;
+}
+
+.user-avatar-circle {
+    width: 36px;
+    height: 36px;
+    background-color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--navy);
+    box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
+    flex-shrink: 0;
+}
+
+.user-avatar-circle i {
+    font-size: 15px;
+}
+
+.user-name-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    white-space: nowrap;
+}
+
+.user-name-dropdown i {
+    font-size: 10px;
+    color: var(--navy);
+    transition: transform 0.3s ease;
+}
+
+.top-user-bar.active .user-name-dropdown i {
+    transform: rotate(180deg);
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 170px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
+    padding: 10px;
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 100;
+    border: 1px solid rgba(11, 37, 58, 0.08);
+    text-align: right;
+}
+
+.user-dropdown-menu.show {
+    display: flex;
+}
+
+.dropdown-header-label {
     font-size: 11px;
-    margin-top: 3px;
+    color: #64748b;
+    font-weight: 600;
+    padding: 0 6px;
+}
+
+.dropdown-role-display {
+    background: #f1f5f9;
+    color: var(--navy);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-role-display i {
+    color: var(--blue);
+    font-size: 12px;
+}
+
+/* تنبيه البيانات */
+.data-notice {
+    background: #fff;
+    border: 1px solid #d9e9f8;
+    border-radius: 14px;
+    padding: 13px 17px;
+    color: #536b82;
+    font-size: 12px;
+    line-height: 1.9;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 14px #0b253a08;
+}
+
+.data-notice i {
+    color: var(--blue);
+    margin-left: 6px;
 }
 
 /* البطاقات الإحصائية */
@@ -189,7 +419,7 @@ body {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
-    margin-bottom: 28px;
+    margin-bottom: 25px;
 }
 
 .statistics-card {
@@ -197,38 +427,43 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    background: white;
+    background: #fff;
     border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
+    border-radius: 18px;
+    padding: 20px;
     box-shadow: 0 5px 20px #0b253a0a;
+    min-width: 0;
 }
 
 .statistics-card span {
     color: var(--muted);
     font-size: 12px;
     display: block;
+    line-height: 1.8;
 }
 
 .statistics-card strong {
     display: block;
-    font-size: 25px;
+    font-size: clamp(18px, 2vw, 25px);
     font-weight: 900;
     margin-top: 8px;
+    overflow-wrap: anywhere;
 }
 
 .statistics-card > i {
     color: var(--blue);
     font-size: 23px;
+    flex-shrink: 0;
 }
 
 /* جدول المستفيدين */
 .content-card {
-    background: white;
+    background: #fff;
     border: 1px solid var(--border);
-    border-radius: 22px;
-    padding: 25px;
+    border-radius: 20px;
+    padding: 24px;
     box-shadow: 0 5px 20px #0b253a0a;
+    margin-bottom: 20px;
 }
 
 .content-card-header {
@@ -236,7 +471,7 @@ body {
 }
 
 .content-card-header h2 {
-    font-size: 23px;
+    font-size: 22px;
     font-weight: 900;
 }
 
@@ -255,6 +490,7 @@ body {
 
 .input-wrapper {
     position: relative;
+    min-width: 0;
 }
 
 .input-wrapper i {
@@ -272,7 +508,7 @@ body {
     height: 48px;
     border: 1px solid #dce6f1;
     border-radius: 13px;
-    background: white;
+    background: #fff;
     color: var(--navy);
     outline: none;
     padding: 0 15px;
@@ -299,8 +535,9 @@ table {
     border-collapse: collapse;
 }
 
-th, td {
-    padding: 16px 13px;
+th,
+td {
+    padding: 15px 13px;
     text-align: right;
     border-bottom: 1px solid #edf2f7;
     font-size: 13px;
@@ -367,7 +604,12 @@ tbody tr:hover {
     margin-left: 6px;
 }
 
-/* الشاشات الصغيرة */
+/* إخفاء الإعدادات لغير المشرف */
+[hidden] {
+    display: none !important;
+}
+
+/* الشاشات المتوسطة */
 @media (max-width: 1100px) {
     .statistics-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -377,59 +619,68 @@ tbody tr:hover {
         grid-template-columns: 1fr;
     }
 
-    .page-content {
-        padding: 22px;
+    .main-content-area {
+        padding: 70px 22px 25px;
     }
 }
 
-@media (max-width: 700px) {
-    .layout {
-        display: block;
+/* سلوك الشريط الأصلي على الأجهزة الصغيرة */
+@media (max-width: 1024px) {
+    .sidebar-wrapper {
+        position: fixed;
+        right: 0;
+        top: 0;
+        z-index: 9999;
+        transform: translateX(var(--sidebar-width));
     }
 
-    .sidebar {
-        position: relative;
-        width: 100%;
-        min-width: 0;
-        height: auto;
-        min-height: 0;
-        overflow: visible;
+    .sidebar-wrapper.mobile-open {
+        transform: translateX(0);
     }
 
-    .sidebar nav {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
+    body.sidebar-is-collapsed .sidebar-toggle-btn {
+        right: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-content-area {
+        padding: 70px 14px 22px;
     }
 
-    .sidebar nav a {
-        width: auto;
-        flex: 1 1 130px;
-    }
-
-    .sidebar-bottom {
-        margin-top: 12px;
-    }
-
-    .page-content {
-        padding: 18px 14px;
-    }
-
-    .page-header {
+    .header-top-wrapper {
         align-items: flex-start;
         flex-direction: column;
     }
 
-    .user-info {
-        width: 100%;
+    .page-heading h1 {
+        font-size: 22px;
+    }
+
+    .top-user-bar {
+        padding: 5px 12px;
     }
 
     .statistics-grid {
         grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .statistics-card {
+        padding: 16px;
     }
 
     .content-card {
-        padding: 16px;
+        padding: 15px;
+    }
+
+    .content-card-header h2 {
+        font-size: 20px;
+    }
+
+    th,
+    td {
+        padding: 12px;
     }
 }
 </style>
@@ -437,187 +688,352 @@ tbody tr:hover {
 
 <body>
 
-<div class="layout">
+<!-- زر السهم: نفس زر dashboard.html -->
+<button
+    class="sidebar-toggle-btn"
+    id="sidebarToggleBtn"
+    type="button"
+    title="إخفاء/إظهار القائمة"
+    aria-label="إخفاء أو إظهار القائمة"
+>
+    <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+</button>
 
-    <aside class="sidebar">
+<!-- الشريط الجانبي الأصلي -->
+<div class="sidebar-wrapper" id="sidebarWrapper">
 
-        <div>
-            <div class="logo">
+    <aside class="sidebar-right" id="sidebarRight">
+
+        <div class="sidebar-top-content">
+
+            <div class="sidebar-logo">
                 <img src="logo.png" alt="شعار منصة أثر">
             </div>
 
-            <!-- روابط القائمة الجانبية -->
-            <nav>
-                <a href="dashboard.html">
-                    <i class="fa-solid fa-house"></i>
-                    <span>الرئيسية</span>
-                </a>
+            <ul class="sidebar-menu">
 
-                <a href="initiatives.html">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>المبادرات</span>
-                </a>
+                <li>
+                    <a href="dashboard.html">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </li>
 
-                <a href="indicators.html">
-                    <i class="fa-solid fa-chart-column"></i>
-                    <span>المؤشرات</span>
-                </a>
+                <li>
+                    <a href="initiatives.html">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open"></i>
+                    </a>
+                </li>
 
-                <a href="data.html">
-                    <i class="fa-solid fa-database"></i>
-                    <span>البيانات</span>
-                </a>
+                <li>
+                    <a href="indicators.html">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line"></i>
+                    </a>
+                </li>
 
-                <a href="reports.html">
-                    <i class="fa-solid fa-file-lines"></i>
-                    <span>التقارير</span>
-                </a>
+                <li>
+                    <a href="data.html">
+                        <span>البيانات</span>
+                        <i class="fa-solid fa-database"></i>
+                    </a>
+                </li>
 
-                <a href="beneficiaries.html" class="active" aria-current="page">
-                    <i class="fa-solid fa-users"></i>
-                    <span>المستفيدون</span>
-                </a>
+                <li>
+                    <a href="reports.html">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines"></i>
+                    </a>
+                </li>
 
-                <a href="settings.html" id="settingsLink">
-                    <i class="fa-solid fa-gear"></i>
-                    <span>الإعدادات</span>
-                </a>
-            </nav>
+                <!-- الصفحة الحالية -->
+                <li class="active">
+                    <a href="beneficiaries.html" aria-current="page">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users"></i>
+                    </a>
+                </li>
+
+                <!-- تظهر للمشرف فقط -->
+                <li id="adminSettingsMenu" hidden>
+                    <a href="settings.html">
+                        <span>الإعدادات</span>
+                        <i class="fa-solid fa-gear"></i>
+                    </a>
+                </li>
+
+            </ul>
         </div>
 
-        <div class="sidebar-bottom">
-            <a href="index.html" id="logoutLink">
-                <i class="fa-solid fa-right-from-bracket"></i>
+        <div class="sidebar-bottom-content">
+            <a href="index.html" class="logout-link">
                 <span>تسجيل الخروج</span>
+                <i class="fa-solid fa-right-from-bracket"></i>
             </a>
         </div>
 
     </aside>
-
-    <main class="main">
-
-        <div class="page-content">
-
-            <header class="page-header">
-                <div>
-                    <h1>المستفيدون والفئات المستهدفة</h1>
-                    <div class="title-line"></div>
-                    <p class="page-description">
-                        متابعة أعداد المستفيدين والفئات المستهدفة المرتبطة بالمبادرات
-                    </p>
-                </div>
-
-                <div class="user-info">
-                    <span class="user-icon">
-                        <i class="fa-solid fa-user"></i>
-                    </span>
-
-                    <div>
-                        <strong id="userName">مستخدم</strong>
-                        <small id="userRole">مستخدم عادي</small>
-                    </div>
-                </div>
-            </header>
-
-            <section class="statistics-grid">
-
-                <article class="statistics-card">
-                    <div>
-                        <span>إجمالي المستفيدين الفعلي</span>
-                        <strong id="actualTotal">غير متوفر</strong>
-                    </div>
-                    <i class="fa-solid fa-people-group"></i>
-                </article>
-
-                <article class="statistics-card">
-                    <div>
-                        <span>إجمالي المستفيدين المستهدف</span>
-                        <strong id="targetTotal">غير متوفر</strong>
-                    </div>
-                    <i class="fa-solid fa-bullseye"></i>
-                </article>
-
-                <article class="statistics-card">
-                    <div>
-                        <span>المبادرات التي لديها فئات مسجلة</span>
-                        <strong id="groupsTotal">0</strong>
-                    </div>
-                    <i class="fa-solid fa-users"></i>
-                </article>
-
-                <article class="statistics-card">
-                    <div>
-                        <span>عدد المبادرات</span>
-                        <strong id="initiativesTotal">0</strong>
-                    </div>
-                    <i class="fa-solid fa-folder-open"></i>
-                </article>
-
-            </section>
-
-            <section class="content-card">
-
-                <div class="content-card-header">
-                    <h2>سجل المستفيدين</h2>
-                    <p>ابحثي عن المبادرات والفئات المستهدفة</p>
-                </div>
-
-                <div class="filters">
-
-                    <div class="input-wrapper">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <input
-                            type="search"
-                            id="searchInput"
-                            placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة"
-                            autocomplete="off"
-                        >
-                    </div>
-
-                    <select id="categoryFilter">
-                        <option value="">جميع المجالات</option>
-                    </select>
-
-                </div>
-
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>اسم المبادرة</th>
-                                <th>المجال</th>
-                                <th>الفئات المستهدفة</th>
-                                <th>العدد المستهدف</th>
-                                <th>العدد الفعلي</th>
-                                <th>التفاصيل</th>
-                            </tr>
-                        </thead>
-                        <tbody id="beneficiariesTableBody"></tbody>
-                    </table>
-                </div>
-
-                <div id="emptyState" class="empty-state" hidden>
-                    لا توجد بيانات مطابقة للبحث.
-                </div>
-
-                <div class="data-note">
-                    <i class="fa-solid fa-circle-info"></i>
-                    تظهر الأعداد والفئات حسب البيانات المسجلة للمبادرات. البيانات غير المتوفرة لا تُحسب ضمن الإجمالي.
-                </div>
-
-            </section>
-
-        </div>
-    </main>
-
 </div>
+
+<!-- المحتوى الرئيسي -->
+<main class="main-content-area" id="mainContentArea">
+
+    <div class="page-content">
+
+        <header class="header-top-wrapper">
+
+            <div class="page-heading">
+                <h1>المستفيدون والفئات المستهدفة</h1>
+                <div class="title-line"></div>
+                <p class="page-description">
+                    متابعة أعداد المستفيدين والفئات المستهدفة المرتبطة بالمبادرات
+                </p>
+            </div>
+
+            <div class="top-user-bar-container">
+
+                <div
+                    class="top-user-bar"
+                    id="userBarToggle"
+                    role="button"
+                    tabindex="0"
+                    aria-expanded="false"
+                >
+                    <div class="user-avatar-circle">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+
+                    <div class="user-name-dropdown">
+                        <span id="displayUserName">مستخدم</span>
+                        <i class="fa-solid fa-chevron-down"></i>
+                    </div>
+                </div>
+
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <span class="dropdown-header-label">صلاحية الحساب</span>
+
+                    <div class="dropdown-role-display">
+                        <span id="displayUserRoleText">مستخدم عادي</span>
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                </div>
+
+            </div>
+        </header>
+
+        <div class="data-notice">
+            <i class="fa-solid fa-circle-info"></i>
+            تظهر الفئات والأعداد حسب البيانات المسجلة في المبادرات. لا تُفترض أعداد أو فئات غير موجودة في البيانات المعتمدة.
+        </div>
+
+        <!-- البطاقات الإحصائية -->
+        <section class="statistics-grid">
+
+            <article class="statistics-card">
+                <div>
+                    <span>إجمالي المستفيدين الفعلي</span>
+                    <strong id="actualTotal">غير متوفر</strong>
+                </div>
+                <i class="fa-solid fa-people-group"></i>
+            </article>
+
+            <article class="statistics-card">
+                <div>
+                    <span>إجمالي المستفيدين المستهدف</span>
+                    <strong id="targetTotal">غير متوفر</strong>
+                </div>
+                <i class="fa-solid fa-bullseye"></i>
+            </article>
+
+            <article class="statistics-card">
+                <div>
+                    <span>المبادرات التي لديها فئات مسجلة</span>
+                    <strong id="groupsTotal">0</strong>
+                </div>
+                <i class="fa-solid fa-users"></i>
+            </article>
+
+            <article class="statistics-card">
+                <div>
+                    <span>عدد المبادرات</span>
+                    <strong id="initiativesTotal">0</strong>
+                </div>
+                <i class="fa-solid fa-folder-open"></i>
+            </article>
+
+        </section>
+
+        <!-- سجل المستفيدين -->
+        <section class="content-card">
+
+            <div class="content-card-header">
+                <h2>سجل المستفيدين</h2>
+                <p>ابحثي عن المبادرات والفئات المستهدفة</p>
+            </div>
+
+            <div class="filters">
+
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة"
+                        autocomplete="off"
+                    >
+                </div>
+
+                <select id="categoryFilter" aria-label="تصفية حسب المجال">
+                    <option value="">جميع المجالات</option>
+                </select>
+
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>اسم المبادرة</th>
+                            <th>المجال</th>
+                            <th>الفئات المستهدفة</th>
+                            <th>العدد المستهدف</th>
+                            <th>العدد الفعلي</th>
+                            <th>التفاصيل</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="beneficiariesTableBody"></tbody>
+                </table>
+            </div>
+
+            <div id="emptyState" class="empty-state" hidden>
+                لا توجد بيانات مطابقة للبحث.
+            </div>
+
+            <div class="data-note">
+                <i class="fa-solid fa-circle-info"></i>
+                الأعداد والفئات المعروضة تعتمد على البيانات المسجلة لكل مبادرة. الخانات غير المتوفرة لا تُحسب ضمن الإجمالي.
+            </div>
+
+        </section>
+
+    </div>
+</main>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 
+    /* =========================================
+       بيانات المستخدم والصلاحيات
+       ========================================= */
+
+    const savedName = localStorage.getItem("athalUser");
+    const savedRole = localStorage.getItem("athalRole");
+
+    const displayUserName = document.getElementById("displayUserName");
+    const displayUserRoleText = document.getElementById("displayUserRoleText");
+    const adminSettingsMenu = document.getElementById("adminSettingsMenu");
+
+    if (savedName) {
+        displayUserName.textContent = savedName;
+    }
+
+    if (savedRole === "admin") {
+        displayUserRoleText.textContent = "مشرف النظام";
+        adminSettingsMenu.hidden = false;
+    } else {
+        displayUserRoleText.textContent = "مستخدم عادي";
+        adminSettingsMenu.hidden = true;
+    }
+
+    /* القائمة المنسدلة للمستخدم */
+
+    const userBarToggle = document.getElementById("userBarToggle");
+    const userDropdownMenu = document.getElementById("userDropdownMenu");
+
+    function toggleUserMenu(event) {
+        event.stopPropagation();
+
+        const isOpen = userDropdownMenu.classList.toggle("show");
+        userBarToggle.classList.toggle("active", isOpen);
+        userBarToggle.setAttribute("aria-expanded", String(isOpen));
+    }
+
+    userBarToggle.addEventListener("click", toggleUserMenu);
+
+    userBarToggle.addEventListener("keydown", function (event) {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            toggleUserMenu(event);
+        }
+    });
+
+    window.addEventListener("click", function () {
+        userDropdownMenu.classList.remove("show");
+        userBarToggle.classList.remove("active");
+        userBarToggle.setAttribute("aria-expanded", "false");
+    });
+
+    userDropdownMenu.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+    /* =========================================
+       فتح وإغلاق الشريط الجانبي
+       بنفس سلوك dashboard.html
+       ========================================= */
+
+    const sidebarWrapper = document.getElementById("sidebarWrapper");
+    const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
+    const toggleIcon = document.getElementById("toggleIcon");
+    const bodyElement = document.body;
+
+    sidebarToggleBtn.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        if (window.innerWidth <= 1024) {
+
+            sidebarWrapper.classList.toggle("mobile-open");
+
+            if (sidebarWrapper.classList.contains("mobile-open")) {
+                toggleIcon.classList.remove("fa-chevron-right");
+                toggleIcon.classList.add("fa-chevron-left");
+                bodyElement.classList.remove("sidebar-is-collapsed");
+                sidebarToggleBtn.setAttribute("title", "إخفاء القائمة");
+            } else {
+                toggleIcon.classList.remove("fa-chevron-left");
+                toggleIcon.classList.add("fa-chevron-right");
+                bodyElement.classList.add("sidebar-is-collapsed");
+                sidebarToggleBtn.setAttribute("title", "فتح القائمة");
+            }
+
+        } else {
+
+            sidebarWrapper.classList.toggle("collapsed");
+
+            if (sidebarWrapper.classList.contains("collapsed")) {
+                toggleIcon.classList.remove("fa-chevron-right");
+                toggleIcon.classList.add("fa-chevron-left");
+                sidebarToggleBtn.setAttribute("title", "فتح القائمة");
+                bodyElement.classList.add("sidebar-is-collapsed");
+            } else {
+                toggleIcon.classList.remove("fa-chevron-left");
+                toggleIcon.classList.add("fa-chevron-right");
+                sidebarToggleBtn.setAttribute("title", "إخفاء القائمة");
+                bodyElement.classList.remove("sidebar-is-collapsed");
+            }
+        }
+    });
+
+    /* =========================================
+       قراءة بيانات المبادرات
+       ========================================= */
+
     function readStorage(key, fallback) {
         try {
-            return JSON.parse(localStorage.getItem(key)) ?? fallback;
+            const value = JSON.parse(localStorage.getItem(key));
+            return value ?? fallback;
         } catch (error) {
             return fallback;
         }
@@ -654,24 +1070,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    const initiatives = readStorage("athalInitiatives", []);
+    const storedInitiatives = readStorage("athalInitiatives", []);
+    const initiatives = Array.isArray(storedInitiatives)
+        ? storedInitiatives
+        : [];
+
     const beneficiaryData = readStorage("athar_beneficiary_data", {});
 
-    const userName = localStorage.getItem("athalUser");
-    const userRole = localStorage.getItem("athalRole");
-
-    if (userName) {
-        document.getElementById("userName").textContent = userName;
-    }
-
-    document.getElementById("userRole").textContent =
-        userRole === "admin" ? "مشرف النظام" : "مستخدم عادي";
-
-    // إظهار الإعدادات للمشرف إذا كان هذا يتوافق مع نظام الصلاحيات في المشروع.
-    const settingsLink = document.getElementById("settingsLink");
-    if (userRole !== "admin") {
-        settingsLink.hidden = true;
-    }
+    /* تجهيز بيانات الجدول */
 
     const rows = initiatives.map(function (initiative) {
 
@@ -689,17 +1095,28 @@ document.addEventListener("DOMContentLoaded", function () {
         let groups = [];
 
         if (Array.isArray(groupsValue)) {
-            groups = groupsValue.map(String).map(value => value.trim()).filter(Boolean);
+            groups = groupsValue
+                .map(String)
+                .map(value => value.trim())
+                .filter(Boolean);
         } else if (typeof groupsValue === "string") {
-            groups = groupsValue.split(/[،,]/).map(value => value.trim()).filter(Boolean);
+            groups = groupsValue
+                .split(/[،,]/)
+                .map(value => value.trim())
+                .filter(Boolean);
         }
 
         return {
             id: initiative.id,
             name: initiative.name || "مبادرة بدون اسم",
             category: initiative.category || "غير متوفر",
-            groups,
-            target: validNumber(extra.target ?? initiative.beneficiariesTarget),
+            groups: groups,
+
+            target: validNumber(
+                extra.target ??
+                initiative.beneficiariesTarget
+            ),
+
             actual: validNumber(
                 extra.actual ??
                 initiative.beneficiariesActual ??
@@ -713,9 +1130,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const tableBody = document.getElementById("beneficiariesTableBody");
     const emptyState = document.getElementById("emptyState");
 
+    /* إضافة المجالات إلى قائمة التصفية */
+
     const categories = [
         ...new Set(
-            rows.map(row => row.category).filter(value => value !== "غير متوفر")
+            rows
+                .map(row => row.category)
+                .filter(value => value !== "غير متوفر")
         )
     ];
 
@@ -726,12 +1147,18 @@ document.addEventListener("DOMContentLoaded", function () {
         categoryFilter.appendChild(option);
     });
 
+    /* عرض الجدول وتحديث الإحصائيات */
+
     function renderTable() {
 
-        const searchTerm = searchInput.value.trim().toLocaleLowerCase("ar");
+        const searchTerm = searchInput.value
+            .trim()
+            .toLocaleLowerCase("ar");
+
         const selectedCategory = categoryFilter.value;
 
         const filteredRows = rows.filter(function (row) {
+
             const searchableText = [
                 row.name,
                 row.category,
@@ -744,21 +1171,37 @@ document.addEventListener("DOMContentLoaded", function () {
             );
         });
 
-        const actualValues = filteredRows.filter(row => row.actual !== null);
-        const targetValues = filteredRows.filter(row => row.target !== null);
+        const actualValues = filteredRows.filter(
+            row => row.actual !== null
+        );
+
+        const targetValues = filteredRows.filter(
+            row => row.target !== null
+        );
 
         document.getElementById("actualTotal").textContent =
             actualValues.length
-                ? formatNumber(actualValues.reduce((sum, row) => sum + row.actual, 0))
+                ? formatNumber(
+                    actualValues.reduce(
+                        (sum, row) => sum + row.actual, 0
+                    )
+                )
                 : "غير متوفر";
 
         document.getElementById("targetTotal").textContent =
             targetValues.length
-                ? formatNumber(targetValues.reduce((sum, row) => sum + row.target, 0))
+                ? formatNumber(
+                    targetValues.reduce(
+                        (sum, row) => sum + row.target, 0
+                    )
+                )
                 : "غير متوفر";
 
         document.getElementById("groupsTotal").textContent =
-            filteredRows.filter(row => row.groups.length > 0).length.toLocaleString("ar-SA");
+            filteredRows
+                .filter(row => row.groups.length > 0)
+                .length
+                .toLocaleString("ar-SA");
 
         document.getElementById("initiativesTotal").textContent =
             filteredRows.length.toLocaleString("ar-SA");
