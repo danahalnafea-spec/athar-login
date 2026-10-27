@@ -98,7 +98,7 @@
             border: 1px solid #e5e7eb !important;
         }
 
-        /* تعديلات الموبايل واللوحي لتجاوب السايد بار تماماً */
+        /* تعديلات الموبايل واللوحي لتثبيت زر القائمة والسايد بار */
         @media (max-width: 1024px) {
             body {
                 overflow: auto;
@@ -113,11 +113,13 @@
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
-            body.sidebar-is-collapsed .sidebar-toggle-btn {
-                right: 20px;
-            }
+            /* تثبيت زر القائمة في مكان ثابت ونظيف أقصى اليمين في الجوال */
             .sidebar-toggle-btn {
-                right: 15px;
+                position: fixed !important;
+                top: 20px !important;
+                right: 20px !important;
+                left: auto !important;
+                z-index: 99999 !important;
             }
         }
     </style>
@@ -567,7 +569,7 @@
                 window.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
             }
 
-            // تعديل برمجة زر السايد بار ليعمل بسلاسة تامة على الجوال والكمبيوتر
+            // برمجة زر السايد بار بحيث يعمل بسلاسة ويثبت مكانه على الجوال
             const sidebarWrapper = document.getElementById('sidebarWrapper');
             const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
             const toggleIcon = document.getElementById('toggleIcon');
