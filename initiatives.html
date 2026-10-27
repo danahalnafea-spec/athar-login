@@ -3,19 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>منصة أثر - المبادرات</title>
-    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        :root { 
-            --sidebar-width: 280px; 
+        :root {
+            --sidebar-width: 280px;
+            --navy: #0b253a;
+            --blue: #4e9cd8;
+            --page-bg: #f0f7ff;
+            --sidebar-bg: #eaf4fc;
         }
-        * { font-family: 'Cairo', sans-serif; box-sizing: border-box; }
-        
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
         body {
-            background-color: #f0f7ff;
+            background-color: var(--page-bg);
             background-image: url('bg-dashboard.png');
             background-size: cover;
             background-position: center;
@@ -29,27 +41,153 @@
             overflow-x: hidden;
         }
 
-        .main-content-area {
-            flex: 1;
-            min-height: 100vh;
-            padding: 30px 4vw;
+        /* الشريط الجانبي */
+        .sidebar-wrapper {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
             display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            position: relative;
-            min-width: 0;
-            overflow-y: auto;
-            transition: all 0.3s ease;
+            align-items: flex-start;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            transform: translateX(0);
         }
 
-        /* زر القائمة الجانبية الموحد والثابت في جميع الأجهزة */
+        .sidebar-wrapper.collapsed {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        .sidebar-right {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 15px 12px 20px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .sidebar-top-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+
+        .sidebar-logo img {
+            width: 195px;
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            list-style: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            list-style: none !important;
+            width: 100%;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 10px 12px;
+            color: var(--navy);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .sidebar-menu li.active a {
+            background-color: #d1e7fb;
+            color: var(--navy);
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: rgba(59, 130, 246, 0.08);
+        }
+
+        .sidebar-menu li a i {
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+            color: var(--navy);
+        }
+
+        .sidebar-bottom-content {
+            width: 100%;
+            border-top: 1px solid rgba(15, 61, 89, 0.12);
+            padding-top: 12px;
+            margin-top: auto !important;
+            background-color: var(--sidebar-bg);
+        }
+
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 11px 12px;
+            color: var(--navy) !important;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .logout-link i {
+            font-size: 14px;
+            color: var(--navy) !important;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #dc2626 !important;
+        }
+
+        /* زر السهم الثابت ومكان انتقاله بحسب إغلاق القائمة */
         .sidebar-toggle-btn {
-            position: fixed;
-            top: 22px;
-            right: calc(var(--sidebar-width) + 15px);
+            position: fixed !important;
+            top: 20px !important;
+            right: calc(var(--sidebar-width) + 15px) !important;
             width: 36px;
             height: 36px;
-            background-color: #0b253a;
+            background-color: var(--navy);
             color: #ffffff;
             border: none;
             border-radius: 50%;
@@ -60,34 +198,134 @@
             box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
             font-size: 13px;
             z-index: 100000;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
         }
 
-        body.sidebar-is-collapsed .sidebar-toggle-btn { 
-            right: 20px; 
+        body.sidebar-is-collapsed .sidebar-toggle-btn {
+            right: 20px !important;
         }
 
-        .sidebar-toggle-btn:hover { 
-            background-color: #16344e; 
-            transform: scale(1.1); 
+        .sidebar-toggle-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
         }
 
-        /* حاوية الشريط الجانبي */
-        .sidebar-wrapper {
-            position: relative;
+        /* المحتوى الرئيسي: ينسحب ويتمدد عند إغلاق القائمة */
+        .main-content-area {
+            flex: 1;
+            min-height: 100vh;
+            padding: 30px 4vw 50px;
+            margin-right: var(--sidebar-width);
             display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            height: 100vh;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 99999;
-            transform: translateX(0);
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .sidebar-wrapper.collapsed { 
-            transform: translateX(var(--sidebar-width)); 
+        body.sidebar-is-collapsed .main-content-area {
+            margin-right: 0 !important;
         }
-        
+
+        .header-top-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-direction: row;
+            margin-top: 1vh;
+            margin-bottom: 24px;
+            gap: 15px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .page-heading {
+            text-align: right;
+            min-width: 0;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(18px, 2.2vw, 28px);
+            font-weight: 900;
+            color: var(--navy);
+            line-height: 1.7;
+        }
+
+        .page-heading p {
+            font-size: 12px;
+            font-weight: 600;
+            color: #64748b;
+            margin-top: 3px;
+        }
+
+        .heading-underline {
+            width: 45px;
+            height: 3px;
+            background-color: var(--blue);
+            border-radius: 2px;
+            margin-top: 4px;
+        }
+
+        /* اسم المستخدم والقائمة المنسدلة */
+        .top-user-bar-container {
+            position: relative;
+            flex-shrink: 0;
+            z-index: 100;
+        }
+
+        .top-user-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 6px 16px;
+            border-radius: 30px;
+            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+
+        .top-user-bar:hover {
+            background: #ffffff;
+        }
+
+        .user-avatar-circle {
+            width: 36px;
+            height: 36px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--navy);
+            box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
+            flex-shrink: 0;
+        }
+
+        .user-name-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--navy);
+            white-space: nowrap;
+        }
+
+        .user-name-dropdown i {
+            font-size: 10px;
+            color: var(--navy);
+            transition: transform 0.3s ease;
+        }
+
+        .top-user-bar.active .user-name-dropdown i {
+            transform: rotate(180deg);
+        }
+
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -104,267 +342,363 @@
             border: 1px solid rgba(11, 37, 58, 0.08);
             text-align: right;
         }
-        .user-dropdown-menu.show { display: flex; }
 
-        /* توحيد مظهر الحقول */
-        #initiativeForm input, 
-        #initiativeForm select {
-            background-color: #ffffff !important;
-            color: #0b253a !important;
-            border: 1px solid #e5e7eb !important;
+        .user-dropdown-menu.show {
+            display: flex;
         }
 
-        /* تخصيص دقيق ومضمون للشاشات الصغيرة والجوال والآيباد */
+        .dropdown-header-label {
+            font-size: 11px;
+            color: #64748b;
+            font-weight: 600;
+            padding: 0 6px;
+        }
+
+        .dropdown-role-display {
+            background: #f1f5f9;
+            color: var(--navy);
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* أدوات البحث والتصفية */
+        .filter-toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+
+        .filter-select,
+        .search-box {
+            height: 44px;
+            border: 1px solid #e5eaf0;
+            border-radius: 11px;
+            background: rgba(255, 255, 255, 0.96);
+            color: var(--navy);
+            box-shadow: 0 2px 8px rgba(11, 37, 58, 0.035);
+        }
+
+        .filter-select {
+            width: 220px;
+            max-width: 100%;
+            padding: 0 12px;
+            font-size: 12px;
+            font-weight: 700;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 0;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-box i {
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .search-box input {
+            width: 100%;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--navy);
+            font-size: 12px;
+        }
+
+        .search-box input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* التجاوب */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
-                position: fixed;
-                right: 0;
-                top: 0;
-                height: 100vh;
-                transform: translateX(100%); /* مخفي تماماً خارج الشاشة في البداية */
-                box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+                transform: translateX(100%);
             }
+
             .sidebar-wrapper.mobile-open {
-                transform: translateX(0); /* يظهر عند النقر على الزر */
+                transform: translateX(0);
             }
-            /* تثبيت زر القائمة في أعلى اليمين بشكل أنيق وثابت دائماً في الجوال */
+
             .sidebar-toggle-btn {
                 position: fixed !important;
                 top: 18px !important;
                 right: 18px !important;
                 left: auto !important;
             }
+
             .main-content-area {
-                padding: 85px 4vw 30px; /* مساحة علوية لعدم تداخل المحتوى مع زر القائمة */
+                margin-right: 0 !important;
+                padding: 75px 16px 40px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .filter-toolbar {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .filter-select {
+                width: 100%;
             }
         }
     </style>
 </head>
+
 <body>
 
-    <!-- زر السهم المتجاوب -->
-    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+    <!-- زر السهم الثابت -->
+    <button
+        class="sidebar-toggle-btn"
+        id="sidebarToggleBtn"
+        type="button"
+        title="إخفاء/إظهار القائمة"
+        aria-label="إخفاء أو إظهار القائمة"
+        aria-expanded="false">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
 
-    <!-- حاوية الشريط الجانبي في اليمين -->
+    <!-- الشريط الجانبي -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
-        <aside class="w-[280px] bg-[#eaf4fc] border-l border-[#0f3d59]/15 h-screen p-4 flex flex-col justify-between shadow-lg overflow-y-auto">
-            <div>
-                <!-- شعار أثر -->
-                <div class="flex items-center justify-center mb-6 mt-1">
-                    <img src="logo.png" alt="شعار أثر" class="w-[195px] object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/195?text=أثر';">
+        <div class="sidebar-right" id="sidebarRight">
+
+            <div class="sidebar-top-content">
+                <div class="sidebar-logo">
+                    <img src="logo.png" alt="شعار منصة أثر">
                 </div>
-                <!-- القائمة -->
-                <nav class="space-y-1.5">
-                    <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                        <span>الرئيسية</span>
-                        <i class="fa-solid fa-house w-5 text-center"></i>
-                    </a>
-                    <a href="initiatives.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl bg-[#d1e7fb] text-[#0b253a] font-extrabold transition text-sm">
-                        <span>المبادرات</span>
-                        <i class="fa-solid fa-folder-open w-5 text-center"></i>
-                    </a>
-                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                        <span>المؤشرات</span>
-                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
-                    </a>
-                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                        <span>البيانات</span>
-                        <i class="fa-solid fa-database w-5 text-center"></i>
-                    </a>
-                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                        <span>التقارير</span>
-                        <i class="fa-solid fa-file-lines w-5 text-center"></i>
-                    </a>
-                    <a href="beneficiaries.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                        <span>المستفيدون</span>
-                        <i class="fa-solid fa-users w-5 text-center"></i>
-                    </a>
-                    <!-- إعدادات النظام للمشرف -->
-                    <div id="adminSettingsMenu" style="display: none;">
-                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                            <span>إعدادات النظام</span>
-                            <i class="fa-solid fa-gear w-5 text-center"></i>
+
+                <ul class="sidebar-menu">
+                    <li>
+                        <a href="dashboard.html">
+                            <span>الرئيسية</span>
+                            <i class="fa-solid fa-house"></i>
                         </a>
-                    </div>
-                </nav>
+                    </li>
+
+                    <li class="active">
+                        <a href="initiatives.html">
+                            <span>المبادرات</span>
+                            <i class="fa-solid fa-folder-open"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>المؤشرات</span>
+                            <i class="fa-solid fa-chart-line"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>البيانات</span>
+                            <i class="fa-solid fa-database"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#">
+                            <span>التقارير</span>
+                            <i class="fa-solid fa-file-lines"></i>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="beneficiaries.html">
+                            <span>المستفيدون</span>
+                            <i class="fa-solid fa-users"></i>
+                        </a>
+                    </li>
+
+                    <li id="adminSettingsMenu" style="display: none;">
+                        <a href="#">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear"></i>
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <!-- زر تسجيل الخروج -->
-            <div class="border-t border-[#0f3d59]/15 pt-3 mt-auto">
-                <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-red-500/10 hover:text-red-600 font-bold transition text-sm">
+
+            <div class="sidebar-bottom-content">
+                <a href="index.html" class="logout-link">
                     <span>تسجيل الخروج</span>
-                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
+                    <i class="fa-solid fa-right-from-bracket"></i>
                 </a>
             </div>
-        </aside>
+
+        </div>
     </div>
 
-    <!-- المحتوى الرئيسي الأيسر -->
+    <!-- المحتوى الرئيسي -->
     <main class="main-content-area" id="mainContentArea">
+
         <!-- الهيدر العلوي -->
-        <header class="w-full flex justify-between items-center mb-8 relative">
-            <div class="text-right">
-                <h1 class="text-2xl md:text-3xl font-black text-[#0b253a]">المبادرات</h1>
-                <div class="w-12 h-1 bg-[#4e9cd8] rounded mt-1"></div>
+        <header class="header-top-wrapper">
+
+            <div class="page-heading">
+                <h1>المبادرات</h1>
+                <div class="heading-underline"></div>
+                <p>متابعة واستعراض المبادرات وإنجازاتها</p>
             </div>
-            
-            <!-- شريط اسم المستخدم -->
-            <div class="relative" id="userBarContainer">
-                <div id="userBarToggle" class="flex items-center gap-2.5 cursor-pointer bg-white/90 px-4 py-1.5 rounded-full shadow-sm hover:bg-white transition backdrop-blur-sm">
-                    <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#0b253a] shadow-sm">
-                        <i class="fa-solid fa-user text-sm"></i>
+
+            <!-- اسم المستخدم -->
+            <div class="top-user-bar-container" id="userBarContainer">
+
+                <div class="top-user-bar" id="userBarToggle" role="button" tabindex="0" aria-expanded="false">
+                    <div class="user-avatar-circle">
+                        <i class="fa-solid fa-user"></i>
                     </div>
-                    <div class="flex items-center gap-1.5 text-sm font-bold text-[#0b253a]">
+
+                    <div class="user-name-dropdown">
                         <span id="displayUserName">مستخدم</span>
-                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                        <i class="fa-solid fa-chevron-down"></i>
                     </div>
                 </div>
-                <!-- القائمة المنسدلة للصلاحية -->
+
                 <div class="user-dropdown-menu" id="userDropdownMenu">
-                    <span class="text-[11px] text-gray-500 font-semibold px-1.5">صلاحية الحساب</span>
-                    <div class="bg-slate-100 text-[#0b253a] px-2.5 py-2 rounded-lg text-xs font-bold flex items-center justify-between">
+                    <span class="dropdown-header-label">صلاحية الحساب</span>
+
+                    <div class="dropdown-role-display">
                         <span id="displayUserRoleText">مستخدم عادي</span>
-                        <i class="fa-solid fa-lock text-[#4e9cd8] text-xs"></i>
+                        <i class="fa-solid fa-lock"></i>
                     </div>
                 </div>
+
             </div>
         </header>
 
         <!-- زر إضافة مبادرة (يظهر للمشرف فقط) -->
-        <div id="adminActionContainer" class="mb-4" style="display: none;">
+        <div id="adminActionContainer" class="mb-5" style="display: none;">
             <button id="openAddModalBtn" class="bg-[#0b253a] hover:bg-[#16344e] text-white px-5 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 shadow-sm transition">
                 <i class="fa-solid fa-plus"></i>
                 <span>إضافة مبادرة جديدة</span>
             </button>
         </div>
 
-        <!-- أدوات البحث والتصفية -->
-        <div class="flex flex-col md:flex-row gap-4 mb-6">
-            <select id="categoryFilter" class="p-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] shadow-sm text-[#0b253a] font-medium cursor-pointer">
+        <!-- البحث والتصفية -->
+        <section class="filter-toolbar">
+            <select id="categoryFilter" class="filter-select">
                 <option value="">جميع المجالات</option>
                 <option value="التطوير المهني">التطوير المهني</option>
                 <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
                 <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
                 <option value="اقتصاد">اقتصاد</option>
             </select>
-            <div class="flex-1 bg-white border border-gray-200 rounded-xl px-4 py-3 flex items-center gap-3 shadow-sm focus-within:ring-2 focus-within:ring-[#4e9cd8]">
-                <i class="fa-solid fa-search text-gray-400"></i>
-                <input type="text" id="searchInput" placeholder="ابحث عن مبادرة أو جهة..." class="w-full text-sm outline-none text-[#0b253a] bg-transparent">
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="search" id="searchInput" placeholder="ابحثي عن مبادرة أو جهة...">
             </div>
+        </section>
+
+        <!-- حاوية المبادرات -->
+        <div id="cardsContainer" class="space-y-4 pb-10">
+            <!-- يتم تعبئتها ديناميكياً -->
         </div>
 
-        <!-- قائمة المبادرات الديناميكية -->
-        <div id="cardsContainer" class="space-y-4 pb-10">
-            <!-- سيتم تعبئة المبادرات وتحديثها تلقائياً عبر الجافاسكريبت -->
-        </div>
     </main>
 
-    <!-- نافذة منبثقة لإضافة أو تعديل مبادرة (Modal) -->
-    <div id="initiativeModal" class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl relative text-right">
-            <h3 id="modalTitle" class="text-xl font-black text-[#0b253a] mb-4">إضافة مبادرة جديدة</h3>
-            <form id="initiativeForm" class="space-y-3.5">
-                <input type="hidden" id="initiativeIndex">
-                
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1">اسم المبادرة</label>
-                    <input type="text" id="initName" required class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">المجال</label>
-                        <select id="initCategory" class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
-                            <option value="التطوير المهني">التطوير المهني</option>
-                            <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
-                            <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
-                            <option value="اقتصاد">اقتصاد</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">الحالة</label>
-                        <select id="initStatus" class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
-                            <option value="مكتملة">مكتملة</option>
-                            <option value="نشطة">نشطة</option>
-                            <option value="قيد التنفيذ">قيد التنفيذ</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">المستفيدون</label>
-                        <input type="number" id="initBeneficiaries" required class="w-full h-11 px-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-gray-700 mb-1">تاريخ التنفيذ</label>
-                        <input type="date" id="initDate" required class="w-full h-11 px-2 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] text-[#0b253a]">
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-bold text-gray-700 mb-1"> مستوى الأثر </label>
-                    <div class="flex items-center gap-2 bg-white border border-gray-200 rounded-xl h-11 px-3.5">
-                        <input type="number" id="initImpactNum" step="0.01" min="0" max="5" placeholder="أدخل الرقم (مثال: 4.5)" required class="w-full text-sm outline-none bg-transparent text-[#0b253a]">
-                        <span class="text-xs font-bold text-gray-500 whitespace-nowrap px-2.5 bg-gray-100 py-1 rounded-lg">/ 5</span>
-                    </div>
-                </div>
-
-                <div class="flex justify-end gap-2 pt-3">
-                    <button type="button" id="closeModalBtn" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
-                    <button type="submit" class="px-5 py-2 bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl text-sm font-bold transition">حفظ</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- لوحة إدارة الأهداف والأنشطة -->
-    <section id="goalsManagerPanel" class="hidden fixed inset-0 z-[60] bg-black/50 p-4 overflow-y-auto" role="dialog" aria-modal="true">
-        <div class="bg-white max-w-xl mx-auto my-12 rounded-2xl p-6 shadow-xl" dir="rtl">
-            <div class="flex justify-between items-center gap-4 mb-5">
-                <h2 id="goalsManagerTitle" class="text-lg font-black text-[#0b253a]"></h2>
-                <button type="button" onclick="document.getElementById('goalsManagerPanel').classList.add('hidden')" class="text-gray-600 font-bold" aria-label="إغلاق">✕</button>
-            </div>
-            <div id="goalsManagerList" class="space-y-3 mb-5"></div>
-            <button type="button" id="goalsManagerAdd" class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl font-bold text-sm">+ إضافة هدف</button>
-        </div>
-    </section>
-
-    <section id="activitiesManagerPanel" class="hidden fixed inset-0 z-[60] bg-black/50 p-4 overflow-y-auto" role="dialog" aria-modal="true">
-      <div class="bg-white max-w-xl mx-auto my-12 rounded-2xl p-6 shadow-xl" dir="rtl">
-        <div class="flex justify-between items-center gap-4 mb-5">
-          <h2 id="activitiesManagerTitle" class="text-lg font-black text-[#0b253a]"></h2>
-          <button type="button" id="closeActivitiesManager" class="text-gray-600 font-bold" aria-label="إغلاق">✕</button>
-        </div>
-        <div id="activitiesManagerList" class="space-y-3 mb-5"></div>
-        <button type="button" id="activitiesManagerAdd" class="bg-[#4e9cd8] hover:bg-[#367fb7] text-white px-4 py-2 rounded-xl font-bold text-sm">+ إضافة نشاط</button>
-      </div>
-    </section>
-
-    <div id="entryEditorModal" class="fixed inset-0 z-[80] bg-black/50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
-      <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl text-right my-auto" dir="rtl">
-        <h3 id="entryEditorTitle" class="text-xl font-black text-[#0b253a] mb-5">إضافة</h3>
-        <form id="entryEditorForm" class="space-y-4">
-          <div id="goalEditorFields" class="hidden">
-            <label for="entryGoal" class="block text-xs font-bold text-gray-700 mb-2">نص الهدف</label>
-            <textarea id="entryGoal" rows="3" placeholder="اكتبي هدف المبادرة" class="w-full px-3.5 py-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] resize-y"></textarea>
-          </div>
-          <div id="activityEditorFields" class="hidden">
-            <label for="entryActivityName" class="block text-xs font-bold text-gray-700 mb-2">اسم النشاط</label>
-            <input id="entryActivityName" type="text" placeholder="اكتبي اسم النشاط" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]">
-          </div>
-          <p id="entryEditorError" class="text-red-600 text-xs font-semibold hidden" role="alert"></p>
-          <div class="flex justify-end gap-2 pt-3">
-            <button type="submit" class="px-5 py-2 bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl text-sm font-bold transition">حفظ</button>
-            <button type="button" id="entryEditorCancel" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
     <script>
-        document.addEventListener("DOMContentLoaded", function(){
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const savedName = localStorage.getItem('athalUser');
+            const savedRole = localStorage.getItem('athalRole');
+            const isAdmin = savedRole === 'admin';
+
+            const displayName = document.getElementById('displayUserName');
+            const roleText = document.getElementById('displayUserRoleText');
+            const adminMenu = document.getElementById('adminSettingsMenu');
+            const adminActionContainer = document.getElementById('adminActionContainer');
+
+            if (savedName && displayName) {
+                displayName.textContent = savedName;
+            }
+
+            if (roleText) {
+                roleText.textContent = isAdmin ? 'مشرف النظام' : 'مستخدم عادي';
+            }
+
+            if (isAdmin) {
+                if (adminMenu) adminMenu.style.display = 'block';
+                if (adminActionContainer) adminActionContainer.style.display = 'block';
+            }
+
+            const userBarToggle = document.getElementById('userBarToggle');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+
+            function toggleUserDropdown(event) {
+                if (event) event.stopPropagation();
+                const isOpen = userDropdownMenu.classList.toggle('show');
+                userBarToggle.classList.toggle('active', isOpen);
+                userBarToggle.setAttribute('aria-expanded', String(isOpen));
+            }
+
+            userBarToggle.addEventListener('click', toggleUserDropdown);
+
+            window.addEventListener('click', function () {
+                userDropdownMenu.classList.remove('show');
+                userBarToggle.classList.remove('active');
+                userBarToggle.setAttribute('aria-expanded', 'false');
+            });
+
+            // السايد بار وزر الحركة وانسحاب المحتوى
+            const sidebarWrapper = document.getElementById('sidebarWrapper');
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const bodyElement = document.body;
+
+            function updateSidebarButton(isOpen) {
+                if (isOpen) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    sidebarToggleBtn.setAttribute('aria-expanded', 'true');
+                    bodyElement.classList.remove('sidebar-is-collapsed');
+                } else {
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
+                    sidebarToggleBtn.setAttribute('aria-expanded', 'false');
+                    bodyElement.classList.add('sidebar-is-collapsed');
+                }
+            }
+
+            sidebarToggleBtn.addEventListener('click', function (event) {
+                event.stopPropagation();
+                if (window.innerWidth <= 1024) {
+                    const isOpen = sidebarWrapper.classList.toggle('mobile-open');
+                    updateSidebarButton(isOpen);
+                } else {
+                    const isCollapsed = sidebarWrapper.classList.toggle('collapsed');
+                    updateSidebarButton(!isCollapsed);
+                }
+            });
+
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth <= 1024) {
+                    if (sidebarWrapper.classList.contains('mobile-open') && 
+                        !sidebarWrapper.contains(e.target) && 
+                        !sidebarToggleBtn.contains(e.target)) {
+                        sidebarWrapper.classList.remove('mobile-open');
+                        updateSidebarButton(false);
+                    }
+                }
+            });
+
+            // بيانات المبادرات
             const defaultInitiatives = [
                 { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
                 { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
@@ -372,259 +706,57 @@
                 { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             ];
 
-            let initiatives = defaultInitiatives;
+            let initiatives = [];
             try {
                 const savedData = localStorage.getItem('athalInitiatives');
-                if (savedData) {
-                    const parsed = JSON.parse(savedData);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        initiatives = parsed;
-                    }
-                } else {
-                    localStorage.setItem('athalInitiatives', JSON.stringify(defaultInitiatives));
-                }
-            } catch (err) {
+                initiatives = savedData ? JSON.parse(savedData) : defaultInitiatives;
+            } catch (error) {
                 initiatives = defaultInitiatives;
             }
 
-            const savedName = localStorage.getItem('athalUser');
-            const savedRole = localStorage.getItem('athalRole');
-            const isAdmin = (savedRole === 'admin');
-
-            if (savedName) {
-                const displayNameEl = document.getElementById('displayUserName');
-                if (displayNameEl) displayNameEl.textContent = savedName;
-            }
-
-            const roleTextElement = document.getElementById('displayUserRoleText');
-            if (roleTextElement) {
-                if (isAdmin) {
-                    roleTextElement.textContent = 'مشرف النظام';
-                    const adminMenu = document.getElementById('adminSettingsMenu');
-                    if (adminMenu) adminMenu.style.display = 'block';
-                    const adminActionContainer = document.getElementById('adminActionContainer');
-                    if (adminActionContainer) adminActionContainer.style.display = 'block';
-                } else {
-                    roleTextElement.textContent = 'مستخدم عادي';
-                }
-            }
-
-            function getCategoryBadgeStyle(category) {
-                switch(category) {
-                    case 'التطوير المهني': return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;';
-                    case 'التمكين الاقتصادي': return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;';
-                    case 'اقتصاد': return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;';
-                    case 'الأنظمة والتأمين': return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;';
-                    default: return 'background-color: #f3f4f6; color: #374151;';
-                }
-            }
-
-            function getStatusBadgeStyle(status) {
-                if (status === 'نشطة') return 'background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;';
-                if (status === 'مكتملة') return 'background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;';
-                if (status === 'قيد التنفيذ') return 'background-color: #FFE87C; color: #785900; border: 1px solid #fcd34d;';
-                return 'background-color: #f3f4f6; color: #374151;';
-            }
-
-            function renderInitiatives() {
+            function renderInitiatives(items) {
                 const container = document.getElementById('cardsContainer');
                 if (!container) return;
-                container.innerHTML = '';
+                container.replaceChildren();
 
-                initiatives.forEach((item, index) => {
+                items.forEach(function (item) {
                     const card = document.createElement('div');
-                    card.className = "card bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition flex flex-col md:flex-row items-start md:items-center justify-between gap-4";
-                    card.setAttribute('data-category', item.category);
-                    card.setAttribute('data-name', item.name);
-
-                    let adminButtonsHTML = '';
-                    if (isAdmin) {
-                        adminButtonsHTML = `
-                            <div class="flex items-center gap-2 mt-2 pt-2 border-t border-gray-100">
-                                <button onclick="openEditModal(${index})" class="text-xs bg-amber-50 text-amber-700 hover:bg-amber-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
-                                    <i class="fa-solid fa-pen"></i> تعديل
-                                </button>
-                                <button onclick="deleteInitiative(${index})" class="text-xs bg-red-50 text-red-700 hover:bg-red-100 px-3 py-1 rounded-lg font-bold transition flex items-center gap-1">
-                                    <i class="fa-solid fa-trash"></i> حذف
-                                </button>
-                            </div>
-                        `;
-                    }
-
-                    const categoryStyle = getCategoryBadgeStyle(item.category);
-                    const statusStyle = getStatusBadgeStyle(item.status);
-
+                    card.style.cssText = "background: rgba(255, 255, 255, 0.94); border: 1px solid #e5edf5; border-radius: 14px; padding: 18px; box-shadow: 0 3px 12px rgba(11, 37, 58, 0.05); display: flex; justify-content: space-between; align-items: center; gap: 15px;";
+                    
                     card.innerHTML = `
-                        <div class="md:w-1/3 text-right">
-                            <h3 class="text-lg font-bold text-[#0b253a] mb-1">${item.name}</h3>
-                            <span class="inline-block text-xs font-extrabold px-3 py-1 rounded-full mb-2" style="${categoryStyle}">${item.category}</span>
-                            <div>
-                                <a href="initiative-details.html?initiative=${item.id || 'samqat'}" class="inline-flex items-center gap-2 bg-slate-100 hover:bg-[#0b253a] hover:text-white text-[#0b253a] text-xs font-bold px-3.5 py-1.5 rounded-lg transition border border-gray-200">
-                                    <i class="fa-solid fa-file-lines text-xs"></i>
-                                    <span>عرض التفاصيل</span>
-                                    <i class="fa-solid fa-angle-left text-xs"></i>
-                                </a>
-                            </div>
-                            ${adminButtonsHTML}
+                        <div>
+                            <h3 style="color: var(--navy); font-size: 14px; font-weight: 900; margin-bottom: 4px;">${item.name}</h3>
+                            <span style="font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 20px; background: #e8f4ff; color: #347eaf;">${item.category}</span>
                         </div>
-                        <div class="w-full md:w-2/3 grid grid-cols-4 gap-2 text-center border-t md:border-t-0 pt-3 md:pt-0 border-gray-100">
-                            <div>
-                                <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users text-[10px] ml-1"></i> المستفيدون</span>
-                                <span class="text-base font-bold text-[#0b253a]">${item.beneficiaries}</span>
-                            </div>
-                            <div>
-                                <span class="block text-xs text-gray-500 mb-1"><i class="fa-regular fa-calendar text-[10px] ml-1"></i> تاريخ التنفيذ</span>
-                                <span class="text-sm font-bold text-[#0b253a]">${item.date}</span>
-                            </div>
-                            <div>
-                                <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-chart-column text-[10px] ml-1"></i> مستوى الأثر</span>
-                                <span class="text-base font-bold text-[#0b253a]">${item.impact}</span>
-                            </div>
-                            <div>
-                                <span class="block text-xs text-gray-500 mb-1">الحالة</span>
-                                <span class="inline-block text-xs font-extrabold px-3 py-1 rounded-full shadow-sm" style="${statusStyle}">${item.status}</span>
-                            </div>
+                        <div>
+                            <a href="initiative-details.html?initiative=${item.id}" style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: #f1f5f9; color: var(--navy); text-decoration: none; border-radius: 8px; font-size: 10px; font-weight: 800;">
+                                <i class="fa-solid fa-file-lines"></i><span>عرض التفاصيل</span>
+                            </a>
                         </div>
                     `;
                     container.appendChild(card);
                 });
             }
 
-            renderInitiatives();
-
-            const modal = document.getElementById('initiativeModal');
-            const openAddBtn = document.getElementById('openAddModalBtn');
-            const closeBtn = document.getElementById('closeModalBtn');
-            const form = document.getElementById('initiativeForm');
-
-            if (openAddBtn) {
-                openAddBtn.addEventListener('click', () => {
-                    document.getElementById('modalTitle').textContent = 'إضافة مبادرة جديدة';
-                    document.getElementById('initiativeIndex').value = '';
-                    form.reset();
-                    modal.classList.remove('hidden');
-                });
-            }
-
-            if (closeBtn) {
-                closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-            }
-
-            if (form) {
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    const index = document.getElementById('initiativeIndex').value;
-                    const impactVal = document.getElementById('initImpactNum').value;
-
-                    const newItem = {
-                        id: 'custom_' + Date.now(),
-                        name: document.getElementById('initName').value,
-                        category: document.getElementById('initCategory').value,
-                        beneficiaries: document.getElementById('initBeneficiaries').value,
-                        date: document.getElementById('initDate').value,
-                        impact: impactVal + ' / 5',
-                        status: document.getElementById('initStatus').value
-                    };
-
-                    if (index === '') {
-                        initiatives.unshift(newItem);
-                    } else {
-                        newItem.id = initiatives[index].id;
-                        initiatives[index] = newItem;
-                    }
-
-                    localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
-                    modal.classList.add('hidden');
-                    renderInitiatives();
-                });
-            }
-
-            window.openEditModal = function(index) {
-                const item = initiatives[index];
-                document.getElementById('modalTitle').textContent = 'تعديل بيانات المبادرة';
-                document.getElementById('initiativeIndex').value = index;
-                document.getElementById('initName').value = item.name;
-                document.getElementById('initCategory').value = item.category;
-                document.getElementById('initBeneficiaries').value = item.beneficiaries;
-                document.getElementById('initDate').value = item.date;
-                
-                const impactNum = item.impact ? item.impact.split('/')[0].trim() : '';
-                document.getElementById('initImpactNum').value = impactNum;
-
-                document.getElementById('initStatus').value = item.status;
-                modal.classList.remove('hidden');
-            };
-
-            window.deleteInitiative = function(index) {
-                if (confirm('هل أنت متأكد من رغبتك في حذف هذه المبادرة؟')) {
-                    initiatives.splice(index, 1);
-                    localStorage.setItem('athalInitiatives', JSON.stringify(initiatives));
-                    renderInitiatives();
-                }
-            };
-
-            const userBarToggle = document.getElementById('userBarToggle');
-            const userDropdownMenu = document.getElementById('userDropdownMenu');
-            if (userBarToggle && userDropdownMenu) {
-                userBarToggle.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    userDropdownMenu.classList.toggle('show');
-                });
-                window.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
-            }
-
-            // برمجة زر السايد بار بدقة تامة ليعمل بانسيابية على الجوال والشاشات الكبيرة
-            const sidebarWrapper = document.getElementById('sidebarWrapper');
-            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-            const toggleIcon = document.getElementById('toggleIcon');
-            const bodyElement = document.body;
-
-            if (sidebarToggleBtn && sidebarWrapper) {
-                sidebarToggleBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    if (window.innerWidth <= 1024) {
-                        const isOpen = sidebarWrapper.classList.toggle('mobile-open');
-                        toggleIcon.className = isOpen ? "fa-solid fa-chevron-left" : "fa-solid fa-chevron-right";
-                    } else {
-                        sidebarWrapper.classList.toggle('collapsed');
-                        bodyElement.classList.toggle('sidebar-is-collapsed');
-                        toggleIcon.className = sidebarWrapper.classList.contains('collapsed') ? "fa-solid fa-chevron-left" : "fa-solid fa-chevron-right";
-                    }
-                });
-            }
-
-            // إغلاق القائمة الجانبية عند النقر خارجها في الجوال
-            document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 1024) {
-                    if (sidebarWrapper.classList.contains('mobile-open') && 
-                        !sidebarWrapper.contains(e.target) && 
-                        !sidebarToggleBtn.contains(e.target)) {
-                        sidebarWrapper.classList.remove('mobile-open');
-                        toggleIcon.className = "fa-solid fa-chevron-right";
-                    }
-                }
-            });
+            renderInitiatives(initiatives);
 
             const searchInput = document.getElementById('searchInput');
             const categoryFilter = document.getElementById('categoryFilter');
 
-            function filterCards() {
-                const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
-                const selectedCategory = categoryFilter ? categoryFilter.value : '';
-                const cards = document.querySelectorAll('#cardsContainer .card');
-
-                cards.forEach(card => {
-                    const text = card.innerText.toLowerCase();
-                    const category = card.getAttribute('data-category');
-                    const matchesSearch = !searchTerm || text.includes(searchTerm);
-                    const matchesCategory = !selectedCategory || category === selectedCategory;
-
-                    card.style.display = (matchesSearch && matchesCategory) ? 'flex' : 'none';
+            function filterInitiatives() {
+                const term = searchInput.value.toLowerCase();
+                const cat = categoryFilter.value;
+                const filtered = initiatives.filter(item => {
+                    const matchesSearch = !term || item.name.toLowerCase().includes(term);
+                    const matchesCat = !cat || item.category === cat;
+                    return matchesSearch && matchesCat;
                 });
+                renderInitiatives(filtered);
             }
 
-            if (searchInput) searchInput.addEventListener('input', filterCards);
-            if (categoryFilter) categoryFilter.addEventListener('change', filterCards);
+            if (searchInput) searchInput.addEventListener('input', filterInitiatives);
+            if (categoryFilter) categoryFilter.addEventListener('change', filterInitiatives);
+
         });
     </script>
 </body>
