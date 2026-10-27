@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -10,7 +11,7 @@
 
 <style>
 :root {
-    --sidebar-width: 350px;
+    --sidebar-width: 280px;
     --navy: #0b253a;
     --blue: #4e9cd8;
     --bg: #f0f7ff;
@@ -37,13 +38,16 @@ body {
     background-attachment: fixed;
 }
 
-/* القائمة الجانبية - محفوظة على تصميم الكود الأصلي */
+/* القائمة الجانبية - موحّدة مع dashboard.html */
 .sidebar-wrapper {
-    width: var(--sidebar-width);
+    position: relative;
+    display: flex;
+    align-items: flex-start;
     flex-shrink: 0;
-    min-height: 100vh;
+    height: 100vh;
     transition: transform .3s ease;
     z-index: 999;
+    transform: translateX(0);
 }
 
 .sidebar-right {
@@ -56,9 +60,11 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 25px 16px 20px;
-    border-left: 1px solid #0f3d5914;
+    padding: 15px 12px 20px 12px;
+    border-left: 1px solid #0f3d5926;
+    box-shadow: 0 0 20px #0b253a0d;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sidebar-top-content {
@@ -72,7 +78,8 @@ body {
     width: 100%;
     display: flex;
     justify-content: center;
-    margin: 5px 0 45px;
+    margin-bottom: 10px;
+    margin-top: 5px;
 }
 
 .sidebar-logo img {
@@ -87,50 +94,88 @@ body {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 7px;
+    gap: 6px;
+    padding: 0;
+    margin: 0;
 }
 
-.sidebar-menu a,
-.logout-link {
+.sidebar-menu li {
+    width: 100%;
+}
+
+.sidebar-menu li a {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    gap: 14px;
-    padding: 16px 18px;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 12px;
+    padding: 10px 12px;
     color: var(--navy);
     text-decoration: none;
-    font-size: 16px;
+    font-size: 13.5px;
     font-weight: 600;
-    border-radius: 12px;
-    transition: background .2s;
-}
-
-.sidebar-menu a:hover,
-.logout-link:hover {
-    background: #3b82f614;
+    border-radius: 10px;
+    transition: background .2s, color .2s;
+    white-space: nowrap;
 }
 
 .sidebar-menu li.active a {
     background: #d1e7fb;
+    color: var(--navy);
     font-weight: 800;
 }
 
-.sidebar-menu i,
-.logout-link i {
-    font-size: 19px;
-    width: 24px;
+.sidebar-menu li a:hover {
+    background: rgba(59, 130, 246, 0.08);
+}
+
+.sidebar-menu i {
+    font-size: 14px;
+    width: 20px;
     text-align: center;
+    color: var(--navy);
+    flex-shrink: 0;
 }
 
 .sidebar-bottom-content {
     width: 100%;
-    border-top: 1px solid #0f3d591f;
-    padding-top: 15px;
+    border-top: 1px solid rgba(15, 61, 89, .12);
+    padding-top: 12px;
     margin-top: auto;
+    background: var(--sidebar);
 }
 
 .logout-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 12px;
+    padding: 11px 12px;
+    color: var(--navy) !important;
+    text-decoration: none;
+    font-size: 13.5px;
     font-weight: 700;
+    border-radius: 10px;
+    transition: background .2s, color .2s;
+    white-space: nowrap;
+}
+
+.logout-link i {
+    font-size: 14px;
+    width: 20px;
+    text-align: center;
+    color: var(--navy);
+    flex-shrink: 0;
+}
+
+.logout-link:hover {
+    background: #fee2e2;
+    color: #b91c1c !important;
+}
+
+.logout-link:hover i {
+    color: #b91c1c;
 }
 
 /* المحتوى الرئيسي */
@@ -146,10 +191,10 @@ body {
 /* زر القائمة */
 .sidebar-toggle-btn {
     position: fixed;
-    top: 30px;
+    top: 25px;
     right: calc(var(--sidebar-width) + 15px);
-    width: 44px;
-    height: 44px;
+    width: 34px;
+    height: 34px;
     background: var(--navy);
     color: #fff;
     border: 0;
@@ -159,9 +204,13 @@ body {
     align-items: center;
     cursor: pointer;
     box-shadow: 0 3px 10px #0b253a40;
-    font-size: 15px;
+    font-size: 13px;
     z-index: 10000;
     transition: right .3s, transform .3s;
+}
+
+.sidebar-toggle-btn:hover {
+    transform: scale(1.05);
 }
 
 body.sidebar-is-collapsed .sidebar-toggle-btn {
@@ -471,10 +520,6 @@ tbody tr:hover {
 
 /* الشاشات المتوسطة */
 @media (max-width: 1250px) {
-    :root {
-        --sidebar-width: 280px;
-    }
-
     .summary-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -488,6 +533,7 @@ tbody tr:hover {
         right: 0;
         width: var(--sidebar-width);
         transform: translateX(var(--sidebar-width));
+        z-index: 9999;
     }
 
     .sidebar-wrapper.mobile-open {
@@ -495,6 +541,10 @@ tbody tr:hover {
     }
 
     .sidebar-toggle-btn {
+        right: 20px;
+    }
+
+    body.sidebar-is-collapsed .sidebar-toggle-btn {
         right: 20px;
     }
 
@@ -576,7 +626,7 @@ tbody tr:hover {
     <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
 </button>
 
-<!-- القائمة الجانبية: الشعار والأيقونات والأسماء والروابط محفوظة -->
+<!-- القائمة الجانبية -->
 <div class="sidebar-wrapper" id="sidebarWrapper">
     <aside class="sidebar-right">
 
@@ -1033,7 +1083,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userToggle.setAttribute('aria-expanded', 'false');
     });
 
-    // إظهار وإخفاء القائمة الجانبية
+    // إظهار وإخفاء القائمة الجانبية - مطابق لسلوك dashboard.html
     const sidebar = $('sidebarWrapper');
     const button = $('sidebarToggleBtn');
     const icon = $('toggleIcon');
