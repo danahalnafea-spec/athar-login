@@ -3,692 +3,569 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة أثر - تفاصيل المبادرة</title>
-    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
+    <title>تفاصيل المبادرة - منصة أثر</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --sidebar-width: 280px;
-            --navy: #0b253a;
-            --blue: #4e9cd8;
-            --page-bg: #f0f7ff;
-            --sidebar-bg: #eaf4fc;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Cairo', sans-serif;
-        }
-
+        .admin-only { display: none !important; }
+        body.is-admin .admin-only { display: flex !important; }
+        body.is-admin .admin-only-inline { display: inline-flex !important; }
+        
         body {
-            background-color: var(--page-bg);
+            font-family: 'Cairo', sans-serif;
+            background-color: #f0f7ff;
             background-image: url('bg-dashboard.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             min-height: 100vh;
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            direction: rtl;
-            overflow-x: hidden;
-        }
-
-        /* الشريط الجانبي */
-        .sidebar-wrapper {
-            position: fixed;
-            right: 0;
-            top: 0;
-            height: 100vh;
-            display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 9999;
-            transform: translateX(0);
-        }
-
-        .sidebar-wrapper.collapsed {
-            transform: translateX(var(--sidebar-width));
-        }
-
-        .sidebar-right {
-            width: var(--sidebar-width);
-            height: 100vh;
-            background-color: var(--sidebar-bg);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 15px 12px 20px;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
-            border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .sidebar-top-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .sidebar-logo {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-            margin-top: 5px;
-        }
-
-        .sidebar-logo img {
-            width: 195px;
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .sidebar-menu {
-            list-style: none !important;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 0;
             margin: 0;
-        }
-
-        .sidebar-menu li {
-            list-style: none !important;
-            width: 100%;
-        }
-
-        .sidebar-menu li a {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 10px 12px;
-            color: var(--navy);
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .sidebar-menu li.active a {
-            background-color: #d1e7fb;
-            color: var(--navy);
-            font-size: 13.5px;
-            font-weight: 600;
-        }
-
-        .sidebar-menu li a:hover:not(.active) {
-            background-color: rgba(59, 130, 246, 0.08);
-        }
-
-        .sidebar-menu li a i {
-            font-size: 14px;
-            width: 20px;
-            text-align: center;
-            color: var(--navy);
-        }
-
-        .sidebar-bottom-content {
-            width: 100%;
-            border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 12px;
-            margin-top: auto !important;
-            background-color: var(--sidebar-bg);
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 11px 12px;
-            color: var(--navy) !important;
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 700;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .logout-link i {
-            font-size: 14px;
-            color: var(--navy) !important;
-            width: 20px;
-            text-align: center;
-        }
-
-        .logout-link:hover {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: #dc2626 !important;
-        }
-
-        /* زر السهم الثابت وموقع انتقاله بحسب إغلاق القائمة */
-        .sidebar-toggle-btn {
-            position: fixed !important;
-            top: 20px !important;
-            right: calc(var(--sidebar-width) + 15px) !important;
-            width: 36px;
-            height: 36px;
-            background-color: var(--navy);
-            color: #ffffff;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
-            font-size: 13px;
-            z-index: 100000;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
-        }
-
-        body.sidebar-is-collapsed .sidebar-toggle-btn {
-            right: 20px !important;
-        }
-
-        .sidebar-toggle-btn:hover {
-            background-color: #16344e;
-            transform: scale(1.1);
-        }
-
-        /* المحتوى الرئيسي: ينسحب ويتمدد بمجرد إغلاق القائمة مع تفعيل السكرول */
-        .main-content-area {
-            flex: 1;
-            min-height: 100vh;
-            padding: 30px 4vw 50px;
-            margin-right: var(--sidebar-width);
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            position: relative;
-            min-width: 0;
+            padding: 4vh 3vw;
             overflow-y: auto;
-            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        body.sidebar-is-collapsed .main-content-area {
-            margin-right: 0 !important;
+        .btn-leaf-blue {
+            background-color: #2b73b9;
+            transition: background-color 0.2s ease, transform 0.2s ease;
         }
-
-        .header-top-wrapper {
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-direction: row;
-            margin-top: 1vh;
-            margin-bottom: 24px;
-            gap: 15px;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .page-heading {
-            text-align: right;
-            min-width: 0;
-        }
-
-        .page-heading h1 {
-            font-size: clamp(18px, 2.2vw, 28px);
-            font-weight: 900;
-            color: var(--navy);
-            line-height: 1.7;
-        }
-
-        .heading-underline {
-            width: 45px;
-            height: 3px;
-            background-color: var(--blue);
-            border-radius: 2px;
-            margin-top: 4px;
-        }
-
-        /* اسم المستخدم والقائمة المنسدلة */
-        .top-user-bar-container {
-            position: relative;
-            flex-shrink: 0;
-            z-index: 100;
-        }
-
-        .top-user-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 6px 16px;
-            border-radius: 30px;
-            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .top-user-bar:hover {
-            background: #ffffff;
-        }
-
-        .user-avatar-circle {
-            width: 36px;
-            height: 36px;
-            background-color: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--navy);
-            box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
-            flex-shrink: 0;
-        }
-
-        .user-name-dropdown {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--navy);
-            white-space: nowrap;
-        }
-
-        .user-name-dropdown i {
-            font-size: 10px;
-            color: var(--navy);
-            transition: transform 0.3s ease;
-        }
-
-        .top-user-bar.active .user-name-dropdown i {
-            transform: rotate(180deg);
-        }
-
-        .user-dropdown-menu {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            width: 170px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
-            padding: 10px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 100;
-            border: 1px solid rgba(11, 37, 58, 0.08);
-            text-align: right;
-        }
-
-        .user-dropdown-menu.show {
-            display: flex;
-        }
-
-        .dropdown-header-label {
-            font-size: 11px;
-            color: #64748b;
-            font-weight: 600;
-            padding: 0 6px;
-        }
-
-        .dropdown-role-display {
-            background: #f1f5f9;
-            color: var(--navy);
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        /* التجاوب */
-        @media (max-width: 1024px) {
-            .sidebar-wrapper {
-                transform: translateX(100%);
-            }
-
-            .sidebar-wrapper.mobile-open {
-                transform: translateX(0);
-            }
-
-            .sidebar-toggle-btn {
-                position: fixed !important;
-                top: 18px !important;
-                right: 18px !important;
-                left: auto !important;
-            }
-
-            .main-content-area {
-                margin-right: 0 !important;
-                padding: 75px 16px 40px;
-            }
+        .btn-leaf-blue:hover {
+            background-color: #205c96;
+            transform: translateY(-1px);
         }
     </style>
 </head>
-
-<body>
-
-    <!-- زر السهم الثابت -->
-    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" title="إخفاء/إظهار القائمة">
-        <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
-    </button>
-
-    <!-- الشريط الجانبي -->
-    <div class="sidebar-wrapper" id="sidebarWrapper">
-        <div class="sidebar-right" id="sidebarRight">
-            <div class="sidebar-top-content">
-                <div class="sidebar-logo">
-                    <img src="logo.png" alt="شعار منصة أثر">
-                </div>
-
-                <ul class="sidebar-menu">
-                    <li>
-                        <a href="dashboard.html">
-                            <span>الرئيسية</span>
-                            <i class="fa-solid fa-house"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="initiatives.html">
-                            <span>المبادرات</span>
-                            <i class="fa-solid fa-folder-open"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>المؤشرات</span>
-                            <i class="fa-solid fa-chart-line"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>البيانات</span>
-                            <i class="fa-solid fa-database"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <span>التقارير</span>
-                            <i class="fa-solid fa-file-lines"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="beneficiaries.html">
-                            <span>المستفيدون</span>
-                            <i class="fa-solid fa-users"></i>
-                        </a>
-                    </li>
-                    <li id="adminSettingsMenu" style="display: none;">
-                        <a href="#">
-                            <span>إعدادات النظام</span>
-                            <i class="fa-solid fa-gear"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="sidebar-bottom-content">
-                <a href="index.html" class="logout-link">
-                    <span>تسجيل الخروج</span>
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- المحتوى الرئيسي -->
-    <main class="main-content-area" id="mainContentArea">
-
-        <!-- الهيدر العلوي -->
-        <header class="header-top-wrapper">
-            <div class="page-heading">
-                <h1>تفاصيل المبادرة</h1>
-                <div class="heading-underline"></div>
-                <p>استعراض الأهداف، الأنشطة، والمستفيدين الخاصة بالمبادرة</p>
-            </div>
-
-            <!-- اسم المستخدم -->
-            <div class="top-user-bar-container" id="userBarContainer">
-                <div class="top-user-bar" id="userBarToggle" role="button" tabindex="0">
-                    <div class="user-avatar-circle">
-                        <i class="fa-solid fa-user"></i>
-                    </div>
-                    <div class="user-name-dropdown">
-                        <span id="displayUserName">مستخدم</span>
-                        <i class="fa-solid fa-chevron-down"></i>
-                    </div>
-                </div>
-
-                <div class="user-dropdown-menu" id="userDropdownMenu">
-                    <span class="dropdown-header-label">صلاحية الحساب</span>
-                    <div class="dropdown-role-display">
-                        <span id="displayUserRoleText">مستخدم عادي</span>
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- تفاصيل المبادرة الديناميكية والكاملة -->
-        <div id="initiativeDetailsContainer" class="space-y-6 pb-10">
-            <!-- يتم تعبئة التفاصيل الكاملة والأهداف والأنشطة ديناميكياً هنا -->
+<body class="text-gray-800">
+    <div class="w-full max-w-5xl mx-auto pb-10">
+        <!-- زر العودة للمبادرات -->
+        <a href="initiatives.html" class="inline-flex items-center gap-2 text-[#0b253a] bg-white/80 hover:bg-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm border border-gray-100 mb-4">
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+            <span>العودة للمبادرات</span>
+        </a>
+        
+        <div class="flex justify-between items-center mt-2 mb-6 flex-wrap gap-3">
+            <h1 class="text-2xl font-black text-[#0b253a] flex items-center gap-2">
+                <i class="fa-solid fa-circle-info text-[#4e9cd8]"></i>
+                <span>تفاصيل المبادرة</span>
+            </h1>
+            <!-- زر تعديل بيانات المبادرة والمستفيدين للمشرف فقط أوتوماتيكياً -->
+            <button type="button" id="editHeaderBtn" class="admin-only-inline btn-leaf-blue text-white rounded-xl px-4 py-2 text-sm font-bold items-center gap-2 shadow-sm">
+                <i class="fa-solid fa-pen"></i> تعديل بيانات المبادرة
+            </button>
         </div>
 
-    </main>
+        <!-- هيدر بيانات المبادرة الأساسية -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
+                <h2 id="detailName" class="text-xl font-bold text-[#0b253a]">مبادرة سامقات</h2>
+                <!-- تم توحيد لون الحالة لتتطابق تماماً مع صفحة المبادرات -->
+                <span id="detailStatus" class="text-xs font-bold px-3 py-1 rounded-full shadow-sm" style="background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;">مكتملة</span>
+            </div>
 
-    <!-- النوافذ المنبثقة لإدارة الأهداف والأنشطة (إن وجدت في صفحتك الأصلية) -->
-    <div id="entryEditorModal" class="fixed inset-0 z-[80] bg-black/50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
-      <div class="bg-white rounded-2xl w-full max-w-lg p-6 shadow-xl text-right my-auto" dir="rtl">
-        <h3 id="entryEditorTitle" class="text-xl font-black text-[#0b253a] mb-5">إضافة</h3>
-        <form id="entryEditorForm" class="space-y-4">
-          <div id="goalEditorFields" class="hidden">
-            <label for="entryGoal" class="block text-xs font-bold text-gray-700 mb-2">نص الهدف</label>
-            <textarea id="entryGoal" rows="3" placeholder="اكتبي هدف المبادرة" class="w-full px-3.5 py-3 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8] resize-y"></textarea>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-gray-600 border-t border-gray-100 pt-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-[#4e9cd8]"></i>
+                    <span class="font-semibold text-gray-700">المجال:</span> <span id="detailCategory">التمكين الاقتصادي</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-building text-[#4e9cd8]"></i>
+                    <span class="font-semibold text-gray-700">الجهة:</span> <span id="detailDept">قسم إدارة الأعمال</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <i class="fa-regular fa-calendar-days text-[#4e9cd8]"></i>
+                    <span class="font-semibold text-gray-700">تاريخ التنفيذ:</span> <span id="detailDate">2025-11-30</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- بطاقة مستوى الأثر -->
+        <div class="mb-6">
+            <div class="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
+                <div>
+                    <div class="text-sm text-gray-500 font-medium flex items-center gap-1.5 mb-1">
+                        <span>مستوى الأثر</span>
+                    </div>
+                    <div id="detailImpact" class="text-2xl font-black text-[#0b253a]">5 / 5</div>
+                </div>
+                <div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center text-xl shadow-sm border border-blue-100">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- قسم المستفيدون والفئات المستهدفة -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <div class="flex items-center gap-3 border-b border-gray-100 pb-3 mb-4">
+                <span class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-user-group"></i>
+                </span>
+                <h3 class="text-base font-bold text-[#0b253a]">المستفيدون والفئات المستهدفة</h3>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-center">
+                <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                    <div class="text-gray-500 font-medium mb-1">الفئة المستهدفة</div>
+                    <div id="detailTargetGroup" class="font-bold text-[#0b253a] text-base">—</div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                    <div class="text-gray-500 font-medium mb-1">عدد المستفيدين المستهدف</div>
+                    <div id="detailTargetBeneficiaries" class="font-bold text-[#0b253a] text-base">—</div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
+                    <div class="text-gray-500 font-medium mb-1">عدد المستفيدين الفعلي</div>
+                    <div id="detailActualBeneficiaries" class="font-bold text-[#0b253a] text-base">—</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- بطاقة الأهداف والأنشطة -->
+        <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" id="initiativeWorkCard">
+          <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4 flex-wrap">
+            <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2"><i class="fa-solid fa-bullseye text-rose-500"></i> الأهداف والأنشطة</h3>
+            <!-- زر تعديل الأنشطة للمشرف فقط أوتوماتيكياً -->
+            <button type="button" id="editWorkBtn" class="admin-only-inline btn-leaf-blue text-white rounded-xl px-4 py-2 text-sm font-bold items-center gap-2 shadow-sm"><i class="fa-solid fa-pen"></i> تعديل الأنشطة</button>
           </div>
-          <div id="activityEditorFields" class="hidden">
-            <label for="entryActivityName" class="block text-xs font-bold text-gray-700 mb-2">اسم النشاط</label>
-            <input id="entryActivityName" type="text" placeholder="اكتبي اسم النشاط" class="w-full h-11 px-3.5 bg-white border border-gray-200 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#4e9cd8]">
+          <div id="initiativeWorkContent" class="space-y-6"></div>
+        </section>
+
+        <!-- نافذة تعديل الأهداف والأنشطة -->
+        <div id="workModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
+          <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-xl my-auto" dir="rtl">
+            <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل الأهداف والأنشطة</h3>
+            <p class="text-sm text-gray-500 mb-5">عدّلي بيانات كل نشاط وأهدافه، أو أضيفي نشاطًا جديدًا.</p>
+            <form id="workForm">
+              <div id="workEditorRows" class="space-y-4"></div>
+              <button type="button" id="addWorkActivity" class="mt-4 bg-blue-50 text-blue-700 px-4 py-2 rounded-xl font-bold text-sm hover:bg-blue-100 transition"><i class="fa-solid fa-plus ml-1"></i> إضافة نشاط</button>
+              <div class="flex gap-2 mt-6 justify-start border-t pt-4">
+                <button type="submit" class="btn-leaf-blue text-white px-6 py-2.5 rounded-xl font-bold shadow-sm">حفظ التعديلات</button>
+                <button type="button" id="cancelWorkEdit" class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-xl font-bold hover:bg-gray-200 transition">إلغاء</button>
+              </div>
+            </form>
           </div>
-          <div class="flex justify-end gap-2 pt-3">
-            <button type="submit" class="px-5 py-2 bg-[#0b253a] hover:bg-[#16344e] text-white rounded-xl text-sm font-bold transition">حفظ</button>
-            <button type="button" id="entryEditorCancel" class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-sm font-bold transition">إلغاء</button>
+        </div>
+
+        <!-- نافذة تعديل بيانات المبادرة الشاملة والمستفيدين -->
+        <div id="headerModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
+          <div class="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-xl my-auto" dir="rtl">
+            <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل بيانات المبادرة والمستفيدين</h3>
+            <p class="text-sm text-gray-500 mb-5">أي تعديل هنا سيحفظ ويتحدث تلقائياً في صفحة المبادرات وصفحة المستفيدين.</p>
+            <form id="headerForm" class="space-y-4">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">اسم المبادرة</label>
+                <input type="text" id="editName" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">المجال</label>
+                  <input type="text" id="editCategory" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">الجهة</label>
+                  <input type="text" id="editDept" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">تاريخ التنفيذ</label>
+                  <input type="date" id="editDate" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">مستوى الأثر</label>
+                  <input type="text" id="editImpact" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">الحالة</label>
+                <input type="text" id="editStatus" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+              </div>
+              <hr class="my-2 border-gray-100">
+              <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">الفئة المستهدفة</label>
+                <input type="text" id="editTargetGroup" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">عدد المستفيدين المستهدف</label>
+                  <input type="text" id="editTargetBeneficiaries" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                </div>
+                <div>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">عدد المستفيدين الفعلي</label>
+                  <input type="text" id="editBeneficiaries" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                </div>
+              </div>
+              <div class="flex gap-2 mt-6 justify-start border-t pt-4">
+                <button type="submit" class="btn-leaf-blue text-white px-6 py-2.5 rounded-xl font-bold shadow-sm">حفظ وتحديث في كل المنصة</button>
+                <button type="button" id="cancelHeaderEdit" class="bg-gray-100 text-gray-700 px-5 py-2.5 rounded-xl font-bold hover:bg-gray-200 transition">إلغاء</button>
+              </div>
+            </form>
           </div>
-        </form>
-      </div>
+        </div>
+
+        <!-- قسم مؤشرات أداء المبادرة -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-chart-pie"></i>
+                </span>
+                <span>مؤشرات أداء المبادرة</span>
+            </h3>
+        </div>
+
+        <!-- قسم النتائج والأثر والأدلة -->
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
+                <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-folder-closed"></i>
+                </span>
+                <span>النتائج والأثر والأدلة الداعمة</span>
+            </h3>
+        </div>
+
     </div>
 
+    <!-- كود الجافاسكريبت للربط الشامل -->
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-
-            const savedName = localStorage.getItem('athalUser');
+        document.addEventListener("DOMContentLoaded", function() {
             const savedRole = localStorage.getItem('athalRole');
-            const isAdmin = savedRole === 'admin';
-
-            const displayName = document.getElementById('displayUserName');
-            const roleText = document.getElementById('displayUserRoleText');
-            const adminMenu = document.getElementById('adminSettingsMenu');
-
-            if (savedName && displayName) {
-                displayName.textContent = savedName;
+            if (savedRole === 'admin') {
+                document.body.classList.add('is-admin');
+            } else {
+                document.body.classList.remove('is-admin');
             }
 
-            if (roleText) {
-                roleText.textContent = isAdmin ? 'مشرف النظام' : 'مستخدم عادي';
-            }
-
-            if (isAdmin && adminMenu) {
-                adminMenu.style.display = 'block';
-            }
-
-            const userBarToggle = document.getElementById('userBarToggle');
-            const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-            userBarToggle.addEventListener('click', function (event) {
-                event.stopPropagation();
-                const isOpen = userDropdownMenu.classList.toggle('show');
-                userBarToggle.classList.toggle('active', isOpen);
-            });
-
-            window.addEventListener('click', function () {
-                userDropdownMenu.classList.remove('show');
-                userBarToggle.classList.remove('active');
-            });
-
-            // السايد بار وزر الحركة وانسحاب المحتوى
-            const sidebarWrapper = document.getElementById('sidebarWrapper');
-            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-            const toggleIcon = document.getElementById('toggleIcon');
-            const bodyElement = document.body;
-
-            function updateSidebarButton(isOpen) {
-                if (isOpen) {
-                    toggleIcon.classList.remove('fa-chevron-right');
-                    toggleIcon.classList.add('fa-chevron-left');
-                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    bodyElement.classList.remove('sidebar-is-collapsed');
-                } else {
-                    toggleIcon.classList.remove('fa-chevron-left');
-                    toggleIcon.classList.add('fa-chevron-right');
-                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
-                    bodyElement.classList.add('sidebar-is-collapsed');
-                }
-            }
-
-            sidebarToggleBtn.addEventListener('click', function (event) {
-                event.stopPropagation();
-                if (window.innerWidth <= 1024) {
-                    const isOpen = sidebarWrapper.classList.toggle('mobile-open');
-                    updateSidebarButton(isOpen);
-                } else {
-                    const isCollapsed = sidebarWrapper.classList.toggle('collapsed');
-                    updateSidebarButton(!isCollapsed);
-                }
-            });
-
-            document.addEventListener('click', function(e) {
-                if (window.innerWidth <= 1024) {
-                    if (sidebarWrapper.classList.contains('mobile-open') && 
-                        !sidebarWrapper.contains(e.target) && 
-                        !sidebarToggleBtn.contains(e.target)) {
-                        sidebarWrapper.classList.remove('mobile-open');
-                        updateSidebarButton(false);
-                    }
-                }
-            });
-
-            // دالة تنسيق لون الحالة لتتطابق تماماً مع صفحة المبادرات (الأزرق للمكتملة)
-            function getStatusBadgeStyle(status) {
-                if (status === 'نشطة') return 'background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;';
-                if (status === 'مكتملة') return 'background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;';
-                if (status === 'قيد التنفيذ') return 'background-color: #FFE87C; color: #785900; border: 1px solid #fcd34d;';
-                return 'background-color: #f3f4f6; color: #374151;';
-            }
-
-            function getCategoryBadgeStyle(category) {
-                switch(category) {
-                    case 'التطوير المهني': return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;';
-                    case 'التمكين الاقتصادي': return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;';
-                    case 'اقتصاد': return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;';
-                    case 'الأنظمة والتأمين': return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;';
-                    default: return 'background-color: #f3f4f6; color: #374151;';
-                }
-            }
-
-            // جلب المبادرة المطلوبة من الـ URL
             const urlParams = new URLSearchParams(window.location.search);
             const initiativeId = urlParams.get('initiative') || 'samqat';
 
-            const defaultInitiatives = [
-                { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة', department: 'قسم إدارة الأعمال' },
-                { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة', department: 'قسم تقنية المعلومات' },
-                { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة', department: 'قسم الاقتصاد' },
-                { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة', department: 'قسم الأنظمة' }
-            ];
+            const defaultInitiatives = {
+                'samqat': { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', targetGroup: 'رائدات الأعمال والطالبات', targetBeneficiaries: '20', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
+                'tech': { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', targetGroup: 'طلبة الجامعة والخريجون', targetBeneficiaries: '600', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
+                'fahim': { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', targetGroup: 'طلبة وخريجو التخصصات المالية', targetBeneficiaries: '150', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
+                'mataheb': { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', targetGroup: 'طلبة القانون والتأمين والمهتمون', targetBeneficiaries: '400', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
+            };
 
-            let initiatives = defaultInitiatives;
-            try {
-                const savedData = localStorage.getItem('athalInitiatives');
-                if (savedData) initiatives = JSON.parse(savedData);
-            } catch (e) {}
+            function getSavedInitiatives() {
+                try {
+                    const saved = localStorage.getItem('athalInitiatives');
+                    if (saved) return JSON.parse(saved);
+                } catch(e) {}
+                let arr = Object.values(defaultInitiatives);
+                localStorage.setItem('athalInitiatives', JSON.stringify(arr));
+                return arr;
+            }
 
-            const currentItem = initiatives.find(i => i.id === initiativeId) || initiatives[0];
+            function updateUI(item) {
+                document.getElementById('detailName').textContent = item.name || '—';
+                document.getElementById('detailCategory').textContent = item.category || '—';
+                document.getElementById('detailDept').textContent = item.dept || '—';
+                document.getElementById('detailDate').textContent = item.date || '—';
+                document.getElementById('detailImpact').textContent = item.impact || '—';
+                
+                const statusEl = document.getElementById('detailStatus');
+                const st = item.status || '—';
+                statusEl.textContent = st;
+                // ضبط ألوان الحالة ديناميكياً لتطابق المبادرات
+                if (st === 'نشطة') {
+                    statusEl.style.cssText = "background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;";
+                } else if (st === 'مكتملة') {
+                    statusEl.style.cssText = "background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;";
+                } else {
+                    statusEl.style.cssText = "background-color: #f3f4f6; color: #374151;";
+                }
+                
+                const targetGrp = item.targetGroup || item.beneficiaryGroups || 'رائدات الأعمال والطالبات';
+                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '20';
+                const actualBen = item.beneficiaries || item.beneficiariesActual || '17';
 
-            const container = document.getElementById('initiativeDetailsContainer');
-            const statusStyle = getStatusBadgeStyle(currentItem.status);
-            const categoryStyle = getCategoryBadgeStyle(currentItem.category);
+                document.getElementById('detailTargetGroup').textContent = Array.isArray(targetGrp) ? targetGrp.join('، ') : targetGrp;
+                document.getElementById('detailTargetBeneficiaries').textContent = targetBen;
+                document.getElementById('detailActualBeneficiaries').textContent = actualBen;
+            }
 
-            container.innerHTML = `
-                <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b border-gray-100 pb-4">
-                        <div>
-                            <h2 class="text-xl font-black text-[#0b253a] mb-2">${currentItem.name}</h2>
-                            <span class="inline-block text-xs font-extrabold px-3 py-1 rounded-full" style="${categoryStyle}">${currentItem.category}</span>
-                        </div>
-                        <span class="inline-block text-xs font-extrabold px-3.5 py-1.5 rounded-full shadow-sm" style="${statusStyle}">${currentItem.status}</span>
-                    </div>
+            let allInit = getSavedInitiatives();
+            let currentItem = allInit.find(item => item.id === initiativeId) || defaultInitiatives[initiativeId] || defaultInitiatives['samqat'];
+            updateUI(currentItem);
 
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-right mb-6">
-                        <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
-                            <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-building ml-1"></i> الجهة</span>
-                            <span class="text-sm font-bold text-[#0b253a]">${currentItem.department || 'قسم إدارة الأعمال'}</span>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
-                            <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-users ml-1"></i> المستفيدون</span>
-                            <span class="text-base font-bold text-[#0b253a]">${currentItem.beneficiaries}</span>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
-                            <span class="block text-xs text-gray-500 mb-1"><i class="fa-regular fa-calendar ml-1"></i> تاريخ التنفيذ</span>
-                            <span class="text-sm font-bold text-[#0b253a]">${currentItem.date}</span>
-                        </div>
-                        <div class="bg-slate-50 p-4 rounded-xl border border-gray-100">
-                            <span class="block text-xs text-gray-500 mb-1"><i class="fa-solid fa-chart-column ml-1"></i> مستوى الأثر</span>
-                            <span class="text-base font-bold text-[#0b253a]">${currentItem.impact}</span>
-                        </div>
-                    </div>
-                </div>
+            const headerModal = document.getElementById('headerModal');
+            const editHeaderBtn = document.getElementById('editHeaderBtn');
+            if (editHeaderBtn) {
+                editHeaderBtn.onclick = () => {
+                    document.getElementById('editName').value = currentItem.name || '';
+                    document.getElementById('editCategory').value = currentItem.category || '';
+                    document.getElementById('editDept').value = currentItem.dept || '';
+                    document.getElementById('editDate').value = currentItem.date || '';
+                    document.getElementById('editImpact').value = currentItem.impact || '';
+                    document.getElementById('editStatus').value = currentItem.status || '';
+                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || '';
+                    document.getElementById('editTargetBeneficiaries').value = currentItem.targetBeneficiaries || '';
+                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || '';
+                    headerModal.classList.remove('hidden');
+                    headerModal.classList.add('flex');
+                };
+            }
 
-                <!-- قسم الأهداف والأنشطة التفصيلية -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-black text-[#0b253a] mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-bullseye text-[#4e9cd8]"></i>
-                            <span>أهداف المبادرة</span>
-                        </h3>
-                        <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside font-semibold">
-                            <li>تمكين المستفيدين وتطوير قدراتهم العملية.</li>
-                            <li>رفع مستوى الوعي وتحقيق الكفاءة المستهدفة.</li>
-                        </ul>
-                    </div>
+            document.getElementById('cancelHeaderEdit').onclick = () => {
+                headerModal.classList.add('hidden');
+                headerModal.classList.remove('flex');
+            };
 
-                    <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                        <h3 class="text-lg font-black text-[#0b253a] mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-tasks text-[#4e9cd8]"></i>
-                            <span>أنشطة المبادرة</span>
-                        </h3>
-                        <ul class="space-y-2 text-sm text-gray-700 list-disc list-inside font-semibold">
-                            <li>تنفيذ ورش عمل تدريبية تفاعلية.</li>
-                            <li>متابعة تقييم الأثر وقياس النتائج.</li>
-                        </ul>
-                    </div>
-                </div>
-            `;
+            document.getElementById('headerForm').onsubmit = e => {
+                e.preventDefault();
+                if (localStorage.getItem('athalRole') !== 'admin') return;
+                
+                currentItem.name = document.getElementById('editName').value.trim();
+                currentItem.category = document.getElementById('editCategory').value.trim();
+                currentItem.dept = document.getElementById('editDept').value.trim();
+                currentItem.date = document.getElementById('editDate').value.trim();
+                currentItem.impact = document.getElementById('editImpact').value.trim();
+                currentItem.status = document.getElementById('editStatus').value.trim();
+                currentItem.targetGroup = document.getElementById('editTargetGroup').value.trim();
+                currentItem.targetBeneficiaries = document.getElementById('editTargetBeneficiaries').value.trim();
+                currentItem.beneficiaries = document.getElementById('editBeneficiaries').value.trim();
+
+                let list = getSavedInitiatives();
+                let idx = list.findIndex(x => x.id === initiativeId);
+                if (idx >= 0) { 
+                    list[idx] = currentItem; 
+                } else { 
+                    list.push(currentItem); 
+                }
+                localStorage.setItem('athalInitiatives', JSON.stringify(list));
+
+                updateUI(currentItem);
+                headerModal.classList.add('hidden');
+                headerModal.classList.remove('flex');
+                alert('تم تحديث وحفظ بيانات المبادرة بنجاح، وستظهر في كافة صفحات المنصة!');
+            };
         });
+
+        const initialWork = {
+          "samqat": [
+            {
+              "name": "الاستقلالية الاقتصادية وريادة الأعمال النسائية",
+              "date": "2025-11-19",
+              "status": "مكتمل",
+              "responsible": "د. كريمة حسن محمد",
+              "goals": [
+                "تمكين المرأة من تحقيق الاكتفاء المالي الذاتي عبر اكتساب مهارات إدارة الموارد وبناء مصادر دخل مستدامة.",
+                "تنمية روح المبادرة والابتكار لدى المشاركات لتحويل الأفكار إلى مشاريع ريادية ناجحة.",
+                "تعزيز مشاركة المرأة في التنمية الاقتصادية من خلال دعم دورها كقائدة ومؤسسة للأعمال"
+              ]
+            }
+          ],
+          "tech": [
+            {
+              "name": "الشهادة الاحترافية طريقك للانطلاق في سوق العمل",
+              "date": "2025-09-30",
+              "status": "مكتمل",
+              "responsible": "أ. مشاعل الحربي، أ. غدير العلماني",
+              "goals": [
+                "التعرف على الأكاديمية المالية وأهم الشهادات التي تقدمها.",
+                "معرفة الفئة المستهدفة للشهادات الاحترافية.",
+                "آلية التسجيل للاختبارات وكيفية الوصول للمادة العلمية وطريقة المذاكرة.",
+                "آلية احتساب النتائج والاجتياز وطريقة إصدار الشهادة.",
+                "أهمية الحصول على الشهادة الاحترافية.",
+                "تجربة خريجة سابقة في الحصول على الشهادة الاحترافية"
+              ]
+            },
+            {
+              "name": "تميز وارتقِ بمستقبلك وابدأ رحلتك في احتراف إدارة المخاطر",
+              "date": "2025-12-08",
+              "status": "مكتمل",
+              "responsible": "د. أحمد سيد",
+              "goals": [
+                "التعرف على أهمية الحصول على الشهادات الاحترافية في مجال إدارة المخاطر.",
+                "التعرف على أهم الشهادات الاحترافية الحديثة المعتمدة والمقدمة من الأكاديمية المالية.",
+                "التعرف على أهم الشهادات الدولية في مجال إدارة المخاطر والجهات المانحة.",
+                "تمكين المشاركين من اختيار الشهادة المناسبة بناءً على الأهداف الوظيفية.",
+                "استعراض المادة العلمية للشهادة الاحترافية «أساسيات إدارة المخاطر في الخدمات المالية» المقدمة من الأكاديمية المالية"
+              ]
+            },
+            {
+              "name": "الشهادة الاحترافية بوابتك الذهبية نحو بناء مستقبلك المهني",
+              "date": "2025-11-18",
+              "status": "مكتمل",
+              "responsible": "م. مشاعل محمد الحربي، الطالبة مريم محمد بوعبيد، الطالبة لمار حسين القحطاني",
+              "goals": [
+                "التعرف على دليل الشهادات الاحترافية وأهم الشهادات في مجال المالية وإدارة المخاطر والتأمين.",
+                "التعرف على أهمية الحصول على الشهادات الاحترافية في تغيير المسار المهني وفتح آفاق المستقبل.",
+                "التعرف على أهمية الاستثمار في الذات وتحقيق التميز والارتقاء بالمستقبل المهني"
+              ]
+            }
+          ],
+          "fahim": [
+            {
+              "name": "سلسلة ورش عن التكنولوجيا المالية والتأمين الرقمي: تحول يعزز الاستدامة والشمول المالي (اللقاء الأول)",
+              "date": "2025-12-11",
+              "status": "مكتمل",
+              "responsible": "د. منى حليم، د. أحمد سيد",
+              "goals": [
+                "التعريف بالتكنولوجيا المالية (Fintech) وأهميتها ودورها في تطوير الخدمات المالية ودعم أهداف الاستدامة.",
+                "التعريف بالتأمين الرقمي وأهميته وفوائده ونماذجه الحديثة.",
+                "استعراض أهم الحلول الرقمية والتقنيات المالية والتأمينية.",
+                "دور التحول الرقمي والتقنيات المالية في تحقيق الشمول المالي والاستدامة.",
+                "أهمية التشريعات والدعم المؤسسي في تمكين التحول الرقمي وتعزيز استدامة الاقتصاد."
+              ]
+            },
+            {
+              "name": "ادّخر.. استثمر.. احمِ مستقبلك (اليوم الأول)",
+              "date": "2025-10-15",
+              "status": "مكتمل",
+              "responsible": "شركة التأمين الجزيرة تكافل من بنك الجزيرة",
+              "goals": [
+                "نشر ثقافة الادخار بين طلبة الجامعة.",
+                "تعريف الطلبة بالمنتجات التأمينية ودورها في حماية المستقبل.",
+                "ربط مفهوم الادخار بالتخطيط المالي والتأميني.",
+                "بناء شراكة مجتمعية بين الجامعة ومؤسسات مالية وتأمينية.",
+                "الاحتفاء باليوم العالمي للادخار بطريقة تفاعلية ومؤثرة."
+              ]
+            }
+          ],
+          "mataheb": [
+            {
+              "name": "من الوعي إلى الأمان المالي",
+              "date": "2025-10-26",
+              "status": "مكتمل",
+              "responsible": "أ. جبريل آل خميس",
+              "goals": [
+                "رفع مستوى الوعي المالي.",
+                "تعزيز ثقافة الادخار.",
+                "تمكين المشاركين من حماية أنفسهم ماليًا.",
+                "تنمية مهارات اتخاذ القرار المالي السليم.",
+                "تشجيع التخطيط للمستقبل المالي.",
+                "نشر ثقافة المسؤولية المالية الفردية والمجتمعية."
+              ]
+            },
+            {
+              "name": "ما بعد التخرج لمتخصصي التأمين",
+              "date": "2025-09-17",
+              "status": "مكتمل",
+              "responsible": "م. عبد العزيز الظفر",
+              "goals": [
+                "التعرف على المهارات المطلوبة في قطاع التأمين.",
+                "التعرف على الفرص الوظيفية في قطاع التأمين.",
+                "التعرف على الطريقة الأنسب للتقديم على الوظائف في قطاع التأمين.",
+                "أهمية الحصول على الشهادات الاحترافية."
+              ]
+            }
+          ]
+        };
+
+        const workId = new URLSearchParams(location.search).get('initiative') || 'samqat';
+        const workKey = 'athar_work_v2_' + workId;
+        const isAdminUser = localStorage.getItem('athalRole') === 'admin';
+        const content = document.getElementById('initiativeWorkContent');
+        const modal = document.getElementById('workModal');
+        const editor = document.getElementById('workEditorRows');
+        const editBtn = document.getElementById('editWorkBtn');
+        const inputStyle = 'w-full border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-300';
+        let work = loadWork();
+
+        function loadWork() {
+          try {
+            const saved = JSON.parse(localStorage.getItem(workKey));
+            if (Array.isArray(saved)) return saved;
+          } catch(e) {}
+          return structuredClone(initialWork[workId] || []);
+        }
+
+        function node(tag, cls, value) {
+          const el = document.createElement(tag);
+          if (cls) el.className = cls;
+          if (value !== undefined) el.textContent = value;
+          return el;
+        }
+
+        function renderWork() {
+          content.replaceChildren();
+          if (!work.length) {
+            content.appendChild(node('p','text-gray-500 text-sm','لا توجد أنشطة مسجلة لهذه المبادرة.'));
+            return;
+          }
+          const headings = node('div','mb-3');
+          headings.appendChild(node('h4','font-bold text-[#0b253a] mb-1','الأنشطة وأهدافها'));
+          headings.appendChild(node('p','text-sm text-gray-500','كل نشاط يتضمن أهدافه الخاصة ومعلومات تنفيذه.'));
+          content.appendChild(headings);
+          work.forEach((a,i) => {
+            const block = node('section','rounded-xl border border-gray-200 overflow-hidden mb-4 bg-white');
+            const header = node('div','bg-slate-50 px-4 py-3 font-bold text-[#0b253a]',(i+1) + '. ' + (a.name || 'نشاط بدون اسم'));
+            block.appendChild(header);
+            const body = node('div','p-4');
+            body.appendChild(node('h5','font-bold text-[#0b253a] mb-2','الأهداف:'));
+            const ul = node('ul','list-disc pr-6 space-y-1 text-sm text-gray-700 mb-4');
+            (Array.isArray(a.goals) ? a.goals : []).forEach(g => ul.appendChild(node('li','leading-7',g)));
+            body.appendChild(ul);
+            const tableWrap = node('div','overflow-x-auto');
+            const table = node('table','w-full text-sm text-right border-collapse');
+            const thead = node('thead','bg-slate-50');
+            const trh = node('tr','');
+            ['النشاط','التاريخ','الحالة','المسؤول'].forEach(x => trh.appendChild(node('th','border border-gray-200 px-3 py-2 whitespace-nowrap',x)));
+            thead.appendChild(trh); table.appendChild(thead);
+            const tbody = node('tbody',''); const tr = node('tr','');
+            [a.name,formatDate(a.date),a.status,a.responsible].forEach(x => tr.appendChild(node('td','border border-gray-200 px-3 py-2 align-top',x || '—')));
+            tbody.appendChild(tr); table.appendChild(tbody); tableWrap.appendChild(table); body.appendChild(tableWrap);
+            block.appendChild(body); content.appendChild(block);
+          });
+        }
+
+        function formatDate(d) {
+          const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(d || '');
+          return m ? `${m[3]}/${m[2]}/${m[1]}` : (d || '');
+        }
+
+        function field(label,type,value,prop) {
+          const wrap = node('label','block');
+          wrap.appendChild(node('span','block text-sm font-bold text-gray-700 mb-1',label));
+          const input = node(type === 'textarea' ? 'textarea' : 'input',inputStyle);
+          if (type !== 'textarea') input.type = type;
+          input.value = value || '';
+          input.dataset.prop = prop;
+          if (prop === 'name') input.required = true;
+          if (type === 'textarea') input.rows = 5;
+          wrap.appendChild(input);
+          return wrap;
+        }
+
+        function addEditorRow(a = {name:'',date:'',status:'مكتمل',responsible:'',goals:[]}) {
+          const card = node('section','border border-gray-200 rounded-xl p-4 space-y-3 bg-slate-50/50');
+          const top = node('div','flex items-center justify-between gap-2');
+          top.appendChild(node('h4','font-bold text-[#0b253a]','بيانات النشاط'));
+          const del = node('button','text-red-600 bg-red-50 rounded-lg px-3 py-1 text-sm font-bold','حذف النشاط');
+          del.type = 'button';
+          del.onclick = () => { if (confirm('حذف هذا النشاط من القائمة؟')) card.remove(); };
+          top.appendChild(del); card.appendChild(top);
+          card.appendChild(field('اسم النشاط','text',a.name,'name'));
+          const grid = node('div','grid grid-cols-1 sm:grid-cols-2 gap-3');
+          grid.appendChild(field('التاريخ','date',a.date,'date'));
+          grid.appendChild(field('الحالة','text',a.status,'status'));
+          card.appendChild(grid);
+          card.appendChild(field('مسؤول النشاط','text',a.responsible,'responsible'));
+          card.appendChild(field('الأهداف (كل هدف في سطر مستقل)','textarea',(a.goals || []).join('\n'),'goals'));
+          editor.appendChild(card);
+        }
+
+        function closeEditor() { modal.classList.add('hidden'); modal.classList.remove('flex'); }
+        if (isAdminUser && editBtn) {
+          editBtn.onclick = () => {
+            editor.replaceChildren();
+            work.forEach(a => addEditorRow(a));
+            modal.classList.remove('hidden'); modal.classList.add('flex');
+          };
+        }
+        document.getElementById('addWorkActivity').onclick = () => addEditorRow();
+        document.getElementById('cancelWorkEdit').onclick = closeEditor;
+        document.getElementById('workForm').onsubmit = e => {
+          e.preventDefault();
+          if (!isAdminUser) return;
+          const updated = [...editor.children].map(card => {
+            const read = prop => card.querySelector('[data-prop="'+prop+'"]')?.value.trim() || '';
+            return {name:read('name'),date:read('date'),status:read('status'),responsible:read('responsible'),goals:read('goals').split('\n').map(x=>x.trim()).filter(Boolean)};
+          });
+          if (updated.some(a => !a.name)) { alert('اسم النشاط مطلوب.'); return; }
+          work = updated;
+          localStorage.setItem(workKey,JSON.stringify(work));
+          renderWork(); closeEditor();
+        };
+        renderWork();
     </script>
 </body>
 </html>
