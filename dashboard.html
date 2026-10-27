@@ -65,7 +65,7 @@
             background-color: var(--sidebar-bg);
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: flex-start;
             padding: 15px 12px 20px;
             box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
             border-left: 1px solid rgba(15, 61, 89, 0.08);
@@ -142,42 +142,6 @@
             width: 20px;
             text-align: center;
             color: var(--navy);
-        }
-
-        .sidebar-bottom-content {
-            width: 100%;
-            border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 12px;
-            margin-top: auto !important;
-            background-color: var(--sidebar-bg);
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 11px 12px;
-            color: var(--navy) !important;
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 700;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .logout-link i {
-            font-size: 14px;
-            color: var(--navy) !important;
-            width: 20px;
-            text-align: center;
-        }
-
-        .logout-link:hover {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: #dc2626 !important;
         }
 
         /* زر السهم الثابت وموقع انتقاله بحسب إغلاق القائمة */
@@ -330,7 +294,7 @@
             position: absolute;
             top: calc(100% + 8px);
             right: 0;
-            width: 170px;
+            width: 190px;
             background: #ffffff;
             border-radius: 12px;
             box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
@@ -364,6 +328,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-bottom: 4px;
         }
 
         /* التجاوب */
@@ -465,13 +430,6 @@
                 </ul>
             </div>
 
-            <div class="sidebar-bottom-content">
-                <a href="index.html" class="logout-link">
-                    <span>تسجيل الخروج</span>
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                </a>
-            </div>
-
         </div>
     </div>
 
@@ -501,12 +459,21 @@
                     </div>
                 </div>
 
+                <!-- القائمة المنسدلة: الصلاحية وتحتها مباشرة زر تسجيل الخروج -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
 
                     <div class="dropdown-role-display">
                         <span id="displayUserRoleText">مستخدم عادي</span>
                         <i class="fa-solid fa-lock"></i>
+                    </div>
+
+                    <!-- زر تسجيل الخروج باللون الأحمر تحت الصلاحيات مباشرة -->
+                    <div class="border-t border-gray-100 pt-1">
+                        <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-2 px-2.5 py-2 rounded-lg text-red-600 hover:bg-red-50 font-bold transition text-xs">
+                            <span>تسجيل الخروج</span>
+                            <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
+                        </a>
                     </div>
                 </div>
 
