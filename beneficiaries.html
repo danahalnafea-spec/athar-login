@@ -595,7 +595,7 @@
 
         .category-badge {
             display: inline-block;
-            padding: 4px 9px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 10px;
             font-weight: 800;
@@ -650,7 +650,7 @@
             line-height: 2;
         }
 
-        /* التجاوب (متوافق تماماً مع الأيباد والجوالات) */
+        /* التجاوب */
         @media (max-width: 1200px) {
             .summary-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1052,6 +1052,16 @@
                 };
             }
 
+            function getCategoryBadgeStyle(category) {
+                switch(category) {
+                    case 'التطوير المهني': return 'background-color: #72b8e018; color: #3a91c2; border: 1px solid #72b8e040;';
+                    case 'التمكين الاقتصادي': return 'background-color: #ce8be818; color: #9b4dbf; border: 1px solid #ce8be840;';
+                    case 'اقتصاد': return 'background-color: #5ebf5f18; color: #2e8a32; border: 1px solid #5ebf5f40;';
+                    case 'الأنظمة والتأمين': return 'background-color: #d9a63818; color: #a6790d; border: 1px solid #d9a63840;';
+                    default: return 'background-color: #f3f4f6; color: #374151;';
+                }
+            }
+
             function formatNumber(value) {
                 return value === null ? 'غير متوفر' : new Intl.NumberFormat('en-US').format(value);
             }
@@ -1070,10 +1080,11 @@
                 items.forEach(function (item) {
                     const row = document.createElement('tr');
                     const info = getInitiativeBeneficiaryInfo(item);
+                    const categoryStyle = getCategoryBadgeStyle(item.category);
 
                     row.innerHTML = `
                         <td><div class="initiative-name">${item.name}</div></td>
-                        <td><span class="category-badge">${item.category}</span></td>
+                        <td><span class="category-badge" style="${categoryStyle}">${item.category}</span></td>
                         <td>${info.groups.length ? info.groups.join('، ') : '<span class="unavailable">غير متوفر</span>'}</td>
                         <td><span class="number-badge">${formatNumber(info.target)}</span></td>
                         <td><span class="number-badge">${formatNumber(info.actual)}</span></td>
