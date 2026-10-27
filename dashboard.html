@@ -3,21 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <title>منصة أثر - المستفيدون</title>
-
-    <!-- نفس مكتبات صفحات المشروع -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>منصة أثر - لوحة التحكم</title>
+    <!-- استدعاء خط Cairo وأيقونات FontAwesome -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    
     <style>
         :root {
             --sidebar-width: 280px;
-            --navy: #0b253a;
-            --blue: #4e9cd8;
-            --page-bg: #f0f7ff;
-            --sidebar-bg: #eaf4fc;
         }
 
         * {
@@ -27,8 +20,9 @@
             font-family: 'Cairo', sans-serif;
         }
 
+        /* القاعدة المرنة العامة للشاشة بالكامل وتمنع أي تكسر */
         body {
-            background-color: var(--page-bg);
+            background-color: #f0f7ff;
             background-image: url('bg-dashboard.png');
             background-size: cover;
             background-position: center;
@@ -43,191 +37,7 @@
             direction: rtl;
         }
 
-        /* =========================
-           الشريط الجانبي
-           مطابق لتصميم لوحة التحكم
-        ========================= */
-
-        .sidebar-wrapper {
-            position: relative;
-            display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            height: 100vh;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
-            transform: translateX(0);
-        }
-
-        .sidebar-wrapper.collapsed {
-            transform: translateX(var(--sidebar-width));
-        }
-
-        .sidebar-right {
-            width: var(--sidebar-width);
-            height: 100vh;
-            background-color: var(--sidebar-bg);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 15px 12px 20px;
-            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
-            border-left: 1px solid rgba(15, 61, 89, 0.08);
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .sidebar-top-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
-        .sidebar-logo {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            margin-bottom: 10px;
-            margin-top: 5px;
-        }
-
-        .sidebar-logo img {
-            width: 195px;
-            max-width: 100%;
-            height: auto;
-            object-fit: contain;
-        }
-
-        .sidebar-menu {
-            list-style: none !important;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            padding: 0;
-            margin: 0;
-        }
-
-        .sidebar-menu li {
-            list-style: none !important;
-            width: 100%;
-        }
-
-        .sidebar-menu li a {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 10px 12px;
-            color: var(--navy);
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 600;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        /* التعديل الوحيد: نفس حجم وسماكة خط بقية الخانات */
-        .sidebar-menu li.active a {
-            background-color: #d1e7fb;
-            color: var(--navy);
-            font-size: 13.5px;
-            font-weight: 600;
-        }
-
-        .sidebar-menu li a:hover:not(.active) {
-            background-color: rgba(59, 130, 246, 0.08);
-        }
-
-        .sidebar-menu li a i {
-            font-size: 14px;
-            width: 20px;
-            text-align: center;
-            color: var(--navy);
-        }
-
-        .sidebar-bottom-content {
-            width: 100%;
-            border-top: 1px solid rgba(15, 61, 89, 0.12);
-            padding-top: 12px;
-            margin-top: auto !important;
-            background-color: var(--sidebar-bg);
-        }
-
-        .logout-link {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            flex-direction: row-reverse;
-            gap: 12px;
-            padding: 11px 12px;
-            color: var(--navy) !important;
-            text-decoration: none;
-            font-size: 13.5px;
-            font-weight: 700;
-            border-radius: 10px;
-            transition: all 0.3s ease;
-            white-space: nowrap;
-        }
-
-        .logout-link i {
-            font-size: 14px;
-            color: var(--navy) !important;
-            width: 20px;
-            text-align: center;
-        }
-
-        .logout-link:hover {
-            background-color: rgba(220, 38, 38, 0.1);
-            color: #dc2626 !important;
-        }
-
-        .logout-link:hover i {
-            color: #dc2626 !important;
-        }
-
-        /* زر السهم: نفس تصميم صفحات المشروع */
-
-        .sidebar-toggle-btn {
-            position: fixed;
-            top: 25px;
-            right: calc(var(--sidebar-width) + 15px);
-            transform: none;
-            width: 34px;
-            height: 34px;
-            background-color: var(--navy);
-            color: #ffffff;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-            font-size: 12px;
-            z-index: 10000;
-            transition:
-                right 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                background-color 0.3s ease,
-                transform 0.3s ease;
-        }
-
-        body.sidebar-is-collapsed .sidebar-toggle-btn {
-            right: 20px;
-        }
-
-        .sidebar-toggle-btn:hover {
-            background-color: #16344e;
-            transform: scale(1.1);
-        }
-
-        /* =========================
-           المحتوى الرئيسي
-        ========================= */
-
+        /* القسم الرئيسي الأيسر للمحتوى */
         .main-content-area {
             flex: 1;
             height: 100vh;
@@ -242,6 +52,7 @@
             transition: all 0.3s ease;
         }
 
+        /* الهيدر العلوي */
         .header-top-wrapper {
             width: 100%;
             display: flex;
@@ -249,45 +60,95 @@
             align-items: center;
             flex-direction: row;
             margin-top: 1vh;
-            margin-bottom: 24px;
             gap: 15px;
             position: relative;
-            flex-shrink: 0;
         }
 
-        .page-heading {
+        /* عبارة الترحيب: ثابتة ومستقرة تماماً وتتجاوب مع العرض */
+        .welcome-center-section {
             text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            margin-right: 0px;
+            flex-shrink: 1;
             min-width: 0;
+            position: relative;
+            z-index: 10;
+            transition: margin-right 0.3s ease;
         }
 
-        .page-heading h1 {
-            font-size: clamp(18px, 2.2vw, 28px);
+        .welcome-title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        /* أحجام خطوط مرنة تتكيف تلقائياً عبر دالة clamp لجميع الأجهزة */
+        .welcome-center-section h1 {
+            font-size: clamp(15px, 2.2vw, 26px);
             font-weight: 900;
-            color: var(--navy);
-            line-height: 1.7;
+            color: #0b253a;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .page-heading p {
-            font-size: 12px;
+        .welcome-center-section p {
+            font-size: clamp(9px, 1vw, 13px);
+            color: #64748b; 
             font-weight: 600;
-            color: #64748b;
-            margin-top: 3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .heading-underline {
+        .welcome-underline {
             width: 45px;
             height: 3px;
-            background-color: var(--blue);
+            background-color: #4e9cd8;
             border-radius: 2px;
             margin-top: 4px;
         }
 
-        /* اسم المستخدم */
+        /* زر السهم المتجاوب تماماً */
+        .sidebar-toggle-btn {
+            position: fixed;
+            top: 25px;
+            right: calc(var(--sidebar-width) + 15px);
+            transform: none;
+            width: 34px;
+            height: 34px;
+            background-color: #0b253a;
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
+            font-size: 12px;
+            z-index: 10000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
+        }
 
+        /* عندما تُغلق القائمة، يستقر الزر بدقة عند الحافة اليمنى */
+        body.sidebar-is-collapsed .sidebar-toggle-btn {
+            right: 20px; 
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
+        }
+
+        /* شريط اسم المستخدم في أقصى اليسار */
         .top-user-bar-container {
             position: relative;
             flex-shrink: 0;
-            z-index: 100;
         }
 
         .top-user-bar {
@@ -304,7 +165,7 @@
         }
 
         .top-user-bar:hover {
-            background: #ffffff;
+            background: rgba(255, 255, 255, 1);
         }
 
         .user-avatar-circle {
@@ -315,7 +176,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            color: var(--navy);
+            color: #0b253a;
             box-shadow: 0 2px 5px rgba(11, 37, 58, 0.1);
             flex-shrink: 0;
         }
@@ -330,13 +191,13 @@
             gap: 6px;
             font-size: 14px;
             font-weight: 700;
-            color: var(--navy);
+            color: #0b253a;
             white-space: nowrap;
         }
 
         .user-name-dropdown i {
             font-size: 10px;
-            color: var(--navy);
+            color: #0b253a;
             transition: transform 0.3s ease;
         }
 
@@ -344,6 +205,7 @@
             transform: rotate(180deg);
         }
 
+        /* القائمة المنسدلة للمستخدم */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -374,7 +236,7 @@
 
         .dropdown-role-display {
             background: #f1f5f9;
-            color: var(--navy);
+            color: #0b253a;
             padding: 8px 10px;
             border-radius: 8px;
             font-size: 13px;
@@ -382,368 +244,157 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            cursor: default;
         }
 
         .dropdown-role-display i {
-            color: var(--blue);
+            color: #4e9cd8;
             font-size: 12px;
         }
 
-        /* =========================
-           بطاقات الإحصائيات
-           أصغر ومتناسقة
-        ========================= */
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-
-        .summary-card {
-            min-width: 0;
-            min-height: 88px;
-            background: rgba(255, 255, 255, 0.94);
-            border: 1px solid #e5edf5;
-            border-radius: 14px;
-            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.05);
-            padding: 11px 13px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .summary-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(11, 37, 58, 0.08);
-        }
-
-        .summary-card-content {
-            min-width: 0;
-        }
-
-        .summary-label {
-            display: block;
-            color: #8190a5;
-            font-size: 10px;
-            line-height: 1.8;
-            font-weight: 700;
-        }
-
-        .summary-value {
-            display: block;
-            color: var(--navy);
-            font-size: 20px;
-            line-height: 1.4;
-            font-weight: 900;
-            margin-top: 2px;
-            overflow-wrap: anywhere;
-        }
-
-        .summary-icon {
-            flex-shrink: 0;
-            width: 35px;
-            height: 35px;
-            border-radius: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-            background: #e8f4ff;
-            color: #4e9cd8;
-        }
-
-        .summary-card:nth-child(2) .summary-icon {
-            background: #f0eaff;
-            color: #8b68c7;
-        }
-
-        .summary-card:nth-child(3) .summary-icon {
-            background: #e7f8ee;
-            color: #29945a;
-        }
-
-        .summary-card:nth-child(4) .summary-icon {
-            background: #fff4df;
-            color: #b98523;
-        }
-
-        /* رسالة توضيحية */
-
-        .info-notice {
+        /* حاوية الشريط الجانبي */
+        .sidebar-wrapper {
+            position: relative;
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            background: rgba(232, 244, 255, 0.92);
-            border: 1px solid #d5e9fb;
-            border-radius: 12px;
-            padding: 11px 14px;
-            margin-bottom: 18px;
-            color: #365b78;
-            font-size: 11px;
-            line-height: 1.9;
-        }
-
-        .info-notice i {
-            color: var(--blue);
-            margin-top: 4px;
             flex-shrink: 0;
+            height: 100vh;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+            transform: translateX(0);
         }
 
-        /* البحث والتصفية */
+        .sidebar-wrapper.collapsed {
+            transform: translateX(var(--sidebar-width));
+        }
 
-        .filter-toolbar {
+        /* الشريط الجانبي في اليمين */
+        .sidebar-right {
+            width: var(--sidebar-width); 
+            height: 100vh;
+            background-color: #eaf4fc;
             display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-            width: 100%;
-        }
-
-        .filter-select,
-        .search-box {
-            height: 44px;
-            border: 1px solid #e5eaf0;
-            border-radius: 11px;
-            background: rgba(255, 255, 255, 0.96);
-            color: var(--navy);
-            box-shadow: 0 2px 8px rgba(11, 37, 58, 0.035);
-        }
-
-        .filter-select {
-            width: 220px;
-            max-width: 100%;
-            padding: 0 12px;
-            font-size: 12px;
-            font-weight: 700;
-            outline: none;
-            cursor: pointer;
-        }
-
-        .search-box {
-            flex: 1;
-            min-width: 0;
-            padding: 0 14px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .search-box i {
-            color: #94a3b8;
-            font-size: 13px;
-        }
-
-        .search-box input {
-            width: 100%;
-            min-width: 0;
-            border: none;
-            outline: none;
-            background: transparent;
-            color: var(--navy);
-            font-size: 12px;
-        }
-
-        .search-box input::placeholder {
-            color: #94a3b8;
-        }
-
-        .filter-select:focus,
-        .search-box:focus-within {
-            border-color: var(--blue);
-            box-shadow: 0 0 0 2px rgba(78, 156, 216, 0.13);
-        }
-
-        /* =========================
-           جدول المستفيدين
-        ========================= */
-
-        .table-panel {
-            width: 100%;
-            min-width: 0;
-            background: rgba(255, 255, 255, 0.96);
-            border: 1px solid #e5edf5;
-            border-radius: 15px;
-            box-shadow: 0 3px 12px rgba(11, 37, 58, 0.045);
-            overflow: hidden;
-            margin-bottom: 25px;
-        }
-
-        .table-heading {
-            display: flex;
-            align-items: center;
+            flex-direction: column;
             justify-content: space-between;
-            gap: 12px;
-            padding: 15px 18px;
-            border-bottom: 1px solid #edf1f5;
+            padding: 15px 12px 20px 12px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        .table-heading h2 {
-            color: var(--navy);
-            font-size: 14px;
-            font-weight: 900;
-        }
-
-        .table-heading p {
-            color: #8190a5;
-            font-size: 10px;
-            margin-top: 3px;
-        }
-
-        .table-count {
-            flex-shrink: 0;
-            background: #e8f4ff;
-            color: #347eaf;
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .table-scroll {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-        .beneficiaries-table {
-            width: 100%;
-            border-collapse: collapse;
-            text-align: right;
-            min-width: 760px;
-        }
-
-        .beneficiaries-table thead {
-            background: #f7faff;
-        }
-
-        .beneficiaries-table th {
-            padding: 13px 15px;
-            color: #64748b;
-            font-size: 10px;
-            font-weight: 800;
-            white-space: nowrap;
-            border-bottom: 1px solid #edf1f5;
-        }
-
-        .beneficiaries-table td {
-            padding: 13px 15px;
-            color: #334155;
-            font-size: 11px;
-            font-weight: 600;
-            vertical-align: middle;
-            border-bottom: 1px solid #f0f3f7;
-        }
-
-        .beneficiaries-table tbody tr {
-            transition: background 0.2s ease;
-        }
-
-        .beneficiaries-table tbody tr:hover {
-            background: #f8fbff;
-        }
-
-        .beneficiaries-table tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        .initiative-name {
-            color: var(--navy);
-            font-size: 12px;
-            font-weight: 900;
-            line-height: 1.8;
-        }
-
-        .category-badge {
-            display: inline-block;
-            padding: 4px 9px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .number-badge {
-            display: inline-flex;
+        .sidebar-top-content {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-width: 35px;
-            padding: 4px 9px;
-            border-radius: 8px;
-            background: #f1f7fd;
-            color: var(--navy);
-            font-size: 11px;
-            font-weight: 900;
+            width: 100%;
         }
 
-        .unavailable {
-            color: #94a3b8;
-            font-size: 10px;
-            font-weight: 600;
+        .sidebar-logo {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 10px; 
+            margin-top: 5px;
         }
 
-        .details-link {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .sidebar-logo img {
+            width: 195px; 
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .sidebar-menu {
+            list-style: none !important;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
             gap: 6px;
-            padding: 6px 9px;
-            background: #f1f5f9;
-            color: var(--navy);
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-menu li {
+            list-style: none !important;
+            width: 100%;
+        }
+
+        .sidebar-menu li a {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 10px 12px;
+            color: #0b253a;
             text-decoration: none;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 10px;
-            font-weight: 800;
+            font-size: 13.5px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
             white-space: nowrap;
-            transition: all 0.2s ease;
         }
 
-        .details-link:hover {
-            background: var(--navy);
-            color: #ffffff;
+        .sidebar-menu li.active a {
+            background-color: #d1e7fb; 
+            color: #0b253a;
+            font-weight: 800;
         }
 
-        .empty-state {
-            padding: 35px 15px !important;
-            text-align: center !important;
-            color: #8190a5 !important;
-            line-height: 2;
+        .sidebar-menu li a:hover:not(.active) {
+            background-color: rgba(59, 130, 246, 0.08);
         }
 
-        .empty-state i {
-            display: block;
-            font-size: 25px;
-            color: #b6c9dc;
-            margin-bottom: 9px;
+        .sidebar-menu li a i {
+            font-size: 14px;
+            width: 20px;
+            text-align: center;
+            color: #0b253a;
         }
 
-        .empty-state strong {
-            display: block;
-            color: var(--navy);
-            font-size: 12px;
+        /* زر تسجيل الخروج مثبت أسفل القائمة */
+        .sidebar-bottom-content {
+            width: 100%;
+            border-top: 1px solid rgba(15, 61, 89, 0.12);
+            padding-top: 12px;
+            margin-top: auto !important;
+            background-color: #eaf4fc;
         }
 
-        /* =========================
-           التجاوب
-        ========================= */
-
-        @media (max-width: 1200px) {
-            .summary-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .summary-card {
-                min-height: 82px;
-            }
-
-            .summary-label {
-                font-size: 10px;
-            }
+        .logout-link {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-direction: row-reverse;
+            gap: 12px;
+            padding: 11px 12px;
+            color: #0b253a !important;
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 700;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            white-space: nowrap;
         }
 
+        .logout-link i {
+            font-size: 14px;
+            color: #0b253a !important;
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-link:hover {
+            background-color: rgba(220, 38, 38, 0.1);
+            color: #dc2626 !important;
+        }
+
+        .logout-link:hover i {
+            color: #dc2626 !important;
+        }
+
+        /* التجاوب الشامل للشاشات الصغيرة والجوالات */
         @media (max-width: 1024px) {
             .sidebar-wrapper {
                 position: fixed;
@@ -752,199 +403,68 @@
                 z-index: 9999;
                 transform: translateX(var(--sidebar-width));
             }
-
             .sidebar-wrapper.mobile-open {
                 transform: translateX(0);
             }
-
-            .main-content-area {
-                width: 100%;
-                padding: 75px 20px 30px;
-            }
-
-            .header-top-wrapper {
-                margin-top: 5px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .main-content-area {
-                padding: 68px 12px 22px;
-            }
-
-            .header-top-wrapper {
-                margin-bottom: 17px;
-                gap: 8px;
-                align-items: flex-start;
-            }
-
-            .page-heading h1 {
-                font-size: 19px;
-            }
-
-            .page-heading p {
-                font-size: 10px;
-                max-width: 190px;
-                line-height: 1.8;
-            }
-
-            .top-user-bar {
-                gap: 6px;
-                padding: 5px 9px;
-            }
-
-            .user-avatar-circle {
-                width: 30px;
-                height: 30px;
-            }
-
-            .user-name-dropdown {
-                font-size: 11px;
-                gap: 5px;
-            }
-
-            .summary-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 8px;
-                margin-bottom: 14px;
-            }
-
-            .summary-card {
-                min-height: 75px;
-                padding: 8px;
-                gap: 5px;
-                border-radius: 11px;
-            }
-
-            .summary-icon {
-                width: 29px;
-                height: 29px;
-                border-radius: 9px;
-                font-size: 13px;
-            }
-
-            .summary-label {
-                font-size: 9px;
-                line-height: 1.7;
-            }
-
-            .summary-value {
-                font-size: 17px;
-            }
-
-            .info-notice {
-                font-size: 10px;
-                padding: 9px 10px;
-                margin-bottom: 13px;
-            }
-
-            .filter-toolbar {
-                flex-direction: column;
-                gap: 8px;
-                margin-bottom: 13px;
-            }
-
-            .filter-select {
-                width: 100%;
-                height: 41px;
-            }
-
-            .search-box {
-                flex: auto;
-                width: 100%;
-                height: 41px;
-            }
-
-            .table-heading {
-                padding: 12px;
-            }
-
-            .table-heading h2 {
-                font-size: 12px;
-            }
-
-            .table-count {
-                font-size: 9px;
-                padding: 5px 7px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                scroll-behavior: auto !important;
-                transition-duration: 0.01ms !important;
+            body.sidebar-is-collapsed .sidebar-toggle-btn {
+                right: 20px;
             }
         }
     </style>
 </head>
-
 <body>
 
-    <!-- زر السهم: نفس صفحات المشروع -->
-    <button
-        class="sidebar-toggle-btn"
-        id="sidebarToggleBtn"
-        type="button"
-        title="إخفاء/إظهار القائمة"
-        aria-label="إخفاء أو إظهار القائمة"
-        aria-expanded="true">
+    <!-- زر السهم المتجاوب -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
 
-    <!-- الشريط الجانبي: مطابق لتصميم لوحة التحكم -->
+    <!-- حاوية الشريط الجانبي -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
         <div class="sidebar-right" id="sidebarRight">
-
             <div class="sidebar-top-content">
                 <div class="sidebar-logo">
                     <img src="logo.png" alt="شعار منصة أثر">
                 </div>
 
                 <ul class="sidebar-menu">
-                    <li>
+                    <li class="active">
                         <a href="dashboard.html">
                             <span>الرئيسية</span>
                             <i class="fa-solid fa-house"></i>
                         </a>
                     </li>
-
                     <li>
                         <a href="initiatives.html">
                             <span>المبادرات</span>
                             <i class="fa-solid fa-folder-open"></i>
                         </a>
                     </li>
-
                     <li>
                         <a href="#">
                             <span>المؤشرات</span>
                             <i class="fa-solid fa-chart-line"></i>
                         </a>
                     </li>
-
                     <li>
                         <a href="#">
                             <span>البيانات</span>
                             <i class="fa-solid fa-database"></i>
                         </a>
                     </li>
-
                     <li>
                         <a href="#">
                             <span>التقارير</span>
                             <i class="fa-solid fa-file-lines"></i>
                         </a>
                     </li>
-
-                    <li class="active">
+                    <li>
                         <a href="beneficiaries.html">
                             <span>المستفيدون</span>
                             <i class="fa-solid fa-users"></i>
                         </a>
                     </li>
-
+                    <!-- إعدادات النظام للمشرف -->
                     <li id="adminSettingsMenu" style="display: none;">
                         <a href="#">
                             <span>إعدادات النظام</span>
@@ -960,750 +480,120 @@
                     <i class="fa-solid fa-right-from-bracket"></i>
                 </a>
             </div>
-
         </div>
     </div>
 
-    <!-- المحتوى الرئيسي -->
-    <main class="main-content-area" id="mainContentArea">
-
+    <!-- القسم الأيسر: المحتوى -->
+    <div class="main-content-area" id="mainContentArea">
+        
         <!-- الهيدر العلوي -->
-        <header class="header-top-wrapper">
-
-            <div class="page-heading">
-                <h1>المستفيدون والفئات المستهدفة</h1>
-                <div class="heading-underline"></div>
-                <p>متابعة أعداد المستفيدين والفئات المستهدفة في المبادرات</p>
+        <div class="header-top-wrapper">
+            
+            <!-- عبارة الترحيب مستقرة تماماً ومرتبة -->
+            <div class="welcome-center-section" id="welcomeSection">
+                <div class="welcome-title-wrapper">
+                    <h1>مرحباً بك في أثر</h1>
+                </div>
+                <p>معاً نصنع أثراً مستداماً.. ونحول المبادرات إلى نتائج حقيقية</p>
+                <div class="welcome-underline"></div>
             </div>
 
-            <!-- اسم المستخدم -->
+            <!-- شريط اسم المستخدم في أقصى اليسار -->
             <div class="top-user-bar-container" id="userBarContainer">
-
-                <div class="top-user-bar" id="userBarToggle" role="button" tabindex="0" aria-expanded="false">
+                <div class="top-user-bar" id="userBarToggle">
                     <div class="user-avatar-circle">
                         <i class="fa-solid fa-user"></i>
                     </div>
-
                     <div class="user-name-dropdown">
                         <span id="displayUserName">مستخدم</span>
                         <i class="fa-solid fa-chevron-down"></i>
                     </div>
                 </div>
 
+                <!-- القائمة المنسدلة -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
-
                     <div class="dropdown-role-display">
                         <span id="displayUserRoleText">مستخدم عادي</span>
                         <i class="fa-solid fa-lock"></i>
                     </div>
                 </div>
-
             </div>
-        </header>
 
-        <!-- بطاقات الإحصائيات -->
-        <section class="summary-grid" aria-label="ملخص المستفيدين">
-
-            <article class="summary-card">
-                <div class="summary-card-content">
-                    <span class="summary-label">إجمالي المستفيدين الفعلي</span>
-                    <span class="summary-value" id="actualTotal">—</span>
-                </div>
-
-                <div class="summary-icon">
-                    <i class="fa-solid fa-users"></i>
-                </div>
-            </article>
-
-            <article class="summary-card">
-                <div class="summary-card-content">
-                    <span class="summary-label">إجمالي المستفيدين المستهدف</span>
-                    <span class="summary-value" id="targetTotal">—</span>
-                </div>
-
-                <div class="summary-icon">
-                    <i class="fa-solid fa-bullseye"></i>
-                </div>
-            </article>
-
-            <article class="summary-card">
-                <div class="summary-card-content">
-                    <span class="summary-label">مبادرات لها فئات مسجلة</span>
-                    <span class="summary-value" id="groupsInitiativesTotal">—</span>
-                </div>
-
-                <div class="summary-icon">
-                    <i class="fa-solid fa-people-group"></i>
-                </div>
-            </article>
-
-            <article class="summary-card">
-                <div class="summary-card-content">
-                    <span class="summary-label">عدد المبادرات</span>
-                    <span class="summary-value" id="initiativeTotal">—</span>
-                </div>
-
-                <div class="summary-icon">
-                    <i class="fa-solid fa-folder-open"></i>
-                </div>
-            </article>
-
-        </section>
-
-        <!-- توضيح مصدر البيانات -->
-        <div class="info-notice">
-            <i class="fa-solid fa-circle-info"></i>
-            <p>
-                تُعرض البيانات المسجلة في المبادرات. إذا لم يكن العدد المستهدف أو الفئات المستهدفة
-                مسجلًا في بيانات المبادرة، فستظهر عبارة «غير متوفر» بدلًا من افتراض أرقام أو فئات غير موثقة.
-            </p>
         </div>
 
-        <!-- البحث والتصفية -->
-        <section class="filter-toolbar" aria-label="البحث والتصفية">
-
-            <select id="categoryFilter" class="filter-select" aria-label="التصفية حسب المجال">
-                <option value="">جميع المجالات</option>
-                <option value="التطوير المهني">التطوير المهني</option>
-                <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
-                <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
-                <option value="اقتصاد">اقتصاد</option>
-            </select>
-
-            <div class="search-box">
-                <i class="fa-solid fa-magnifying-glass"></i>
-
-                <input
-                    type="search"
-                    id="searchInput"
-                    placeholder="ابحثي عن مبادرة أو فئة مستهدفة..."
-                    aria-label="البحث عن مبادرة أو فئة مستهدفة">
-            </div>
-
-        </section>
-
-        <!-- جدول المستفيدين -->
-        <section class="table-panel">
-
-            <div class="table-heading">
-                <div>
-                    <h2>بيانات المستفيدين حسب المبادرة</h2>
-                    <p>تفاصيل الفئات والأعداد المسجلة لكل مبادرة</p>
-                </div>
-
-                <span class="table-count" id="visibleInitiativesCount">0 مبادرة</span>
-            </div>
-
-            <div class="table-scroll">
-                <table class="beneficiaries-table">
-
-                    <thead>
-                        <tr>
-                            <th>اسم المبادرة</th>
-                            <th>المجال</th>
-                            <th>الفئات المستهدفة</th>
-                            <th>العدد المستهدف</th>
-                            <th>العدد الفعلي</th>
-                            <th>التفاصيل</th>
-                        </tr>
-                    </thead>
-
-                    <tbody id="beneficiariesTableBody">
-                        <tr>
-                            <td colspan="6" class="empty-state">
-                                جارٍ تحميل البيانات...
-                            </td>
-                        </tr>
-                    </tbody>
-
-                </table>
-            </div>
-
-        </section>
-
-    </main>
+    </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        // سحب الاسم المسجل وصلاحية المستخدم وعرضها
+        const savedName = localStorage.getItem('athalUser');
+        const savedRole = localStorage.getItem('athalRole');
 
-            /* =========================
-               بيانات المستخدم والصلاحيات
-            ========================= */
+        if (savedName) {
+            document.getElementById('displayUserName').textContent = savedName;
+        }
 
-            const savedName = localStorage.getItem('athalUser');
-            const savedRole = localStorage.getItem('athalRole');
-            const isAdmin = savedRole === 'admin';
+        // تحديد نص الصلاحية (مشرف أو مستخدم) وعرض إعدادات المشرف إن وجدت
+        const roleTextElement = document.getElementById('displayUserRoleText');
+        if (savedRole === 'admin') {
+            roleTextElement.textContent = 'مشرف النظام';
+            document.getElementById('adminSettingsMenu').style.display = 'block';
+        } else {
+            roleTextElement.textContent = 'مستخدم عادي';
+        }
 
-            const displayName = document.getElementById('displayUserName');
-            const roleText = document.getElementById('displayUserRoleText');
-            const adminMenu = document.getElementById('adminSettingsMenu');
+        // تفاعل فتح وإغلاق القائمة المنسدلة للحساب
+        const userBarContainer = document.getElementById('userBarContainer');
+        const userBarToggle = document.getElementById('userBarToggle');
+        const userDropdownMenu = document.getElementById('userDropdownMenu');
 
-            if (savedName && displayName) {
-                displayName.textContent = savedName;
-            }
+        userBarToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            userDropdownMenu.classList.toggle('show');
+            userBarToggle.classList.toggle('active');
+        });
 
-            if (roleText) {
-                roleText.textContent = isAdmin ? 'مشرف النظام' : 'مستخدم عادي';
-            }
+        // إغلاق القائمة المنسدلة عند النقر في أي مكان خارجها
+        window.addEventListener('click', function () {
+            userDropdownMenu.classList.remove('show');
+            userBarToggle.classList.remove('active');
+        });
 
-            if (isAdmin && adminMenu) {
-                adminMenu.style.display = 'block';
-            }
+        // البرمجة الذكية المتجاوبة لفتح وإغلاق القائمة
+        const sidebarWrapper = document.getElementById('sidebarWrapper');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const toggleIcon = document.getElementById('toggleIcon');
+        const bodyElement = document.body;
 
-            /* =========================
-               القائمة المنسدلة للمستخدم
-            ========================= */
-
-            const userBarToggle = document.getElementById('userBarToggle');
-            const userDropdownMenu = document.getElementById('userDropdownMenu');
-
-            function toggleUserDropdown(event) {
-                if (event) {
-                    event.stopPropagation();
-                }
-
-                const isOpen = userDropdownMenu.classList.toggle('show');
-
-                userBarToggle.classList.toggle('active', isOpen);
-                userBarToggle.setAttribute('aria-expanded', String(isOpen));
-            }
-
-            userBarToggle.addEventListener('click', toggleUserDropdown);
-
-            userBarToggle.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter' || event.key === ' ') {
-                    event.preventDefault();
-                    toggleUserDropdown(event);
-                }
-            });
-
-            userDropdownMenu.addEventListener('click', function (event) {
-                event.stopPropagation();
-            });
-
-            window.addEventListener('click', function () {
-                userDropdownMenu.classList.remove('show');
-                userBarToggle.classList.remove('active');
-                userBarToggle.setAttribute('aria-expanded', 'false');
-            });
-
-            /* =========================
-               إظهار وإخفاء الشريط الجانبي
-               نفس سلوك صفحات المشروع
-            ========================= */
-
-            const sidebarWrapper = document.getElementById('sidebarWrapper');
-            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-            const toggleIcon = document.getElementById('toggleIcon');
-            const bodyElement = document.body;
-
-            function updateSidebarButton(isOpen) {
-                if (isOpen) {
+        sidebarToggleBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            if (window.innerWidth <= 1024) {
+                sidebarWrapper.classList.toggle('mobile-open');
+                if (sidebarWrapper.classList.contains('mobile-open')) {
                     toggleIcon.classList.remove('fa-chevron-right');
                     toggleIcon.classList.add('fa-chevron-left');
-
-                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
-                    sidebarToggleBtn.setAttribute('aria-expanded', 'true');
-
                     bodyElement.classList.remove('sidebar-is-collapsed');
                 } else {
                     toggleIcon.classList.remove('fa-chevron-left');
                     toggleIcon.classList.add('fa-chevron-right');
-
-                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
-                    sidebarToggleBtn.setAttribute('aria-expanded', 'false');
-
                     bodyElement.classList.add('sidebar-is-collapsed');
                 }
-            }
-
-            sidebarToggleBtn.addEventListener('click', function (event) {
-                event.stopPropagation();
-
-                if (window.innerWidth <= 1024) {
-                    const isOpen = sidebarWrapper.classList.toggle('mobile-open');
-                    updateSidebarButton(isOpen);
+            } else {
+                sidebarWrapper.classList.toggle('collapsed');
+                if (sidebarWrapper.classList.contains('collapsed')) {
+                    toggleIcon.classList.remove('fa-chevron-right');
+                    toggleIcon.classList.add('fa-chevron-left');
+                    sidebarToggleBtn.setAttribute('title', 'فتح القائمة');
+                    bodyElement.classList.add('sidebar-is-collapsed');
                 } else {
-                    const isCollapsed = sidebarWrapper.classList.toggle('collapsed');
-                    updateSidebarButton(!isCollapsed);
-                }
-            });
-
-            window.addEventListener('resize', function () {
-                if (window.innerWidth <= 1024) {
-                    sidebarWrapper.classList.remove('collapsed');
-                    sidebarWrapper.classList.remove('mobile-open');
-                    updateSidebarButton(false);
-                } else {
-                    sidebarWrapper.classList.remove('mobile-open');
-                    updateSidebarButton(!sidebarWrapper.classList.contains('collapsed'));
-                }
-            });
-
-            /* =========================
-               قراءة بيانات المبادرات
-            ========================= */
-
-            const defaultInitiatives = [
-                {
-                    id: 'samqat',
-                    name: 'مبادرة سامقات',
-                    category: 'التمكين الاقتصادي',
-                    beneficiaries: '17',
-                    date: '2025-11-30',
-                    impact: '5 / 5',
-                    status: 'مكتملة'
-                },
-                {
-                    id: 'tech',
-                    name: 'مبادرة محترف',
-                    category: 'التطوير المهني',
-                    beneficiaries: '568',
-                    date: '2025-09-15',
-                    impact: '2.47 / 5',
-                    status: 'مكتملة'
-                },
-                {
-                    id: 'fahim',
-                    name: 'مبادرة فهيم',
-                    category: 'اقتصاد',
-                    beneficiaries: '144',
-                    date: '2025-12-11',
-                    impact: '4.6 / 5',
-                    status: 'نشطة'
-                },
-                {
-                    id: 'mataheb',
-                    name: 'مبادرة متأهب',
-                    category: 'الأنظمة والتأمين',
-                    beneficiaries: '387',
-                    date: '2025-09-15',
-                    impact: '5 / 5',
-                    status: 'مكتملة'
-                }
-            ];
-
-            let initiatives = [];
-
-            try {
-                const savedData = localStorage.getItem('athalInitiatives');
-
-                if (savedData !== null) {
-                    const parsedData = JSON.parse(savedData);
-
-                    initiatives = Array.isArray(parsedData)
-                        ? parsedData
-                        : defaultInitiatives;
-                } else {
-                    initiatives = defaultInitiatives;
-                    localStorage.setItem(
-                        'athalInitiatives',
-                        JSON.stringify(defaultInitiatives)
-                    );
-                }
-            } catch (error) {
-                console.error('تعذرت قراءة بيانات المبادرات:', error);
-                initiatives = defaultInitiatives;
-            }
-
-            /* =========================
-               قراءة بيانات المستفيدين
-            ========================= */
-
-            function getBeneficiaryExtraData() {
-                try {
-                    const saved = localStorage.getItem('athar_beneficiary_data');
-                    const parsed = saved ? JSON.parse(saved) : {};
-
-                    return parsed && typeof parsed === 'object' && !Array.isArray(parsed)
-                        ? parsed
-                        : {};
-                } catch (error) {
-                    console.error('تعذرت قراءة بيانات المستفيدين:', error);
-                    return {};
+                    toggleIcon.classList.remove('fa-chevron-left');
+                    toggleIcon.classList.add('fa-chevron-right');
+                    sidebarToggleBtn.setAttribute('title', 'إخفاء القائمة');
+                    bodyElement.classList.remove('sidebar-is-collapsed');
                 }
             }
-
-            const extraData = getBeneficiaryExtraData();
-
-            function getInitiativeBeneficiaryInfo(item) {
-                const extra = extraData[item.id] || item.beneficiaryInfo || {};
-
-                const actualRaw =
-                    extra.actual ??
-                    item.beneficiariesActual ??
-                    item.beneficiaries;
-
-                const targetRaw =
-                    extra.target ??
-                    item.beneficiariesTarget;
-
-                const groupsRaw =
-                    extra.groups ??
-                    item.targetGroups ??
-                    item.beneficiaryGroups;
-
-                return {
-                    actual: normalizeCount(actualRaw),
-                    target: normalizeCount(targetRaw),
-                    groups: normalizeGroups(groupsRaw)
-                };
-            }
-
-            function normalizeCount(value) {
-                if (
-                    value === null ||
-                    value === undefined ||
-                    String(value).trim() === ''
-                ) {
-                    return null;
-                }
-
-                const number = Number(value);
-
-                if (!Number.isFinite(number) || number < 0) {
-                    return null;
-                }
-
-                return number;
-            }
-
-            function normalizeGroups(value) {
-                if (Array.isArray(value)) {
-                    return value
-                        .map(group => String(group).trim())
-                        .filter(Boolean);
-                }
-
-                if (typeof value === 'string' && value.trim()) {
-                    return value
-                        .split(/[,،\n]/)
-                        .map(group => group.trim())
-                        .filter(Boolean);
-                }
-
-                return [];
-            }
-
-            /* =========================
-               تنسيق الأرقام والنصوص
-            ========================= */
-
-            function formatNumber(value) {
-                if (value === null || value === undefined) {
-                    return 'غير متوفر';
-                }
-
-                return new Intl.NumberFormat('en-US', {
-                    maximumFractionDigits: 2
-                }).format(value);
-            }
-
-            function formatCountLabel(count) {
-                return count === 1 ? 'مبادرة واحدة' : count + ' مبادرة';
-            }
-
-            function createElement(tag, className, text) {
-                const element = document.createElement(tag);
-
-                if (className) {
-                    element.className = className;
-                }
-
-                if (text !== undefined && text !== null) {
-                    element.textContent = text;
-                }
-
-                return element;
-            }
-
-            /* =========================
-               ألوان المجالات
-            ========================= */
-
-            function getCategoryStyle(category) {
-                switch (category) {
-                    case 'التطوير المهني':
-                        return {
-                            background: '#eaf6fd',
-                            color: '#3a91c2',
-                            border: '#d2eaf8'
-                        };
-
-                    case 'التمكين الاقتصادي':
-                        return {
-                            background: '#f6edfc',
-                            color: '#9b4dbf',
-                            border: '#ebd8f7'
-                        };
-
-                    case 'اقتصاد':
-                        return {
-                            background: '#eaf8eb',
-                            color: '#2e8a32',
-                            border: '#d3eed4'
-                        };
-
-                    case 'الأنظمة والتأمين':
-                        return {
-                            background: '#fff7e4',
-                            color: '#a6790d',
-                            border: '#f4e4b7'
-                        };
-
-                    default:
-                        return {
-                            background: '#f3f4f6',
-                            color: '#475569',
-                            border: '#e5e7eb'
-                        };
-                }
-            }
-
-            /* =========================
-               بناء صفوف الجدول
-            ========================= */
-
-            function renderTable(items) {
-                const tableBody = document.getElementById('beneficiariesTableBody');
-                const countLabel = document.getElementById('visibleInitiativesCount');
-
-                tableBody.replaceChildren();
-                countLabel.textContent = formatCountLabel(items.length);
-
-                if (items.length === 0) {
-                    const row = document.createElement('tr');
-                    const cell = document.createElement('td');
-
-                    cell.colSpan = 6;
-                    cell.className = 'empty-state';
-
-                    const icon = createElement('i', 'fa-solid fa-magnifying-glass');
-                    const title = createElement('strong', '', 'لا توجد نتائج مطابقة');
-                    const description = createElement(
-                        'span',
-                        '',
-                        'جرّبي تغيير عبارة البحث أو اختيار مجال آخر.'
-                    );
-
-                    cell.append(icon, title, description);
-                    row.appendChild(cell);
-                    tableBody.appendChild(row);
-
-                    return;
-                }
-
-                items.forEach(function (item) {
-                    const row = document.createElement('tr');
-                    const info = getInitiativeBeneficiaryInfo(item);
-
-                    /* اسم المبادرة */
-                    const nameCell = document.createElement('td');
-                    const name = createElement(
-                        'div',
-                        'initiative-name',
-                        item.name || 'مبادرة بدون اسم'
-                    );
-
-                    nameCell.appendChild(name);
-
-                    /* المجال */
-                    const categoryCell = document.createElement('td');
-                    const category = createElement(
-                        'span',
-                        'category-badge',
-                        item.category || 'غير محدد'
-                    );
-
-                    const categoryStyle = getCategoryStyle(item.category);
-
-                    category.style.backgroundColor = categoryStyle.background;
-                    category.style.color = categoryStyle.color;
-                    category.style.border = '1px solid ' + categoryStyle.border;
-
-                    categoryCell.appendChild(category);
-
-                    /* الفئات المستهدفة */
-                    const groupsCell = document.createElement('td');
-
-                    if (info.groups.length > 0) {
-                        groupsCell.textContent = info.groups.join('، ');
-                    } else {
-                        groupsCell.appendChild(
-                            createElement('span', 'unavailable', 'غير متوفر')
-                        );
-                    }
-
-                    /* العدد المستهدف */
-                    const targetCell = document.createElement('td');
-
-                    if (info.target !== null) {
-                        targetCell.appendChild(
-                            createElement('span', 'number-badge', formatNumber(info.target))
-                        );
-                    } else {
-                        targetCell.appendChild(
-                            createElement('span', 'unavailable', 'غير متوفر')
-                        );
-                    }
-
-                    /* العدد الفعلي */
-                    const actualCell = document.createElement('td');
-
-                    if (info.actual !== null) {
-                        actualCell.appendChild(
-                            createElement('span', 'number-badge', formatNumber(info.actual))
-                        );
-                    } else {
-                        actualCell.appendChild(
-                            createElement('span', 'unavailable', 'غير متوفر')
-                        );
-                    }
-
-                    /* رابط التفاصيل */
-                    const detailsCell = document.createElement('td');
-                    const detailsLink = document.createElement('a');
-
-                    detailsLink.className = 'details-link';
-                    detailsLink.href =
-                        'initiative-details.html?initiative=' +
-                        encodeURIComponent(item.id || 'samqat');
-
-                    const detailsIcon = createElement('i', 'fa-solid fa-file-lines');
-                    const detailsText = createElement('span', '', 'عرض التفاصيل');
-
-                    detailsLink.append(detailsIcon, detailsText);
-                    detailsCell.appendChild(detailsLink);
-
-                    row.append(
-                        nameCell,
-                        categoryCell,
-                        groupsCell,
-                        targetCell,
-                        actualCell,
-                        detailsCell
-                    );
-
-                    tableBody.appendChild(row);
-                });
-            }
-
-            /* =========================
-               تحديث بطاقات الإحصائيات
-            ========================= */
-
-            function updateSummary(items) {
-                let actualTotal = 0;
-                let targetTotal = 0;
-                let hasActualCount = false;
-                let hasTargetCount = false;
-                let groupsInitiativesTotal = 0;
-
-                items.forEach(function (item) {
-                    const info = getInitiativeBeneficiaryInfo(item);
-
-                    if (info.actual !== null) {
-                        actualTotal += info.actual;
-                        hasActualCount = true;
-                    }
-
-                    if (info.target !== null) {
-                        targetTotal += info.target;
-                        hasTargetCount = true;
-                    }
-
-                    if (info.groups.length > 0) {
-                        groupsInitiativesTotal++;
-                    }
-                });
-
-                document.getElementById('actualTotal').textContent =
-                    hasActualCount ? formatNumber(actualTotal) : 'غير متوفر';
-
-                document.getElementById('targetTotal').textContent =
-                    hasTargetCount ? formatNumber(targetTotal) : 'غير متوفر';
-
-                document.getElementById('groupsInitiativesTotal').textContent =
-                    formatNumber(groupsInitiativesTotal);
-
-                document.getElementById('initiativeTotal').textContent =
-                    formatNumber(items.length);
-            }
-
-            /* =========================
-               البحث والتصفية
-            ========================= */
-
-            const searchInput = document.getElementById('searchInput');
-            const categoryFilter = document.getElementById('categoryFilter');
-
-            function filterInitiatives() {
-                const searchTerm = searchInput.value.trim().toLocaleLowerCase('ar');
-                const selectedCategory = categoryFilter.value;
-
-                const filtered = initiatives.filter(function (item) {
-                    const info = getInitiativeBeneficiaryInfo(item);
-
-                    const searchableText = [
-                        item.name || '',
-                        item.category || '',
-                        ...info.groups
-                    ].join(' ').toLocaleLowerCase('ar');
-
-                    const matchesSearch =
-                        !searchTerm || searchableText.includes(searchTerm);
-
-                    const matchesCategory =
-                        !selectedCategory || item.category === selectedCategory;
-
-                    return matchesSearch && matchesCategory;
-                });
-
-                renderTable(filtered);
-            }
-
-            searchInput.addEventListener('input', filterInitiatives);
-            categoryFilter.addEventListener('change', filterInitiatives);
-
-            /* =========================
-               تشغيل الصفحة
-            ========================= */
-
-            updateSummary(initiatives);
-            renderTable(initiatives);
-
-            /* تحديث البيانات إذا تغيرت في تبويب آخر */
-            window.addEventListener('storage', function (event) {
-                if (
-                    event.key === 'athalInitiatives' ||
-                    event.key === 'athar_beneficiary_data'
-                ) {
-                    try {
-                        const updatedInitiatives = localStorage.getItem('athalInitiatives');
-
-                        if (event.key === 'athalInitiatives' && updatedInitiatives !== null) {
-                            const parsed = JSON.parse(updatedInitiatives);
-
-                            if (Array.isArray(parsed)) {
-                                initiatives = parsed;
-                            }
-                        }
-
-                        Object.keys(extraData).forEach(key => delete extraData[key]);
-
-                        Object.assign(extraData, getBeneficiaryExtraData());
-
-                        updateSummary(initiatives);
-                        filterInitiatives();
-                    } catch (error) {
-                        console.error('تعذر تحديث البيانات:', error);
-                    }
-                }
-            });
-
         });
     </script>
-
 </body>
 </html>
