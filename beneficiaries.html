@@ -1,301 +1,1008 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>منصة أثر - المستفيدون</title>
-    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root { --sidebar-width: 280px; }
-        * { font-family: 'Cairo', sans-serif; }
-        body {
-            background-color: #f0f7ff;
-            background-image: url('bg-dashboard.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            width: 100vw;
-            height: 100vh;
-            overflow: hidden;
-            display: flex;
-            justify-content: space-between;
-            align-items: stretch;
-            direction: rtl;
-        }
-        .main-content-area {
-            flex: 1;
-            height: 100vh;
-            padding: 4vh 3vw;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            position: relative;
-            min-width: 0;
-            overflow-y: auto;
-            overflow-x: hidden;
-            transition: all 0.3s ease;
-        }
-        .sidebar-toggle-btn {
-            position: fixed;
-            top: 25px;
-            right: calc(var(--sidebar-width) + 15px);
-            transform: none;
-            width: 34px;
-            height: 34px;
-            background-color: #0b253a;
-            color: #ffffff;
-            border: none;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 3px 10px rgba(11, 37, 58, 0.25);
-            font-size: 12px;
-            z-index: 10000;
-            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
-        }
-        body.sidebar-is-collapsed .sidebar-toggle-btn { right: 20px; }
-        .sidebar-toggle-btn:hover { background-color: #16344e; transform: scale(1.1); }
-        .sidebar-wrapper {
-            position: relative;
-            display: flex;
-            align-items: flex-start;
-            flex-shrink: 0;
-            height: 100vh;
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 999;
-            transform: translateX(0);
-        }
-        .sidebar-wrapper.collapsed { transform: translateX(var(--sidebar-width)); }
-        .user-dropdown-menu {
-            position: absolute;
-            top: calc(100% + 8px);
-            right: 0;
-            width: 170px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
-            padding: 10px;
-            display: none;
-            flex-direction: column;
-            gap: 6px;
-            z-index: 100;
-            border: 1px solid rgba(11, 37, 58, 0.08);
-            text-align: right;
-        }
-        .user-dropdown-menu.show { display: flex; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منصة أثر - المستفيدون والفئات المستهدفة</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+:root {
+    --sidebar-width: 350px;
+    --navy: #0b253a;
+    --blue: #4e9cd8;
+    --bg: #f0f7ff;
+    --sidebar: #eaf4fc;
+    --muted: #8190a5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Cairo', sans-serif;
+}
+
+body {
+    direction: rtl;
+    color: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    background-color: var(--bg);
+    background-image: url('bg-dashboard.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.sidebar-wrapper {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    min-height: 100vh;
+    transition: transform .3s ease;
+    z-index: 999;
+}
+
+.sidebar-right {
+    width: var(--sidebar-width);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    right: 0;
+    background: var(--sidebar);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 25px 16px 20px;
+    border-left: 1px solid #0f3d5914;
+    overflow-y: auto;
+}
+
+.sidebar-top-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.sidebar-logo {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin: 5px 0 45px;
+}
+
+.sidebar-logo img {
+    width: 195px;
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+.sidebar-menu {
+    list-style: none;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.sidebar-menu a,
+.logout-link {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: background .2s;
+}
+
+.sidebar-menu a:hover,
+.logout-link:hover {
+    background: #3b82f614;
+}
+
+.sidebar-menu li.active a {
+    background: #d1e7fb;
+    font-weight: 800;
+}
+
+.sidebar-menu i,
+.logout-link i {
+    font-size: 19px;
+    width: 24px;
+    text-align: center;
+}
+
+.sidebar-bottom-content {
+    width: 100%;
+    border-top: 1px solid #0f3d591f;
+    padding-top: 15px;
+    margin-top: auto;
+}
+
+.logout-link {
+    font-weight: 700;
+}
+
+.main-content-area {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 35px 3vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-toggle-btn {
+    position: fixed;
+    top: 30px;
+    right: calc(var(--sidebar-width) + 15px);
+    width: 44px;
+    height: 44px;
+    background: var(--navy);
+    color: #fff;
+    border: 0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px #0b253a40;
+    font-size: 15px;
+    z-index: 10000;
+    transition: right .3s, transform .3s;
+}
+
+body.sidebar-is-collapsed .sidebar-toggle-btn {
+    right: 20px;
+}
+
+.sidebar-wrapper.collapsed {
+    transform: translateX(var(--sidebar-width));
+}
+
+.header-top-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin: 20px 0 35px;
+}
+
+.page-heading h1 {
+    font-size: clamp(25px, 2.5vw, 36px);
+    font-weight: 900;
+}
+
+.underline {
+    width: 55px;
+    height: 4px;
+    background: var(--blue);
+    border-radius: 4px;
+    margin-top: 12px;
+}
+
+.intro {
+    color: var(--muted);
+    font-size: 15px;
+    margin-top: 12px;
+    line-height: 1.8;
+}
+
+.top-user-bar-container {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.top-user-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    background: #ffffffed;
+    padding: 7px 15px;
+    border-radius: 30px;
+    box-shadow: 0 3px 12px #0b253a14;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+}
+
+.user-name-dropdown {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.user-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    width: 190px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px #0b253a1f;
+    padding: 12px;
+    display: none;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+}
+
+.user-dropdown-menu.show {
+    display: flex;
+}
+
+.summary-label {
+    font-size: 14px;
+    color: var(--muted);
+    font-weight: 600;
+    line-height: 1.8;
+}
+
+.role-display {
+    background: #f1f5f9;
+    padding: 9px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.notice {
+    background: #fff;
+    border: 1px solid #d9e9f8;
+    border-radius: 17px;
+    padding: 18px 22px;
+    color: #718198;
+    font-size: 14px;
+    line-height: 1.9;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 14px #0b253a08;
+}
+
+.notice i {
+    color: var(--blue);
+    margin-left: 8px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: #ffffffed;
+    border: 1px solid #e8eef5;
+    border-radius: 24px;
+    box-shadow: 0 5px 18px #0b253a0b;
+    min-height: 170px;
+    padding: 25px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.summary-icon {
+    color: #559ed1;
+    font-size: 30px;
+    flex-shrink: 0;
+}
+
+.summary-value {
+    font-size: clamp(21px, 2vw, 31px);
+    font-weight: 900;
+    margin-top: 8px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.panel {
+    background: #ffffffed;
+    border: 1px solid #e8eef5;
+    border-radius: 25px;
+    box-shadow: 0 5px 18px #0b253a0b;
+    padding: 30px;
+}
+
+.panel-header {
+    margin-bottom: 28px;
+}
+
+.panel-header h2 {
+    font-size: 28px;
+    font-weight: 900;
+}
+
+.panel-header p {
+    font-size: 15px;
+    color: var(--muted);
+    margin-top: 8px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 18px;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.field {
+    background: white;
+    border: 1px solid #dfe6ee;
+    border-radius: 17px;
+    padding: 15px;
+    color: var(--navy);
+    font-size: 14px;
+    outline: none;
+    min-width: 220px;
+}
+
+.field:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px #4e9cd822;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 230px;
+    background: white;
+    border: 1px solid #dfe6ee;
+    border-radius: 17px;
+    padding: 0 18px;
+    color: #8190a5;
+}
+
+.search-box input {
+    border: 0;
+    outline: 0;
+    width: 100%;
+    padding: 15px 0;
+    font-size: 14px;
+    color: var(--navy);
+    background: transparent;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 760px;
+}
+
+thead {
+    background: #edf5fc;
+}
+
+th,
+td {
+    text-align: right;
+    padding: 20px 17px;
+    border-bottom: 1px solid #edf2f7;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+th {
+    font-size: 15px;
+    font-weight: 800;
+    color: #455a72;
+    white-space: nowrap;
+}
+
+tbody tr:hover {
+    background: #f8fbff;
+}
+
+.pill {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 20px;
+    padding: 5px 11px;
+    background: #eaf4fc;
+    color: #245b82;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.missing {
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.details-link {
+    color: #2676ad;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.empty {
+    padding: 35px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+@media (max-width: 1250px) {
+    :root {
+        --sidebar-width: 280px;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 1024px) {
+    .sidebar-wrapper {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: var(--sidebar-width);
+        transform: translateX(var(--sidebar-width));
+    }
+
+    .sidebar-wrapper.mobile-open {
+        transform: translateX(0);
+    }
+
+    .sidebar-toggle-btn {
+        right: 20px;
+    }
+
+    .main-content-area {
+        width: 100%;
+        padding: 75px 20px 30px;
+    }
+
+    .header-top-wrapper {
+        margin-top: 5px;
+    }
+}
+
+@media (max-width: 600px) {
+    .summary-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .header-top-wrapper {
+        align-items: flex-start;
+    }
+
+    .page-heading h1 {
+        font-size: 23px;
+    }
+
+    .panel {
+        padding: 18px;
+    }
+
+    .panel-header h2 {
+        font-size: 23px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+    }
+
+    .field,
+    .search-box {
+        width: 100%;
+        min-height: 50px;
+    }
+
+    .summary-card {
+        min-height: 130px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- زر السهم المتجاوب للسايد بار -->
-    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
-        <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
-    </button>
+<button class="sidebar-toggle-btn" id="sidebarToggleBtn"
+        type="button" aria-label="إظهار أو إخفاء القائمة">
+    <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+</button>
 
-    <!-- حاوية الشريط الجانبي في اليمين (مطابق لصفحة المبادرات وصورتك تماماً) -->
-    <div class="sidebar-wrapper" id="sidebarWrapper">
-        <aside class="w-[280px] bg-[#eaf4fc] border-l border-[#0f3d59]/15 h-screen p-4 flex flex-col justify-between shadow-lg overflow-y-auto">
-            <div>
-                <!-- صورة شعار أثر في أعلى السايد بار -->
-                <div class="flex items-center justify-center mb-6 mt-1">
-                    <img src="logo.png" alt="شعار أثر" class="w-[195px] object-contain" onerror="this.onerror=null; this.src='https://via.placeholder.com/195?text=أثر';">
-                </div>
-                
-                <!-- قائمة التنقل -->
-                <nav class="space-y-1.5">
-                    <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+<div class="sidebar-wrapper" id="sidebarWrapper">
+    <aside class="sidebar-right">
+
+        <div class="sidebar-top-content">
+            <div class="sidebar-logo">
+                <img src="logo.png" alt="شعار منصة أثر">
+            </div>
+
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="dashboard.html">
+                        <i class="fa-solid fa-house"></i>
                         <span>الرئيسية</span>
-                        <i class="fa-solid fa-house w-5 text-center"></i>
                     </a>
-                    <a href="initiatives.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                </li>
+
+                <li>
+                    <a href="initiatives.html">
+                        <i class="fa-solid fa-folder-open"></i>
                         <span>المبادرات</span>
-                        <i class="fa-solid fa-folder-open w-5 text-center"></i>
                     </a>
-                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-chart-line"></i>
                         <span>المؤشرات</span>
-                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
                     </a>
-                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-database"></i>
                         <span>البيانات</span>
-                        <i class="fa-solid fa-database w-5 text-center"></i>
                     </a>
-                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                </li>
+
+                <li>
+                    <a href="#">
+                        <i class="fa-solid fa-file-lines"></i>
                         <span>التقارير</span>
-                        <i class="fa-solid fa-file-lines w-5 text-center"></i>
                     </a>
-                    <!-- صفحة المستفيدون (النشطة حالياً) -->
-                    <a href="beneficiaries.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl bg-[#d1e7fb] text-[#0b253a] font-extrabold transition text-sm">
+                </li>
+
+                <li class="active">
+                    <a href="beneficiaries.html">
+                        <i class="fa-solid fa-users"></i>
                         <span>المستفيدون</span>
-                        <i class="fa-solid fa-users w-5 text-center"></i>
                     </a>
-                    <!-- إعدادات النظام للمشرف -->
-                    <div id="adminSettingsMenu" style="display: none;">
-                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
-                            <span>إعدادات النظام</span>
-                            <i class="fa-solid fa-gear w-5 text-center"></i>
-                        </a>
-                    </div>
-                </nav>
-            </div>
-            
-            <!-- زر تسجيل الخروج في الأسفل -->
-            <div class="border-t border-[#0f3d59]/15 pt-3 mt-auto">
-                <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-red-500/10 hover:text-red-600 font-bold transition text-sm">
-                    <span>تسجيل الخروج</span>
-                    <i class="fa-solid fa-right-from-bracket w-5 text-center"></i>
-                </a>
-            </div>
-        </aside>
-    </div>
+                </li>
 
-    <!-- المحتوى الرئيسي الأيسر -->
-    <main class="main-content-area" id="mainContentArea">
-        <!-- الهيدر العلوي -->
-        <header class="w-full flex justify-between items-center mb-8 relative">
-            <div class="text-right">
-                <h1 class="text-2xl md:text-3xl font-black text-[#0b253a]">المستفيدون والفئات المستهدفة</h1>
-                <div class="w-12 h-1 bg-[#4e9cd8] rounded mt-1"></div>
-            </div>
-            
-            <!-- شريط اسم المستخدم -->
-            <div class="relative" id="userBarContainer">
-                <div id="userBarToggle" class="flex items-center gap-2.5 cursor-pointer bg-white/90 px-4 py-1.5 rounded-full shadow-sm hover:bg-white transition backdrop-blur-sm">
-                    <div class="w-9 h-9 bg-white rounded-full flex items-center justify-center text-[#0b253a] shadow-sm">
-                        <i class="fa-solid fa-user text-sm"></i>
-                    </div>
-                    <div class="flex items-center gap-1.5 text-sm font-bold text-[#0b253a]">
-                        <span id="displayUserName">مستخدم</span>
-                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                    </div>
+                <li id="adminSettingsMenu" style="display:none">
+                    <a href="#">
+                        <i class="fa-solid fa-gear"></i>
+                        <span>إعدادات النظام</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="sidebar-bottom-content">
+            <a href="index.html" class="logout-link">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>تسجيل الخروج</span>
+            </a>
+        </div>
+
+    </aside>
+</div>
+
+<main class="main-content-area">
+
+    <header class="header-top-wrapper">
+
+        <div class="page-heading">
+            <h1>المستفيدون والفئات المستهدفة</h1>
+            <div class="underline"></div>
+            <p class="intro">
+                متابعة أعداد المستفيدين والفئات المستهدفة المرتبطة بالمبادرات
+            </p>
+        </div>
+
+        <div class="top-user-bar-container">
+            <div class="top-user-bar" id="userBarToggle"
+                 role="button" tabindex="0" aria-expanded="false">
+                <div class="avatar">
+                    <i class="fa-solid fa-user"></i>
                 </div>
-                <!-- القائمة المنسدلة للصلاحية -->
-                <div class="user-dropdown-menu" id="userDropdownMenu">
-                    <span class="text-[11px] text-gray-500 font-semibold px-1.5">صلاحية الحساب</span>
-                    <div class="bg-slate-100 text-[#0b253a] px-2.5 py-2 rounded-lg text-xs font-bold flex items-center justify-between">
-                        <span id="displayUserRoleText">مستخدم عادي</span>
-                        <i class="fa-solid fa-lock text-[#4e9cd8] text-xs"></i>
-                    </div>
+
+                <div class="user-name-dropdown">
+                    <span id="displayUserName">مستخدم</span>
+                    <i class="fa-solid fa-chevron-down"></i>
                 </div>
             </div>
-        </header>
 
-        <!-- محتوى الجدول الرئيسي لصفحة المستفيدون -->
-        <div class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 pb-10">
-            <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-6 pb-4 border-b border-gray-100">
-                <h3 class="text-lg font-bold text-[#0b253a]">سجل المستفيدين المرتبط بالمبادرات</h3>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-right border-collapse text-sm">
-                    <thead>
-                        <tr class="bg-slate-50 text-gray-700 font-bold border-b border-gray-200">
-                            <th class="p-4">اسم المبادرة</th>
-                            <th class="p-4">المجال</th>
-                            <th class="p-4">الفئات المستهدفة</th>
-                            <th class="p-4">العدد المستهدف</th>
-                            <th class="p-4">العدد الفعلي</th>
-                            <th class="p-4 text-center">التفاصيل</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-gray-600">
-                        <tr class="hover:bg-gray-50/50 transition">
-                            <td class="p-4 font-bold text-[#0b253a]">مبادرة سامقات</td>
-                            <td class="p-4">التمكين الاقتصادي</td>
-                            <td class="p-4">رائدات الأعمال والطالبات</td>
-                            <td class="p-4">20</td>
-                            <td class="p-4 font-bold text-teal-600">17</td>
-                            <td class="p-4 text-center">
-                                <a href="initiative-details.html?initiative=samqat" class="text-blue-600 hover:underline font-semibold text-xs bg-blue-50 px-3 py-1.5 rounded-lg inline-block">عرض التفاصيل</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition">
-                            <td class="p-4 font-bold text-[#0b253a]">مبادرة محترف</td>
-                            <td class="p-4">التطوير المهني</td>
-                            <td class="p-4">طلبة الجامعة والخريجون</td>
-                            <td class="p-4">600</td>
-                            <td class="p-4 font-bold text-teal-600">568</td>
-                            <td class="p-4 text-center">
-                                <a href="initiative-details.html?initiative=tech" class="text-blue-600 hover:underline font-semibold text-xs bg-blue-50 px-3 py-1.5 rounded-lg inline-block">عرض التفاصيل</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition">
-                            <td class="p-4 font-bold text-[#0b253a]">مبادرة فهيم</td>
-                            <td class="p-4">اقتصاد</td>
-                            <td class="p-4">طلبة وخريجو التخصصات المالية</td>
-                            <td class="p-4">150</td>
-                            <td class="p-4 font-bold text-teal-600">144</td>
-                            <td class="p-4 text-center">
-                                <a href="initiative-details.html?initiative=fahim" class="text-blue-600 hover:underline font-semibold text-xs bg-blue-50 px-3 py-1.5 rounded-lg inline-block">عرض التفاصيل</a>
-                            </td>
-                        </tr>
-                        <tr class="hover:bg-gray-50/50 transition">
-                            <td class="p-4 font-bold text-[#0b253a]">مبادرة متأهب</td>
-                            <td class="p-4">الأنظمة والتأمين</td>
-                            <td class="p-4">طلبة القانون والتأمين والمهتمون</td>
-                            <td class="p-4">400</td>
-                            <td class="p-4 font-bold text-teal-600">387</td>
-                            <td class="p-4 text-center">
-                                <a href="initiative-details.html?initiative=mataheb" class="text-blue-600 hover:underline font-semibold text-xs bg-blue-50 px-3 py-1.5 rounded-lg inline-block">عرض التفاصيل</a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="user-dropdown-menu" id="userDropdownMenu">
+                <span class="summary-label">صلاحية الحساب</span>
+                <div class="role-display">
+                    <span id="displayUserRoleText">مستخدم عادي</span>
+                    <i class="fa-solid fa-lock"></i>
+                </div>
             </div>
         </div>
-    </main>
 
-    <!-- سكربت التشغيل وصلاحيات المشرف والتفاعل مع السايد بار -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function(){
-            const savedName = localStorage.getItem('athalUser');
-            const savedRole = localStorage.getItem('athalRole');
-            const isAdmin = (savedRole === 'admin');
+    </header>
 
-            if (savedName) {
-                const displayNameEl = document.getElementById('displayUserName');
-                if (displayNameEl) displayNameEl.textContent = savedName;
+    <div class="notice">
+        <i class="fa-solid fa-circle-info"></i>
+        تظهر الفئات والأعداد حسب البيانات المسجلة في المبادرات.
+        لا تُفترض أعداد أو فئات غير موجودة في البيانات المعتمدة.
+    </div>
+
+    <section class="summary-grid" aria-label="ملخص المستفيدين">
+
+        <article class="summary-card">
+            <div>
+                <div class="summary-label">إجمالي المستفيدين الفعلي</div>
+                <div class="summary-value" id="actualTotal">غير متوفر</div>
+            </div>
+            <div class="summary-icon">
+                <i class="fa-solid fa-people-group"></i>
+            </div>
+        </article>
+
+        <article class="summary-card">
+            <div>
+                <div class="summary-label">إجمالي المستفيدين المستهدف</div>
+                <div class="summary-value" id="targetTotal">غير متوفر</div>
+            </div>
+            <div class="summary-icon">
+                <i class="fa-solid fa-bullseye"></i>
+            </div>
+        </article>
+
+        <article class="summary-card">
+            <div>
+                <div class="summary-label">المبادرات التي لديها فئات مسجلة</div>
+                <div class="summary-value" id="groupsInitiativesTotal">٠</div>
+            </div>
+            <div class="summary-icon">
+                <i class="fa-solid fa-users"></i>
+            </div>
+        </article>
+
+        <article class="summary-card">
+            <div>
+                <div class="summary-label">عدد المبادرات</div>
+                <div class="summary-value" id="initiativeTotal">٠</div>
+            </div>
+            <div class="summary-icon">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+        </article>
+
+    </section>
+
+    <section class="panel">
+
+        <div class="panel-header">
+            <h2>سجل المستفيدين</h2>
+            <p>ابحثي عن المبادرات والفئات المستهدفة</p>
+        </div>
+
+        <div class="toolbar">
+
+            <select id="categoryFilter" class="field"
+                    aria-label="تصفية حسب المجال">
+                <option value="">جميع المجالات</option>
+            </select>
+
+            <div class="search-box">
+                <input id="searchInput" type="search"
+                       placeholder="ابحثي باسم المبادرة أو الفئة المستهدفة..."
+                       aria-label="بحث">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>اسم المبادرة</th>
+                        <th>المجال</th>
+                        <th>الفئات المستهدفة</th>
+                        <th>العدد المستهدف</th>
+                        <th>العدد الفعلي</th>
+                        <th>التفاصيل</th>
+                    </tr>
+                </thead>
+
+                <tbody id="beneficiariesTableBody"></tbody>
+            </table>
+        </div>
+
+    </section>
+
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const $ = id => document.getElementById(id);
+
+    function safeRead(key, fallback) {
+        try {
+            const value = JSON.parse(localStorage.getItem(key));
+            return value ?? fallback;
+        } catch {
+            return fallback;
+        }
+    }
+
+    const userName = localStorage.getItem('athalUser');
+    const role = localStorage.getItem('athalRole');
+
+    if (userName) {
+        $('displayUserName').textContent = userName;
+    }
+
+    $('displayUserRoleText').textContent =
+        role === 'admin' ? 'مشرف النظام' : 'مستخدم عادي';
+
+    if (role === 'admin') {
+        $('adminSettingsMenu').style.display = 'block';
+    }
+
+    /*
+      مصدر المبادرات:
+      athalInitiatives
+
+      بيانات المستفيدين الإضافية الاختيارية:
+      athar_beneficiary_data
+
+      لا تُضاف فئات أو أعداد افتراضية غير موجودة في البيانات.
+    */
+
+    const initiatives = safeRead('athalInitiatives', []);
+    const extraData = safeRead('athar_beneficiary_data', {});
+
+    const rows = initiatives.map(item => {
+        const extra = extraData[item.id] || item.beneficiaryInfo || {};
+
+        const actualRaw =
+            extra.actual ??
+            item.beneficiariesActual ??
+            item.beneficiaries;
+
+        const targetRaw =
+            extra.target ??
+            item.beneficiariesTarget;
+
+        const groupsRaw =
+            extra.groups ??
+            item.targetGroups ??
+            item.beneficiaryGroups;
+
+        const groups = Array.isArray(groupsRaw)
+            ? groupsRaw.join('، ')
+            : (typeof groupsRaw === 'string' ? groupsRaw.trim() : '');
+
+        const parseNumber = value => {
+            if (
+                value === undefined ||
+                value === null ||
+                String(value).trim() === ''
+            ) {
+                return null;
             }
 
-            const roleTextElement = document.getElementById('displayUserRoleText');
-            if (roleTextElement) {
-                if (isAdmin) {
-                    roleTextElement.textContent = 'مشرف النظام';
-                    const adminMenu = document.getElementById('adminSettingsMenu');
-                    if (adminMenu) adminMenu.style.display = 'block';
-                } else {
-                    roleTextElement.textContent = 'مستخدم عادي';
-                }
-            }
+            const number = Number(value);
 
-            const userBarToggle = document.getElementById('userBarToggle');
-            const userDropdownMenu = document.getElementById('userDropdownMenu');
-            if (userBarToggle && userDropdownMenu) {
-                userBarToggle.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    userDropdownMenu.classList.toggle('show');
-                });
-                window.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
-            }
+            return Number.isFinite(number) && number >= 0
+                ? number
+                : null;
+        };
 
-            const sidebarWrapper = document.getElementById('sidebarWrapper');
-            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
-            const toggleIcon = document.getElementById('toggleIcon');
-            const bodyElement = document.body;
-            if (sidebarToggleBtn && sidebarWrapper) {
-                sidebarToggleBtn.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    sidebarWrapper.classList.toggle('collapsed');
-                    bodyElement.classList.toggle('sidebar-is-collapsed');
-                    toggleIcon.className = sidebarWrapper.classList.contains('collapsed') ? "fa-solid fa-chevron-left" : "fa-solid fa-chevron-right";
-                });
-            }
+        return {
+            ...item,
+            groups,
+            actual: parseNumber(actualRaw),
+            target: parseNumber(targetRaw)
+        };
+    });
+
+    const formatNumber = number =>
+        number === null
+            ? 'غير متوفر'
+            : number.toLocaleString('ar-SA');
+
+    function escapeHTML(value) {
+        return String(value ?? '').replace(/[&<>"']/g, character => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        })[character]);
+    }
+
+    // إنشاء خيارات المجالات من بيانات المبادرات الموجودة فعليًا.
+    const categoryFilter = $('categoryFilter');
+    const categories = [...new Set(
+        rows.map(row => row.category).filter(Boolean)
+    )];
+
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+
+    function render() {
+        const term = $('searchInput').value
+            .trim()
+            .toLocaleLowerCase('ar');
+
+        const category = categoryFilter.value;
+
+        const shown = rows.filter(row => {
+            const matchesCategory =
+                !category || row.category === category;
+
+            const searchable = [
+                row.name,
+                row.category,
+                row.groups
+            ].join(' ').toLocaleLowerCase('ar');
+
+            return matchesCategory && searchable.includes(term);
         });
-    </script>
+
+        $('initiativeTotal').textContent =
+            shown.length.toLocaleString('ar-SA');
+
+        $('groupsInitiativesTotal').textContent =
+            shown.filter(row => row.groups).length
+                .toLocaleString('ar-SA');
+
+        const actualRows = shown.filter(row => row.actual !== null);
+        const targetRows = shown.filter(row => row.target !== null);
+
+        $('actualTotal').textContent = actualRows.length
+            ? actualRows.reduce((sum, row) => sum + row.actual, 0)
+                .toLocaleString('ar-SA')
+            : 'غير متوفر';
+
+        $('targetTotal').textContent = targetRows.length
+            ? targetRows.reduce((sum, row) => sum + row.target, 0)
+                .toLocaleString('ar-SA')
+            : 'غير متوفر';
+
+        const tbody = $('beneficiariesTableBody');
+        tbody.replaceChildren();
+
+        if (!shown.length) {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td colspan="6" class="empty">
+                    لا توجد مبادرات تطابق البحث.
+                </td>`;
+            tbody.appendChild(tr);
+            return;
+        }
+
+        shown.forEach(row => {
+            const tr = document.createElement('tr');
+
+            const detailHref =
+                'initiative-details.html?initiative=' +
+                encodeURIComponent(row.id || '');
+
+            tr.innerHTML = `
+                <td><strong>${escapeHTML(row.name || 'مبادرة بدون اسم')}</strong></td>
+
+                <td>${escapeHTML(row.category || 'غير متوفر')}</td>
+
+                <td>
+                    ${row.groups
+                        ? `<span class="pill">${escapeHTML(row.groups)}</span>`
+                        : '<span class="missing">غير متوفر</span>'}
+                </td>
+
+                <td>${formatNumber(row.target)}</td>
+
+                <td>${formatNumber(row.actual)}</td>
+
+                <td>
+                    <a class="details-link" href="${detailHref}">
+                        عرض التفاصيل
+                        <i class="fa-solid fa-angle-left"></i>
+                    </a>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+    }
+
+    $('searchInput').addEventListener('input', render);
+    categoryFilter.addEventListener('change', render);
+
+    // القائمة المنسدلة للحساب.
+    const userToggle = $('userBarToggle');
+    const dropdown = $('userDropdownMenu');
+
+    function toggleDropdown(event) {
+        event.stopPropagation();
+        dropdown.classList.toggle('show');
+
+        userToggle.setAttribute(
+            'aria-expanded',
+            dropdown.classList.contains('show')
+        );
+    }
+
+    userToggle.addEventListener('click', toggleDropdown);
+
+    userToggle.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggleDropdown(event);
+        }
+    });
+
+    window.addEventListener('click', () => {
+        dropdown.classList.remove('show');
+        userToggle.setAttribute('aria-expanded', 'false');
+    });
+
+    // إظهار وإخفاء القائمة الجانبية.
+    const sidebar = $('sidebarWrapper');
+    const button = $('sidebarToggleBtn');
+    const icon = $('toggleIcon');
+
+    button.addEventListener('click', () => {
+        if (window.innerWidth <= 1024) {
+            sidebar.classList.toggle('mobile-open');
+
+            const isOpen = sidebar.classList.contains('mobile-open');
+
+            icon.className = isOpen
+                ? 'fa-solid fa-chevron-left'
+                : 'fa-solid fa-chevron-right';
+
+        } else {
+            sidebar.classList.toggle('collapsed');
+
+            const isCollapsed = sidebar.classList.contains('collapsed');
+
+            document.body.classList.toggle(
+                'sidebar-is-collapsed',
+                isCollapsed
+            );
+
+            icon.className = isCollapsed
+                ? 'fa-solid fa-chevron-left'
+                : 'fa-solid fa-chevron-right';
+        }
+    });
+
+    render();
+});
+</script>
+
 </body>
 </html>
