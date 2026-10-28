@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .admin-only { display: none !important; }
+        .admin-only, .admin-only-inline { display: none !important; }
         body.is-admin .admin-only { display: flex !important; }
         body.is-admin .admin-only-inline { display: inline-flex !important; }
         
@@ -49,7 +49,7 @@
                 <i class="fa-solid fa-circle-info text-[#4e9cd8]"></i>
                 <span>تفاصيل المبادرة</span>
             </h1>
-            <!-- زر تعديل بيانات المبادرة والمستفيدين للمشرف فقط أوتوماتيكياً -->
+            <!-- زر تعديل بيانات المبادرة والمستفيدين للمشرف فقط -->
             <button type="button" id="editHeaderBtn" class="admin-only-inline btn-leaf-blue text-white rounded-xl px-4 py-2 text-sm font-bold items-center gap-2 shadow-sm">
                 <i class="fa-solid fa-pen"></i> تعديل بيانات المبادرة
             </button>
@@ -142,7 +142,7 @@
           </div>
         </div>
 
-        <!-- نافذة تعديل بيانات المبادرة الشاملة والمستفيدين -->
+        <!-- نافذة تعديل بيانات المبادرة والمستفيدين -->
         <div id="headerModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
           <div class="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-xl my-auto" dir="rtl">
             <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل بيانات المبادرة والمستفيدين</h3>
@@ -155,7 +155,12 @@
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label class="block text-sm font-bold text-gray-700 mb-1">المجال</label>
-                  <input type="text" id="editCategory" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                  <select id="editCategory" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none bg-white" required>
+                    <option value="التمكين الاقتصادي">التمكين الاقتصادي</option>
+                    <option value="التطوير المهني">التطوير المهني</option>
+                    <option value="اقتصاد">اقتصاد</option>
+                    <option value="الأنظمة والتأمين">الأنظمة والتأمين</option>
+                  </select>
                 </div>
                 <div>
                   <label class="block text-sm font-bold text-gray-700 mb-1">الجهة</label>
@@ -168,18 +173,33 @@
                   <input type="date" id="editDate" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
                 </div>
                 <div>
-                  <label class="block text-sm font-bold text-gray-700 mb-1">مستوى الأثر</label>
-                  <input type="text" id="editImpact" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                  <label class="block text-sm font-bold text-gray-700 mb-1">مستوى الأثر (الحد الأقصى 5)</label>
+                  <select id="editImpact" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none bg-white" required>
+                    <option value="1 / 5">1 / 5</option>
+                    <option value="2 / 5">2 / 5</option>
+                    <option value="3 / 5">3 / 5</option>
+                    <option value="4 / 5">4 / 5</option>
+                    <option value="5 / 5">5 / 5</option>
+                  </select>
                 </div>
               </div>
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">الحالة</label>
-                <input type="text" id="editStatus" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                <select id="editStatus" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none bg-white" required>
+                  <option value="مكتملة">مكتملة</option>
+                  <option value="نشطة">نشطة</option>
+                  <option value="قيد التنفيذ">قيد التنفيذ</option>
+                </select>
               </div>
               <hr class="my-2 border-gray-100">
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">الفئة المستهدفة</label>
-                <input type="text" id="editTargetGroup" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none" required>
+                <select id="editTargetGroup" class="w-full border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-blue-300 outline-none bg-white" required>
+                  <option value="نساء من المجتمع">نساء من المجتمع</option>
+                  <option value="الخريجيين والخريجات">الخريجيين والخريجات</option>
+                  <option value="المجتمع">المجتمع</option>
+                  <option value="سوق العمل">سوق العمل</option>
+                </select>
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
@@ -221,7 +241,7 @@
 
     </div>
 
-    <!-- كود الجافاسكريبت للربط الشامل -->
+    <!-- كود الجافاسكريبت للربط الكامل -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const savedRole = localStorage.getItem('athalRole');
@@ -258,7 +278,6 @@
                 document.getElementById('detailDate').textContent = item.date || '—';
                 document.getElementById('detailImpact').textContent = item.impact || '—';
 
-                // جلب الفئة المستهدفة وضبطها ديناميكياً لكل مبادرة
                 let targetGrp = item.targetGroup;
                 if (!targetGrp && item.id === 'samqat') targetGrp = 'نساء من المجتمع';
                 else if (!targetGrp && item.id === 'tech') targetGrp = 'الخريجيين والخريجات';
@@ -280,6 +299,8 @@
                     statusEl.style.cssText = "background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;";
                 } else if (st === 'مكتملة') {
                     statusEl.style.cssText = "background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;";
+                } else if (st === 'قيد التنفيذ') {
+                    statusEl.style.cssText = "background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a;";
                 } else {
                     statusEl.style.cssText = "background-color: #f3f4f6; color: #374151;";
                 }
@@ -293,15 +314,20 @@
             const editHeaderBtn = document.getElementById('editHeaderBtn');
             if (editHeaderBtn) {
                 editHeaderBtn.onclick = () => {
+                    if (localStorage.getItem('athalRole') !== 'admin') return;
                     document.getElementById('editName').value = currentItem.name || '';
-                    document.getElementById('editCategory').value = currentItem.category || '';
+                    document.getElementById('editCategory').value = currentItem.category || 'التمكين الاقتصادي';
                     document.getElementById('editDept').value = currentItem.dept || '';
                     document.getElementById('editDate').value = currentItem.date || '';
-                    document.getElementById('editImpact').value = currentItem.impact || '';
-                    document.getElementById('editStatus').value = currentItem.status || '';
-                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || (currentItem.id === 'samqat' ? 'نساء من المجتمع' : currentItem.id === 'tech' ? 'الخريجيين والخريجات' : currentItem.id === 'fahim' ? 'المجتمع' : 'سوق العمل');
-                    document.getElementById('editTargetBeneficiaries').value = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || '';
-                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || currentItem.beneficiariesActual || '';
+                    document.getElementById('editImpact').value = currentItem.impact || '5 / 5';
+                    document.getElementById('editStatus').value = currentItem.status || 'مكتملة';
+                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || 'نساء من المجتمع';
+                    
+                    // جلب ووضع رقم المستفيدين المستهدف بشكل صحيح
+                    const targetBenVal = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || (currentItem.id === 'tech' ? '600' : currentItem.id === 'fahim' ? '150' : currentItem.id === 'mataheb' ? '400' : '20');
+                    document.getElementById('editTargetBeneficiaries').value = targetBenVal;
+                    
+                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || '';
                     headerModal.classList.remove('hidden');
                     headerModal.classList.add('flex');
                 };
@@ -323,7 +349,11 @@
                 currentItem.impact = document.getElementById('editImpact').value.trim();
                 currentItem.status = document.getElementById('editStatus').value.trim();
                 currentItem.targetGroup = document.getElementById('editTargetGroup').value.trim();
-                currentItem.targetBeneficiaries = document.getElementById('editTargetBeneficiaries').value.trim();
+                
+                const targetInputVal = document.getElementById('editTargetBeneficiaries').value.trim();
+                currentItem.targetBeneficiaries = targetInputVal;
+                currentItem.beneficiariesTarget = targetInputVal; // لضمان التوافق مع صفحة المستفيدين
+
                 currentItem.beneficiaries = document.getElementById('editBeneficiaries').value.trim();
 
                 let list = getSavedInitiatives();
@@ -338,7 +368,7 @@
                 updateUI(currentItem);
                 headerModal.classList.add('hidden');
                 headerModal.classList.remove('flex');
-                alert('تم تحديث وحفظ بيانات المبادرة بنجاح، وستظهر في كافة صفحات المنصة!');
+                alert('تم تحديث وحفظ بيانات المبادرة والمستفيدين بنجاح، وستظهر في كافة صفحات المنصة!');
             };
         });
 
