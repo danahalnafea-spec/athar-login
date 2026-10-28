@@ -649,31 +649,65 @@
 
 <body>
 
-    <!-- زر السهم الثابت -->
-    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" type="button" title="إخفاء/إظهار القائمة">
+   <!-- زر السهم الثابت -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
         <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
     </button>
 
-    <!-- الشريط الجانبي -->
+    <!-- حاوية الشريط الجانبي في اليمين -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
-        <div class="sidebar-right" id="sidebarRight">
-            <div class="sidebar-top-content">
-                <div class="sidebar-logo">
-                    <img src="logo.png" alt="شعار منصة أثر">
+        <aside class="sidebar-right">
+            <div class="sidebar-top-content w-full flex flex-col items-center">
+                
+                <!-- شعار المنصة الصغير بحجم 38px -->
+                <div class="sidebar-logo" style="margin-bottom: 15px; width: 100%; display: flex; justify-content: center;">
+                    <img src="logo.png" alt="شعار منصة أثر" style="width: 38px; height: auto;">
                 </div>
-                <ul class="sidebar-menu">
-                    <li><a href="dashboard.html"><span>الرئيسية</span><i class="fa-solid fa-house"></i></a></li>
-                    <li><a href="initiatives.html"><span>المبادرات</span><i class="fa-solid fa-folder-open"></i></a></li>
-                    <li><a href="#"><span>المؤشرات</span><i class="fa-solid fa-chart-line"></i></a></li>
-                    <li><a href="#"><span>البيانات</span><i class="fa-solid fa-database"></i></a></li>
-                    <li><a href="#"><span>التقارير</span><i class="fa-solid fa-file-lines"></i></a></li>
-                    <li class="active"><a href="beneficiaries.html"><span>المستفيدون</span><i class="fa-solid fa-users"></i></a></li>
-                    <li id="adminSettingsMenu" style="display: none;"><a href="#"><span>إعدادات النظام</span><i class="fa-solid fa-gear"></i></a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
 
+                <!-- القائمة -->
+                <nav class="space-y-1.5 w-full">
+                    <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house w-5 text-center"></i>
+                    </a>
+                    
+                    <a href="initiatives.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open w-5 text-center"></i>
+                    </a>
+
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    </a>
+
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>البيانات</span>
+                        <i class="fa-solid fa-database w-5 text-center"></i>
+                    </a>
+
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines w-5 text-center"></i>
+                    </a>
+
+                    <!-- تم تفعيل التحديد هنا في صفحة المستفيدون -->
+                    <a href="beneficiaries.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl bg-[#d1e7fb] text-[#0b253a] font-extrabold transition text-sm">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users w-5 text-center"></i>
+                    </a>
+
+                    <!-- إعدادات النظام للمشرف -->
+                    <div id="adminSettingsMenu" style="display: none;">
+                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear w-5 text-center"></i>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+    </div>
     <!-- المحتوى الرئيسي -->
     <main class="main-content-area" id="mainContentArea">
         <!-- الهيدر العلوي -->
