@@ -1,4 +1,4 @@
-- {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -211,12 +211,13 @@ body {
     width: 100%;
 }
 
+/* تنسيق عام لـ input و select لضمان عدم التداخل */
 .input-wrapper input,
 .input-wrapper select {
     width: 100%;
     height: 42px;
-    padding-right: 38px;
-    padding-left: 35px;
+    padding-right: 38px; /* مسافة للأيقونة على اليمين */
+    padding-left: 35px;  /* مسافة للسهم على اليسار في الـ select */
     border: 1.5px solid #cbd5e1;
     border-radius: 10px;
     background-color: #f8fafc;
@@ -301,78 +302,41 @@ body {
 }
 
 /* ==========================================================
-   تنسيق الجوال: بطاقة الدخول في البداية، والشعار والمميزات تحتها متناسقة على الحواف
+   نظام التعرف التلقائي على الشاشات الذكية (لابتوب، تابلت، جوال)
    ========================================================== */
 @media (max-width: 1024px) {
     .login-container {
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 15px;
-        max-width: 100%;
-        width: 100%;
+        flex-direction: column-reverse;
+        justify-content: center;
+        gap: 30px;
+        max-width: 500px;
     }
 
     body {
         align-items: flex-start;
-        padding: 8px; /* حواف متناسقة تماماً مع إطار الشاشة */
+        padding: 30px 15px;
     }
 
-    .right-side-card {
+    .right-side-card, .left-side-content {
         width: 100%;
-        max-width: 100%;
-        order: 1; /* تأتي في أول الصفحة للموبايل */
+        max-width: 420px;
         flex: none;
-        border-radius: 16px;
-        padding: 22px 18px;
-    }
-
-    .left-side-content {
-        width: 100%;
-        max-width: 100%;
-        order: 2; /* تأتي تحت بطاقة الدخول */
-        flex: none;
-        padding: 10px 5px;
-    }
-
-    .features-row-exact {
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        gap: 6px;
-        width: 100%;
-        flex-wrap: nowrap;
-    }
-
-    .feature-title {
-        font-size: 9px;
-    }
-
-    .feature-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 13px;
-    }
-
-    .vertical-line {
-        height: 20px;
-        margin-top: -10px;
     }
 }
 
 @media (max-width: 480px) {
     .features-row-exact {
-        gap: 4px;
+        gap: 8px;
     }
 
     .feature-title {
-        font-size: 8.5px;
+        font-size: 9.5px;
     }
 
     .feature-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 12px;
+        width: 38px;
+        height: 38px;
+        font-size: 14px;
     }
 }
 
@@ -399,6 +363,7 @@ body {
     gap: 20px;
 }
 
+/* المحتوى الرئيسي الأيمن */
 .main-content-area {
     flex: 1;
     background: rgba(255, 255, 255, 0.7);
@@ -430,6 +395,7 @@ body {
     color: #334155;
 }
 
+/* القائمة الجانبية (Sidebar) على اليسار */
 .sidebar-menu {
     width: 260px;
     background: #ffffff;
@@ -492,6 +458,7 @@ body {
     text-align: center;
 }
 
+/* العنصر النشط (الرئيسية) */
 .menu-item.active a {
     background-color: #dbeafe;
     color: #0f3d59;
@@ -502,6 +469,7 @@ body {
     background-color: #f1f5f9;
 }
 
+/* زر تسجيل الخروج */
 .logout-item {
     margin-top: auto;
     border-top: 1px solid #e2e8f0;
@@ -516,6 +484,7 @@ body {
     color: #ef4444;
 }
 
+/* التجاوب مع الجوال */
 @media (max-width: 900px) {
     .dashboard-container {
         flex-direction: column-reverse;
