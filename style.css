@@ -23,19 +23,19 @@ body {
     padding: 30px 20px;
 }
 
-/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب): القسم الأيسر للشعار والمميزات واليمين لبطاقة الدخول */
+/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب): موسعة لتملأ الشاشة بتناسق تام */
 .login-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    max-width: 1250px;
-    gap: 40px;
+    width: 94%;
+    max-width: 1420px;
+    gap: 50px;
 }
 
-/* القسم الأيسر للشاشات الكبيرة */
+/* القسم الأيسر للشاشات الكبيرة يأخذ مساحة أوسع */
 .left-side-content {
-    flex: 1.3;
+    flex: 1.5;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,13 +150,13 @@ body {
     margin-top: 2px;
 }
 
-/* القسم الأيمن: بطاقة تسجيل الدخول للابتوب */
+/* القسم الأيمن: بطاقة تسجيل الدخول للابتوب (موسعة وأكثر تناسقاً مع الشاشة الكبيرة) */
 .right-side-card {
-    flex: 0 0 390px;
+    flex: 0 0 430px;
     width: 100%;
     background: #ffffff;
     border-radius: 20px;
-    padding: 35px 28px;
+    padding: 40px 32px;
     box-shadow: 0 15px 35px rgba(15, 61, 89, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.8);
     display: flex;
