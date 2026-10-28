@@ -1,49 +1,47 @@
-html, body {
-    width: 100%;
-    min-height: 100vh;
-    overflow-x: hidden;
-}
-
-/* تعديل الهوامش لتلصق الصفحة بالحواف تماماً على الجوال والشاشات */
-body {
-    background-image: url('خلفيه موقع اثر.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px 10px; /* تقليص الحواف لتصبح ملاصقة لإطار الجهاز */
-}
-
-/* الحاوية الرئيسية تتكيف مع الشاشة بمرونة تامة */
-.login-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    max-width: 1250px;
-    gap: 20px;
-}
-
-/* تحديث التجاوب للشاشات الصغيرة لتلصق تماماً بالحواف العلوية والجانبية */
 @media (max-width: 1024px) {
     .login-container {
         flex-direction: column-reverse;
-        justify-content: center;
-        gap: 20px;
+        justify-content: flex-start;
+        gap: 15px;
         max-width: 100%;
+        width: 100%;
     }
 
     body {
         align-items: flex-start;
-        padding: 0px 5px; /* إلغاء الهامش العلوي تماماً لتبدأ من حافة الشاشة */
+        padding: 5px; /* حواف خفيفة جداً لتبدأ من حافة الشاشة مباشرة */
     }
 
     .right-side-card, .left-side-content {
         width: 100%;
         max-width: 100%;
         flex: none;
-        border-radius: 15px; /* تناسق الحواف مع تصميم الجوال */
+        border-radius: 14px;
+        padding: 20px 15px;
+    }
+
+    /* جعل الأيقونات الأربع تظهر بشكل متجاور ومنتظم على الجوال بدلاً من التراص الطولي */
+    .features-row-exact {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        gap: 5px;
+        width: 100%;
+        flex-wrap: nowrap;
+    }
+
+    .feature-title {
+        font-size: 9px;
+    }
+
+    .feature-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 13px;
+    }
+
+    .vertical-line {
+        height: 20px;
+        margin-top: -10px;
     }
 }
