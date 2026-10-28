@@ -59,7 +59,6 @@
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
             <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
                 <h2 id="detailName" class="text-xl font-bold text-[#0b253a]">مبادرة سامقات</h2>
-                <!-- تم توحيد لون الحالة لتتطابق تماماً مع صفحة المبادرات -->
                 <span id="detailStatus" class="text-xs font-bold px-3 py-1 rounded-full shadow-sm" style="background-color: #dbeafe; color: #1e40af; border: 1px solid #bfdbfe;">مكتملة</span>
             </div>
 
@@ -122,7 +121,6 @@
         <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" id="initiativeWorkCard">
           <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4 flex-wrap">
             <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2"><i class="fa-solid fa-bullseye text-rose-500"></i> الأهداف والأنشطة</h3>
-            <!-- زر تعديل الأنشطة للمشرف فقط أوتوماتيكياً -->
             <button type="button" id="editWorkBtn" class="admin-only-inline btn-leaf-blue text-white rounded-xl px-4 py-2 text-sm font-bold items-center gap-2 shadow-sm"><i class="fa-solid fa-pen"></i> تعديل الأنشطة</button>
           </div>
           <div id="initiativeWorkContent" class="space-y-6"></div>
@@ -237,10 +235,10 @@
             const initiativeId = urlParams.get('initiative') || 'samqat';
 
             const defaultInitiatives = {
-                'samqat': { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', targetGroup: 'رائدات الأعمال والطالبات', targetBeneficiaries: '20', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
-                'tech': { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', targetGroup: 'طلبة الجامعة والخريجون', targetBeneficiaries: '600', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
-                'fahim': { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', targetGroup: 'طلبة وخريجو التخصصات المالية', targetBeneficiaries: '150', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
-                'mataheb': { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', targetGroup: 'طلبة القانون والتأمين والمهتمون', targetBeneficiaries: '400', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
+                'samqat': { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', targetGroup: 'نساء من المجتمع', targetBeneficiaries: '20', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
+                'tech': { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', targetGroup: 'الخريجيين والخريجات', targetBeneficiaries: '600', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
+                'fahim': { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', targetGroup: 'المجتمع', targetBeneficiaries: '150', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
+                'mataheb': { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', targetGroup: 'سوق العمل', targetBeneficiaries: '400', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
             };
 
             function getSavedInitiatives() {
@@ -254,15 +252,23 @@
             }
 
             function updateUI(item) {
-                if(document.getElementById('detailTargetGroup')) document.getElementById('detailTargetGroup').textContent = item.targetGroup || '—';
-                if(document.getElementById('detailTargetBeneficiaries')) document.getElementById('detailTargetBeneficiaries').textContent = item.targetBeneficiaries || '—';
-                if(document.getElementById('detailBeneficiaries')) document.getElementById('detailBeneficiaries').textContent = item.beneficiaries || '—';
+                document.getElementById('detailName').textContent = item.name || '—';
+                document.getElementById('detailCategory').textContent = item.category || '—';
+                document.getElementById('detailDept').textContent = item.dept || '—';
+                document.getElementById('detailDate').textContent = item.date || '—';
+                document.getElementById('detailImpact').textContent = item.impact || '—';
 
-                
+                const targetGrp = item.targetGroup || (item.beneficiaryGroups ? item.beneficiaryGroups.join('، ') : '—');
+                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '20';
+                const actualBen = item.beneficiaries || item.beneficiariesActual || '17';
+
+                document.getElementById('detailTargetGroup').textContent = Array.isArray(targetGrp) ? targetGrp.join('، ') : targetGrp;
+                document.getElementById('detailTargetBeneficiaries').textContent = targetBen;
+                document.getElementById('detailActualBeneficiaries').textContent = actualBen;
+
                 const statusEl = document.getElementById('detailStatus');
                 const st = item.status || '—';
                 statusEl.textContent = st;
-                // ضبط ألوان الحالة ديناميكياً لتطابق المبادرات
                 if (st === 'نشطة') {
                     statusEl.style.cssText = "background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0;";
                 } else if (st === 'مكتملة') {
@@ -270,14 +276,6 @@
                 } else {
                     statusEl.style.cssText = "background-color: #f3f4f6; color: #374151;";
                 }
-                
-                const targetGrp = item.targetGroup || item.beneficiaryGroups || 'رائدات الأعمال والطالبات';
-                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '20';
-                const actualBen = item.beneficiaries || item.beneficiariesActual || '17';
-
-                document.getElementById('detailTargetGroup').textContent = Array.isArray(targetGrp) ? targetGrp.join('، ') : targetGrp;
-                document.getElementById('detailTargetBeneficiaries').textContent = targetBen;
-                document.getElementById('detailActualBeneficiaries').textContent = actualBen;
             }
 
             let allInit = getSavedInitiatives();
@@ -294,9 +292,9 @@
                     document.getElementById('editDate').value = currentItem.date || '';
                     document.getElementById('editImpact').value = currentItem.impact || '';
                     document.getElementById('editStatus').value = currentItem.status || '';
-                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || '';
-                    document.getElementById('editTargetBeneficiaries').value = currentItem.targetBeneficiaries || '';
-                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || '';
+                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || (currentItem.beneficiaryGroups ? currentItem.beneficiaryGroups.join('، ') : '');
+                    document.getElementById('editTargetBeneficiaries').value = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || '';
+                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || currentItem.beneficiariesActual || '';
                     headerModal.classList.remove('hidden');
                     headerModal.classList.add('flex');
                 };
