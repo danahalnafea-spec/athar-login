@@ -1,4 +1,4 @@
-- {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -308,9 +308,16 @@ body {
    تنسيق الأيباد والجوال (الشاشات أصغر من 1024 بكسل) 
    ========================================================== */
 @media (max-width: 1024px) {
+    html, body {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: hidden !important;
+        position: relative;
+    }
+
     body {
         align-items: flex-start;
-        padding: 15px 12px;
+        padding: 15px 10px;
     }
 
     .login-container {
@@ -318,23 +325,26 @@ body {
         justify-content: flex-start;
         align-items: stretch;
         gap: 15px;
-        width: 100%;
-        max-width: 560px;
-        margin: 0 auto;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
     }
 
-    /* إزالة المربع الأبيض الخلفي والظل والإطار في الجوال */
+    /* إزالة المربع الأبيض الخلفي وتثبيت العرض تماماً في الجوال */
     .left-side-content {
         order: 1;
-        width: 100%;
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
         background: transparent !important;
         backdrop-filter: none !important;
         border-radius: 0 !important;
         padding: 10px 5px !important;
         box-shadow: none !important;
         border: none !important;
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+        margin: 0 !important;
     }
 
     .logo-box img {
@@ -401,14 +411,15 @@ body {
 
     .right-side-card {
         order: 2;
-        width: 100%;
-        max-width: 100%;
+        width: 100% !important;
+        max-width: 100% !important;
         background: #ffffff;
         border-radius: 16px;
         padding: 22px 18px;
         box-shadow: 0 8px 22px rgba(15, 61, 89, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.9);
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+        margin: 0 !important;
     }
 
     .card-header {
@@ -438,7 +449,7 @@ body {
         box-sizing: border-box;
     }
 
-    /* جعل حجم الخط 16px لمنع الزوم التلقائي عند الكتابة في الجوال */
+    /* جعل حجم الخط 16px لمنع الزوم التلقائي عند الكتابة في الجوال وتثبيت الحقول */
     .input-wrapper input,
     .input-wrapper select {
         width: 100% !important;
@@ -464,6 +475,24 @@ body {
 
     .footer-text {
         font-size: 10px;
+    }
+
+    /* منع خروج قائمة حساب المستخدم وتسجيل الخروج عن الحواف */
+    .user-profile-dropdown,
+    .user-info-box,
+    .logout-item {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        overflow: hidden;
+    }
+
+    .logout-item a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center;
     }
 }
 
