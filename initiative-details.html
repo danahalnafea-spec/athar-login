@@ -258,11 +258,18 @@
                 document.getElementById('detailDate').textContent = item.date || '—';
                 document.getElementById('detailImpact').textContent = item.impact || '—';
 
-                const targetGrp = item.targetGroup || (item.beneficiaryGroups ? item.beneficiaryGroups.join('، ') : '—');
-                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '20';
+                // جلب الفئة المستهدفة وضبطها ديناميكياً لكل مبادرة
+                let targetGrp = item.targetGroup;
+                if (!targetGrp && item.id === 'samqat') targetGrp = 'نساء من المجتمع';
+                else if (!targetGrp && item.id === 'tech') targetGrp = 'الخريجيين والخريجات';
+                else if (!targetGrp && item.id === 'fahim') targetGrp = 'المجتمع';
+                else if (!targetGrp && item.id === 'mataheb') targetGrp = 'سوق العمل';
+                else if (!targetGrp) targetGrp = '—';
+
+                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || (item.id === 'tech' ? '600' : item.id === 'fahim' ? '150' : item.id === 'mataheb' ? '400' : '20');
                 const actualBen = item.beneficiaries || item.beneficiariesActual || '17';
 
-                document.getElementById('detailTargetGroup').textContent = Array.isArray(targetGrp) ? targetGrp.join('، ') : targetGrp;
+                document.getElementById('detailTargetGroup').textContent = targetGrp;
                 document.getElementById('detailTargetBeneficiaries').textContent = targetBen;
                 document.getElementById('detailActualBeneficiaries').textContent = actualBen;
 
@@ -292,7 +299,7 @@
                     document.getElementById('editDate').value = currentItem.date || '';
                     document.getElementById('editImpact').value = currentItem.impact || '';
                     document.getElementById('editStatus').value = currentItem.status || '';
-                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || (currentItem.beneficiaryGroups ? currentItem.beneficiaryGroups.join('، ') : '');
+                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || (currentItem.id === 'samqat' ? 'نساء من المجتمع' : currentItem.id === 'tech' ? 'الخريجيين والخريجات' : currentItem.id === 'fahim' ? 'المجتمع' : 'سوق العمل');
                     document.getElementById('editTargetBeneficiaries').value = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || '';
                     document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || currentItem.beneficiariesActual || '';
                     headerModal.classList.remove('hidden');
