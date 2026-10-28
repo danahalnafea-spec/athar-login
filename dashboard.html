@@ -30,9 +30,8 @@
             background-color: var(--page-bg);
             background-image: url('bg-dashboard.png');
             background-size: cover;
-            background-position: center;
+            background-position: center top;
             background-repeat: no-repeat;
-            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: space-between;
@@ -290,9 +289,11 @@
             transform: rotate(180deg);
         }
 
+        /* تعديل القائمة المنسدلة لتفتح داخل إطار الشاشة تماماً ولا تخرج للطرف */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
+            left: auto;
             right: 0;
             width: 190px;
             background: #ffffff;
