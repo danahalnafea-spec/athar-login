@@ -1,4 +1,4 @@
-- {
+* {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -23,19 +23,20 @@ body {
     padding: 30px 20px;
 }
 
-/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب): موسعة لتملأ الشاشة بتناسق تام */
+/* الحاوية الرئيسية تتكيف بنسبة مئوية تضمن تناسبها مع جميع أحجام اللابتوب */
 .login-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 94%;
-    max-width: 1420px;
-    gap: 50px;
+    width: 90%;
+    max-width: 1350px;
+    margin: 0 auto;
+    gap: 4vw;
 }
 
-/* القسم الأيسر للشاشات الكبيرة يأخذ مساحة أوسع */
+/* القسم الأيسر يتمدد بسلاسة على كل الشاشات */
 .left-side-content {
-    flex: 1.5;
+    flex: 1.2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -150,18 +151,20 @@ body {
     margin-top: 2px;
 }
 
-/* القسم الأيمن: بطاقة تسجيل الدخول للابتوب (موسعة وأكثر تناسقاً مع الشاشة الكبيرة) */
+/* بطاقة تسجيل الدخول بحجم متناسق ومستجيب لجميع شاشات اللابتوب */
 .right-side-card {
-    flex: 0 0 430px;
+    flex: 0 0 380px;
     width: 100%;
+    max-width: 100%;
     background: #ffffff;
     border-radius: 20px;
-    padding: 40px 32px;
+    padding: 35px 28px;
     box-shadow: 0 15px 35px rgba(15, 61, 89, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.8);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    box-sizing: border-box;
 }
 
 .card-header {
@@ -209,11 +212,14 @@ body {
 .input-wrapper {
     position: relative;
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .input-wrapper input,
 .input-wrapper select {
-    width: 100%;
+    width: 100% !important;
+    box-sizing: border-box !important;
     height: 42px;
     padding-right: 38px;
     padding-left: 35px;
@@ -319,7 +325,6 @@ body {
         max-width: 100%;
     }
 
-    /* القسم العلوي: كلام فوق */
     .left-side-content {
         order: 1;
         width: 100%;
@@ -392,7 +397,6 @@ body {
         height: 8px;
     }
 
-    /* القسم السفلي: كلام تحت (بطاقة تسجيل الدخول المصغرة والمتناسقة على حواف الجوال) */
     .right-side-card {
         order: 2;
         width: 100%;
