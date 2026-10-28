@@ -218,8 +218,8 @@ body {
 
 .input-wrapper input,
 .input-wrapper select {
-    width: 100% !important;
-    box-sizing: border-box !important;
+    width: 100%;
+    box-sizing: border-box;
     height: 42px;
     padding-right: 38px;
     padding-left: 32px;
@@ -308,58 +308,84 @@ body {
 }
 
 /* ==========================================================
-   تنسيق خاص بشاشات الأيباد (من 768px إلى 1024px) لتثبيت الحواف ومنع السكرول
+   تنسيق خاص بشاشات الأيباد (من 768px إلى 1024px) لمعالجة السكرول وقائمة تسجيل الخروج
    ========================================================== */
 @media (min-width: 768px) and (max-width: 1024px) {
     html, body {
-        width: 100% !important;
-        max-width: 100vw !important;
-        overflow-x: hidden !important;
-        height: auto !important;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
+        height: auto;
         min-height: 100vh;
     }
 
     body {
-        align-items: center !important;
-        padding: 20px !important;
+        align-items: center;
+        padding: 20px;
     }
 
     .login-container {
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: center !important;
-        gap: 25px !important;
-        width: 90% !important;
-        max-width: 700px !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-        box-sizing: border-box !important;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 25px;
+        width: 90%;
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 0;
+        box-sizing: border-box;
     }
 
     .left-side-content {
-        width: 100% !important;
-        background: transparent !important;
-        backdrop-filter: none !important;
-        box-shadow: none !important;
-        border: none !important;
-        padding: 0 !important;
+        width: 100%;
+        background: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: none;
+        padding: 0;
     }
 
     .right-side-card {
-        width: 100% !important;
-        max-width: 600px !important;
-        background: #ffffff !important;
-        border-radius: 20px !important;
-        padding: 30px !important;
-        box-shadow: 0 10px 25px rgba(15, 61, 89, 0.1) !important;
-        box-sizing: border-box !important;
+        width: 100%;
+        max-width: 600px;
+        background: #ffffff;
+        border-radius: 20px;
+        padding: 30px;
+        box-shadow: 0 10px 25px rgba(15, 61, 89, 0.1);
+        box-sizing: border-box;
     }
 
     .input-wrapper input,
     .input-wrapper select {
-        width: 100% !important;
-        height: 42px !important;
-        font-size: 16px !important;
+        width: 100%;
+        height: 42px;
+        font-size: 16px;
+    }
+
+    /* حصر واحتواء قائمة تسجيل الخروج والحساب داخل الشاشة في الأيباد */
+    .user-profile-dropdown,
+    .user-info-box,
+    .logout-item,
+    #adminSettingsMenu {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        left: 0;
+        right: 0;
+        margin-left: 0;
+        margin-right: 0;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .logout-item a,
+    .user-profile-dropdown a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
     }
 }
 
@@ -368,9 +394,9 @@ body {
    ========================================================== */
 @media (max-width: 767px) {
     html, body {
-        width: 100% !important;
-        max-width: 100vw !important;
-        overflow-x: hidden !important;
+        width: 100%;
+        max-width: 100vw;
+        overflow-x: hidden;
     }
 
     body {
@@ -383,21 +409,21 @@ body {
         justify-content: flex-start;
         align-items: stretch;
         gap: 12px;
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0;
     }
 
     .left-side-content {
         order: 1;
-        width: 100% !important;
-        background: transparent !important;
-        backdrop-filter: none !important;
-        border-radius: 0 !important;
-        padding: 5px !important;
-        box-shadow: none !important;
-        border: none !important;
+        width: 100%;
+        background: transparent;
+        backdrop-filter: none;
+        border-radius: 0;
+        padding: 5px;
+        box-shadow: none;
+        border: none;
     }
 
     .logo-box img {
@@ -465,13 +491,13 @@ body {
 
     .right-side-card {
         order: 2;
-        width: 100% !important;
+        width: 100%;
         background: #ffffff;
         border-radius: 14px;
         padding: 18px 15px;
         box-shadow: 0 6px 18px rgba(15, 61, 89, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.9);
-        box-sizing: border-box !important;
+        box-sizing: border-box;
     }
 
     .card-header {
@@ -497,15 +523,15 @@ body {
 
     .input-wrapper input,
     .input-wrapper select {
-        width: 100% !important;
+        width: 100%;
         height: 38px;
-        font-size: 16px !important;
+        font-size: 16px;
         padding-right: 35px;
         padding-left: 30px;
     }
 
     .login-submit-btn {
-        width: 100% !important;
+        width: 100%;
         height: 40px;
         font-size: 13px;
     }
@@ -522,8 +548,8 @@ body {
     .user-profile-dropdown,
     .user-info-box,
     .logout-item {
-        max-width: 100% !important;
-        box-sizing: border-box !important;
+        max-width: 100%;
+        box-sizing: border-box;
         overflow: hidden;
     }
 
@@ -531,7 +557,7 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 100% !important;
+        width: 100%;
         text-align: center;
     }
 }
@@ -612,9 +638,9 @@ body {
 }
 
 .sidebar-logo img {
-    width: 38px !important;    
-    max-width: 38px !important; 
-    height: auto !important;    
+    width: 38px;    
+    max-width: 38px; 
+    height: auto;    
 }
 
 .sidebar-logo .logo-text {
