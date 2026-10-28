@@ -1,4 +1,4 @@
-* {
+- {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -306,7 +306,6 @@ body {
 
 /* ==========================================================
    تنسيق الأيباد والجوال (الشاشات أصغر من 1024 بكسل) 
-   لتثبيت العناصر واحتوائها داخل الإطار تماماً بدون أي خروج
    ========================================================== */
 @media (max-width: 1024px) {
     body {
@@ -324,16 +323,17 @@ body {
         margin: 0 auto;
     }
 
+    /* إزالة المربع الأبيض الخلفي والظل والإطار في الجوال */
     .left-side-content {
         order: 1;
         width: 100%;
         max-width: 100%;
-        background: rgba(255, 255, 255, 0.9);
-        backdrop-filter: blur(8px);
-        border-radius: 16px;
-        padding: 18px 15px;
-        box-shadow: 0 5px 15px rgba(15, 61, 89, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.9);
+        background: transparent !important;
+        backdrop-filter: none !important;
+        border-radius: 0 !important;
+        padding: 10px 5px !important;
+        box-shadow: none !important;
+        border: none !important;
         box-sizing: border-box;
     }
 
@@ -438,12 +438,13 @@ body {
         box-sizing: border-box;
     }
 
+    /* جعل حجم الخط 16px لمنع الزوم التلقائي عند الكتابة في الجوال */
     .input-wrapper input,
     .input-wrapper select {
         width: 100% !important;
         box-sizing: border-box !important;
         height: 40px;
-        font-size: 12.5px;
+        font-size: 16px !important;
     }
 
     .login-submit-btn {
