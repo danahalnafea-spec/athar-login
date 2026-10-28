@@ -7,7 +7,9 @@
 
 html, body {
     width: 100%;
-    min-height: 100vh;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     overflow-x: hidden;
 }
 
@@ -20,23 +22,26 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px 20px;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
-/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب) */
+/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب) مرتبة ومقسمة باحترافية */
 .login-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 92%;
-    max-width: 1400px;
+    width: 100%;
+    max-width: 1300px;
     margin: 0 auto;
-    gap: 50px;
+    gap: 40px;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 
 /* القسم الأيسر للشعار والمميزات */
 .left-side-content {
-    flex: 1.4;
+    flex: 1.2;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -51,32 +56,32 @@ body {
 }
 
 .logo-box img {
-    width: 160px;
+    width: 150px;
     max-width: 100%;
     height: auto;
     object-fit: contain;
 }
 
 .main-title {
-    font-size: 28px;
+    font-size: 26px;
     color: #0f3d59;
     font-weight: 800;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .main-slogan {
-    font-size: 22px;
+    font-size: 20px;
     color: #0f3d59;
     font-weight: 900;
-    margin-bottom: 14px;
+    margin-bottom: 12px;
 }
 
 .description-text {
-    font-size: 14px;
+    font-size: 13.5px;
     color: #334155;
     line-height: 1.6;
-    max-width: 580px;
-    margin-bottom: 28px;
+    max-width: 540px;
+    margin-bottom: 24px;
     font-weight: 600;
 }
 
@@ -84,9 +89,9 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 18px;
     width: 100%;
-    margin-bottom: 25px;
+    margin-bottom: 22px;
     flex-wrap: nowrap;
 }
 
@@ -94,12 +99,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
 .feature-icon {
-    width: 50px;
-    height: 50px;
+    width: 48px;
+    height: 48px;
     background: rgba(255, 255, 255, 0.95);
     border: 1.5px solid #cbd5e1;
     border-radius: 50%;
@@ -107,12 +112,12 @@ body {
     justify-content: center;
     align-items: center;
     color: #0f3d59;
-    font-size: 18px;
+    font-size: 17px;
     box-shadow: 0 4px 10px rgba(0,0,0,0.04);
 }
 
 .feature-title {
-    font-size: 12.5px;
+    font-size: 12px;
     color: #1e293b;
     font-weight: 700;
     white-space: nowrap;
@@ -120,44 +125,43 @@ body {
 
 .vertical-line {
     width: 1px;
-    height: 32px;
+    height: 30px;
     background-color: #cbd5e1;
-    margin-top: -15px;
+    margin-top: -12px;
 }
 
 .artistic-quote {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
 .artistic-quote span {
     font-family: 'Amiri', serif;
-    font-size: 24px;
+    font-size: 22px;
     font-style: italic;
     font-weight: 700;
     color: #0f3d59;
 }
 
 .quote-underline {
-    width: 150px;
-    height: 14px;
+    width: 140px;
+    height: 12px;
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 16"><path d="M4,12 Q80,1 156,9" fill="none" stroke="%230f3d59" stroke-width="2.8" stroke-linecap="round"/></svg>') no-repeat center;
     background-size: contain;
     margin-top: 2px;
 }
 
-/* بطاقة تسجيل الدخول للابتوب */
+/* بطاقة تسجيل الدخول للابتوب متناسقة ومرتبة */
 .right-side-card {
-    flex: 0 0 430px;
+    flex: 0 0 410px;
     width: 100%;
-    max-width: 100%;
     background: #ffffff;
-    border-radius: 22px;
-    padding: 40px 32px;
+    border-radius: 20px;
+    padding: 35px 28px;
     box-shadow: 0 15px 35px rgba(15, 61, 89, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.9);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -166,50 +170,49 @@ body {
 
 .card-header {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
     position: relative;
 }
 
 .card-header h2 {
-    font-size: 24px;
+    font-size: 22px;
     color: #0f3d59;
     font-weight: 800;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
 }
 
 .card-header::after {
     content: '';
     display: block;
-    width: 40px;
+    width: 35px;
     height: 3px;
     background-color: #0f3d59;
-    margin: 8px auto 0;
+    margin: 6px auto 0;
     border-radius: 2px;
 }
 
 .card-header p {
-    font-size: 13px;
+    font-size: 12.5px;
     color: #64748b;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 .input-group {
-    margin-bottom: 18px;
+    margin-bottom: 16px;
 }
 
 .input-group label {
     display: block;
-    font-size: 13px;
+    font-size: 12.5px;
     color: #1e293b;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 5px;
     text-align: right;
 }
 
 .input-wrapper {
     position: relative;
     width: 100%;
-    max-width: 100%;
     box-sizing: border-box;
 }
 
@@ -217,13 +220,13 @@ body {
 .input-wrapper select {
     width: 100% !important;
     box-sizing: border-box !important;
-    height: 45px;
-    padding-right: 40px;
-    padding-left: 35px;
+    height: 42px;
+    padding-right: 38px;
+    padding-left: 32px;
     border: 1.5px solid #cbd5e1;
-    border-radius: 12px;
+    border-radius: 10px;
     background-color: #f8fafc;
-    font-size: 14px;
+    font-size: 13.5px;
     color: #1e293b;
     outline: none;
     transition: all 0.3s ease;
@@ -241,22 +244,22 @@ body {
 
 .input-icon-inside {
     position: absolute;
-    right: 14px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
     color: #0f3d59;
-    font-size: 15px;
+    font-size: 14px;
     pointer-events: none;
 }
 
 .login-submit-btn {
     width: 100%;
-    height: 46px;
+    height: 44px;
     background-color: #0f3d59;
     color: white;
     border: none;
-    border-radius: 12px;
-    font-size: 15px;
+    border-radius: 10px;
+    font-size: 14px;
     font-weight: 700;
     cursor: pointer;
     transition: background 0.3s ease, transform 0.2s;
@@ -264,8 +267,8 @@ body {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    box-shadow: 0 5px 12px rgba(15, 61, 89, 0.15);
-    margin-top: 5px;
+    box-shadow: 0 4px 10px rgba(15, 61, 89, 0.15);
+    margin-top: 4px;
     box-sizing: border-box;
 }
 
@@ -278,9 +281,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    margin-top: 20px;
-    padding-top: 14px;
+    gap: 10px;
+    margin-top: 16px;
+    padding-top: 12px;
     border-top: 1px solid #e2e8f0;
 }
 
@@ -291,90 +294,80 @@ body {
 }
 
 .footer-leaf-icon {
-    width: 7px;
-    height: 11px;
+    width: 6px;
+    height: 10px;
     background-color: #0f3d59;
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
 }
 
 .footer-text {
-    font-size: 11.5px;
+    font-size: 11px;
     color: #64748b;
     font-weight: 600;
     white-space: nowrap;
 }
 
 /* ==========================================================
-   تنسيق الأيباد والجوال (الشاشات أصغر من 1024 بكسل) 
+   تنسيق الأيباد والجوال المرتب والمتناسق (أقل من 1024 بكسل)
    ========================================================== */
 @media (max-width: 1024px) {
-    html, body {
-        width: 100% !important;
-        max-width: 100% !important;
-        overflow-x: hidden !important;
-        position: relative;
-    }
-
     body {
         align-items: flex-start;
-        padding: 15px 10px;
+        padding: 12px 8px;
     }
 
     .login-container {
         flex-direction: column;
         justify-content: flex-start;
         align-items: stretch;
-        gap: 15px;
+        gap: 12px;
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 auto !important;
         padding: 0 !important;
-        box-sizing: border-box !important;
     }
 
-    /* إزالة المربع الأبيض الخلفي وتثبيت العرض تماماً في الجوال */
+    /* القسم العلوي بدون مربع أبيض وبحجم متناسق تماماً مع شاشة الجوال/الأيباد */
     .left-side-content {
         order: 1;
         width: 100% !important;
-        max-width: 100% !important;
         background: transparent !important;
         backdrop-filter: none !important;
         border-radius: 0 !important;
-        padding: 10px 5px !important;
+        padding: 5px !important;
         box-shadow: none !important;
         border: none !important;
-        box-sizing: border-box !important;
-        margin: 0 !important;
     }
 
     .logo-box img {
-        width: 100px;
+        width: 90px;
     }
 
     .main-title {
-        font-size: 16px;
-        margin-bottom: 4px;
+        font-size: 15px;
+        margin-bottom: 3px;
     }
 
     .main-slogan {
-        font-size: 13px;
-        margin-bottom: 6px;
+        font-size: 12px;
+        margin-bottom: 5px;
     }
 
     .description-text {
-        font-size: 10.5px;
-        line-height: 1.4;
-        margin-bottom: 12px;
-        max-width: 100%;
+        font-size: 10px;
+        line-height: 1.35;
+        margin-bottom: 10px;
+        padding: 0 10px;
     }
 
     .features-row-exact {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         align-items: center;
         gap: 2px;
         width: 100%;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
+        padding: 0 5px;
     }
 
     .feature-item {
@@ -386,13 +379,13 @@ body {
     }
 
     .feature-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 11px;
+        width: 30px;
+        height: 30px;
+        font-size: 10.5px;
     }
 
     .feature-title {
-        font-size: 7.5px;
+        font-size: 7px;
         white-space: nowrap;
     }
 
@@ -401,83 +394,73 @@ body {
     }
 
     .artistic-quote span {
-        font-size: 15px;
+        font-size: 14px;
     }
 
     .quote-underline {
-        width: 110px;
-        height: 9px;
+        width: 100px;
+        height: 8px;
     }
 
+    /* بطاقة تسجيل الدخول مرتبة ومحتواة بالحواف تماماً بدون أي سكرول أفقي */
     .right-side-card {
         order: 2;
         width: 100% !important;
-        max-width: 100% !important;
         background: #ffffff;
-        border-radius: 16px;
-        padding: 22px 18px;
-        box-shadow: 0 8px 22px rgba(15, 61, 89, 0.08);
+        border-radius: 14px;
+        padding: 18px 15px;
+        box-shadow: 0 6px 18px rgba(15, 61, 89, 0.08);
         border: 1px solid rgba(255, 255, 255, 0.9);
         box-sizing: border-box !important;
-        margin: 0 !important;
     }
 
     .card-header {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     .card-header h2 {
-        font-size: 18px;
+        font-size: 16px;
     }
 
     .card-header p {
-        font-size: 10.5px;
+        font-size: 10px;
     }
 
     .input-group {
-        margin-bottom: 12px;
+        margin-bottom: 10px;
     }
 
     .input-group label {
-        font-size: 11px;
-        margin-bottom: 3px;
+        font-size: 10.5px;
+        margin-bottom: 2px;
     }
 
-    .input-wrapper {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-    }
-
-    /* جعل حجم الخط 16px لمنع الزوم التلقائي عند الكتابة في الجوال وتثبيت الحقول */
+    /* منع الزوم وتثبيت حقول الإدخال لتأخذ عرض الحاوية بالكامل بدقة */
     .input-wrapper input,
     .input-wrapper select {
         width: 100% !important;
-        box-sizing: border-box !important;
-        height: 40px;
-        font-size: 16px !important;
+        height: 38px;
+        font-size: 16px !important; /* يمنع الزوم التلقائي في الموبايل */
+        padding-right: 35px;
+        padding-left: 30px;
     }
 
     .login-submit-btn {
         width: 100% !important;
-        max-width: 100% !important;
-        box-sizing: border-box !important;
-        height: 42px;
-        font-size: 13.5px;
+        height: 40px;
+        font-size: 13px;
     }
 
     .card-footer-note {
-        margin-top: 12px;
-        padding-top: 10px;
-        width: 100%;
-        box-sizing: border-box;
+        margin-top: 10px;
+        padding-top: 8px;
     }
 
     .footer-text {
-        font-size: 10px;
+        font-size: 9.5px;
     }
 
-    /* منع خروج قائمة حساب المستخدم وتسجيل الخروج عن الحواف */
+    /* احتواء قائمة تسجيل الخروج ضمن حدود شاشة الأيباد والجوال */
     .user-profile-dropdown,
     .user-info-box,
     .logout-item {
@@ -491,7 +474,6 @@ body {
         justify-content: center;
         align-items: center;
         width: 100% !important;
-        box-sizing: border-box !important;
         text-align: center;
     }
 }
@@ -572,8 +554,8 @@ body {
 }
 
 .sidebar-logo img {
-    width: 25px !important;    
-    max-width: 25px !important; 
+    width: 38px !important;    
+    max-width: 38px !important; 
     height: auto !important;    
 }
 
