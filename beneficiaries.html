@@ -659,7 +659,7 @@
         <aside class="sidebar-right">
             <div class="sidebar-top-content w-full flex flex-col items-center">
                 
-                <!-- شعار المنصة الصغير بحجم 38px -->
+                <!-- شعار المنصة -->
                 <div class="sidebar-logo" style="margin-bottom: 15px; width: 100%; display: flex; justify-content: center;">
                     <img src="logo.png" alt="شعار منصة أثر" style="width: 140px; height: auto;">
                 </div>
@@ -718,7 +718,7 @@
                 <p>متابعة أعداد المستفيدين والفئات المستهدفة في المبادرات</p>
             </div>
 
-            <!-- اسم المستخدم وقائمة تسجيل الخروج المحصورة داخل إطار الشاشة -->
+            <!-- اسم المستخدم وقائمة تسجيل الخروج -->
             <div class="top-user-bar-container" id="userBarContainer">
                 <div class="top-user-bar" id="userBarToggle" role="button">
                     <div class="user-avatar-circle">
@@ -730,7 +730,6 @@
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة المقيدة داخل إطار الشاشة تماماً -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
                     <div class="dropdown-role-display">
@@ -891,7 +890,7 @@
                     name: 'مبادرة سامقات',
                     category: 'التمكين الاقتصادي',
                     beneficiaries: '17',
-                    beneficiaryGroups: ['نساء المجتمع', 'رائدات الأعمال والطالبات'],
+                    beneficiaryGroups: ['نساء من المجتمع'],
                     date: '2025-11-30',
                     impact: '5 / 5',
                     status: 'مكتملة'
@@ -901,7 +900,7 @@
                     name: 'مبادرة محترف',
                     category: 'التطوير المهني',
                     beneficiaries: '568',
-                    beneficiaryGroups: ['الخريجون والخريجات', 'طلبة الجامعة والخريجون'],
+                    beneficiaryGroups: ['الخريجيين والخريجات'],
                     date: '2025-09-15',
                     impact: '2.47 / 5',
                     status: 'مكتملة'
@@ -911,7 +910,7 @@
                     name: 'مبادرة فهيم',
                     category: 'اقتصاد',
                     beneficiaries: '144',
-                    beneficiaryGroups: ['المجتمع', 'طلبة وخريجو التخصصات المالية'],
+                    beneficiaryGroups: ['المجتمع'],
                     date: '2025-12-11',
                     impact: '4.6 / 5',
                     status: 'نشطة'
@@ -921,7 +920,7 @@
                     name: 'مبادرة متأهب',
                     category: 'الأنظمة والتأمين',
                     beneficiaries: '387',
-                    beneficiaryGroups: ['الخريجون والخريجات', 'طلبة القانون والتأمين والمهتمون'],
+                    beneficiaryGroups: ['سوق العمل'],
                     date: '2025-09-15',
                     impact: '5 / 5',
                     status: 'مكتملة'
@@ -949,10 +948,17 @@
 
             function getInitiativeBeneficiaryInfo(item) {
                 const extra = extraData[item.id] || item.beneficiaryInfo || {};
+                
+                // وضع قيم افتراضية للمستهدف في حال كانت القيمة فارغة (مثلاً 20 لمبادرة سامقات، 600 لممحترف، إلخ)
+                let defaultTarget = 20;
+                if (item.id === 'tech') defaultTarget = 600;
+                if (item.id === 'fahim') defaultTarget = 150;
+                if (item.id === 'mataheb') defaultTarget = 400;
+
                 return {
                     actual: Number(extra.actual ?? item.beneficiariesActual ?? item.beneficiaries) || 0,
-                    target: Number(extra.target ?? item.beneficiariesTarget) || null,
-                    groups: Array.isArray(extra.groups) ? extra.groups : []
+                    target: Number(extra.target ?? item.beneficiariesTarget ?? defaultTarget),
+                    groups: Array.isArray(extra.groups) && extra.groups.length > 0 ? extra.groups : (item.beneficiaryGroups || [])
                 };
             }
 
@@ -967,7 +973,7 @@
             }
 
             function formatNumber(value) {
-                return value === null ? 'غير متوفر' : new Intl.NumberFormat('en-US').format(value);
+                return value === null || value === undefined ? '20' : new Intl.NumberFormat('en-US').format(value);
             }
 
             function renderTable(items) {
