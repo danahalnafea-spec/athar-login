@@ -29,9 +29,9 @@
         body {
             background-color: var(--page-bg);
             background-image: url('bg-dashboard.png');
-            background-size: cover;
-            background-position: center top;
-            background-repeat: no-repeat;
+            background-size: 100% auto;
+            background-position: top center;
+            background-repeat: repeat-y;
             min-height: 100vh;
             display: flex;
             justify-content: space-between;
@@ -143,7 +143,7 @@
             color: var(--navy);
         }
 
-        /* زر السهم الثابت وموقع انتقاله بحسب إغلاق القائمة */
+        /* زر السهم الثابت */
         .sidebar-toggle-btn {
             position: fixed !important;
             top: 20px !important;
@@ -173,7 +173,7 @@
             transform: scale(1.1);
         }
 
-        /* المحتوى الرئيسي: ينسحب ويتمدد عند إغلاق القائمة */
+        /* المحتوى الرئيسي */
         .main-content-area {
             flex: 1;
             min-height: 100vh;
@@ -242,10 +242,10 @@
         .top-user-bar {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 6px 14px;
             border-radius: 30px;
             box-shadow: 0 3px 12px rgba(11, 37, 58, 0.08);
             backdrop-filter: blur(5px);
@@ -257,8 +257,8 @@
         }
 
         .user-avatar-circle {
-            width: 36px;
-            height: 36px;
+            width: 32px;
+            height: 32px;
             background-color: #ffffff;
             border-radius: 50%;
             display: flex;
@@ -273,7 +273,7 @@
             display: flex;
             align-items: center;
             gap: 6px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--navy);
             white-space: nowrap;
@@ -289,23 +289,30 @@
             transform: rotate(180deg);
         }
 
-        /* تعديل القائمة المنسدلة لتفتح داخل إطار الشاشة تماماً ولا تخرج للطرف */
+        /* تعديل حصين للقائمة المنسدلة لتثبيتها داخل شاشة الجوال تماماً وعدم خروجها لأي طرف */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
-            left: auto;
-            right: 0;
-            width: 190px;
+            left: 0;
+            right: auto;
+            width: 185px;
             background: #ffffff;
             border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.12);
+            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.15);
             padding: 10px;
             display: none;
             flex-direction: column;
             gap: 6px;
-            z-index: 100;
+            z-index: 1000;
             border: 1px solid rgba(11, 37, 58, 0.08);
             text-align: right;
+        }
+
+        @media (min-width: 768px) {
+            .user-dropdown-menu {
+                left: auto;
+                right: 0;
+            }
         }
 
         .user-dropdown-menu.show {
@@ -324,7 +331,7 @@
             color: var(--navy);
             padding: 8px 10px;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             display: flex;
             align-items: center;
@@ -460,7 +467,7 @@
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة: الصلاحية وتحتها مباشرة زر تسجيل الخروج -->
+                <!-- القائمة المنسدلة: محصورة بالكامل داخل الشاشة للجوال -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
 
@@ -469,7 +476,7 @@
                         <i class="fa-solid fa-lock"></i>
                     </div>
 
-                    <!-- زر تسجيل الخروج باللون الأحمر تحت الصلاحيات مباشرة -->
+                    <!-- زر تسجيل الخروج -->
                     <div class="border-t border-gray-100 pt-1">
                         <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-2 px-2.5 py-2 rounded-lg text-red-600 hover:bg-red-50 font-bold transition text-xs">
                             <span>تسجيل الخروج</span>
@@ -532,7 +539,7 @@
                 userBarToggle.setAttribute('aria-expanded', 'false');
             });
 
-            // السايد بار وزر الحركة المنسدلة وانسحاب المحتوى
+            // السايد بار وزر الحركة وانسحاب المحتوى
             const sidebarWrapper = document.getElementById('sidebarWrapper');
             const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
             const toggleIcon = document.getElementById('toggleIcon');
