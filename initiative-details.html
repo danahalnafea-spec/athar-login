@@ -254,11 +254,10 @@
             }
 
             function updateUI(item) {
-                document.getElementById('detailName').textContent = item.name || '—';
-                document.getElementById('detailCategory').textContent = item.category || '—';
-                document.getElementById('detailDept').textContent = item.dept || '—';
-                document.getElementById('detailDate').textContent = item.date || '—';
-                document.getElementById('detailImpact').textContent = item.impact || '—';
+                if(document.getElementById('detailTargetGroup')) document.getElementById('detailTargetGroup').textContent = item.targetGroup || '—';
+                if(document.getElementById('detailTargetBeneficiaries')) document.getElementById('detailTargetBeneficiaries').textContent = item.targetBeneficiaries || '—';
+                if(document.getElementById('detailBeneficiaries')) document.getElementById('detailBeneficiaries').textContent = item.beneficiaries || '—';
+
                 
                 const statusEl = document.getElementById('detailStatus');
                 const st = item.status || '—';
