@@ -29,9 +29,10 @@
         body {
             background-color: var(--page-bg);
             background-image: url('bg-dashboard.png');
-            background-size: 100% auto;
-            background-position: top center;
-            background-repeat: repeat-y;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
             min-height: 100vh;
             display: flex;
             justify-content: space-between;
@@ -289,7 +290,7 @@
             transform: rotate(180deg);
         }
 
-        /* تعديل حصين للقائمة المنسدلة لتثبيتها داخل شاشة الجوال تماماً وعدم خروجها لأي طرف */
+        /* القائمة المنسدلة مرتبطة بداخل الشاشة تماماً */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -467,7 +468,7 @@
                     </div>
                 </div>
 
-                <!-- القائمة المنسدلة: محصورة بالكامل داخل الشاشة للجوال -->
+                <!-- القائمة المنسدلة -->
                 <div class="user-dropdown-menu" id="userDropdownMenu">
                     <span class="dropdown-header-label">صلاحية الحساب</span>
 
