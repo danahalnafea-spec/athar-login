@@ -26,7 +26,7 @@ body {
     box-sizing: border-box;
 }
 
-/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب) مرتبة ومقسمة باحترافية */
+/* الحاوية الرئيسية للشاشات الكبيرة (اللابتوب) */
 .login-container {
     display: flex;
     justify-content: space-between;
@@ -153,7 +153,7 @@ body {
     margin-top: 2px;
 }
 
-/* بطاقة تسجيل الدخول للابتوب متناسقة ومرتبة */
+/* بطاقة تسجيل الدخول للابتوب */
 .right-side-card {
     flex: 0 0 410px;
     width: 100%;
@@ -308,9 +308,71 @@ body {
 }
 
 /* ==========================================================
-   تنسيق الأيباد والجوال المرتب والمتناسق (أقل من 1024 بكسل)
+   تنسيق خاص بشاشات الأيباد (من 768px إلى 1024px) لتثبيت الحواف ومنع السكرول
    ========================================================== */
-@media (max-width: 1024px) {
+@media (min-width: 768px) and (max-width: 1024px) {
+    html, body {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        min-height: 100vh;
+    }
+
+    body {
+        align-items: center !important;
+        padding: 20px !important;
+    }
+
+    .login-container {
+        flex-direction: column !important;
+        justify-content: center !important;
+        align-items: center !important;
+        gap: 25px !important;
+        width: 90% !important;
+        max-width: 700px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        box-sizing: border-box !important;
+    }
+
+    .left-side-content {
+        width: 100% !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+    }
+
+    .right-side-card {
+        width: 100% !important;
+        max-width: 600px !important;
+        background: #ffffff !important;
+        border-radius: 20px !important;
+        padding: 30px !important;
+        box-shadow: 0 10px 25px rgba(15, 61, 89, 0.1) !important;
+        box-sizing: border-box !important;
+    }
+
+    .input-wrapper input,
+    .input-wrapper select {
+        width: 100% !important;
+        height: 42px !important;
+        font-size: 16px !important;
+    }
+}
+
+/* ==========================================================
+   تنسيق الشاشات الصغيرة جداً (الجوالات أقل من 768px)
+   ========================================================== */
+@media (max-width: 767px) {
+    html, body {
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+    }
+
     body {
         align-items: flex-start;
         padding: 12px 8px;
@@ -327,7 +389,6 @@ body {
         padding: 0 !important;
     }
 
-    /* القسم العلوي بدون مربع أبيض وبحجم متناسق تماماً مع شاشة الجوال/الأيباد */
     .left-side-content {
         order: 1;
         width: 100% !important;
@@ -402,7 +463,6 @@ body {
         height: 8px;
     }
 
-    /* بطاقة تسجيل الدخول مرتبة ومحتواة بالحواف تماماً بدون أي سكرول أفقي */
     .right-side-card {
         order: 2;
         width: 100% !important;
@@ -435,12 +495,11 @@ body {
         margin-bottom: 2px;
     }
 
-    /* منع الزوم وتثبيت حقول الإدخال لتأخذ عرض الحاوية بالكامل بدقة */
     .input-wrapper input,
     .input-wrapper select {
         width: 100% !important;
         height: 38px;
-        font-size: 16px !important; /* يمنع الزوم التلقائي في الموبايل */
+        font-size: 16px !important;
         padding-right: 35px;
         padding-left: 30px;
     }
@@ -460,7 +519,6 @@ body {
         font-size: 9.5px;
     }
 
-    /* احتواء قائمة تسجيل الخروج ضمن حدود شاشة الأيباد والجوال */
     .user-profile-dropdown,
     .user-info-box,
     .logout-item {
