@@ -891,6 +891,7 @@
                     category: 'التمكين الاقتصادي',
                     beneficiaries: '17',
                     beneficiaryGroups: ['نساء من المجتمع'],
+                    beneficiariesTarget: '20',
                     date: '2025-11-30',
                     impact: '5 / 5',
                     status: 'مكتملة'
@@ -901,6 +902,7 @@
                     category: 'التطوير المهني',
                     beneficiaries: '568',
                     beneficiaryGroups: ['الخريجيين والخريجات'],
+                    beneficiariesTarget: '600',
                     date: '2025-09-15',
                     impact: '2.47 / 5',
                     status: 'مكتملة'
@@ -911,6 +913,7 @@
                     category: 'اقتصاد',
                     beneficiaries: '144',
                     beneficiaryGroups: ['المجتمع'],
+                    beneficiariesTarget: '150',
                     date: '2025-12-11',
                     impact: '4.6 / 5',
                     status: 'نشطة'
@@ -921,6 +924,7 @@
                     category: 'الأنظمة والتأمين',
                     beneficiaries: '387',
                     beneficiaryGroups: ['سوق العمل'],
+                    beneficiariesTarget: '400',
                     date: '2025-09-15',
                     impact: '5 / 5',
                     status: 'مكتملة'
@@ -949,16 +953,17 @@
             function getInitiativeBeneficiaryInfo(item) {
                 const extra = extraData[item.id] || item.beneficiaryInfo || {};
                 
-                // وضع قيم افتراضية للمستهدف في حال كانت القيمة فارغة (مثلاً 20 لمبادرة سامقات، 600 لممحترف، إلخ)
                 let defaultTarget = 20;
                 if (item.id === 'tech') defaultTarget = 600;
                 if (item.id === 'fahim') defaultTarget = 150;
                 if (item.id === 'mataheb') defaultTarget = 400;
 
+                const groupsSource = item.targetGroup ? [item.targetGroup] : (item.beneficiaryGroups || []);
+
                 return {
                     actual: Number(extra.actual ?? item.beneficiariesActual ?? item.beneficiaries) || 0,
                     target: Number(extra.target ?? item.beneficiariesTarget ?? defaultTarget),
-                    groups: Array.isArray(extra.groups) && extra.groups.length > 0 ? extra.groups : (item.beneficiaryGroups || [])
+                    groups: Array.isArray(extra.groups) && extra.groups.length > 0 ? extra.groups : groupsSource
                 };
             }
 
@@ -998,7 +1003,7 @@
                         <td>${info.groups.length ? info.groups.join('، ') : '<span class="unavailable">غير متوفر</span>'}</td>
                         <td><span class="number-badge">${formatNumber(info.target)}</span></td>
                         <td><span class="number-badge">${formatNumber(info.actual)}</span></td>
-                        <td><a href="initiative-details.html?initiative=${item.id}" class="details-link"><i class="fa-solid fa-file-lines"></i><span>عرض التفاصيل</span></a></td>
+                        <td><a href="initiative-details.html?initiative=${encodeURIComponent(item.id)}" class="details-link"><i class="fa-solid fa-file-lines"></i><span>عرض التفاصيل</span></a></td>
                     `;
                     tableBody.appendChild(row);
                 });
