@@ -48,20 +48,35 @@ body {
     text-align: center;
 }
 
-.logo-box {
-    margin-bottom: 15px;
+
+/* حاوية الشعارين: متلاصقتان تماماً وبدون أي مسافة */
+.logos-container {
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
+    gap: 0px !important;
+    margin-bottom: 15px;
+    flex-wrap: nowrap;
+    width: 100%;
 }
 
-.logo-box img {
-    width: 150px;
-    max-width: 100%;
-    height: auto;
+/* 1. شعار أثر: حجم كبير، واضح، وبارز بشكل أنيق ومرتب جداً بالعين */
+.athar-logo {
+    width: 120px !important;
+    min-width: 190px !important;
+    max-width: none !important;
+    height: auto !important;
     object-fit: contain;
 }
 
+/* 2. شعار الجامعة بجانبه مباشرة وبمقاس متناسق وملاصق له */
+.uni-logo {
+    width: 240px !important;
+    min-width: 120px !important;
+    max-width: none !important;
+    height: auto !important;
+    object-fit: contain;
+}
 .main-title {
     font-size: 26px;
     color: #0f3d59;
@@ -308,7 +323,7 @@ body {
 }
 
 /* ==========================================================
-   تنسيق خاص بشاشات الأيباد (من 768px إلى 1024px) لمعالجة السكرول وقائمة تسجيل الخروج
+   تنسيق خاص بشاشات الأيباد (من 768px إلى 1024px) - كما هو ممتاز
    ========================================================== */
 @media (min-width: 768px) and (max-width: 1024px) {
     html, body {
@@ -345,6 +360,16 @@ body {
         padding: 0;
     }
 
+    .logo-box img[src="logo.png"] {
+        width: 160px !important;
+        min-width: 160px !important;
+    }
+
+    .logo-box img[src="لوقو الجامعه.png"] {
+        width: 130px !important;
+        min-width: 130px !important;
+    }
+
     .right-side-card {
         width: 100%;
         max-width: 600px;
@@ -361,36 +386,10 @@ body {
         height: 42px;
         font-size: 16px;
     }
-
-    /* حصر واحتواء قائمة تسجيل الخروج والحساب داخل الشاشة في الأيباد */
-    .user-profile-dropdown,
-    .user-info-box,
-    .logout-item,
-    #adminSettingsMenu {
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-        left: 0;
-        right: 0;
-        margin-left: 0;
-        margin-right: 0;
-        overflow: hidden;
-        position: relative;
-    }
-
-    .logout-item a,
-    .user-profile-dropdown a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        box-sizing: border-box;
-        text-align: center;
-    }
 }
 
 /* ==========================================================
-   تنسيق الشاشات الصغيرة جداً (الجوالات أقل من 768px)
+   تنسيق الشاشات الصغيرة جداً (الجوالات أقل من 768px) - كما هو ممتاز
    ========================================================== */
 @media (max-width: 767px) {
     html, body {
@@ -426,8 +425,14 @@ body {
         border: none;
     }
 
-    .logo-box img {
-        width: 90px;
+    .logo-box img[src="logo.png"] {
+        width: 110px !important;
+        min-width: 110px !important;
+    }
+
+    .logo-box img[src="لوقو الجامعه.png"] {
+        width: 90px !important;
+        min-width: 90px !important;
     }
 
     .main-title {
@@ -543,171 +548,5 @@ body {
 
     .footer-text {
         font-size: 9.5px;
-    }
-
-    .user-profile-dropdown,
-    .user-info-box,
-    .logout-item {
-        max-width: 100%;
-        box-sizing: border-box;
-        overflow: hidden;
-    }
-
-    .logout-item a {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        text-align: center;
-    }
-}
-
-/* ==========================================================
-   تنسيقات لوحة التحكم (Dashboard & Sidebar)
-   ========================================================== */
-
-.dashboard-body {
-    background-image: url('خلفيه موقع اثر.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    min-height: 100vh;
-    padding: 20px;
-}
-
-.dashboard-container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    max-width: 1350px;
-    margin: 0 auto;
-    min-height: 90vh;
-    gap: 20px;
-}
-
-.main-content-area {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.9);
-    box-shadow: 0 10px 30px rgba(15, 61, 89, 0.05);
-}
-
-.welcome-top-bar h1 {
-    font-size: 24px;
-    color: #0f3d59;
-    font-weight: 800;
-}
-
-.welcome-top-bar p {
-    font-size: 13px;
-    color: #64748b;
-    margin-top: 5px;
-}
-
-.content-card-box {
-    margin-top: 30px;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-    color: #334155;
-}
-
-.sidebar-menu {
-    width: 260px;
-    background: #ffffff;
-    border-radius: 20px;
-    padding: 25px 15px;
-    box-shadow: 0 10px 30px rgba(15, 61, 89, 0.08);
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-}
-
-.sidebar-logo {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 10px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e2e8f0;
-    margin-bottom: 20px;
-}
-
-.sidebar-logo img {
-    width: 38px;    
-    max-width: 38px; 
-    height: auto;    
-}
-
-.sidebar-logo .logo-text {
-    font-size: 20px;
-    font-weight: 900;
-    color: #0f3d59;
-}
-
-.menu-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.menu-item a {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding: 12px 15px;
-    border-radius: 10px;
-    text-decoration: none;
-    color: #334155;
-    font-size: 14px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.menu-item a i {
-    font-size: 16px;
-    color: #0f3d59;
-    width: 20px;
-    text-align: center;
-}
-
-.menu-item.active a {
-    background-color: #dbeafe;
-    color: #0f3d59;
-    font-weight: 700;
-}
-
-.menu-item a:hover {
-    background-color: #f1f5f9;
-}
-
-.logout-item {
-    margin-top: auto;
-    border-top: 1px solid #e2e8f0;
-    padding-top: 15px;
-}
-
-.logout-item a {
-    color: #ef4444;
-}
-
-.logout-item a i {
-    color: #ef4444;
-}
-
-@media (max-width: 900px) {
-    .dashboard-container {
-        flex-direction: column-reverse;
-    }
-    .sidebar-menu {
-        width: 100%;
     }
 }
