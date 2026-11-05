@@ -58,11 +58,15 @@
             </div>
         </div>
 
-        <!-- القسم الأيسر: الشعار والمميزات -->
+        <!-- القسم الأيسر: الشعارات والمميزات -->
         <div class="left-side-content">
-            <div class="logo-box">
-                <img src="logo.png" alt="شعار منصة أثر">
+            
+            <!-- حاوية الشعارين النظيفة والمباشرة (متلاصقتان تماماً) -->
+            <div class="logos-container">
+                <img src="logo.png" alt="شعار منصة أثر" class="athar-logo">
+                <img src="لوقو الجامعه.png" alt="شعار الجامعة" class="uni-logo">
             </div>
+
             <div class="main-title">بوابة قياس الأثر المجتمعي واتخاذ القرار</div>
             <div class="main-slogan">مبادرات تُدار بذكاء.. وأثر يُقاس بوضوح</div>
             
@@ -116,12 +120,7 @@
             localStorage.setItem('athalUser', name);
             localStorage.setItem('athalRole', role);
 
-            // التوجيه بناءً على الاختيار
-            if (role === 'admin') {
-                window.location.href = "dashboard.html"; // أو صفحة المشرف
-            } else {
-                window.location.href = "dashboard.html"; 
-            }
+            window.location.href = "dashboard.html";
         }
     </script>
 </body>
