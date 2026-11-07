@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>منصة أثر - المؤشرات</title>
+    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#f0f7ff',
+                100: '#e0f2fe',
+                600: '#2b73b9',
+                700: '#205c96',
+                800: '#1a4978',
+              }
+            },
+            fontFamily: {
+              sans: ['Cairo', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        :root {
+            --sidebar-width: 280px;
+            --navy: #0b253a;
+            --blue: #4e9cd8;
+            --page-bg: #f0f7ff;
+            --sidebar-bg: #eaf4fc;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background-color: var(--page-bg);
+            background-image: url('bg-dashboard.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            direction: rtl;
+            overflow-x: hidden;
+        }
+
+        /* الشريط الجانبي */
+        .sidebar-wrapper {
+            position: fixed;
+            right: 0;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: flex-start;
+            flex-shrink: 0;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 9999;
+            transform: translateX(0);
+        }
+
+        .sidebar-wrapper.collapsed {
+            transform: translateX(var(--sidebar-width));
+        }
+
+        .sidebar-right {
+            width: var(--sidebar-width);
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 15px 12px 20px;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.06);
+            border-left: 1px solid rgba(15, 61, 89, 0.08);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        /* زر السهم الثابت */
+        .sidebar-toggle-btn {
+            position: fixed !important;
+            top: 20px !important;
+            right: calc(var(--sidebar-width) + 15px) !important;
+            width: 36px;
+            height: 36px;
+            background-color: var(--navy);
+            color: #ffffff;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(11, 37, 58, 0.3);
+            font-size: 13px;
+            z-index: 100000;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        body.sidebar-is-collapsed .sidebar-toggle-btn {
+            right: 20px !important;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background-color: #16344e;
+            transform: scale(1.1);
+        }
+
+        /* المحتوى الرئيسي */
+        .main-content-area {
+            flex: 1;
+            min-height: 100vh;
+            padding: 30px 4vw 50px;
+            margin-right: var(--sidebar-width);
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            transition: margin-right 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.sidebar-is-collapsed .main-content-area {
+            margin-right: 0 !important;
+        }
+
+        /* القائمة المنسدلة للمستخدم */
+        .user-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            left: 0;
+            right: auto;
+            width: 190px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(11, 37, 58, 0.15);
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1000;
+            border: 1px solid rgba(11, 37, 58, 0.08);
+            text-align: right;
+        }
+
+        @media (min-width: 768px) {
+            .user-dropdown-menu {
+                left: auto;
+                right: 0;
+            }
+        }
+
+        .user-dropdown-menu.show { display: flex; }
+
+        @media (max-width: 1024px) {
+            .sidebar-wrapper {
+                transform: translateX(100%);
+            }
+            .sidebar-wrapper.mobile-open {
+                transform: translateX(0);
+            }
+            .sidebar-toggle-btn {
+                position: fixed !important;
+                top: 18px !important;
+                right: 18px !important;
+                left: auto !important;
+            }
+            .main-content-area {
+                margin-right: 0 !important;
+                padding: 75px 16px 40px;
+            }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- زر السهم الثابت -->
+    <button class="sidebar-toggle-btn" id="sidebarToggleBtn" title="إخفاء/إظهار القائمة">
+        <i class="fa-solid fa-chevron-right" id="toggleIcon"></i>
+    </button>
+
+    <!-- حاوية الشريط الجانبي في اليمين -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <aside class="sidebar-right">
+            <div class="sidebar-top-content w-full flex flex-col items-center">
+                <!-- الشعار -->
+                <div class="sidebar-logo" style="margin-bottom: 15px; width: 100%; display: flex; justify-content: center;">
+                    <img src="logo.png" alt="شعار منصة أثر" style="width: 140px; height: auto;">
+                </div>
+
+                <!-- القائمة -->
+                <nav class="space-y-1.5 w-full">
+                    <a href="dashboard.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>الرئيسية</span>
+                        <i class="fa-solid fa-house w-5 text-center"></i>
+                    </a>
+                    
+                    <a href="initiatives.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المبادرات</span>
+                        <i class="fa-solid fa-folder-open w-5 text-center"></i>
+                    </a>
+
+                    <a href="indicators.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl bg-[#d1e7fb] text-[#0b253a] font-extrabold transition text-sm">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    </a>
+
+                    <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>التقارير</span>
+                        <i class="fa-solid fa-file-lines w-5 text-center"></i>
+                    </a>
+
+                    <a href="beneficiaries.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المستفيدون</span>
+                        <i class="fa-solid fa-users w-5 text-center"></i>
+                    </a>
+
+                    <!-- إعدادات النظام للمشرف -->
+                    <div id="adminSettingsMenu" style="display: none;">
+                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear w-5 text-center"></i>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- المحتوى الرئيسي الأيسر -->
+    <main class="main-content-area" id="mainContentArea">
+        <!-- الهيدر العلوي -->
+        <header class="w-full flex justify-between items-center mb-8 relative flex-wrap gap-4">
+            <div class="text-right">
+                <h1 class="text-2xl md:text-3xl font-black text-[#0b253a]">المؤشرات</h1>
+                <div class="w-12 h-1 bg-[#4e9cd8] rounded mt-1"></div>
+            </div>
+            
+            <!-- شريط اسم المستخدم وقائمة الخروج -->
+            <div class="relative" id="userBarContainer">
+                <div id="userBarToggle" class="flex items-center gap-2.5 cursor-pointer bg-white px-4 py-1.5 rounded-full shadow-sm hover:bg-slate-50 transition border border-slate-200">
+                    <div class="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-[#0b253a] shadow-sm">
+                        <i class="fa-solid fa-user text-sm"></i>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-sm font-bold text-[#0b253a]">
+                        <span id="displayUserName">مستخدم</span>
+                        <i class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
+                    </div>
+                </div>
+                
+                <div class="user-dropdown-menu" id="userDropdownMenu">
+                    <span class="text-[11px] text-gray-500 font-semibold px-1.5">صلاحية الحساب</span>
+                    <div class="bg-slate-100 text-[#0b253a] px-2.5 py-2 rounded-lg text-xs font-bold flex items-center justify-between mb-1">
+                        <span id="displayUserRoleText">مستخدم عادي</span>
+                        <i class="fa-solid fa-lock text-[#4e9cd8] text-xs"></i>
+                    </div>
+                    <div class="border-t border-gray-100 pt-1">
+                        <a href="index.html" class="flex items-center justify-end flex-row-reverse gap-2 px-2.5 py-2 rounded-lg text-red-600 hover:bg-red-50 font-bold transition text-xs">
+                            <span>تسجيل الخروج</span>
+                            <i class="fa-solid fa-right-from-bracket w-4 text-center"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- تصفية حسب المبادرة -->
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm mb-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full sm:w-auto">
+                <label class="text-xs font-bold text-slate-700 whitespace-nowrap">تصفية حسب المبادرة:</label>
+                <select id="filterCategory" onchange="renderIndicators()" class="w-full sm:w-auto px-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-brand-600 focus:outline-none cursor-pointer">
+                    <option value="الكل">جميع المبادرات (عرض الكل)</option>
+                    <option value="مبادرة محترف">مبادرة محترف</option>
+                    <option value="مبادرة سامقات">مبادرة سامقات</option>
+                    <option value="مبادرة متأهب">مبادرة متأهب</option>
+                    <option value="مبادرة فهيم">مبادرة فهيم</option>
+                </select>
+            </div>
+            <span id="kpiCountBadge" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">عرض 0 مؤشرات</span>
+        </div>
+
+        <!-- نموذج إضافة مؤشر جديد -->
+        <div id="adminAddPanel" class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm mb-6" style="display: none;">
+            <div class="flex items-center gap-2 mb-4">
+                <h3 class="text-brand-700 text-sm md:text-base font-bold">إضافة مؤشر أداء جديد للمبادرات</h3>
+            </div>
+            
+            <form id="kpiForm" onsubmit="event.preventDefault(); addKPI();" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                <div class="lg:col-span-2">
+                    <label class="block text-xs font-bold text-slate-600 mb-1.5">اسم المؤشر</label>
+                    <input type="text" id="kpiName" placeholder="مثال: عدد المستفيدين الفعلي" required 
+                        oninput="this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '')"
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-600 focus:bg-white focus:outline-none text-sm transition">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1.5">المبادرة</label>
+                    <select id="kpiCategory" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-600 focus:bg-white focus:outline-none text-sm transition">
+                        <option value="مبادرة محترف">مبادرة محترف</option>
+                        <option value="مبادرة سامقات">مبادرة سامقات</option>
+                        <option value="مبادرة متأهب">مبادرة متأهب</option>
+                        <option value="مبادرة فهيم">مبادرة فهيم</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1.5">المستهدف</label>
+                    <input type="number" id="kpiTarget" placeholder="100" min="1" step="any" required 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-600 focus:bg-white focus:outline-none text-sm transition">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1.5">النتيجة / المنجز</label>
+                    <input type="number" id="kpiActual" placeholder="85" min="0" step="any" required 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-600 focus:bg-white focus:outline-none text-sm transition">
+                </div>
+                
+                <div class="sm:col-span-2 lg:col-span-5 flex justify-end mt-2">
+                    <button type="submit" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-700 text-white font-bold px-6 py-2.5 rounded-xl transition shadow-sm text-sm flex items-center justify-center gap-2">
+                        <span>+</span> إضافة المؤشر
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- جدول المؤشرات -->
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden mb-8">
+            <div class="overflow-x-auto custom-scrollbar">
+                <table class="w-full text-right border-collapse text-sm min-w-[650px]">
+                    <thead>
+                        <tr class="bg-brand-700 text-white font-bold">
+                            <th class="p-4">اسم المؤشر</th>
+                            <th class="p-4">المبادرة</th>
+                            <th class="p-4 text-center">المستهدف</th>
+                            <th class="p-4 text-center">النتيجة المنجزة</th>
+                            <th class="p-4 text-center min-w-[200px]">نسبة الإنجاز</th>
+                            <th class="p-4 text-center w-28" id="thActionHeader" style="display: none;">إجراء</th>
+                        </tr>
+                    </thead>
+                    <tbody id="indicatorsTableBody" class="divide-y divide-slate-100">
+                        <!-- تسيير البيانات ديناميكياً -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- نافذة تعديل المؤشر -->
+    <div id="editModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden justify-center items-center z-50 p-4 overflow-y-auto">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 my-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-brand-700 font-bold text-base">تعديل مؤشر الأداء</h3>
+                <button onclick="closeEditModal()" class="text-slate-400 hover:text-slate-600 font-bold text-xl">&times;</button>
+            </div>
+            <form id="editForm" onsubmit="event.preventDefault(); saveEditedKPI();" class="space-y-4">
+                <input type="hidden" id="editId">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">اسم المؤشر</label>
+                    <input type="text" id="editName" required 
+                        oninput="this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '')"
+                        class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">المستهدف</label>
+                    <input type="number" id="editTarget" step="any" required 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">النتيجة المنجزة</label>
+                    <input type="number" id="editActual" step="any" required 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '')"
+                        class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-600">
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl transition">إلغاء</button>
+                    <button type="submit" class="px-5 py-2 bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold rounded-xl transition shadow-sm">حفظ التعديلات</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- السكريبت البرمجي -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let defaultKpis = [
+                { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
+                { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 600 },
+                { id: 103, name: "رضا المستفيدين", category: "مبادرة محترف", target: 100, actual: 98 },
+                { id: 104, name: "ساعات التطوع", category: "مبادرة محترف", target: 50, actual: 45 },
+                { id: 105, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة محترف", target: 600, actual: 568 },
+                { id: 106, name: "عدد الشراكات المجتمعية", category: "مبادرة محترف", target: 2, actual: 2 },
+                { id: 107, name: "أثر المبادرة", category: "مبادرة محترف", target: 5, actual: 2.47 },
+
+                { id: 201, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة سامقات", target: 4, actual: 4 },
+                { id: 202, name: "عدد المستفيدين المستهدف", category: "مبادرة سامقات", target: 20, actual: 20 },
+                { id: 203, name: "رضا المستفيدين", category: "مبادرة سامقات", target: 100, actual: 100 },
+                { id: 204, name: "ساعات التطوع", category: "مبادرة سامقات", target: 40, actual: 36 },
+                { id: 205, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة سامقات", target: 20, actual: 17 },
+                { id: 206, name: "عدد الشراكات المجتمعية", category: "مبادرة سامقات", target: 2, actual: 2 },
+                { id: 207, name: "أثر المبادرة", category: "مبادرة سامقات", target: 5, actual: 5 },
+
+                { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
+                { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 400 },
+                { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96 },
+                { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
+                { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
+                { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
+                { id: 307, name: "أثر المبادرة", category: "مبادرة متأهب", target: 5, actual: 5 },
+
+                { id: 401, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة فهيم", target: 4, actual: 4 },
+                { id: 402, name: "عدد المستفيدين المستهدف", category: "مبادرة فهيم", target: 150, actual: 150 },
+                { id: 403, name: "رضا المستفيدين", category: "مبادرة فهيم", target: 100, actual: 100 },
+                { id: 404, name: "ساعات التطوع", category: "مبادرة فهيم", target: 10, actual: 0 },
+                { id: 405, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة فهيم", target: 150, actual: 144 },
+                { id: 406, name: "عدد الشراكات المجتمعية", category: "مبادرة فهيم", target: 2, actual: 2 },
+                { id: 407, name: "أثر المبادرة", category: "مبادرة فهيم", target: 5, actual: 4.5 }
+            ];
+
+            let kpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
+            const savedName = localStorage.getItem('athalUser') || 'مستخدم';
+            const savedRole = localStorage.getItem('athalRole') || 'user';
+            const isAdmin = (savedRole === 'admin');
+
+            document.getElementById('displayUserName').textContent = savedName;
+            document.getElementById('displayUserRoleText').textContent = isAdmin ? 'مشرف النظام' : 'مستخدم عادي';
+
+            if (isAdmin) {
+                const adminMenu = document.getElementById('adminSettingsMenu');
+                if (adminMenu) adminMenu.style.display = 'block';
+                const adminAddPanel = document.getElementById('adminAddPanel');
+                if (adminAddPanel) adminAddPanel.style.display = 'block';
+                const thActionHeader = document.getElementById('thActionHeader');
+                if (thActionHeader) thActionHeader.style.display = 'table-cell';
+            }
+
+            window.renderIndicators = function() {
+                const tbody = document.getElementById('indicatorsTableBody');
+                const filterCategory = document.getElementById('filterCategory').value;
+                tbody.innerHTML = '';
+
+                const filtered = filterCategory === 'الكل' 
+                    ? kpis 
+                    : kpis.filter(k => k.category === filterCategory);
+
+                document.getElementById('kpiCountBadge').textContent = `عرض ${filtered.length} مؤشرات`;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 font-semibold">لا توجد مؤشرات في هذه المبادرة.</td></tr>`;
+                }
+
+                filtered.forEach(kpi => {
+                    let rawRatio = (kpi.actual / kpi.target) * 100;
+                    let progressRate = Math.round(rawRatio);
+                    let displayProgress = progressRate > 100 ? 100 : progressRate;
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50/80 transition-colors";
+
+                    let actionColumn = '';
+                    if (isAdmin) {
+                        actionColumn = `
+                            <td class="p-4 text-center">
+                                <div class="flex items-center justify-center gap-1">
+                                    <button onclick="openEditModal(${kpi.id})" class="text-blue-600 hover:text-blue-800 hover:bg-blue-50 p-2 rounded-lg transition" title="تعديل">
+                                        <i class="fa-solid fa-pen text-xs"></i>
+                                    </button>
+                                    <button onclick="deleteKPI(${kpi.id})" class="text-rose-500 hover:text-rose-700 hover:bg-rose-50 p-2 rounded-lg transition" title="حذف">
+                                        <i class="fa-solid fa-trash text-xs"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                    }
+
+                    tr.innerHTML = `
+                        <td class="p-4 font-bold text-slate-800">${escapeHtml(kpi.name)}</td>
+                        <td class="p-4"><span class="bg-brand-50 text-brand-700 text-xs font-bold px-2.5 py-1 rounded-md border border-brand-100 whitespace-nowrap">${escapeHtml(kpi.category)}</span></td>
+                        <td class="p-4 text-center font-semibold text-slate-700">${kpi.target}</td>
+                        <td class="p-4 text-center font-extrabold text-brand-700">${kpi.actual}</td>
+                        <td class="p-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-grow bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                    <div class="${progressRate < 50 ? 'bg-amber-500' : 'bg-brand-600'} h-full rounded-full transition-all duration-500" style="width: ${displayProgress}%;"></div>
+                                </div>
+                                <span class="font-extrabold text-brand-700 text-xs w-10 text-left">${progressRate}%</span>
+                            </div>
+                        </td>
+                        ${isAdmin ? actionColumn : ''}
+                    `;
+                    tbody.appendChild(tr);
+                });
+            };
+
+            renderIndicators();
+
+            function saveStorage() {
+                localStorage.setItem('athalAllInitiativesKpis', JSON.stringify(kpis));
+            }
+
+            window.addKPI = function() {
+                const name = document.getElementById('kpiName').value.trim();
+                const category = document.getElementById('kpiCategory').value;
+                const target = parseFloat(document.getElementById('kpiTarget').value);
+                const actual = parseFloat(document.getElementById('kpiActual').value);
+
+                if (!name || isNaN(target) || isNaN(actual)) return;
+
+                kpis.push({ id: Date.now(), name, category, target, actual });
+                saveStorage();
+                document.getElementById('kpiForm').reset();
+                renderIndicators();
+            };
+
+            window.deleteKPI = function(id) {
+                if (confirm('هل أنت متأكد من حذف هذا المؤشر؟')) {
+                    kpis = kpis.filter(item => item.id !== id);
+                    saveStorage();
+                    renderIndicators();
+                }
+            };
+
+            window.openEditModal = function(id) {
+                const item = kpis.find(k => k.id === id);
+                if (!item) return;
+                document.getElementById('editId').value = item.id;
+                document.getElementById('editName').value = item.name;
+                document.getElementById('editTarget').value = item.target;
+                document.getElementById('editActual').value = item.actual;
+                document.getElementById('editModal').classList.remove('hidden');
+                document.getElementById('editModal').classList.add('flex');
+            };
+
+            window.closeEditModal = function() {
+                document.getElementById('editModal').classList.add('hidden');
+                document.getElementById('editModal').classList.remove('flex');
+            };
+
+            window.saveEditedKPI = function() {
+                const id = parseInt(document.getElementById('editId').value);
+                const index = kpis.findIndex(k => k.id === id);
+                if (index !== -1) {
+                    kpis[index].name = document.getElementById('editName').value.trim();
+                    kpis[index].target = parseFloat(document.getElementById('editTarget').value);
+                    kpis[index].actual = parseFloat(document.getElementById('editActual').value);
+                    saveStorage();
+                    closeEditModal();
+                    renderIndicators();
+                }
+            };
+
+            const userBarToggle = document.getElementById('userBarToggle');
+            const userDropdownMenu = document.getElementById('userDropdownMenu');
+            if (userBarToggle && userDropdownMenu) {
+                userBarToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    userDropdownMenu.classList.toggle('show');
+                });
+                window.addEventListener('click', () => userDropdownMenu.classList.remove('show'));
+            }
+
+            const sidebarWrapper = document.getElementById('sidebarWrapper');
+            const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+            const toggleIcon = document.getElementById('toggleIcon');
+            const bodyElement = document.body;
+
+            if (sidebarToggleBtn && sidebarWrapper) {
+                sidebarToggleBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (window.innerWidth <= 1024) {
+                        const isOpen = sidebarWrapper.classList.toggle('mobile-open');
+                        toggleIcon.classList.toggle('fa-chevron-right', !isOpen);
+                        toggleIcon.classList.toggle('fa-chevron-left', isOpen);
+                    } else {
+                        const isCollapsed = sidebarWrapper.classList.toggle('collapsed');
+                        toggleIcon.classList.toggle('fa-chevron-right', isCollapsed);
+                        toggleIcon.classList.toggle('fa-chevron-left', !isCollapsed);
+                        bodyElement.classList.toggle('sidebar-is-collapsed', isCollapsed);
+                    }
+                });
+            }
+
+            function escapeHtml(str) {
+                return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            }
+        });
+    </script>
+</body>
+</html>
