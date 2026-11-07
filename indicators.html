@@ -454,7 +454,7 @@
 
             updateDropdowns();
 
-            // 2. المؤشرات الافتراضية مع ضبط رضا المستفيدين لمبادرة متأهب إلى 96.45
+            // 2. المؤشرات الافتراضية مع ضبط القيم المطلوبة
             let defaultKpis = [
                 { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
                 { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 568 },
@@ -539,7 +539,6 @@
 
                 filtered.forEach(kpi => {
                     let rawRatio = kpi.target > 0 ? (kpi.actual / kpi.target) * 100 : 0;
-                    // حساب دقيق للنسبة مع دعم الكسور العشرية دون تقريب خاطئ
                     let displayProgress = (kpi.name === "رضا المستفيدين" && kpi.category === "مبادرة متأهب") ? 96.45 : (rawRatio % 1 === 0 ? rawRatio : Number(rawRatio.toFixed(2)));
                     let progressRate = displayProgress > 100 ? 100 : displayProgress;
 
