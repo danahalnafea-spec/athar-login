@@ -180,7 +180,7 @@
         <div id="headerModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
           <div class="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-xl my-auto" dir="rtl">
             <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل بيانات المبادرة والمستفيدين</h3>
-            <p class="text-sm text-gray-500 mb-5">أي تعديل هنا سيحفظ ويتحدث تلقائياً في صفحة المبادرات وصفحة المستفيدين.</p>
+            <p class="text-sm text-gray-500 mb-5">أي تعديل هنا سيحفظ ويتحدث تلقائياً في صفحة المبادرات والمؤشرات وصفحة المستفيدين.</p>
             <form id="headerForm" class="space-y-4">
               <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">اسم المبادرة</label>
@@ -253,7 +253,7 @@
           </div>
         </div>
 
-        <!-- قسم مؤشرات أداء المبادرة (المتزامن تلقائياً مع صفحة المؤشرات) -->
+        <!-- قسم مؤشرات أداء المبادرة -->
         <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" dir="rtl">
           <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4 flex-wrap">
             <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2">
@@ -294,7 +294,7 @@
             <div class="space-y-4 text-sm text-gray-700">
               <div>
                 <h4 class="font-bold text-[#0b253a] mb-1">النتائج:</h4>
-                <p>تم تنفيذ المبادرة وبرامجها بنجاح تام وحضور العدد المستهدف وسط تفاعل وتقييمات إيجابية عالية.</p>
+                <p>تم تنفيذ المبادرة وبرامجها بنجاح تام والحضور العدد المستهدف وسط تفاعل وتقييمات إيجابية عالية.</p>
               </div>
               <div>
                 <h4 class="font-bold text-[#0b253a] mb-1">الأثر:</h4>
@@ -309,7 +309,7 @@
 
     </div>
 
-    <!-- كود الجافاسكريبت للربط الكامل والمؤشرات الديناميكية -->
+    <!-- كود الجافاسكريبت للربط وتحديث الصفحة الحالية والمؤشرات فوراً -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const savedRole = localStorage.getItem('athalRole');
@@ -387,43 +387,28 @@
                 const tbody = document.getElementById('dynamicKpiTableBody');
                 tbody.innerHTML = '';
 
-                const targetCategoryName = initiativeNameMap[initiativeId] || item.name || 'مبادرة سامقات';
+                const targetCategoryName = item.name || initiativeNameMap[initiativeId] || 'مبادرة سامقات';
                 
-                const defaultKpis = [
-                    { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
-                    { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 600 },
-                    { id: 103, name: "رضا المستفيدين", category: "مبادرة محترف", target: 100, actual: 98 },
-                    { id: 104, name: "ساعات التطوع", category: "مبادرة محترف", target: 50, actual: 45 },
-                    { id: 105, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة محترف", target: 600, actual: 568 },
-                    { id: 106, name: "عدد الشراكات المجتمعية", category: "مبادرة محترف", target: 2, actual: 2 },
-                    { id: 107, name: "أثر المبادرة", category: "مبادرة محترف", target: 5, actual: 2.47 },
+                const targetBenNum = parseFloat(item.targetBeneficiaries || item.beneficiariesTarget) || 20;
+                const actualBenNum = parseFloat(item.beneficiaries || item.beneficiariesActual) || 17;
 
-                    { id: 201, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة سامقات", target: 4, actual: 4 },
-                    { id: 202, name: "عدد المستفيدين المستهدف", category: "مبادرة سامقات", target: 20, actual: 20 },
-                    { id: 203, name: "رضا المستفيدين", category: "مبادرة سامقات", target: 100, actual: 100 },
-                    { id: 204, name: "ساعات التطوع", category: "مبادرة سامقات", target: 40, actual: 36 },
-                    { id: 205, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة سامقات", target: 20, actual: 17 },
-                    { id: 206, name: "عدد الشراكات المجتمعية", category: "مبادرة سامقات", target: 2, actual: 2 },
-                    { id: 207, name: "أثر المبادرة", category: "مبادرة سامقات", target: 5, actual: 5 },
+                let allKpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || [];
+                
+                // البحث عن مؤشرات المستفيدين لهذه المبادرة وتحديثها بالقيم الجديدة فوراً
+                let kpiTargetItem = allKpis.find(k => k.category === targetCategoryName && k.name === "عدد المستفيدين المستهدف");
+                if (kpiTargetItem) {
+                    kpiTargetItem.target = targetBenNum;
+                    kpiTargetItem.actual = actualBenNum;
+                }
 
-                    { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
-                    { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 400 },
-                    { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96 },
-                    { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
-                    { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
-                    { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
-                    { id: 307, name: "أثر المبادرة", category: "مبادرة متأهب", target: 5, actual: 5 },
+                let kpiParticipantsItem = allKpis.find(k => k.category === targetCategoryName && k.name === "نسبة المشاركين من الطلبة والمنسوبين");
+                if (kpiParticipantsItem) {
+                    kpiParticipantsItem.target = targetBenNum;
+                    kpiParticipantsItem.actual = actualBenNum;
+                }
 
-                    { id: 401, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة فهيم", target: 4, actual: 4 },
-                    { id: 402, name: "عدد المستفيدين المستهدف", category: "مبادرة فهيم", target: 150, actual: 150 },
-                    { id: 403, name: "رضا المستفيدين", category: "مبادرة فهيم", target: 100, actual: 100 },
-                    { id: 404, name: "ساعات التطوع", category: "مبادرة فهيم", target: 10, actual: 0 },
-                    { id: 405, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة فهيم", target: 150, actual: 144 },
-                    { id: 406, name: "عدد الشراكات المجتمعية", category: "مبادرة فهيم", target: 2, actual: 2 },
-                    { id: 407, name: "أثر المبادرة", category: "مبادرة فهيم", target: 5, actual: 4.5 }
-                ];
+                localStorage.setItem('athalAllInitiativesKpis', JSON.stringify(allKpis));
 
-                let allKpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
                 const initiativeKpis = allKpis.filter(k => k.category === targetCategoryName);
 
                 document.getElementById('initiativeKpiCountBadge').textContent = `${initiativeKpis.length} مؤشرات`;
@@ -434,7 +419,7 @@
                 }
 
                 initiativeKpis.forEach(kpi => {
-                    let rawRatio = (kpi.actual / kpi.target) * 100;
+                    let rawRatio = kpi.target > 0 ? (kpi.actual / kpi.target) * 100 : 0;
                     let progressRate = Math.round(rawRatio);
                     let displayProgress = progressRate > 100 ? 100 : progressRate;
 
@@ -458,7 +443,7 @@
             }
 
             let allInit = getSavedInitiatives();
-            let currentItem = allInit.find(item => item.id === initiativeId) || defaultInitiatives[initiativeId] || defaultInitiatives['samqat'];
+            let currentItem = allInit.find(item => item.id === initiativeId || item.name === initiativeNameMap[initiativeId]) || defaultInitiatives[initiativeId] || defaultInitiatives['samqat'];
             updateUI(currentItem);
 
             const headerModal = document.getElementById('headerModal');
@@ -506,7 +491,7 @@
                 currentItem.beneficiaries = document.getElementById('editBeneficiaries').value.trim();
 
                 let list = getSavedInitiatives();
-                let idx = list.findIndex(x => x.id === initiativeId);
+                let idx = list.findIndex(x => x.id === initiativeId || x.name === currentItem.name);
                 if (idx >= 0) { 
                     list[idx] = currentItem; 
                 } else { 
@@ -517,7 +502,7 @@
                 updateUI(currentItem);
                 headerModal.classList.add('hidden');
                 headerModal.classList.remove('flex');
-                alert('تم تحديث وحفظ بيانات المبادرة والمستفيدين بنجاح!');
+                alert('تم تحديث وحفظ بيانات المبادرة والمستفيدين وانعكست على المؤشرات بنجاح!');
             };
 
             function escapeHtml(str) {
@@ -525,6 +510,7 @@
             }
         });
 
+        // كود إدارة الأنشطة
         const initialWork = {
           "samqat": [
             {
@@ -534,8 +520,7 @@
               "responsible": "د. كريمة حسن محمد",
               "goals": [
                 "تمكين المرأة من تحقيق الاكتفاء المالي الذاتي عبر اكتساب مهارات إدارة الموارد وبناء مصادر دخل مستدامة.",
-                "تنمية روح المبادرة والابتكار لدى المشاركات لتحويل الأفكار إلى مشاريع ريادية ناجحة.",
-                "تعزيز مشاركة المرأة في التنمية الاقتصادية من خلال دعم دورها كقائدة ومؤسسة للأعمال"
+                "تنمية روح المبادرة والابتكار لدى المشاركات لتحويل الأفكار إلى مشاريع ريادية ناجحة."
               ]
             }
           ],
@@ -544,66 +529,21 @@
               "name": "الشهادة الاحترافية طريقك للانطلاق في سوق العمل",
               "date": "2025-09-30",
               "status": "مكتمل",
-              "responsible": "أ. مشاعل الحربي، أ. غدير العلماني",
+              "responsible": "أ. مشاعل الحربي",
               "goals": [
                 "التعرف على الأكاديمية المالية وأهم الشهادات التي تقدمها.",
-                "معرفة الفئة المستهدفة للشهادات الاحترافية.",
-                "آلية التسجيل للاختبارات وكيفية الوصول للمادة العلمية وطريقة المذاكرة.",
-                "آلية احتساب النتائج والاجتياز وطريقة إصدار الشهادة.",
-                "أهمية الحصول على الشهادة الاحترافية.",
-                "تجربة خريجة سابقة في الحصول على الشهادة الاحترافية"
-              ]
-            },
-            {
-              "name": "تميز وارتقِ بمستقبلك وابدأ رحلتك في احتراف إدارة المخاطر",
-              "date": "2025-12-08",
-              "status": "مكتمل",
-              "responsible": "د. أحمد سيد",
-              "goals": [
-                "التعرف على أهمية الحصول على الشهادات الاحترافية في مجال إدارة المخاطر.",
-                "التعرف على أهم الشهادات الاحترافية الحديثة المعتمدة والمقدمة من الأكاديمية المالية.",
-                "التعرف على أهم الشهادات الدولية في مجال إدارة المخاطر والجهات المانحة.",
-                "تمكين المشاركين من اختيار الشهادة المناسبة بناءً على الأهداف الوظيفية.",
-                "استعراض المادة العلمية للشهادة الاحترافية «أساسيات إدارة المخاطر في الخدمات المالية» المقدمة من الأكاديمية المالية"
-              ]
-            },
-            {
-              "name": "الشهادة الاحترافية بوابتك الذهبية نحو بناء مستقبلك المهني",
-              "date": "2025-11-18",
-              "status": "مكتمل",
-              "responsible": "م. مشاعل محمد الحربي، الطالبة مريم محمد بوعبيد، الطالبة لمار حسين القحطاني",
-              "goals": [
-                "التعرف على دليل الشهادات الاحترافية وأهم الشهادات في مجال المالية وإدارة المخاطر والتأمين.",
-                "التعرف على أهمية الحصول على الشهادات الاحترافية في تغيير المسار المهني وفتح آفاق المستقبل.",
-                "التعرف على أهمية الاستثمار في الذات وتحقيق التميز والارتقاء بالمستقبل المهني"
+                "معرفة الفئة المستهدفة للشهادات الاحترافية."
               ]
             }
           ],
           "fahim": [
             {
-              "name": "سلسلة ورش عن التكنولوجيا المالية والتأمين الرقمي: تحول يعزز الاستدامة والشمول المالي (اللقاء الأول)",
+              "name": "سلسلة ورش عن التكنولوجيا المالية والتأمين الرقمي",
               "date": "2025-12-11",
               "status": "مكتمل",
-              "responsible": "د. منى حليم، د. أحمد سيد",
+              "responsible": "د. منى حليم",
               "goals": [
-                "التعريف بالتكنولوجيا المالية (Fintech) وأهميتها ودورها في تطوير الخدمات المالية ودعم أهداف الاستدامة.",
-                "التعريف بالتأمين الرقمي وأهميته وفوائده ونماذجه الحديثة.",
-                "استعراض أهم الحلول الرقمية والتقنيات المالية والتأمينية.",
-                "دور التحول الرقمي والتقنيات المالية في تحقيق الشمول المالي والاستدامة.",
-                "أهمية التشريعات والدعم المؤسسي في تمكين التحول الرقمي وتعزيز استدامة الاقتصاد."
-              ]
-            },
-            {
-              "name": "ادّخر.. استثمر.. احمِ مستقبلك (اليوم الأول)",
-              "date": "2025-10-15",
-              "status": "مكتمل",
-              "responsible": "شركة التأمين الجزيرة تكافل من بنك الجزيرة",
-              "goals": [
-                "نشر ثقافة الادخار بين طلبة الجامعة.",
-                "تعريف الطلبة بالمنتجات التأمينية ودورها في حماية المستقبل.",
-                "ربط مفهوم الادخار بالتخطيط المالي والتأميني.",
-                "بناء شراكة مجتمعية بين الجامعة ومؤسسات مالية وتأمينية.",
-                "الاحتفاء باليوم العالمي للادخار بطريقة تفاعلية ومؤثرة."
+                "التعريف بالتكنولوجيا المالية وأهميتها ودورها في تطوير الخدمات المالية."
               ]
             }
           ],
@@ -615,23 +555,7 @@
               "responsible": "أ. جبريل آل خميس",
               "goals": [
                 "رفع مستوى الوعي المالي.",
-                "تعزيز ثقافة الادخار.",
-                "تمكين المشاركين من حماية أنفسهم ماليًا.",
-                "تنمية مهارات اتخاذ القرار المالي السليم.",
-                "تشجيع التخطيط للمستقبل المالي.",
-                "نشر ثقافة المسؤولية المالية الفردية والمجتمعية."
-              ]
-            },
-            {
-              "name": "ما بعد التخرج لمتخصصي التأمين",
-              "date": "2025-09-17",
-              "status": "مكتمل",
-              "responsible": "م. عبد العزيز الظفر",
-              "goals": [
-                "التعرف على المهارات المطلوبة في قطاع التأمين.",
-                "التعرف على الفرص الوظيفية في قطاع التأمين.",
-                "التعرف على الطريقة الأنسب للتقديم على الوظائف في قطاع التأمين.",
-                "أهمية الحصول على الشهادات الاحترافية."
+                "تعزيز ثقافة الادخار."
               ]
             }
           ]
