@@ -4,9 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>تفاصيل المبادرة - منصة أثر</title>
+    <!-- استدعاء Tailwind CSS وخط Cairo وأيقونات FontAwesome -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                50: '#f0f7ff',
+                100: '#e0effe',
+                200: '#bae6fd',
+                600: '#2b73b9',
+                700: '#205c96',
+                800: '#0b253a'
+              }
+            },
+            fontFamily: {
+              sans: ['Cairo', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
     <style>
         .admin-only, .admin-only-inline { display: none !important; }
         body.is-admin .admin-only { display: flex !important; }
@@ -33,6 +55,18 @@
         .btn-leaf-blue:hover {
             background-color: #205c96;
             transform: translateY(-1px);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
         }
     </style>
 </head>
@@ -219,29 +253,63 @@
           </div>
         </div>
 
-        <!-- قسم مؤشرات أداء المبادرة -->
-        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
-            <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
-                <span class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-500 flex items-center justify-center text-sm">
-                    <i class="fa-solid fa-chart-pie"></i>
-                </span>
-                <span>مؤشرات أداء المبادرة</span>
+        <!-- قسم مؤشرات أداء المبادرة (المتزامن تلقائياً مع صفحة المؤشرات) -->
+        <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" dir="rtl">
+          <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4 flex-wrap">
+            <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-indigo-500"></i> مؤشرات أداء المبادرة
             </h3>
-        </div>
+            <div class="flex items-center gap-2">
+                <span id="initiativeKpiCountBadge" class="text-xs font-bold text-brand-700 bg-brand-50 px-3 py-1.5 rounded-xl border border-brand-100 shadow-sm">مؤشرات</span>
+                <a href="indicators.html" class="admin-only-inline btn-leaf-blue text-white rounded-xl px-3 py-1.5 text-xs font-bold items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-pen-to-square"></i> تحديث وملاءمة المؤشرات
+                </a>
+            </div>
+          </div>
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-right border-collapse text-sm">
+              <thead>
+                <tr class="bg-slate-50 text-gray-700 font-bold text-xs">
+                  <th class="border border-gray-200 p-3.5">اسم المؤشر</th>
+                  <th class="border border-gray-200 p-3.5 text-center">المستهدف</th>
+                  <th class="border border-gray-200 p-3.5 text-center">العدد الفعلي</th>
+                  <th class="border border-gray-200 p-3.5 text-center min-w-[200px]">نسبة الإنجاز</th>
+                </tr>
+              </thead>
+              <tbody id="dynamicKpiTableBody" class="divide-y divide-gray-200">
+                <!-- الصفوف الديناميكية -->
+              </tbody>
+            </table>
+          </div>
+        </section>
 
         <!-- قسم النتائج والأثر والأدلة -->
-        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6" dir="rtl">
             <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
                 <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center text-sm">
                     <i class="fa-solid fa-folder-closed"></i>
                 </span>
                 <span>النتائج والأثر والأدلة الداعمة</span>
             </h3>
+            <div class="space-y-4 text-sm text-gray-700">
+              <div>
+                <h4 class="font-bold text-[#0b253a] mb-1">النتائج:</h4>
+                <p>تم تنفيذ المبادرة وبرامجها بنجاح تام وحضور العدد المستهدف وسط تفاعل وتقييمات إيجابية عالية.</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#0b253a] mb-1">الأثر:</h4>
+                <p>رفع كفاءة المستفيدين وتطوير قدراتهم وتمكينهم من تحقيق أهدافهم بكفاءة عالية.</p>
+              </div>
+              <div>
+                <h4 class="font-bold text-[#0b253a] mb-1">الأدلة الداعمة:</h4>
+                <p class="text-blue-600 font-semibold">📁 تم إرفاق تقارير التنفيذ، سجلات الحضور، واستبانات الرضا بنجاح.</p>
+              </div>
+            </div>
         </div>
 
     </div>
 
-    <!-- كود الجافاسكريبت للربط الكامل -->
+    <!-- كود الجافاسكريبت للربط الكامل والمؤشرات الديناميكية -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const savedRole = localStorage.getItem('athalRole');
@@ -259,6 +327,13 @@
                 'tech': { id: 'tech', name: 'مبادرة محترف', category: 'التطوير المهني', dept: 'قسم تكنولوجيا المعلومات', targetGroup: 'الخريجيين والخريجات', targetBeneficiaries: '600', beneficiaries: '568', date: '2025-09-15', impact: '2.47 / 5', status: 'مكتملة' },
                 'fahim': { id: 'fahim', name: 'مبادرة فهيم', category: 'اقتصاد', dept: 'قسم العلوم المالية', targetGroup: 'المجتمع', targetBeneficiaries: '150', beneficiaries: '144', date: '2025-12-11', impact: '4.6 / 5', status: 'نشطة' },
                 'mataheb': { id: 'mataheb', name: 'مبادرة متأهب', category: 'الأنظمة والتأمين', dept: 'قسم القانون والتأمين', targetGroup: 'سوق العمل', targetBeneficiaries: '400', beneficiaries: '387', date: '2025-09-15', impact: '5 / 5', status: 'مكتملة' }
+            };
+
+            const initiativeNameMap = {
+                'samqat': 'مبادرة سامقات',
+                'tech': 'مبادرة محترف',
+                'fahim': 'مبادرة فهيم',
+                'mataheb': 'مبادرة متأهب'
             };
 
             function getSavedInitiatives() {
@@ -285,7 +360,7 @@
                 else if (!targetGrp && item.id === 'mataheb') targetGrp = 'سوق العمل';
                 else if (!targetGrp) targetGrp = '—';
 
-                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || (item.id === 'tech' ? '600' : item.id === 'fahim' ? '150' : item.id === 'mataheb' ? '400' : '20');
+                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '20';
                 const actualBen = item.beneficiaries || item.beneficiariesActual || '17';
 
                 document.getElementById('detailTargetGroup').textContent = targetGrp;
@@ -304,6 +379,82 @@
                 } else {
                     statusEl.style.cssText = "background-color: #f3f4f6; color: #374151;";
                 }
+
+                renderDynamicTable(item);
+            }
+
+            function renderDynamicTable(item) {
+                const tbody = document.getElementById('dynamicKpiTableBody');
+                tbody.innerHTML = '';
+
+                const targetCategoryName = initiativeNameMap[initiativeId] || item.name || 'مبادرة سامقات';
+                
+                const defaultKpis = [
+                    { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
+                    { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 600 },
+                    { id: 103, name: "رضا المستفيدين", category: "مبادرة محترف", target: 100, actual: 98 },
+                    { id: 104, name: "ساعات التطوع", category: "مبادرة محترف", target: 50, actual: 45 },
+                    { id: 105, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة محترف", target: 600, actual: 568 },
+                    { id: 106, name: "عدد الشراكات المجتمعية", category: "مبادرة محترف", target: 2, actual: 2 },
+                    { id: 107, name: "أثر المبادرة", category: "مبادرة محترف", target: 5, actual: 2.47 },
+
+                    { id: 201, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة سامقات", target: 4, actual: 4 },
+                    { id: 202, name: "عدد المستفيدين المستهدف", category: "مبادرة سامقات", target: 20, actual: 20 },
+                    { id: 203, name: "رضا المستفيدين", category: "مبادرة سامقات", target: 100, actual: 100 },
+                    { id: 204, name: "ساعات التطوع", category: "مبادرة سامقات", target: 40, actual: 36 },
+                    { id: 205, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة سامقات", target: 20, actual: 17 },
+                    { id: 206, name: "عدد الشراكات المجتمعية", category: "مبادرة سامقات", target: 2, actual: 2 },
+                    { id: 207, name: "أثر المبادرة", category: "مبادرة سامقات", target: 5, actual: 5 },
+
+                    { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
+                    { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 400 },
+                    { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96 },
+                    { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
+                    { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
+                    { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
+                    { id: 307, name: "أثر المبادرة", category: "مبادرة متأهب", target: 5, actual: 5 },
+
+                    { id: 401, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة فهيم", target: 4, actual: 4 },
+                    { id: 402, name: "عدد المستفيدين المستهدف", category: "مبادرة فهيم", target: 150, actual: 150 },
+                    { id: 403, name: "رضا المستفيدين", category: "مبادرة فهيم", target: 100, actual: 100 },
+                    { id: 404, name: "ساعات التطوع", category: "مبادرة فهيم", target: 10, actual: 0 },
+                    { id: 405, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة فهيم", target: 150, actual: 144 },
+                    { id: 406, name: "عدد الشراكات المجتمعية", category: "مبادرة فهيم", target: 2, actual: 2 },
+                    { id: 407, name: "أثر المبادرة", category: "مبادرة فهيم", target: 5, actual: 4.5 }
+                ];
+
+                let allKpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
+                const initiativeKpis = allKpis.filter(k => k.category === targetCategoryName);
+
+                document.getElementById('initiativeKpiCountBadge').textContent = `${initiativeKpis.length} مؤشرات`;
+
+                if (initiativeKpis.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="p-8 text-center text-slate-400 font-semibold">لا توجد مؤشرات مسجلة لهذه المبادرة.</td></tr>`;
+                    return;
+                }
+
+                initiativeKpis.forEach(kpi => {
+                    let rawRatio = (kpi.actual / kpi.target) * 100;
+                    let progressRate = Math.round(rawRatio);
+                    let displayProgress = progressRate > 100 ? 100 : progressRate;
+
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-slate-50 transition-colors";
+                    tr.innerHTML = `
+                        <td class="border border-gray-200 p-4 font-bold text-slate-800">${escapeHtml(kpi.name)}</td>
+                        <td class="border border-gray-200 p-4 text-center font-semibold text-slate-700">${kpi.target}</td>
+                        <td class="border border-gray-200 p-4 text-center font-semibold text-brand-700">${kpi.actual}</td>
+                        <td class="border border-gray-200 p-4">
+                            <div class="flex items-center gap-3">
+                                <div class="flex-grow bg-slate-100 rounded-full h-2.5 overflow-hidden">
+                                    <div class="${progressRate < 50 ? 'bg-amber-500' : 'bg-brand-600'} h-full rounded-full transition-all duration-500" style="width: ${displayProgress}%;"></div>
+                                </div>
+                                <span class="font-extrabold text-brand-700 text-xs w-10 text-left">${progressRate}%</span>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
             }
 
             let allInit = getSavedInitiatives();
@@ -323,8 +474,7 @@
                     document.getElementById('editStatus').value = currentItem.status || 'مكتملة';
                     document.getElementById('editTargetGroup').value = currentItem.targetGroup || 'نساء من المجتمع';
                     
-                    // جلب ووضع رقم المستفيدين المستهدف بشكل صحيح
-                    const targetBenVal = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || (currentItem.id === 'tech' ? '600' : currentItem.id === 'fahim' ? '150' : currentItem.id === 'mataheb' ? '400' : '20');
+                    const targetBenVal = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || '20';
                     document.getElementById('editTargetBeneficiaries').value = targetBenVal;
                     
                     document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || '';
@@ -352,8 +502,7 @@
                 
                 const targetInputVal = document.getElementById('editTargetBeneficiaries').value.trim();
                 currentItem.targetBeneficiaries = targetInputVal;
-                currentItem.beneficiariesTarget = targetInputVal; // لضمان التوافق مع صفحة المستفيدين
-
+                currentItem.beneficiariesTarget = targetInputVal;
                 currentItem.beneficiaries = document.getElementById('editBeneficiaries').value.trim();
 
                 let list = getSavedInitiatives();
@@ -368,8 +517,12 @@
                 updateUI(currentItem);
                 headerModal.classList.add('hidden');
                 headerModal.classList.remove('flex');
-                alert('تم تحديث وحفظ بيانات المبادرة والمستفيدين بنجاح، وستظهر في كافة صفحات المنصة!');
+                alert('تم تحديث وحفظ بيانات المبادرة والمستفيدين بنجاح!');
             };
+
+            function escapeHtml(str) {
+                return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            }
         });
 
         const initialWork = {
