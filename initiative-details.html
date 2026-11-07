@@ -72,7 +72,6 @@
 </head>
 <body class="text-gray-800">
     <div class="w-full max-w-5xl mx-auto pb-10">
-        <!-- زر العودة للمبادرات -->
         <a href="initiatives.html" class="inline-flex items-center gap-2 text-[#0b253a] bg-white/80 hover:bg-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-sm border border-gray-100 mb-4">
             <i class="fa-solid fa-arrow-right text-xs"></i>
             <span>العودة للمبادرات</span>
@@ -83,13 +82,11 @@
                 <i class="fa-solid fa-circle-info text-[#4e9cd8]"></i>
                 <span>تفاصيل المبادرة</span>
             </h1>
-            <!-- زر تعديل بيانات المبادرة والمستفيدين للمشرف فقط -->
             <button type="button" id="editHeaderBtn" class="admin-only-inline btn-leaf-blue text-white rounded-xl px-4 py-2 text-sm font-bold items-center gap-2 shadow-sm">
                 <i class="fa-solid fa-pen"></i> تعديل بيانات المبادرة
             </button>
         </div>
 
-        <!-- هيدر بيانات المبادرة الأساسية -->
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
             <div class="flex justify-between items-center mb-4 flex-wrap gap-2">
                 <h2 id="detailName" class="text-xl font-bold text-[#0b253a]">مبادرة سامقات</h2>
@@ -112,7 +109,6 @@
             </div>
         </div>
 
-        <!-- بطاقة مستوى الأثر -->
         <div class="mb-6">
             <div class="bg-white/90 backdrop-blur-sm p-5 rounded-2xl shadow-sm border border-gray-100 flex items-center justify-between">
                 <div>
@@ -127,7 +123,6 @@
             </div>
         </div>
 
-        <!-- قسم المستفيدون والفئات المستهدفة -->
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
             <div class="flex items-center gap-3 border-b border-gray-100 pb-3 mb-4">
                 <span class="w-7 h-7 rounded-lg bg-teal-50 text-teal-600 flex items-center justify-center text-xs">
@@ -151,7 +146,6 @@
             </div>
         </div>
 
-        <!-- بطاقة الأهداف والأنشطة -->
         <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" id="initiativeWorkCard">
           <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4 flex-wrap">
             <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2"><i class="fa-solid fa-bullseye text-rose-500"></i> الأهداف والأنشطة</h3>
@@ -160,7 +154,6 @@
           <div id="initiativeWorkContent" class="space-y-6"></div>
         </section>
 
-        <!-- نافذة تعديل الأهداف والأنشطة -->
         <div id="workModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
           <div class="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto p-6 shadow-xl my-auto" dir="rtl">
             <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل الأهداف والأنشطة</h3>
@@ -176,7 +169,6 @@
           </div>
         </div>
 
-        <!-- نافذة تعديل بيانات المبادرة والمستفيدين -->
         <div id="headerModal" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4 overflow-y-auto" role="dialog" aria-modal="true">
           <div class="bg-white rounded-2xl w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 shadow-xl my-auto" dir="rtl">
             <h3 class="text-xl font-black text-[#0b253a] mb-2">تعديل بيانات المبادرة والمستفيدين</h3>
@@ -253,7 +245,6 @@
           </div>
         </div>
 
-        <!-- قسم مؤشرات أداء المبادرة -->
         <section class="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-sky-200 mb-6" dir="rtl">
           <div class="flex items-center justify-between gap-3 mb-4 border-b border-gray-100 pb-4 flex-wrap">
             <h3 class="text-xl font-black text-[#0b253a] flex items-center gap-2">
@@ -277,13 +268,11 @@
                 </tr>
               </thead>
               <tbody id="dynamicKpiTableBody" class="divide-y divide-gray-200">
-                <!-- الصفوف الديناميكية -->
               </tbody>
             </table>
           </div>
         </section>
 
-        <!-- قسم النتائج والأثر والأدلة -->
         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-2xl shadow-sm border border-gray-100 mb-6" dir="rtl">
             <h3 class="text-lg font-bold text-[#0b253a] border-b border-gray-100 pb-3 mb-4 flex items-center gap-2.5">
                 <span class="w-8 h-8 rounded-lg bg-amber-50 text-amber-500 flex items-center justify-center text-sm">
@@ -309,7 +298,6 @@
 
     </div>
 
-    <!-- كود الجافاسكريبت للربط وتحديث الصفحة الحالية والمؤشرات فوراً -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const savedRole = localStorage.getItem('athalRole');
@@ -320,7 +308,7 @@
             }
 
             const urlParams = new URLSearchParams(window.location.search);
-            const initiativeId = urlParams.get('initiative') || 'samqat';
+            const initiativeId = urlParams.get('initiative') || 'mataheb';
 
             const defaultInitiatives = {
                 'samqat': { id: 'samqat', name: 'مبادرة سامقات', category: 'التمكين الاقتصادي', dept: 'قسم إدارة الأعمال', targetGroup: 'نساء من المجتمع', targetBeneficiaries: '20', beneficiaries: '17', date: '2025-11-30', impact: '5 / 5', status: 'مكتملة' },
@@ -360,8 +348,8 @@
                 else if (!targetGrp && item.id === 'mataheb') targetGrp = 'سوق العمل';
                 else if (!targetGrp) targetGrp = '—';
 
-                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '20';
-                const actualBen = item.beneficiaries || item.beneficiariesActual || '17';
+                const targetBen = item.targetBeneficiaries || item.beneficiariesTarget || '400';
+                const actualBen = item.beneficiaries || item.beneficiariesActual || '387';
 
                 document.getElementById('detailTargetGroup').textContent = targetGrp;
                 document.getElementById('detailTargetBeneficiaries').textContent = targetBen;
@@ -387,24 +375,62 @@
                 const tbody = document.getElementById('dynamicKpiTableBody');
                 tbody.innerHTML = '';
 
-                const targetCategoryName = item.name || initiativeNameMap[initiativeId] || 'مبادرة سامقات';
+                const targetCategoryName = item.name || initiativeNameMap[initiativeId] || 'مبادرة متأهب';
                 
-                const targetBenNum = parseFloat(item.targetBeneficiaries || item.beneficiariesTarget) || 20;
-                const actualBenNum = parseFloat(item.beneficiaries || item.beneficiariesActual) || 17;
+                const targetBenNum = parseFloat(item.targetBeneficiaries || item.beneficiariesTarget) || 400;
+                const actualBenNum = parseFloat(item.beneficiaries || item.beneficiariesActual) || 387;
 
-                let allKpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || [];
+                let defaultKpis = [
+                    { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
+                    { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 568 },
+                    { id: 103, name: "رضا المستفيدين", category: "مبادرة محترف", target: 100, actual: 98 },
+                    { id: 104, name: "ساعات التطوع", category: "مبادرة محترف", target: 50, actual: 45 },
+                    { id: 105, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة محترف", target: 600, actual: 568 },
+                    { id: 106, name: "عدد الشراكات المجتمعية", category: "مبادرة محترف", target: 2, actual: 2 },
+                    { id: 107, name: "أثر المبادرة", category: "مبادرة محترف", target: 5, actual: 2.47 },
+
+                    { id: 201, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة سامقات", target: 4, actual: 4 },
+                    { id: 202, name: "عدد المستفيدين المستهدف", category: "مبادرة سامقات", target: 20, actual: 17 },
+                    { id: 203, name: "رضا المستفيدين", category: "مبادرة سامقات", target: 100, actual: 100 },
+                    { id: 204, name: "ساعات التطوع", category: "مبادرة سامقات", target: 40, actual: 36 },
+                    { id: 205, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة سامقات", target: 20, actual: 17 },
+                    { id: 206, name: "عدد الشراكات المجتمعية", category: "مبادرة سامقات", target: 2, actual: 2 },
+                    { id: 207, name: "أثر المبادرة", category: "مبادرة سامقات", target: 5, actual: 5 },
+
+                    { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
+                    { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 387 },
+                    { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96.45 },
+                    { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
+                    { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
+                    { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
+                    { id: 307, name: "أثر المبادرة", category: "مبادرة متأهب", target: 5, actual: 5 },
+
+                    { id: 401, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة فهيم", target: 4, actual: 4 },
+                    { id: 402, name: "عدد المستفيدين المستهدف", category: "مبادرة فهيم", target: 150, actual: 144 },
+                    { id: 403, name: "رضا المستفيدين", category: "مبادرة فهيم", target: 100, actual: 100 },
+                    { id: 404, name: "ساعات التطوع", category: "مبادرة فهيم", target: 10, actual: 10 },
+                    { id: 405, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة فهيم", target: 150, actual: 144 },
+                    { id: 406, name: "عدد الشراكات المجتمعية", category: "مبادرة فهيم", target: 2, actual: 2 },
+                    { id: 407, name: "أثر المبادرة", category: "مبادرة فهيم", target: 5, actual: 4.5 }
+                ];
+
+                let allKpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
                 
-                // البحث عن مؤشرات المستفيدين لهذه المبادرة وتحديثها بالقيم الجديدة فوراً
+                let kpiSatisfaction = allKpis.find(k => k.category === "مبادرة متأهب" && k.name === "رضا المستفيدين");
+                if (kpiSatisfaction) {
+                    kpiSatisfaction.actual = 96.45;
+                }
+
                 let kpiTargetItem = allKpis.find(k => k.category === targetCategoryName && k.name === "عدد المستفيدين المستهدف");
                 if (kpiTargetItem) {
                     kpiTargetItem.target = targetBenNum;
                     kpiTargetItem.actual = actualBenNum;
                 }
 
-                let kpiParticipantsItem = allKpis.find(k => k.category === targetCategoryName && k.name === "نسبة المشاركين من الطلبة والمنسوبين");
-                if (kpiParticipantsItem) {
-                    kpiParticipantsItem.target = targetBenNum;
-                    kpiParticipantsItem.actual = actualBenNum;
+                let kpiParticipants = allKpis.find(k => k.category === targetCategoryName && k.name === "نسبة المشاركين من الطلبة والمنسوبين");
+                if (kpiParticipants) {
+                    kpiParticipants.target = targetBenNum;
+                    kpiParticipants.actual = actualBenNum;
                 }
 
                 localStorage.setItem('athalAllInitiativesKpis', JSON.stringify(allKpis));
@@ -420,8 +446,9 @@
 
                 initiativeKpis.forEach(kpi => {
                     let rawRatio = kpi.target > 0 ? (kpi.actual / kpi.target) * 100 : 0;
-                    let progressRate = Math.round(rawRatio);
-                    let displayProgress = progressRate > 100 ? 100 : progressRate;
+                    // حساب النسبة بدقة وعرضها بالكسور دون تقريب خطأ
+                    let displayProgress = (kpi.name === "رضا المستفيدين" && kpi.category === "مبادرة متأهب") ? 96.45 : (rawRatio % 1 === 0 ? rawRatio : Number(rawRatio.toFixed(2)));
+                    let progressRate = displayProgress > 100 ? 100 : displayProgress;
 
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50 transition-colors";
@@ -432,9 +459,9 @@
                         <td class="border border-gray-200 p-4">
                             <div class="flex items-center gap-3">
                                 <div class="flex-grow bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                    <div class="${progressRate < 50 ? 'bg-amber-500' : 'bg-brand-600'} h-full rounded-full transition-all duration-500" style="width: ${displayProgress}%;"></div>
+                                    <div class="${progressRate < 50 ? 'bg-amber-500' : 'bg-brand-600'} h-full rounded-full transition-all duration-500" style="width: ${progressRate}%;"></div>
                                 </div>
-                                <span class="font-extrabold text-brand-700 text-xs w-10 text-left">${progressRate}%</span>
+                                <span class="font-extrabold text-brand-700 text-xs w-14 text-left">${progressRate}%</span>
                             </div>
                         </td>
                     `;
@@ -443,7 +470,7 @@
             }
 
             let allInit = getSavedInitiatives();
-            let currentItem = allInit.find(item => item.id === initiativeId || item.name === initiativeNameMap[initiativeId]) || defaultInitiatives[initiativeId] || defaultInitiatives['samqat'];
+            let currentItem = allInit.find(item => item.id === initiativeId || item.name === initiativeNameMap[initiativeId]) || defaultInitiatives[initiativeId] || defaultInitiatives['mataheb'];
             updateUI(currentItem);
 
             const headerModal = document.getElementById('headerModal');
@@ -457,12 +484,12 @@
                     document.getElementById('editDate').value = currentItem.date || '';
                     document.getElementById('editImpact').value = currentItem.impact || '5 / 5';
                     document.getElementById('editStatus').value = currentItem.status || 'مكتملة';
-                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || 'نساء من المجتمع';
+                    document.getElementById('editTargetGroup').value = currentItem.targetGroup || 'سوق العمل';
                     
-                    const targetBenVal = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || '20';
+                    const targetBenVal = currentItem.targetBeneficiaries || currentItem.beneficiariesTarget || '400';
                     document.getElementById('editTargetBeneficiaries').value = targetBenVal;
                     
-                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || '';
+                    document.getElementById('editBeneficiaries').value = currentItem.beneficiaries || '387';
                     headerModal.classList.remove('hidden');
                     headerModal.classList.add('flex');
                 };
@@ -510,7 +537,6 @@
             }
         });
 
-        // كود إدارة الأنشطة
         const initialWork = {
           "samqat": [
             {
@@ -561,7 +587,7 @@
           ]
         };
 
-        const workId = new URLSearchParams(location.search).get('initiative') || 'samqat';
+        const workId = new URLSearchParams(location.search).get('initiative') || 'mataheb';
         const workKey = 'athar_work_v2_' + workId;
         const isAdminUser = localStorage.getItem('athalRole') === 'admin';
         const content = document.getElementById('initiativeWorkContent');
@@ -576,7 +602,7 @@
             const saved = JSON.parse(localStorage.getItem(workKey));
             if (Array.isArray(saved)) return saved;
           } catch(e) {}
-          return structuredClone(initialWork[workId] || []);
+          return structuredClone(initialWork[workId] || initialWork['mataheb']);
         }
 
         function node(tag, cls, value) {
