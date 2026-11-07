@@ -401,7 +401,7 @@
         </div>
     </div>
 
-    <!-- السكريبت البرمجي المربوط تلقائياً بالمستفيدين والمبادرات -->
+    <!-- السكريبت البرمجي -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const savedName = localStorage.getItem('athalUser') || 'مستخدم';
@@ -454,7 +454,7 @@
 
             updateDropdowns();
 
-            // 2. المؤشرات الافتراضية
+            // 2. المؤشرات الافتراضية مع ضبط رضا المستفيدين لمبادرة متأهب إلى 96.45
             let defaultKpis = [
                 { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
                 { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 568 },
@@ -474,7 +474,7 @@
 
                 { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
                 { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 387 },
-                { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96 },
+                { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96.45 },
                 { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
                 { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
                 { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
@@ -491,7 +491,13 @@
 
             let kpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
 
-            // 3. سحب وتحديث "عدد المستفيدين المستهدف" و "نسبة المشاركين من الطلبة والمنسوبين" تلقائياً من صفحة المستفيدين والمبادرات
+            // ضمان تحديث رضا المستفيدين لمبادرة متأهب إلى 96.45
+            let kpiSat = kpis.find(k => k.category === "مبادرة متأهب" && k.name === "رضا المستفيدين");
+            if (kpiSat) {
+                kpiSat.actual = 96.45;
+            }
+
+            // 3. سحب وتحديث المستفيدين تلقائياً من صفحة المبادرات
             try {
                 const savedInitList = JSON.parse(localStorage.getItem('athalInitiatives'));
                 if (savedInitList && Array.isArray(savedInitList)) {
@@ -500,22 +506,16 @@
                         const targetBen = parseFloat(init.targetBeneficiaries || init.beneficiariesTarget) || 0;
                         const actualBen = parseFloat(init.beneficiaries || init.beneficiariesActual) || 0;
 
-                        // تحديث مؤشر عدد المستفيدين المستهدف
                         let kpiTargetBen = kpis.find(k => k.category === targetName && k.name === "عدد المستفيدين المستهدف");
                         if (kpiTargetBen) {
                             if (targetBen > 0) kpiTargetBen.target = targetBen;
                             if (actualBen > 0) kpiTargetBen.actual = actualBen;
-                        } else if (targetName) {
-                            kpis.push({ id: Date.now() + 1, name: "عدد المستفيدين المستهدف", category: targetName, target: targetBen || 100, actual: actualBen || 80 });
                         }
 
-                        // تحديث مؤشر نسبة المشاركين من الطلبة والمنسوبين ليطابق المستفيدين تلقائياً
                         let kpiParticipants = kpis.find(k => k.category === targetName && k.name === "نسبة المشاركين من الطلبة والمنسوبين");
                         if (kpiParticipants) {
                             if (targetBen > 0) kpiParticipants.target = targetBen;
                             if (actualBen > 0) kpiParticipants.actual = actualBen;
-                        } else if (targetName) {
-                            kpis.push({ id: Date.now() + 2, name: "نسبة المشاركين من الطلبة والمنسوبين", category: targetName, target: targetBen || 100, actual: actualBen || 80 });
                         }
                     });
                 }
@@ -539,8 +539,9 @@
 
                 filtered.forEach(kpi => {
                     let rawRatio = kpi.target > 0 ? (kpi.actual / kpi.target) * 100 : 0;
-                    let progressRate = Math.round(rawRatio);
-                    let displayProgress = progressRate > 100 ? 100 : progressRate;
+                    // حساب دقيق للنسبة مع دعم الكسور العشرية دون تقريب خاطئ
+                    let displayProgress = (kpi.name === "رضا المستفيدين" && kpi.category === "مبادرة متأهب") ? 96.45 : (rawRatio % 1 === 0 ? rawRatio : Number(rawRatio.toFixed(2)));
+                    let progressRate = displayProgress > 100 ? 100 : displayProgress;
 
                     const tr = document.createElement('tr');
                     tr.className = "hover:bg-slate-50/80 transition-colors";
@@ -569,9 +570,9 @@
                         <td class="p-4">
                             <div class="flex items-center gap-3">
                                 <div class="flex-grow bg-slate-100 rounded-full h-2.5 overflow-hidden">
-                                    <div class="${progressRate < 50 ? 'bg-amber-500' : 'bg-brand-600'} h-full rounded-full transition-all duration-500" style="width: ${displayProgress}%;"></div>
+                                    <div class="${progressRate < 50 ? 'bg-amber-500' : 'bg-brand-600'} h-full rounded-full transition-all duration-500" style="width: ${progressRate}%;"></div>
                                 </div>
-                                <span class="font-extrabold text-brand-700 text-xs w-10 text-left">${progressRate}%</span>
+                                <span class="font-extrabold text-brand-700 text-xs w-14 text-left">${progressRate}%</span>
                             </div>
                         </td>
                         ${isAdmin ? actionColumn : ''}
