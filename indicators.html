@@ -298,10 +298,6 @@
                 <label class="text-xs font-bold text-slate-700 whitespace-nowrap">تصفية حسب المبادرة:</label>
                 <select id="filterCategory" onchange="renderIndicators()" class="w-full sm:w-auto px-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm font-bold text-slate-700 focus:ring-2 focus:ring-brand-600 focus:outline-none cursor-pointer">
                     <option value="الكل">جميع المبادرات (عرض الكل)</option>
-                    <option value="مبادرة محترف">مبادرة محترف</option>
-                    <option value="مبادرة سامقات">مبادرة سامقات</option>
-                    <option value="مبادرة متأهب">مبادرة متأهب</option>
-                    <option value="مبادرة فهيم">مبادرة فهيم</option>
                 </select>
             </div>
             <span id="kpiCountBadge" class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg">عرض 0 مؤشرات</span>
@@ -317,17 +313,13 @@
                 <div class="lg:col-span-2">
                     <label class="block text-xs font-bold text-slate-600 mb-1.5">اسم المؤشر</label>
                     <input type="text" id="kpiName" placeholder="مثال: عدد المستفيدين الفعلي" required 
-                        oninput="this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '')"
                         class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-600 focus:bg-white focus:outline-none text-sm transition">
                 </div>
                 
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1.5">المبادرة</label>
                     <select id="kpiCategory" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl focus:ring-2 focus:ring-brand-600 focus:bg-white focus:outline-none text-sm transition">
-                        <option value="مبادرة محترف">مبادرة محترف</option>
-                        <option value="مبادرة سامقات">مبادرة سامقات</option>
-                        <option value="مبادرة متأهب">مبادرة متأهب</option>
-                        <option value="مبادرة فهيم">مبادرة فهيم</option>
+                        <!-- تتعبى ديناميكياً -->
                     </select>
                 </div>
 
@@ -387,7 +379,6 @@
                 <div>
                     <label class="block text-xs font-bold text-slate-600 mb-1">اسم المؤشر</label>
                     <input type="text" id="editName" required 
-                        oninput="this.value = this.value.replace(/[^\u0600-\u06FF\s]/g, '')"
                         class="w-full px-3.5 py-2 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-600">
                 </div>
                 <div>
@@ -410,44 +401,9 @@
         </div>
     </div>
 
-    <!-- السكريبت البرمجي -->
+    <!-- السكريبت البرمجي المربوط تلقائياً بالمستفيدين والمبادرات -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            let defaultKpis = [
-                { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
-                { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 600 },
-                { id: 103, name: "رضا المستفيدين", category: "مبادرة محترف", target: 100, actual: 98 },
-                { id: 104, name: "ساعات التطوع", category: "مبادرة محترف", target: 50, actual: 45 },
-                { id: 105, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة محترف", target: 600, actual: 568 },
-                { id: 106, name: "عدد الشراكات المجتمعية", category: "مبادرة محترف", target: 2, actual: 2 },
-                { id: 107, name: "أثر المبادرة", category: "مبادرة محترف", target: 5, actual: 2.47 },
-
-                { id: 201, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة سامقات", target: 4, actual: 4 },
-                { id: 202, name: "عدد المستفيدين المستهدف", category: "مبادرة سامقات", target: 20, actual: 20 },
-                { id: 203, name: "رضا المستفيدين", category: "مبادرة سامقات", target: 100, actual: 100 },
-                { id: 204, name: "ساعات التطوع", category: "مبادرة سامقات", target: 40, actual: 36 },
-                { id: 205, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة سامقات", target: 20, actual: 17 },
-                { id: 206, name: "عدد الشراكات المجتمعية", category: "مبادرة سامقات", target: 2, actual: 2 },
-                { id: 207, name: "أثر المبادرة", category: "مبادرة سامقات", target: 5, actual: 5 },
-
-                { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
-                { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 400 },
-                { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96 },
-                { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
-                { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
-                { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
-                { id: 307, name: "أثر المبادرة", category: "مبادرة متأهب", target: 5, actual: 5 },
-
-                { id: 401, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة فهيم", target: 4, actual: 4 },
-                { id: 402, name: "عدد المستفيدين المستهدف", category: "مبادرة فهيم", target: 150, actual: 150 },
-                { id: 403, name: "رضا المستفيدين", category: "مبادرة فهيم", target: 100, actual: 100 },
-                { id: 404, name: "ساعات التطوع", category: "مبادرة فهيم", target: 10, actual: 0 },
-                { id: 405, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة فهيم", target: 150, actual: 144 },
-                { id: 406, name: "عدد الشراكات المجتمعية", category: "مبادرة فهيم", target: 2, actual: 2 },
-                { id: 407, name: "أثر المبادرة", category: "مبادرة فهيم", target: 5, actual: 4.5 }
-            ];
-
-            let kpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
             const savedName = localStorage.getItem('athalUser') || 'مستخدم';
             const savedRole = localStorage.getItem('athalRole') || 'user';
             const isAdmin = (savedRole === 'admin');
@@ -464,6 +420,107 @@
                 if (thActionHeader) thActionHeader.style.display = 'table-cell';
             }
 
+            // 1. جلب المبادرات وتعبئة القوائم المنسدلة تلقائياً
+            function getActiveInitiativesList() {
+                try {
+                    const saved = localStorage.getItem('athalInitiatives');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        return parsed.map(item => item.name);
+                    }
+                } catch(e) {}
+                return ["مبادرة محترف", "مبادرة سامقات", "مبادرة متأهب", "مبادرة فهيم"];
+            }
+
+            function updateDropdowns() {
+                const initiatives = getActiveInitiativesList();
+                
+                const filterSelect = document.getElementById('filterCategory');
+                const currentFilterVal = filterSelect.value;
+                filterSelect.innerHTML = `<option value="الكل">جميع المبادرات (عرض الكل)</option>`;
+                initiatives.forEach(name => {
+                    filterSelect.innerHTML += `<option value="${name}">${name}</option>`;
+                });
+                filterSelect.value = initiatives.includes(currentFilterVal) ? currentFilterVal : 'الكل';
+
+                const kpiCategorySelect = document.getElementById('kpiCategory');
+                if (kpiCategorySelect) {
+                    kpiCategorySelect.innerHTML = '';
+                    initiatives.forEach(name => {
+                        kpiCategorySelect.innerHTML += `<option value="${name}">${name}</option>`;
+                    });
+                }
+            }
+
+            updateDropdowns();
+
+            // 2. المؤشرات الافتراضية
+            let defaultKpis = [
+                { id: 101, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة محترف", target: 4, actual: 4 },
+                { id: 102, name: "عدد المستفيدين المستهدف", category: "مبادرة محترف", target: 600, actual: 568 },
+                { id: 103, name: "رضا المستفيدين", category: "مبادرة محترف", target: 100, actual: 98 },
+                { id: 104, name: "ساعات التطوع", category: "مبادرة محترف", target: 50, actual: 45 },
+                { id: 105, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة محترف", target: 600, actual: 568 },
+                { id: 106, name: "عدد الشراكات المجتمعية", category: "مبادرة محترف", target: 2, actual: 2 },
+                { id: 107, name: "أثر المبادرة", category: "مبادرة محترف", target: 5, actual: 2.47 },
+
+                { id: 201, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة سامقات", target: 4, actual: 4 },
+                { id: 202, name: "عدد المستفيدين المستهدف", category: "مبادرة سامقات", target: 20, actual: 17 },
+                { id: 203, name: "رضا المستفيدين", category: "مبادرة سامقات", target: 100, actual: 100 },
+                { id: 204, name: "ساعات التطوع", category: "مبادرة سامقات", target: 40, actual: 36 },
+                { id: 205, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة سامقات", target: 20, actual: 17 },
+                { id: 206, name: "عدد الشراكات المجتمعية", category: "مبادرة سامقات", target: 2, actual: 2 },
+                { id: 207, name: "أثر المبادرة", category: "مبادرة سامقات", target: 5, actual: 5 },
+
+                { id: 301, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة متأهب", target: 4, actual: 4 },
+                { id: 302, name: "عدد المستفيدين المستهدف", category: "مبادرة متأهب", target: 400, actual: 387 },
+                { id: 303, name: "رضا المستفيدين", category: "مبادرة متأهب", target: 100, actual: 96 },
+                { id: 304, name: "ساعات التطوع", category: "مبادرة متأهب", target: 130, actual: 129 },
+                { id: 305, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة متأهب", target: 400, actual: 387 },
+                { id: 306, name: "عدد الشراكات المجتمعية", category: "مبادرة متأهب", target: 2, actual: 2 },
+                { id: 307, name: "أثر المبادرة", category: "مبادرة متأهب", target: 5, actual: 5 },
+
+                { id: 401, name: "عدد المبادرات والبرامج المجتمعية المنفذة", category: "مبادرة فهيم", target: 4, actual: 4 },
+                { id: 402, name: "عدد المستفيدين المستهدف", category: "مبادرة فهيم", target: 150, actual: 144 },
+                { id: 403, name: "رضا المستفيدين", category: "مبادرة فهيم", target: 100, actual: 100 },
+                { id: 404, name: "ساعات التطوع", category: "مبادرة فهيم", target: 10, actual: 10 },
+                { id: 405, name: "نسبة المشاركين من الطلبة والمنسوبين", category: "مبادرة فهيم", target: 150, actual: 144 },
+                { id: 406, name: "عدد الشراكات المجتمعية", category: "مبادرة فهيم", target: 2, actual: 2 },
+                { id: 407, name: "أثر المبادرة", category: "مبادرة فهيم", target: 5, actual: 4.5 }
+            ];
+
+            let kpis = JSON.parse(localStorage.getItem('athalAllInitiativesKpis')) || defaultKpis;
+
+            // 3. سحب وتحديث "عدد المستفيدين المستهدف" و "نسبة المشاركين من الطلبة والمنسوبين" تلقائياً من صفحة المستفيدين والمبادرات
+            try {
+                const savedInitList = JSON.parse(localStorage.getItem('athalInitiatives'));
+                if (savedInitList && Array.isArray(savedInitList)) {
+                    savedInitList.forEach(init => {
+                        const targetName = init.name;
+                        const targetBen = parseFloat(init.targetBeneficiaries || init.beneficiariesTarget) || 0;
+                        const actualBen = parseFloat(init.beneficiaries || init.beneficiariesActual) || 0;
+
+                        // تحديث مؤشر عدد المستفيدين المستهدف
+                        let kpiTargetBen = kpis.find(k => k.category === targetName && k.name === "عدد المستفيدين المستهدف");
+                        if (kpiTargetBen) {
+                            if (targetBen > 0) kpiTargetBen.target = targetBen;
+                            if (actualBen > 0) kpiTargetBen.actual = actualBen;
+                        } else if (targetName) {
+                            kpis.push({ id: Date.now() + 1, name: "عدد المستفيدين المستهدف", category: targetName, target: targetBen || 100, actual: actualBen || 80 });
+                        }
+
+                        // تحديث مؤشر نسبة المشاركين من الطلبة والمنسوبين ليطابق المستفيدين تلقائياً
+                        let kpiParticipants = kpis.find(k => k.category === targetName && k.name === "نسبة المشاركين من الطلبة والمنسوبين");
+                        if (kpiParticipants) {
+                            if (targetBen > 0) kpiParticipants.target = targetBen;
+                            if (actualBen > 0) kpiParticipants.actual = actualBen;
+                        } else if (targetName) {
+                            kpis.push({ id: Date.now() + 2, name: "نسبة المشاركين من الطلبة والمنسوبين", category: targetName, target: targetBen || 100, actual: actualBen || 80 });
+                        }
+                    });
+                }
+            } catch(e) {}
+
             window.renderIndicators = function() {
                 const tbody = document.getElementById('indicatorsTableBody');
                 const filterCategory = document.getElementById('filterCategory').value;
@@ -477,10 +534,11 @@
 
                 if (filtered.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="6" class="p-8 text-center text-slate-400 font-semibold">لا توجد مؤشرات في هذه المبادرة.</td></tr>`;
+                    return;
                 }
 
                 filtered.forEach(kpi => {
-                    let rawRatio = (kpi.actual / kpi.target) * 100;
+                    let rawRatio = kpi.target > 0 ? (kpi.actual / kpi.target) * 100 : 0;
                     let progressRate = Math.round(rawRatio);
                     let displayProgress = progressRate > 100 ? 100 : progressRate;
 
@@ -611,7 +669,7 @@
             }
 
             function escapeHtml(str) {
-                return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+                return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
             }
         });
     </script>
