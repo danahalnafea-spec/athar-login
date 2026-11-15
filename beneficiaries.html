@@ -291,7 +291,6 @@
             transform: rotate(180deg);
         }
 
-        /* قفل قائمة تسجيل الخروج بدقة داخل إطار الشاشة وعدم خروجها نهائياً */
         .user-dropdown-menu {
             position: absolute;
             top: calc(100% + 8px);
@@ -676,6 +675,11 @@
                         <i class="fa-solid fa-folder-open w-5 text-center"></i>
                     </a>
 
+                    <a href="indicators.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                        <span>المؤشرات</span>
+                        <i class="fa-solid fa-chart-line w-5 text-center"></i>
+                    </a>
+
                     <a href="reports.html" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
                         <span>التقارير</span>
                         <i class="fa-solid fa-file-lines w-5 text-center"></i>
@@ -686,6 +690,13 @@
                         <span>المستفيدون</span>
                         <i class="fa-solid fa-users w-5 text-center"></i>
                     </a>
+
+                    <!-- إعدادات النظام للمشرف -->
+                    <div id="adminSettingsMenu" style="display: none;">
+                        <a href="#" class="flex items-center justify-end flex-row-reverse gap-3 px-3 py-2.5 rounded-xl text-[#0b253a] hover:bg-blue-500/10 font-semibold transition text-sm">
+                            <span>إعدادات النظام</span>
+                            <i class="fa-solid fa-gear w-5 text-center"></i>
+                        </a>
                     </div>
                 </nav>
             </div>
@@ -867,7 +878,7 @@
                 });
             }
             
-             const defaultInitiatives = [
+            const defaultInitiatives = [
                 {
                     id: 'samqat',
                     name: 'مبادرة سامقات',
@@ -914,38 +925,41 @@
                 }
             ];
 
-            let initiatives = [];
-            try {
-                const savedData = localStorage.getItem('athalInitiatives');
-                initiatives = savedData ? JSON.parse(savedData) : defaultInitiatives;
-            } catch (error) {
-                initiatives = defaultInitiatives;
-            }
-
-            function getBeneficiaryExtraData() {
+            // دمج البيانات الأساسية مع التعديلات المحفوظة في localStorage (سواء من مفتاح التفاصيل الفردي أو مفتاح الـ extra)
+            function getStoredInitiatives() {
                 try {
-                    const saved = localStorage.getItem('athar_beneficiary_data');
-                    return saved ? JSON.parse(saved) : {};
+                    const savedData = localStorage.getItem('athalInitiatives');
+                    let initiatives = savedData ? JSON.parse(savedData) : defaultInitiatives;
+
+                    return initiatives.map(item => {
+                        // التحقق من وجود مفتاح التفاصيل الخاص بالمبادرة athal_detail_info_[id]
+                        const detailSaved = localStorage.getItem('athal_detail_info_' + item.id);
+                        if (detailSaved) {
+                            const detailObj = JSON.parse(detailSaved);
+                            return {
+                                ...item,
+                                name: detailObj.name !== undefined ? detailObj.name : item.name,
+                                category: detailObj.category !== undefined ? detailObj.category : item.category,
+                                beneficiaries: detailObj.beneficiaries !== undefined ? detailObj.beneficiaries : item.beneficiaries,
+                                beneficiariesTarget: detailObj.targetBeneficiaries !== undefined ? detailObj.targetBeneficiaries : (detailObj.beneficiariesTarget !== undefined ? detailObj.beneficiariesTarget : item.beneficiariesTarget),
+                                targetGroup: detailObj.targetGroup !== undefined ? detailObj.targetGroup : item.targetGroup,
+                                status: detailObj.status !== undefined ? detailObj.status : item.status
+                            };
+                        }
+                        return item;
+                    });
                 } catch (error) {
-                    return {};
+                    return defaultInitiatives;
                 }
             }
 
-            const extraData = getBeneficiaryExtraData();
-
             function getInitiativeBeneficiaryInfo(item) {
-                const extra = extraData[item.id] || item.beneficiaryInfo || {};
-                
                 let defaultTarget = 20;
                 if (item.id === 'tech') defaultTarget = 600;
                 if (item.id === 'fahim') defaultTarget = 150;
                 if (item.id === 'mataheb') defaultTarget = 400;
 
-                // قراءة الفئة المستهدفة المباشرة لكل مبادرة بدقة
                 let groupName = item.targetGroup;
-                if (!groupName && item.beneficiaryGroups && item.beneficiaryGroups.length > 0) {
-                    groupName = item.beneficiaryGroups.join('، ');
-                }
                 if (!groupName) {
                     if (item.id === 'samqat') groupName = 'نساء من المجتمع';
                     else if (item.id === 'tech') groupName = 'الخريجيين والخريجات';
@@ -955,8 +969,8 @@
                 }
 
                 return {
-                    actual: Number(extra.actual ?? item.beneficiariesActual ?? item.beneficiaries) || 0,
-                    target: Number(extra.target ?? item.beneficiariesTarget ?? defaultTarget),
+                    actual: Number(item.beneficiariesActual ?? item.beneficiaries) || 0,
+                    target: Number(item.beneficiariesTarget ?? defaultTarget),
                     groups: [groupName]
                 };
             }
@@ -972,7 +986,7 @@
             }
 
             function formatNumber(value) {
-                return value === null || value === undefined ? '20' : new Intl.NumberFormat('en-US').format(value);
+                return value === null || value === undefined ? '0' : new Intl.NumberFormat('en-US').format(value);
             }
 
             function renderTable(items) {
@@ -1003,6 +1017,7 @@
                 });
             }
 
+            // تحديث بطاقات الإحصائيات (الإجماليات) العلوية بناءً على القائمة الحالية للمبادرات
             function updateSummary(items) {
                 let actualTotal = 0, targetTotal = 0, groupsCount = 0;
                 items.forEach(item => {
@@ -1022,21 +1037,25 @@
             const categoryHeader = document.getElementById('categoryFilter');
 
             function filterInitiatives() {
+                const currentInitiatives = getStoredInitiatives();
                 const term = searchInput.value.toLowerCase();
                 const cat = categoryHeader.value;
-                const filtered = initiatives.filter(item => {
+                const filtered = currentInitiatives.filter(item => {
                     const matchesSearch = !term || item.name.toLowerCase().includes(term);
                     const matchesCat = !cat || item.category === cat;
                     return matchesSearch && matchesCat;
                 });
                 renderTable(filtered);
+                updateSummary(currentInitiatives); // تحديث الإجمالي الكلي لجميع المبادرات
             }
 
             if (searchInput) searchInput.addEventListener('input', filterInitiatives);
             if (categoryHeader) categoryHeader.addEventListener('change', filterInitiatives);
 
-            updateSummary(initiatives);
-            renderTable(initiatives);
+            // التشغيل الأولي وتعبئة البيانات والإجماليات
+            const initialInitiatives = getStoredInitiatives();
+            updateSummary(initialInitiatives);
+            renderTable(initialInitiatives);
         });
     </script>
 </body>
